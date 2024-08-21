@@ -21,7 +21,7 @@ namespace Expeditionary.Coordinates
             return new(1.5f * x.Q, 0.5f * s_Sqrt3 * x.Q + s_Sqrt3 * x.R);
         }
 
-        public static Hexagonal3i ToHexagonal(Axial2i x)
+        public static Hexagonal2i ToHexagonal(Axial2i x)
         {
             return new(x.Q, x.R, -x.Q - x.R);
         }

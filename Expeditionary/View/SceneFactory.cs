@@ -16,7 +16,7 @@ namespace Expeditionary.View
             _mapViewFactory = mapViewFactory;
         }
 
-        public IScene Create(Vector3 size, Map map, int seed)
+        public IScene Create(Vector3 size, Map map, TerrainViewParameters parameters, int seed)
         {
             var camera = new SubjectiveCamera3d(100);
             camera.SetPitch(-MathF.PI / 2);
@@ -31,7 +31,7 @@ namespace Expeditionary.View
                     MouseWheelSensitivity = 2
                 },
                 camera,
-                new List<IRenderable>() { _mapViewFactory.Create(map, seed) });
+                new List<IRenderable>() { _mapViewFactory.Create(map, parameters, seed) });
         }
     }
 }

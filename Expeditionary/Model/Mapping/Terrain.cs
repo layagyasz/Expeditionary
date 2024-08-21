@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Mapping
+﻿using Expeditionary.Coordinates;
+
+namespace Expeditionary.Model.Mapping
 {
-    public record class Terrain(int Id) { }
+    public record class Terrain(int Stone) { }
 }

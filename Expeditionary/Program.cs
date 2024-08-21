@@ -4,6 +4,7 @@ using Cardamom.Window;
 using Expeditionary.Generation;
 using Expeditionary.Model.Mapping;
 using Expeditionary.View;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Expeditionary
@@ -35,7 +36,25 @@ namespace Expeditionary
                             .SetFragment("default.frag")
                             .Build()));
 
-            ui.SetRoot(sceneFactory.Create(new(512, 512, 0), mapGenerator.Generate(new(10, 10), seed: 0), seed: 0));
+            ui.SetRoot(
+                sceneFactory.Create(
+                    new(512, 512, 0), 
+                    mapGenerator.Generate(
+                        new(), 
+                        new(10, 10),
+                        seed: 0), 
+                    new() 
+                    { 
+                        StoneParameters = 
+                            new(
+                                new Color4[] 
+                                {
+                                    new(200, 200, 200, 255),
+                                    new(240, 240, 240, 255),
+                                    new(227, 173, 156, 255)
+                                })
+                    },
+                    seed: 0));
             ui.Start();
         }
     }

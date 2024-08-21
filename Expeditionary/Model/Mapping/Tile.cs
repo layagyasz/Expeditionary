@@ -1,4 +1,4 @@
 ﻿namespace Expeditionary.Model.Mapping
 {
-    public record class Tile(Terrain terrain) { }
+    public record class Tile(Terrain Terrain) { }
 }

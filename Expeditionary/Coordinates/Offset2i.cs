@@ -30,7 +30,7 @@ namespace Expeditionary.Coordinates
             return Axial2i.ToCartesian(ToAxial(x));
         }
 
-        public static Hexagonal3i ToHexagonal(Offset2i x)
+        public static Hexagonal2i ToHexagonal(Offset2i x)
         {
             return Axial2i.ToHexagonal(ToAxial(x));
         }

@@ -15,12 +15,6 @@ namespace Expeditionary.View
             new(-1, 0),
             new(0, -1)
         };
-        private static readonly Color4[] s_Colors =
-        {
-            Color4.Red,
-            Color4.Green,
-            Color4.Blue
-        };
 
         private readonly TerrainTextureLibrary _tileBaseLibrary;
         private readonly RenderShader _tileBaseShader;
@@ -31,7 +25,7 @@ namespace Expeditionary.View
             _tileBaseShader = tileBaseShader;
         }
 
-        public MapView Create(Map map, int seed)
+        public MapView Create(Map map, TerrainViewParameters parameters, int seed)
         {
             TerrainTextureLibrary.Option[] options = _tileBaseLibrary.Query().ToArray();
             var random = new Random(seed);
@@ -43,42 +37,48 @@ namespace Expeditionary.View
             {
                 for (int y = 0; y < map.Height; ++y)
                 {
+                    var center = map.Get(new(x, y));
                     var centerAxial = Offset2i.ToAxial(new(x, y));
-                    var center = Axial2i.ToCartesian(centerAxial);
+                    var centerPos = Axial2i.ToCartesian(centerAxial);
                     for (int i = 0; i < 2; ++i)
                     {
-                        var left = centerAxial + s_Neighbors[i];
-                        var leftOffset = Axial2i.ToOffset(left);
+                        var leftAxial = centerAxial + s_Neighbors[i];
+                        var leftOffset = Axial2i.ToOffset(leftAxial);
                         if (!xRange.Contains(leftOffset.X) || !yRange.Contains(leftOffset.Y))
                         {
                             continue;
                         }
-                        var right = centerAxial + s_Neighbors[i + 1];
-                        var rightOffset = Axial2i.ToOffset(right);
+                        var rightAxial = centerAxial + s_Neighbors[i + 1];
+                        var rightOffset = Axial2i.ToOffset(rightAxial);
                         if (!xRange.Contains(rightOffset.X) || !yRange.Contains(rightOffset.Y))
                         {
                             continue;
                         }
+
+                        var left = map.Get(leftOffset);
+                        var right = map.Get(rightOffset);
                         var selected = options[random.Next(options.Length)];
                         for (int j = 0; j < 3; ++j)
                         {
-                            Color4 color;
-                            if (j==0)
+                            Tile tile;
+                            if (j == 0)
                             {
-                                color = ChooseColor(centerAxial);
-                            } 
-                            else if (j==1)
+                                tile = center;
+                            }
+                            else if (j == 1)
                             {
-                                color = ChooseColor(left);
+                                tile = left;
                             }
                             else
                             {
-                                color = ChooseColor(right);
+                                tile = right;
                             }
-                            vertices[v++] = new(ToVector3(center), color, selected.TexCoords[j][0]);
-                            vertices[v++] = new(ToVector3(Axial2i.ToCartesian(left)), color, selected.TexCoords[j][1]);
+                            var color = parameters.StoneParameters!.Colors[tile.Terrain.Stone];
+                            vertices[v++] = new(ToVector3(centerPos), color, selected.TexCoords[j][0]);
+                            vertices[v++] = 
+                                new(ToVector3(Axial2i.ToCartesian(leftAxial)), color, selected.TexCoords[j][1]);
                             vertices[v++] =
-                                new(ToVector3(Axial2i.ToCartesian(right)), color, selected.TexCoords[j][2]);
+                                new(ToVector3(Axial2i.ToCartesian(rightAxial)), color, selected.TexCoords[j][2]);
                         }
                     }
                 }
@@ -87,11 +87,6 @@ namespace Expeditionary.View
                 new VertexBuffer<Vertex3>(vertices, PrimitiveType.Triangles),
                 _tileBaseLibrary.GetTexture(), 
                 _tileBaseShader);
-        }
-
-        private Color4 ChooseColor(Axial2i position)
-        {
-            return s_Colors[Math.Abs(HashCode.Combine(position.Q, position.R)) % 3];
         }
 
         private static Vector3 ToVector3(Vector2 x)
