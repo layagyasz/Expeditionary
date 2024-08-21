@@ -15,17 +15,27 @@ namespace Expeditionary.View
             new(-1, 0),
             new(0, -1)
         };
+        private static readonly Color4[] s_Colors =
+        {
+            Color4.Red,
+            Color4.Green,
+            Color4.Blue
+        };
 
+        private readonly TerrainTextureLibrary _tileBaseLibrary;
         private readonly RenderShader _tileBaseShader;
 
-        public MapViewFactory(RenderShader tileBaseShader)
+        public MapViewFactory(TerrainTextureLibrary tileBaseLibrary, RenderShader tileBaseShader)
         {
+            _tileBaseLibrary = tileBaseLibrary;
             _tileBaseShader = tileBaseShader;
         }
 
-        public MapView Create(Map map)
+        public MapView Create(Map map, int seed)
         {
-            Vertex3[] vertices = new Vertex3[6 * (map.Width - 1) * (map.Height - 1)];
+            TerrainTextureLibrary.Option[] options = _tileBaseLibrary.Query().ToArray();
+            var random = new Random(seed);
+            Vertex3[] vertices = new Vertex3[18 * (map.Width - 1) * (map.Height - 1)];
             var xRange = new IntInterval(0, map.Width - 1);
             var yRange = new IntInterval(0, map.Height - 1);
             int v = 0;
@@ -49,13 +59,39 @@ namespace Expeditionary.View
                         {
                             continue;
                         }
-                        vertices[v++] = new(ToVector3(center), Color4.Red, new());
-                        vertices[v++] = new(ToVector3(Axial2i.ToCartesian(left)), Color4.Green, new());
-                        vertices[v++] = new(ToVector3(Axial2i.ToCartesian(right)), Color4.Blue, new());
+                        var selected = options[random.Next(options.Length)];
+                        for (int j = 0; j < 3; ++j)
+                        {
+                            Color4 color;
+                            if (j==0)
+                            {
+                                color = ChooseColor(centerAxial);
+                            } 
+                            else if (j==1)
+                            {
+                                color = ChooseColor(left);
+                            }
+                            else
+                            {
+                                color = ChooseColor(right);
+                            }
+                            vertices[v++] = new(ToVector3(center), color, selected.TexCoords[j][0]);
+                            vertices[v++] = new(ToVector3(Axial2i.ToCartesian(left)), color, selected.TexCoords[j][1]);
+                            vertices[v++] =
+                                new(ToVector3(Axial2i.ToCartesian(right)), color, selected.TexCoords[j][2]);
+                        }
                     }
                 }
             }
-            return new MapView(new VertexBuffer<Vertex3>(vertices, PrimitiveType.Triangles), _tileBaseShader);
+            return new MapView(
+                new VertexBuffer<Vertex3>(vertices, PrimitiveType.Triangles),
+                _tileBaseLibrary.GetTexture(), 
+                _tileBaseShader);
+        }
+
+        private Color4 ChooseColor(Axial2i position)
+        {
+            return s_Colors[Math.Abs(HashCode.Combine(position.Q, position.R)) % 3];
         }
 
         private static Vector3 ToVector3(Vector2 x)
