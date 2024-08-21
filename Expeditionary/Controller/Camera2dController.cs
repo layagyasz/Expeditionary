@@ -41,16 +41,16 @@ namespace Expeditionary.Controller
             switch (e.Key)
             {
                 case Keys.Left:
-                    ChangeFocus(new(KeySensitivity * e.TimeDelta, 0, 0));
+                    ChangeFocus(_camera.Distance * new Vector3(-KeySensitivity * e.TimeDelta, 0, 0));
                     return true;
                 case Keys.Right:
-                    ChangeFocus(new(-KeySensitivity * e.TimeDelta, 0, 0));
+                    ChangeFocus(_camera.Distance * new Vector3(KeySensitivity * e.TimeDelta, 0, 0));
                     return true;
                 case Keys.Up:
-                    ChangeFocus(new(0, 0, KeySensitivity * e.TimeDelta));
+                    ChangeFocus(_camera.Distance * new Vector3(0, 0, -KeySensitivity * e.TimeDelta));
                     return true;
                 case Keys.Down:
-                    ChangeFocus(new(0, 0, -KeySensitivity * e.TimeDelta));
+                    ChangeFocus(_camera.Distance * new Vector3(0, 0, KeySensitivity * e.TimeDelta));
                     return true;
             }
             return false;
@@ -89,7 +89,7 @@ namespace Expeditionary.Controller
             if (e.Button == MouseButton.Left)
             {
                 ChangeFocus(
-                    2 * _camera.Distance * new Vector3(_camera.AspectRatio * e.NdcDelta.X, 0, -e.NdcDelta.Y));
+                    2 * _camera.Distance * new Vector3(-_camera.AspectRatio * e.NdcDelta.X, 0, e.NdcDelta.Y));
                 return true;
             }
             MouseDragged?.Invoke(this, e);

@@ -6,9 +6,7 @@ in vec4 vert_color;
 in vec2 vert_tex_coord;
 
 uniform float attenuation;
-uniform vec4 color_a;
-uniform vec4 color_b;
-uniform vec4 color_c;
+uniform vec4 mask;
 
 layout(binding = 0) uniform sampler2D texture0;
 
@@ -20,14 +18,16 @@ void main()
         + 3 * attenuation * edge_dist * vec3(tex_color.r, tex_color.g, -tex_color.r - tex_color.g);
     blended = normalize(blended);
     blended *= blended;
+    vec4 p;
     if (blended.r > blended.g && blended.r > blended.b) {
-        out_color = color_a;
+        p = vec4(1, 0, 0, 1);
     }
     else if (blended.g > blended.b) {
-        out_color = color_b;
+        p = vec4(0, 1, 0, 1);
     }
     else {
-        out_color = color_c;
+        p = vec4(0, 0, 1, 1);
     }
-    // out_color = blended.r * color_a + blended.g * color_b + blended.b * color_c;
+    vec4 result = mask * p;
+    out_color = (result.r + result.g + result.b) * vec4(1, 1, 1, 1);
 }

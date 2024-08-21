@@ -28,7 +28,17 @@ namespace Expeditionary.Coordinates
 
         public static Offset2i ToOffset(Axial2i x)
         {
-            return new(x.Q, x.R + (x.Q - x.Q & 1) / 2);
+            return new(x.Q, x.R + (x.Q - (x.Q & 1)) / 2);
+        }
+
+        public static Axial2i operator +(Axial2i left, Axial2i right)
+        {
+            return new(left.Q + right.Q, left.R + right.R);
+        }
+
+        public static Axial2i operator -(Axial2i left, Axial2i right)
+        {
+            return new(left.Q - right.Q, left.R - right.R);
         }
     }
 }

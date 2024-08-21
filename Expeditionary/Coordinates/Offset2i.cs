@@ -15,9 +15,14 @@ namespace Expeditionary.Coordinates
             Y = y;
         }
 
+        public override string ToString()
+        {
+            return string.Format("Offset2i({0},{1})", X, Y);
+        }
+
         public static Axial2i ToAxial(Offset2i x)
         {
-            return new(x.X, x.Y - (x.X - x.X & 1) / 2);
+            return new(x.X, x.Y - (x.X - (x.X & 1)) / 2);
         }
 
         public static Vector2 ToCartesian(Offset2i x)

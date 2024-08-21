@@ -12,10 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="blend.frag">
+    <None Update="default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="default.vert">
+    <None Update="Resources\Generation\partition.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Generation\default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="default_no_tex.frag">

@@ -6,9 +6,25 @@ namespace Expeditionary.View
 {
     public class MapView : GraphicsResource, IRenderable
     {
-        protected override void DisposeImpl() { }
+        private VertexBuffer<Vertex3>? _tileBases;
+        private readonly RenderShader _tileBaseShader;
 
-        public void Draw(IRenderTarget target, IUiContext context) { }
+        internal MapView(VertexBuffer<Vertex3> tileBases, RenderShader tileBaseShader)
+        {
+            _tileBases = tileBases;
+            _tileBaseShader = tileBaseShader;
+        }
+
+        protected override void DisposeImpl()
+        {
+            _tileBases?.Dispose();
+            _tileBases = null;
+        }
+
+        public void Draw(IRenderTarget target, IUiContext context) 
+        {
+            target.Draw(_tileBases!, 0, _tileBases!.Length, new RenderResources(BlendMode.None, _tileBaseShader));
+        }
 
         public void Initialize() { }
 
