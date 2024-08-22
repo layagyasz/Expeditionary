@@ -32,8 +32,8 @@ namespace Expeditionary
                     new MapViewFactory(
                         new()
                         {
-                            ElevationGradient = new(-0.25f, 0.1f),
-                            ElevationLevel = 10
+                            ElevationGradient = new(0.8f, 1.2f),
+                            ElevationLevel = 5
                         },
                         tileBases,
                         new RenderShader.Builder()
@@ -45,19 +45,29 @@ namespace Expeditionary
                 sceneFactory.Create(
                     new(512, 512, 0), 
                     mapGenerator.Generate(
-                        new(),
+                        new()
+                        {
+                            SoilCover = 0.45f,
+                            Soil = new(1, 1, 1)
+                        },
                         new(100, 100),
-                        seed: 0),
+                        seed: new Random().Next()),
                     new() 
                     { 
-                        StoneParameters = 
-                            new(
-                                new Color4[] 
-                                {
-                                    new(200, 200, 200, 255),
-                                    new(240, 240, 240, 255),
-                                    new(227, 173, 156, 255)
-                                })
+                        Stone = 
+                            new Color4[] 
+                            {
+                                new(200, 200, 200, 255),
+                                new(240, 240, 240, 255),
+                                new(227, 173, 156, 255)
+                            },
+                        Soil =
+                         new Color4[]
+                         {
+                             new(248, 240, 133, 255),
+                             new(196, 164, 81, 255),
+                             new(59, 48, 45, 255)
+                         }
                     },
                     seed: 0));
             ui.Start();

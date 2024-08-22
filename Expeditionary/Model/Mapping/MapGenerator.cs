@@ -1,4 +1,5 @@
-﻿using Cardamom.ImageProcessing;
+﻿using Cardamom.Collections;
+using Cardamom.ImageProcessing;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
 using Cardamom.Utils.Suppliers;
@@ -21,6 +22,16 @@ namespace Expeditionary.Model.Mapping
             new(-1, 1),
             new(-1, 0)
         };
+        private static readonly Barycentric2f[] s_Barycenters =
+        {
+            new(1, 0, 0),
+            new(0, 1, 0),
+            new(0, 0, 1),
+            new(0.5f, 0.5f, 0),
+            new(0.5f, 0, 0.5f),
+            new(0, 0.5f, 0.5f),
+            new(1f / 3f, 1f /3f, 1f / 3f)
+        };
 
         private readonly ICanvasProvider _canvasProvider = 
             new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
@@ -29,6 +40,9 @@ namespace Expeditionary.Model.Mapping
         private readonly ConstantSupplier<int> _elevationSeed = new();
         private readonly ConstantSupplier<int> _stoneASeed = new();
         private readonly ConstantSupplier<int> _stoneBSeed = new();
+        private readonly ConstantSupplier<int> _soilASeed = new();
+        private readonly ConstantSupplier<int> _soilBSeed = new();
+        private readonly ConstantSupplier<int> _soilCoverSeed = new();
 
         public MapGenerator()
         {
@@ -70,8 +84,44 @@ namespace Expeditionary.Model.Mapping
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                     .AddNode(
+                        new LatticeNoiseNode.Builder()
+                            .SetKey("soil-a")
+                            .SetInput("input", "position")
+                            .SetChannel(Channel.Red)
+                            .SetParameters(
+                                new()
+                                {
+                                    Seed = _soilASeed,
+                                    Frequency = new ConstantSupplier<Vector3>(new(.002f, .002f, .002f))
+                                }))
+                    .AddNode(
+                        new LatticeNoiseNode.Builder()
+                            .SetKey("soil-b")
+                            .SetInput("input", "position")
+                            .SetOutput("soil-a")
+                            .SetChannel(Channel.Green)
+                            .SetParameters(
+                                new()
+                                {
+                                    Seed = _soilBSeed,
+                                    Frequency = new ConstantSupplier<Vector3>(new(.002f, .002f, .002f))
+                                }))
+                    .AddNode(
+                        new LatticeNoiseNode.Builder()
+                            .SetKey("soil-cover")
+                            .SetInput("input", "position")
+                            .SetOutput("soil-b")
+                            .SetChannel(Channel.Blue)
+                            .SetParameters(
+                                new()
+                                {
+                                    Seed = _soilCoverSeed,
+                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                }))
+                    .AddNode(
                         new DenormalizeNode.Builder().SetKey("elevation-denormalize").SetInput("input", "elevation"))
                     .AddNode(new DenormalizeNode.Builder().SetKey("stone-denormalize").SetInput("input", "stone-b"))
+                    .AddNode(new DenormalizeNode.Builder().SetKey("soil-denormalize").SetInput("input", "soil-b"))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("elevation-adjust")
@@ -108,8 +158,27 @@ namespace Expeditionary.Model.Mapping
                                         Diagonal = new ConstantSupplier<float>(0.5f)
                                     }
                             }))
+                    .AddNode(
+                        new AdjustNode.Builder()
+                            .SetKey("soil-adjust")
+                            .SetInput("input", "soil-denormalize")
+                            .SetChannel(Channel.Color)
+                            .SetParameters(new AdjustNode.Parameters()
+                            {
+                                Bias =
+                                    new Vector4UniformSupplier()
+                                    {
+                                        ComponentValue = new ConstantSupplier<float>(0.5f)
+                                    },
+                                Gradient =
+                                    new Matrix4DiagonalUniformSupplier()
+                                    {
+                                        Diagonal = new ConstantSupplier<float>(0.5f)
+                                    }
+                            }))
                     .AddOutput("elevation-adjust")
                     .AddOutput("stone-adjust")
+                    .AddOutput("soil-adjust")
                     .Build();
         }
 
@@ -119,6 +188,9 @@ namespace Expeditionary.Model.Mapping
             _elevationSeed.Value = random.Next();
             _stoneASeed.Value = random.Next();
             _stoneBSeed.Value = random.Next();
+            _soilASeed.Value = random.Next();
+            _soilBSeed.Value = random.Next();
+            _soilCoverSeed.Value = random.Next();
             
             var centers = new Color4[s_Resolution, s_Resolution];
             for (int i=0; i<size.X; ++i)
@@ -137,7 +209,7 @@ namespace Expeditionary.Model.Mapping
             Initialize(tiles);
             Elevation(tiles, output[0].GetTexture().GetData());
             Stone(tiles, parameters, output[1].GetTexture().GetData());
-
+            Soil(tiles, parameters, output[2].GetTexture().GetData());
 
             _canvasProvider.Return(input);
             foreach (var canvas in output)
@@ -199,7 +271,6 @@ namespace Expeditionary.Model.Mapping
                     max = Math.Max(max, tile.Slope);
                 }
             }
-            Console.WriteLine("{0} < {1} < {2}", min, sum / (tiles.GetLength(0) * tiles.GetLength(1)), max);
         }
 
         private static void Stone(Tile[,] tiles, TerrainParameters parameters, Color4[,] stoneData)
@@ -215,6 +286,26 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
+        private static void Soil(Tile[,] tiles, TerrainParameters parameters, Color4[,] soilData)
+        {
+            for (int i = 0; i < tiles.GetLength(0); ++i)
+            {
+                for (int j = 0; j < tiles.GetLength(1); ++j)
+                {
+                    Color4 tileData = soilData[i, j];
+                    var tile = tiles[i, j];
+                    if (tileData.B - Math.Max(tile.Slope, 0.5f * tile.Elevation) > .5f - parameters.SoilCover)
+                    {
+                        var soilModifier = new Barycentric2f(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
+                        var soil = 
+                            GetBarycenter(
+                                GetBarycentric(tileData.R, tileData.G, parameters.Soil * soilModifier), s_Barycenters);
+                        tile.Terrain.Soil = soil;
+                    }
+                }
+            }
+        }
+
         private static T GetNeighborOrTile<T>(Tile tile, Axial2i neighbor, Tile[,] tiles, Func<Tile, T> readFn)
         {
             var coord = Axial2i.ToOffset(neighbor);
@@ -223,6 +314,11 @@ namespace Expeditionary.Model.Mapping
                 return readFn(tile);
             }
             return readFn(tiles[coord.X, coord.Y]);
+        }
+
+        private static Barycentric2f GetBarycenter(Barycentric2f x, Barycentric2f[] options)
+        {
+            return options.ArgMin(y => Barycentric2f.Distance(x, y));
         }
 
         private static Barycentric2f GetBarycentric(float a, float b, Barycentric2f weight)
@@ -237,11 +333,11 @@ namespace Expeditionary.Model.Mapping
 
         private static int GetMaxComponent(Barycentric2f x)
         {
-            if (x.A > x.B && x.A > x.C)
+            if (x.U > x.V && x.U > x.W)
             {
                 return 0;
             }
-            else if (x.B > x.C)
+            else if (x.V > x.W)
             {
                 return 1;
             }

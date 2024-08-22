@@ -76,19 +76,7 @@ namespace Expeditionary.View
                             {
                                 tile = right;
                             }
-                            var e = (int)(tile.Elevation * _parameters.ElevationLevel) 
-                                / (_parameters.ElevationLevel - 1f);
-                            var color = parameters.StoneParameters!.Colors[tile.Terrain!.Stone];
-                            color = (Color4)Color4.ToHsl(color);
-                            color.B = 
-                                Math.Min(
-                                    1, 
-                                    Math.Max(
-                                        color.B + _parameters.ElevationGradient.Minimum + e * 
-                                            (_parameters.ElevationGradient.Maximum -
-                                                _parameters.ElevationGradient.Minimum), 
-                                        0));
-                            color = Color4.FromHsl((Vector4)color);
+                            var color = GetTileColor(tile, parameters);
                             vertices[v++] = new(ToVector3(centerPos), color, selected.TexCoords[j][0]);
                             vertices[v++] = 
                                 new(ToVector3(Axial2i.ToCartesian(leftAxial)), color, selected.TexCoords[j][1]);
@@ -102,6 +90,29 @@ namespace Expeditionary.View
                 new VertexBuffer<Vertex3>(vertices, PrimitiveType.Triangles),
                 _tileBaseLibrary.GetTexture(), 
                 _tileBaseShader);
+        }
+
+        private Color4 GetTileColor(Tile tile, TerrainViewParameters parameters)
+        {
+            var e = (int)(tile.Elevation * _parameters.ElevationLevel) / (_parameters.ElevationLevel - 1f);
+            var color = (Color4)Color4.ToHsl(GetBaseTileColor(tile, parameters));
+            var adj = _parameters.ElevationGradient.Minimum + e *
+                (_parameters.ElevationGradient.Maximum -
+                    _parameters.ElevationGradient.Minimum);
+            color.B = MathHelper.Clamp(color.B * adj, 0, 1);
+            return Color4.FromHsl((Vector4)color);
+        }
+
+        private static Color4 GetBaseTileColor(Tile tile, TerrainViewParameters parameters)
+        {
+            if (tile.Terrain.Soil.HasValue)
+            {
+                var s = tile.Terrain.Soil.Value;
+                return (Color4)(s.U * (Vector4)parameters.Soil![0]
+                    + s.V * (Vector4)parameters.Soil[1]
+                    + s.W * (Vector4)parameters.Soil[2]);
+            }
+            return parameters.Stone![tile.Terrain!.Stone];
         }
 
         private static Vector3 ToVector3(Vector2 x)

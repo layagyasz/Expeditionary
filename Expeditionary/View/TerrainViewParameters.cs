@@ -4,8 +4,7 @@ namespace Expeditionary.View
 {
     public class TerrainViewParameters
     {
-        public record class Stone(Color4[] Colors) { }
-
-        public Stone? StoneParameters { get; set; }
+        public Color4[]? Stone { get; set; }
+        public Color4[]? Soil { get; set; }
     }
 }
