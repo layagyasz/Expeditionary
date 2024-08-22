@@ -58,7 +58,7 @@ namespace Expeditionary.Model.Mapping
                                 new() 
                                 {
                                     Seed = _elevationSeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.01f, .01f, .01f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -69,7 +69,7 @@ namespace Expeditionary.Model.Mapping
                                 new()
                                 {
                                     Seed = _stoneASeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -81,7 +81,7 @@ namespace Expeditionary.Model.Mapping
                                 new()
                                 {
                                     Seed = _stoneBSeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -92,7 +92,7 @@ namespace Expeditionary.Model.Mapping
                                 new()
                                 {
                                     Seed = _soilASeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.002f, .002f, .002f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -104,7 +104,7 @@ namespace Expeditionary.Model.Mapping
                                 new()
                                 {
                                     Seed = _soilBSeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.002f, .002f, .002f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -127,55 +127,58 @@ namespace Expeditionary.Model.Mapping
                             .SetKey("elevation-adjust")
                             .SetInput("input", "elevation-denormalize")
                             .SetChannel(Channel.Red)
-                            .SetParameters(new AdjustNode.Parameters()
-                            {
-                                Bias =
-                                    new Vector4UniformSupplier()
-                                    {
-                                        ComponentValue = new ConstantSupplier<float>(0.5f)
-                                    },
-                                Gradient =
-                                    new Matrix4DiagonalUniformSupplier()
-                                    {
-                                        Diagonal = new ConstantSupplier<float>(0.5f)
-                                    }
-                            }))
+                            .SetParameters(
+                                new()
+                                {
+                                    Bias =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.5f)
+                                        },
+                                    Gradient =
+                                        new Matrix4DiagonalUniformSupplier()
+                                        {
+                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                        }
+                                }))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("stone-adjust")
                             .SetInput("input", "stone-denormalize")
                             .SetChannel(Channel.Color)
-                            .SetParameters(new AdjustNode.Parameters()
-                            {
-                                Bias =
-                                    new Vector4UniformSupplier()
-                                    {
-                                        ComponentValue = new ConstantSupplier<float>(0.5f)
-                                    },
-                                Gradient =
-                                    new Matrix4DiagonalUniformSupplier()
-                                    {
-                                        Diagonal = new ConstantSupplier<float>(0.5f)
-                                    }
-                            }))
+                            .SetParameters(
+                                new()
+                                {
+                                    Bias =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.5f)
+                                        },
+                                    Gradient =
+                                        new Matrix4DiagonalUniformSupplier()
+                                        {
+                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                        }
+                                }))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("soil-adjust")
                             .SetInput("input", "soil-denormalize")
                             .SetChannel(Channel.Color)
-                            .SetParameters(new AdjustNode.Parameters()
-                            {
-                                Bias =
-                                    new Vector4UniformSupplier()
-                                    {
-                                        ComponentValue = new ConstantSupplier<float>(0.5f)
-                                    },
-                                Gradient =
-                                    new Matrix4DiagonalUniformSupplier()
-                                    {
-                                        Diagonal = new ConstantSupplier<float>(0.5f)
-                                    }
-                            }))
+                            .SetParameters(
+                                new()
+                                {
+                                    Bias =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.5f)
+                                        },
+                                    Gradient =
+                                        new Matrix4DiagonalUniformSupplier()
+                                        {
+                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                        }
+                                }))
                     .AddOutput("elevation-adjust")
                     .AddOutput("stone-adjust")
                     .AddOutput("soil-adjust")
@@ -207,7 +210,7 @@ namespace Expeditionary.Model.Mapping
 
             var tiles = new Tile[size.X, size.Y];
             Initialize(tiles);
-            Elevation(tiles, output[0].GetTexture().GetData());
+            Elevation(tiles, parameters, output[0].GetTexture().GetData());
             Stone(tiles, parameters, output[1].GetTexture().GetData());
             Soil(tiles, parameters, output[2].GetTexture().GetData());
 
@@ -239,7 +242,7 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
-        private static void Elevation(Tile[,] tiles, Color4[,] elevationData)
+        private static void Elevation(Tile[,] tiles, TerrainParameters parameters, Color4[,] elevationData)
         {
             for (int i = 0; i < tiles.GetLength(0); ++i)
             {
@@ -247,6 +250,10 @@ namespace Expeditionary.Model.Mapping
                 {
                     Color4 tileData = elevationData[i, j];
                     tiles[i, j].Elevation = tileData.R;
+                    if (tileData.R < parameters.LiquidLevel)
+                    {
+                        tiles[i, j].Terrain.IsLiquid = true;
+                    }
                 }
             }
             float min = float.PositiveInfinity;

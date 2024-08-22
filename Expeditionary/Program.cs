@@ -54,6 +54,7 @@ namespace Expeditionary
                         seed: new Random().Next()),
                     new() 
                     { 
+                        Liquid = new(27, 55, 85, 255),
                         Stone = 
                             new Color4[] 
                             {

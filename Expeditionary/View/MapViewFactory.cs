@@ -96,15 +96,23 @@ namespace Expeditionary.View
         {
             var e = (int)(tile.Elevation * _parameters.ElevationLevel) / (_parameters.ElevationLevel - 1f);
             var color = (Color4)Color4.ToHsl(GetBaseTileColor(tile, parameters));
-            var adj = _parameters.ElevationGradient.Minimum + e *
-                (_parameters.ElevationGradient.Maximum -
-                    _parameters.ElevationGradient.Minimum);
-            color.B = MathHelper.Clamp(color.B * adj, 0, 1);
+            if (!tile.Terrain.IsLiquid)
+            {
+                var adj = _parameters.ElevationGradient.Minimum + e *
+                    (_parameters.ElevationGradient.Maximum -
+                        _parameters.ElevationGradient.Minimum);
+                color.B = MathHelper.Clamp(color.B * adj, 0, 1);
+            }
+            color.G = MathHelper.Clamp(color.G - 0.2f, 0, 1);
             return Color4.FromHsl((Vector4)color);
         }
 
         private static Color4 GetBaseTileColor(Tile tile, TerrainViewParameters parameters)
         {
+            if (tile.Terrain.IsLiquid)
+            {
+                return parameters.Liquid;
+            }
             if (tile.Terrain.Soil.HasValue)
             {
                 var s = tile.Terrain.Soil.Value;
