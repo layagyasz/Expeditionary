@@ -121,7 +121,7 @@ namespace Expeditionary.Model.Mapping
                     .AddNode(
                         new DenormalizeNode.Builder().SetKey("elevation-denormalize").SetInput("input", "elevation"))
                     .AddNode(new DenormalizeNode.Builder().SetKey("stone-denormalize").SetInput("input", "stone-b"))
-                    .AddNode(new DenormalizeNode.Builder().SetKey("soil-denormalize").SetInput("input", "soil-b"))
+                    .AddNode(new DenormalizeNode.Builder().SetKey("soil-denormalize").SetInput("input", "soil-cover"))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("elevation-adjust")
@@ -301,7 +301,7 @@ namespace Expeditionary.Model.Mapping
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = tiles[i, j];
-                    if (tileData.B - Math.Max(tile.Slope, 0.5f * tile.Elevation) > .5f - parameters.SoilCover)
+                    if (Math.Max(tileData.B, Math.Max(tile.Elevation, tile.Slope)) < parameters.SoilCover)
                     {
                         var soilModifier = new Barycentric2f(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
                         var soil = 

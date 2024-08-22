@@ -68,7 +68,18 @@ namespace Expeditionary.Generation
                                 {
                                     Seed = new FuncSupplier<int>(random.Next)
                                 }))
-                    .AddOutput("green")
+                    .AddNode(
+                        new WhiteNoiseNode.Builder()
+                            .SetKey("blue")
+                            .SetInput("input", "gradient")
+                            .SetOutput("green")
+                            .SetChannel(Channel.Blue)
+                            .SetParameters(
+                                new() 
+                                {
+                                    Seed = new FuncSupplier<int>(random.Next)
+                                }))
+                    .AddOutput("blue")
                     .Build();
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
 

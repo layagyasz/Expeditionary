@@ -33,5 +33,5 @@ void main()
         p = vec4(0, 0, 1, 1);
     }
     vec4 result = mask * p;
-    out_color = vec4(1, 1, 1, result.r + result.g + result.b);
+    out_color = min(0.25f * tex_color.b + 0.87f, 1f) * vec4(1, 1, 1, result.r + result.g + result.b);
 }

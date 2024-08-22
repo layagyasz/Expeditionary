@@ -47,7 +47,8 @@ namespace Expeditionary
                     mapGenerator.Generate(
                         new()
                         {
-                            SoilCover = 0.45f,
+                            LiquidLevel = 0.2f,
+                            SoilCover = 0.88f,
                             Soil = new(1, 1, 1)
                         },
                         new(100, 100),
