@@ -87,7 +87,16 @@ namespace Expeditionary.Generation
             var sheet =
                 new DynamicTextureVolume(
                     new DynamicStaticSizeTexturePage.Supplier(
-                        new(1024, 1024), new(64, 64), Color4.Black, new()), checkAllPages: false);
+                        new(1024, 1024),
+                        new(64, 64),
+                        Color4.Black,
+                        new(),
+                        new()
+                        {
+                            MinFilter = TextureMinFilter.Nearest,
+                            MagFilter = TextureMagFilter.Nearest
+                        }),
+                    checkAllPages: false);
             var options = new TerrainTextureLibrary.Option[count];
             for (int i = 0; i < count; ++i)
             {

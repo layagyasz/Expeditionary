@@ -4,8 +4,6 @@ namespace Expeditionary.Model.Mapping
 {
     public  class TerrainParameters
     {
-        public record struct Stone(Barycentric2f Weight) { } 
-
-        public Stone StoneParameters { get; set; } = new Stone(new(1, 1, 1));
+        public Barycentric2f Stone { get; set; } = new(1, 1, 1);
     }
 }

@@ -2,5 +2,8 @@
 
 namespace Expeditionary.Model.Mapping
 {
-    public record class Terrain(int Stone) { }
+    public class Terrain
+    {
+        public int Stone { get; set; }
+    }
 }

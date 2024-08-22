@@ -1,4 +1,9 @@
 ﻿namespace Expeditionary.Model.Mapping
 {
-    public record class Tile(Terrain Terrain) { }
+    public class Tile
+    {
+        public float Elevation { get; set; }
+        public float Slope { get; set; }
+        public Terrain Terrain { get; set; } = new();
+    }
 }

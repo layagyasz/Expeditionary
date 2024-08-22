@@ -16,11 +16,14 @@ namespace Expeditionary.View
             new(0, -1)
         };
 
+        private readonly MapViewParameters _parameters;
         private readonly TerrainTextureLibrary _tileBaseLibrary;
         private readonly RenderShader _tileBaseShader;
 
-        public MapViewFactory(TerrainTextureLibrary tileBaseLibrary, RenderShader tileBaseShader)
+        public MapViewFactory(
+            MapViewParameters parameters, TerrainTextureLibrary tileBaseLibrary, RenderShader tileBaseShader)
         {
+            _parameters = parameters;
             _tileBaseLibrary = tileBaseLibrary;
             _tileBaseShader = tileBaseShader;
         }
@@ -73,7 +76,19 @@ namespace Expeditionary.View
                             {
                                 tile = right;
                             }
-                            var color = parameters.StoneParameters!.Colors[tile.Terrain.Stone];
+                            var e = (int)(tile.Elevation * _parameters.ElevationLevel) 
+                                / (_parameters.ElevationLevel - 1f);
+                            var color = parameters.StoneParameters!.Colors[tile.Terrain!.Stone];
+                            color = (Color4)Color4.ToHsl(color);
+                            color.B = 
+                                Math.Min(
+                                    1, 
+                                    Math.Max(
+                                        color.B + _parameters.ElevationGradient.Minimum + e * 
+                                            (_parameters.ElevationGradient.Maximum -
+                                                _parameters.ElevationGradient.Minimum), 
+                                        0));
+                            color = Color4.FromHsl((Vector4)color);
                             vertices[v++] = new(ToVector3(centerPos), color, selected.TexCoords[j][0]);
                             vertices[v++] = 
                                 new(ToVector3(Axial2i.ToCartesian(leftAxial)), color, selected.TexCoords[j][1]);

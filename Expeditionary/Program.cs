@@ -30,6 +30,11 @@ namespace Expeditionary
             var sceneFactory = 
                 new SceneFactory(
                     new MapViewFactory(
+                        new()
+                        {
+                            ElevationGradient = new(-0.25f, 0.1f),
+                            ElevationLevel = 10
+                        },
                         tileBases,
                         new RenderShader.Builder()
                             .SetVertex("default.vert")
@@ -40,9 +45,9 @@ namespace Expeditionary
                 sceneFactory.Create(
                     new(512, 512, 0), 
                     mapGenerator.Generate(
-                        new(), 
-                        new(10, 10),
-                        seed: 0), 
+                        new(),
+                        new(100, 100),
+                        seed: 0),
                     new() 
                     { 
                         StoneParameters = 
