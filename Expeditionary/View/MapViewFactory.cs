@@ -113,14 +113,30 @@ namespace Expeditionary.View
             {
                 return parameters.Liquid;
             }
+            if (tile.Terrain.Brush.HasValue)
+            {
+                var brush = tile.Terrain.Brush.Value;
+                return Lerp(
+                    Lerp(parameters.ColdDry, parameters.HotDry, brush.X),
+                    Lerp(parameters.ColdWet, parameters.HotWet, brush.X),
+                    brush.Y);
+            }
             if (tile.Terrain.Soil.HasValue)
             {
-                var s = tile.Terrain.Soil.Value;
-                return (Color4)(s.X * (Vector4)parameters.Soil![0]
-                    + s.Y * (Vector4)parameters.Soil[1]
-                    + s.Z * (Vector4)parameters.Soil[2]);
+                var soil = tile.Terrain.Soil.Value;
+                return (Color4)(soil.X * (Vector4)parameters.Silt
+                    + soil.Y * (Vector4)parameters.Clay
+                    + soil.Z * (Vector4)parameters.Silt);
             }
-            return parameters.Stone![tile.Terrain!.Stone];
+            var stone = tile.Terrain.Stone;
+            return (Color4)(stone.X * (Vector4)parameters.Stone0
+                    + stone.Y * (Vector4)parameters.Stone1
+                    + stone.Z * (Vector4)parameters.Stone2);
+        }
+
+        private static Color4 Lerp(Color4 a, Color4 b, float v)
+        {
+            return (Color4)((1 - v) * (Vector4)a + v * (Vector4)b);
         }
 
         private static Vector3 ToVector3(Vector2 x)

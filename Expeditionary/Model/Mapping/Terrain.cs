@@ -5,7 +5,8 @@ namespace Expeditionary.Model.Mapping
     public class Terrain
     {
         public bool IsLiquid { get; set; }
-        public int Stone { get; set; }
+        public Vector3 Stone { get; set; }
         public Vector3? Soil { get; set; }
+        public Vector2? Brush { get; set; }
     }
 }
