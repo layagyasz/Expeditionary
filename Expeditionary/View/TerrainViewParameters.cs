@@ -11,7 +11,6 @@ namespace Expeditionary.View
         public Color4 Sand { get; set; }
         public Color4 Clay { get; set; }
         public Color4 Silt { get; set; }
-        public float SolarTemperature { get; set; }
         public Color4 HotDry { get; set; }
         public Color4 HotWet { get; set; }
         public Color4 ColdDry { get; set; }

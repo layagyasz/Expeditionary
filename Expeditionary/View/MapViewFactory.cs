@@ -1,6 +1,6 @@
 ﻿using Cardamom.Graphics;
 using Cardamom.Mathematics;
-using Expeditionary.Coordinates;
+using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -9,7 +9,7 @@ namespace Expeditionary.View
 {
     public class MapViewFactory
     {
-        private static readonly Axial2i[] s_Neighbors =
+        private static readonly Vector2i[] s_Neighbors =
         {
             new(-1, 1),
             new(-1, 0),
@@ -41,18 +41,18 @@ namespace Expeditionary.View
                 for (int y = 0; y < map.Height; ++y)
                 {
                     var center = map.Get(new(x, y));
-                    var centerAxial = Offset2i.ToAxial(new(x, y));
-                    var centerPos = Axial2i.ToCartesian(centerAxial);
+                    var centerAxial = Axial.Offset.Instance.Wrap(new(x, y));
+                    var centerPos = Cartesian.FromAxial(centerAxial);
                     for (int i = 0; i < 2; ++i)
                     {
                         var leftAxial = centerAxial + s_Neighbors[i];
-                        var leftOffset = Axial2i.ToOffset(leftAxial);
+                        var leftOffset = Axial.Offset.Instance.Project(leftAxial);
                         if (!xRange.Contains(leftOffset.X) || !yRange.Contains(leftOffset.Y))
                         {
                             continue;
                         }
                         var rightAxial = centerAxial + s_Neighbors[i + 1];
-                        var rightOffset = Axial2i.ToOffset(rightAxial);
+                        var rightOffset = Axial.Offset.Instance.Project(rightAxial);
                         if (!xRange.Contains(rightOffset.X) || !yRange.Contains(rightOffset.Y))
                         {
                             continue;
@@ -79,9 +79,9 @@ namespace Expeditionary.View
                             var color = GetTileColor(tile, parameters);
                             vertices[v++] = new(ToVector3(centerPos), color, selected.TexCoords[j][0]);
                             vertices[v++] = 
-                                new(ToVector3(Axial2i.ToCartesian(leftAxial)), color, selected.TexCoords[j][1]);
+                                new(ToVector3(Cartesian.FromAxial(leftAxial)), color, selected.TexCoords[j][1]);
                             vertices[v++] =
-                                new(ToVector3(Axial2i.ToCartesian(rightAxial)), color, selected.TexCoords[j][2]);
+                                new(ToVector3(Cartesian.FromAxial(rightAxial)), color, selected.TexCoords[j][2]);
                         }
                     }
                 }
@@ -103,7 +103,6 @@ namespace Expeditionary.View
                         _parameters.ElevationGradient.Minimum);
                 color.B = MathHelper.Clamp(color.B * adj, 0, 1);
             }
-            color.G = MathHelper.Clamp(color.G - 0.2f, 0, 1);
             return Color4.FromHsl((Vector4)color);
         }
 

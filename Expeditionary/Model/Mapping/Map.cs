@@ -1,5 +1,4 @@
-﻿using Expeditionary.Coordinates;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -15,9 +14,9 @@ namespace Expeditionary.Model.Mapping
             _tiles = tiles;
         }
 
-        public Tile Get(Offset2i position)
+        public Tile Get(Vector2i offset)
         {
-            return _tiles[position.X, position.Y];
+            return _tiles[offset.X, offset.Y];
         }
 
         public class Builder
@@ -29,9 +28,9 @@ namespace Expeditionary.Model.Mapping
                 _tiles = new Tile[size.X, size.Y];
             }
 
-            public Builder Set(Offset2i position, Tile tile)
+            public Builder Set(Vector2i offset, Tile tile)
             {
-                _tiles[position.X, position.Y] = tile;
+                _tiles[offset.X, offset.Y] = tile;
                 return this;
             }
 

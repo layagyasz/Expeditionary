@@ -26,7 +26,7 @@ namespace Expeditionary
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
                     File.ReadAllText("Resources/View/HumanEyeSensitivity.json"))!;
             var baseColor =
-                Color4.ToHsl(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(4500).GetPeak())));
+                Color4.ToHsl(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
             var tileBaseGenerator = 
                 new TerrainTextureGenerator(
@@ -66,9 +66,8 @@ namespace Expeditionary
                         Sand = new(248, 240, 133, 255),
                         Clay = new(196, 164, 81, 255),
                         Silt = new(59, 48, 45, 255),
-                        SolarTemperature = 5772,
-                        HotDry = Color4.FromHsl(CombineHsl(baseColor, new(-0.27f, 2f, 1.4f, 1f))),
-                        HotWet = Color4.FromHsl(CombineHsl(baseColor, new(-0.07f, 1.3f, 0.9f, 1f))),
+                        HotDry = Color4.FromHsl(CombineHsl(baseColor, new(-0.2f, 0.5f, 0.7f, 1f))),
+                        HotWet = Color4.FromHsl(CombineHsl(baseColor, new(-0.07f, 0.8f, 0.9f, 1f))),
                         ColdDry = Color4.FromHsl(CombineHsl(baseColor, new(-0.34f, 0.32f, 0.7f, 1f))),
                         ColdWet = Color4.FromHsl(CombineHsl(baseColor, new(0.03f, 0.2f, 0.7f, 1f))),
                     },
@@ -80,8 +79,8 @@ namespace Expeditionary
         {
             var hsl = color;
             hsl.X = (hsl.X + 1 + adjustment.X) % 1;
-            hsl.Y *= adjustment.Y;
-            hsl.Z *= adjustment.Z;
+            hsl.Y = MathHelper.Clamp(hsl.Y * adjustment.Y, 0, 1);
+            hsl.Z = MathHelper.Clamp(hsl.Z * adjustment.Z, 0, 1);
             return hsl;
         }
     }

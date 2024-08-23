@@ -2,10 +2,11 @@
 using Cardamom.ImageProcessing;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
+using Cardamom.Mathematics.Coordinates.Projections;
 using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
-using Expeditionary.Coordinates;
+using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping
@@ -13,7 +14,7 @@ namespace Expeditionary.Model.Mapping
     public class MapGenerator
     {
         private static readonly int s_Resolution = 1024;
-        private static readonly Axial2i[] s_Neighbors =
+        private static readonly Vector2i[] s_Neighbors =
         {
             new(0, -1),
             new(1, -1),
@@ -22,7 +23,7 @@ namespace Expeditionary.Model.Mapping
             new(-1, 1),
             new(-1, 0)
         };
-        private static readonly Barycentric2f[] s_Barycenters =
+        private static readonly Vector3[] s_Barycenters =
         {
             new(1, 0, 0),
             new(0, 1, 0),
@@ -44,6 +45,8 @@ namespace Expeditionary.Model.Mapping
             new(1, 0.5f),
             new(1, 1)
         };
+
+        private static readonly IProjection<Vector2i, Vector2i> _axialOffset = new Axial.Offset();
 
         private readonly ICanvasProvider _canvasProvider = 
             new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
@@ -275,7 +278,7 @@ namespace Expeditionary.Model.Mapping
             {
                 for (int j=0; j<size.Y; ++j)
                 {
-                    var coord = Offset2i.ToCartesian(new(i, j));
+                    var coord = Cartesian.FromOffset(new(i, j));
                     centers[i, j] = new(coord.X, coord.Y, 0, 1);
                 }
             }
@@ -340,7 +343,7 @@ namespace Expeditionary.Model.Mapping
                 for (int j = 0; j < tiles.GetLength(1); ++j)
                 {
                     var tile = tiles[i, j];
-                    var coord = Offset2i.ToAxial(new(i, j));
+                    var coord = _axialOffset.Wrap(new(i, j));
                     tile.Slope =  
                         Enumerable.Range(0, 3)
                             .Select(
@@ -379,9 +382,9 @@ namespace Expeditionary.Model.Mapping
                     var tile = tiles[i, j];
                     if (Math.Max(tileData.B, Math.Max(tile.Elevation, tile.Slope)) < parameters.SoilCover)
                     {
-                        var soilModifier = new Barycentric2f(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
+                        var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
                         var soil = 
-                            GetBarycenter(
+                            GetCenter(
                                 GetBarycentric(tileData.R, tileData.G, parameters.Soil * soilModifier), s_Barycenters);
                         tile.Terrain.Soil = soil;
                     }
@@ -405,9 +408,9 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
-        private static T GetNeighborOrTile<T>(Tile tile, Axial2i neighbor, Tile[,] tiles, Func<Tile, T> readFn)
+        private static T GetNeighborOrTile<T>(Tile tile, Vector2i neighbor, Tile[,] tiles, Func<Tile, T> readFn)
         {
-            var coord = Axial2i.ToOffset(neighbor);
+            var coord = _axialOffset.Project(neighbor);
             if (coord.X < 0 || coord.Y < 0 || coord.X >= tiles.GetLength(0) || coord.Y >= tiles.GetLength(1))
             {
                 return readFn(tile);
@@ -415,10 +418,10 @@ namespace Expeditionary.Model.Mapping
             return readFn(tiles[coord.X, coord.Y]);
         }
 
-        private static float Distance(Barycentric2f left, Barycentric2f right)
+        private static float Distance(Vector3 left, Vector3 right)
         {
             var diff = left - right;
-            return Math.Max(diff.U, Math.Max(diff.V, diff.W));
+            return Math.Max(diff.X, Math.Max(diff.Y, diff.Z));
         }
 
         private static float Distance(Vector2 left, Vector2 right)
@@ -426,10 +429,9 @@ namespace Expeditionary.Model.Mapping
             return Math.Abs(left.X - right.X) + Math.Abs(left.Y - right.Y);
         }
 
-        private static Vector3 GetBarycenter(Barycentric2f x, Barycentric2f[] options)
+        private static Vector3 GetCenter(Vector3 x, Vector3[] options)
         {
-            var b = options.ArgMin(y => Distance(x, y));
-            return new(b.U, b.V, b.W);
+           return options.ArgMin(y => Distance(x, y));
         }
 
         private static Vector2 GetCenter(Vector2 x, Vector2[] options)
@@ -437,23 +439,24 @@ namespace Expeditionary.Model.Mapping
             return options.ArgMin(y => Distance(x, y));
         }
 
-        private static Barycentric2f GetBarycentric(float a, float b, Barycentric2f weight)
+        private static Vector3 GetBarycentric(float a, float b, Vector3 weight)
         {
             if (a + b > 1)
             {
                 a = 1 - a;
                 b = 1 - b;
             }
-            return Barycentric2f.Normalize(weight * new Barycentric2f(a, b, 1 - a - b));
+            var weighted = weight * new Vector3(a, b, 1 - a - b);
+            return weighted / (weighted.X + weighted.Y + weighted.Z);
         }
 
-        private static Vector3 GetMaxComponent(Barycentric2f x)
+        private static Vector3 GetMaxComponent(Vector3 x)
         {
-            if (x.U > x.V && x.U > x.W)
+            if (x.X > x.Y && x.X > x.Z)
             {
                 return new(1, 0, 0);
             }
-            else if (x.V > x.W)
+            else if (x.Y > x.Z)
             {
                 return new(0, 1, 0);
             }
