@@ -323,9 +323,16 @@ namespace Expeditionary.Model.Mapping
             return readFn(tiles[coord.X, coord.Y]);
         }
 
-        private static Barycentric2f GetBarycenter(Barycentric2f x, Barycentric2f[] options)
+        private static float Distance(Barycentric2f left, Barycentric2f right)
         {
-            return options.ArgMin(y => Barycentric2f.Distance(x, y));
+            var diff = left - right;
+            return Math.Max(diff.U, Math.Max(diff.V, diff.W));
+        }
+
+        private static Vector3 GetBarycenter(Barycentric2f x, Barycentric2f[] options)
+        {
+            var b = options.ArgMin(y => Distance(x, y));
+            return new(b.U, b.V, b.W);
         }
 
         private static Barycentric2f GetBarycentric(float a, float b, Barycentric2f weight)

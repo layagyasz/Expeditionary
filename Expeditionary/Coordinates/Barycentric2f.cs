@@ -20,12 +20,6 @@
             return string.Format("Barycentric2f({0},{1},{2})", U, V, W);
         }
 
-        public static float Distance(Barycentric2f left, Barycentric2f right)
-        {
-            var diff = left - right;
-            return Math.Max(diff.U, Math.Max(diff.V, diff.W));
-        }
-
         public static float Sum(Barycentric2f x)
         {
             return x.U + x.V + x.W;

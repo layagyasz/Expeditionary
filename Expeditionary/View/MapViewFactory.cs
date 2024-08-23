@@ -116,9 +116,9 @@ namespace Expeditionary.View
             if (tile.Terrain.Soil.HasValue)
             {
                 var s = tile.Terrain.Soil.Value;
-                return (Color4)(s.U * (Vector4)parameters.Soil![0]
-                    + s.V * (Vector4)parameters.Soil[1]
-                    + s.W * (Vector4)parameters.Soil[2]);
+                return (Color4)(s.X * (Vector4)parameters.Soil![0]
+                    + s.Y * (Vector4)parameters.Soil[1]
+                    + s.Z * (Vector4)parameters.Soil[2]);
             }
             return parameters.Stone![tile.Terrain!.Stone];
         }

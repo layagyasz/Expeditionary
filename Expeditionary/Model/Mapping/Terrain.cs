@@ -1,4 +1,4 @@
-﻿using Expeditionary.Coordinates;
+﻿using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -6,6 +6,6 @@ namespace Expeditionary.Model.Mapping
     {
         public bool IsLiquid { get; set; }
         public int Stone { get; set; }
-        public Barycentric2f? Soil { get; set; }
+        public Vector3? Soil { get; set; }
     }
 }

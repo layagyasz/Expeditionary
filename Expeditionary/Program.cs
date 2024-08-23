@@ -37,8 +37,8 @@ namespace Expeditionary
                         },
                         tileBases,
                         new RenderShader.Builder()
-                            .SetVertex("default.vert")
-                            .SetFragment("default.frag")
+                            .SetVertex("Resources/View/default.vert")
+                            .SetFragment("Resources/View/default.frag")
                             .Build()));
 
             ui.SetRoot(
@@ -64,12 +64,12 @@ namespace Expeditionary
                                 new(227, 173, 156, 255)
                             },
                         Soil =
-                         new Color4[]
-                         {
-                             new(248, 240, 133, 255),
-                             new(196, 164, 81, 255),
-                             new(59, 48, 45, 255)
-                         }
+                            new Color4[]
+                            {
+                                new(248, 240, 133, 255),
+                                new(196, 164, 81, 255),
+                                new(59, 48, 45, 255)
+                            }
                     },
                     seed: 0));
             ui.Start();
