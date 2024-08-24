@@ -48,7 +48,7 @@ void main()
     blended = normalize(blended);
     blended *= blended;
     int min_component = min_component(blended.xyz);
-    float cross_dist = get_dist(blended.xyz, min_component);
+    float cross_dist = 2 * get_dist(blended.xyz, min_component);
     float value = 1 - 9 * cross_dist * cross_dist;
     value = int(2 * value);
     out_color = ((mask & min_component) > 0 ? 1 : 0) * min(0.2f * tex_color.b + 0.9f, 1f) * vec4(1, 1, 1, value);

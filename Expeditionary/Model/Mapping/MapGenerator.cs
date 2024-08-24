@@ -14,14 +14,14 @@ namespace Expeditionary.Model.Mapping
     public class MapGenerator
     {
         private static readonly int s_Resolution = 1024;
-        private static readonly Vector2i[] s_Neighbors =
+        private static readonly Vector3i[] s_Neighbors =
         {
-            new(0, -1),
-            new(1, -1),
-            new(1, 0),
-            new(0, 1),
-            new(-1, 1),
-            new(-1, 0)
+            new(0, -1, 1),
+            new(1, -1, 0),
+            new(1, 0, -1),
+            new(0, 1, -1),
+            new(-1, 1, 0),
+            new(-1, 0, 1)
         };
         private static readonly Vector3[] s_Barycenters =
         {
@@ -45,8 +45,6 @@ namespace Expeditionary.Model.Mapping
             new(1, 0.5f),
             new(1, 1)
         };
-
-        private static readonly IProjection<Vector2i, Vector2i> _axialOffset = new Axial.Offset();
 
         private readonly ICanvasProvider _canvasProvider = 
             new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
@@ -286,12 +284,12 @@ namespace Expeditionary.Model.Mapping
             input.GetTexture().Update(new(), centers);
             var output = _pipeline.Run(_canvasProvider, input);
 
-            var tiles = new Tile[size.X, size.Y];
-            Initialize(tiles);
-            Elevation(tiles, parameters, output[0].GetTexture().GetData());
-            Stone(tiles, parameters, output[1].GetTexture().GetData());
-            Soil(tiles, parameters, output[2].GetTexture().GetData());
-            Brush(tiles, parameters, output[3].GetTexture().GetData());
+            var map = new Map(size);
+            Elevation(map, parameters, output[0].GetTexture().GetData());
+            Rivers(map, random);
+            Stone(map, parameters, output[1].GetTexture().GetData());
+            Soil(map, parameters, output[2].GetTexture().GetData());
+            Brush(map, parameters, output[3].GetTexture().GetData());
 
             _canvasProvider.Return(input);
             foreach (var canvas in output)
@@ -299,87 +297,92 @@ namespace Expeditionary.Model.Mapping
                 _canvasProvider.Return(canvas);
             }
 
-            var builder = new Map.Builder(size);
-            for (int i=0; i<size.X; ++i)
-            {
-                for (int j=0; j<size.Y; ++j)
-                {
-                    builder.Set(new(i, j), tiles[i, j]);
-                }
-            }
-            return builder.Build();
+            return map;
         }
 
-        private static void Initialize(Tile[,] tiles)
+        private static void Elevation(Map map, TerrainParameters parameters, Color4[,] elevationData)
         {
-            for (int i = 0; i < tiles.GetLength(0); ++i)
+            for (int i = 0; i < map.Width; ++i)
             {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
-                {
-                    tiles[i, j] = new();
-                }
-            }
-        }
-
-        private static void Elevation(Tile[,] tiles, TerrainParameters parameters, Color4[,] elevationData)
-        {
-            for (int i = 0; i < tiles.GetLength(0); ++i)
-            {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
+                for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = elevationData[i, j];
-                    tiles[i, j].Elevation = tileData.R;
+                    var tile = map.GetTile(new(i, j));
+                    tile.Elevation = tileData.R;
                     if (tileData.R < parameters.LiquidLevel)
                     {
-                        tiles[i, j].Terrain.IsLiquid = true;
+                        tile.Terrain.IsLiquid = true;
                     }
                 }
             }
-            float min = float.PositiveInfinity;
-            float max = float.NegativeInfinity;
-            float sum = 0;
-            for (int i = 0; i < tiles.GetLength(0); ++i)
+            for (int i = 0; i <map.Width; ++i)
             {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
+                for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = tiles[i, j];
-                    var coord = _axialOffset.Wrap(new(i, j));
-                    tile.Slope =  
-                        Enumerable.Range(0, 3)
-                            .Select(
-                                x => 
-                                    Math.Abs(
-                                        GetNeighborOrTile(tile, coord + s_Neighbors[x], tiles, t => t.Elevation) - 
-                                        GetNeighborOrTile(tile, coord + s_Neighbors[x + 3], tiles, t => t.Elevation)))
-                            .Max();
-                    sum += tile.Slope;
-                    min = Math.Min(min, tile.Slope);
-                    max = Math.Max(max, tile.Slope);
+                    var tile = map.GetTile(new(i, j));
+                    var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
+                    if (tile.Terrain.IsLiquid)
+                    {
+                        tile.Slope = 0;
+                    }
+                    else
+                    {
+                        tile.Slope =
+                            Enumerable.Range(0, 3)
+                                .Select(
+                                    x =>
+                                        Math.Abs(
+                                            GetNeighborOrTile(
+                                                tile, coord + s_Neighbors[x], map, t => t.Elevation) -
+                                            GetNeighborOrTile(
+                                                tile, coord + s_Neighbors[x + 3], map, t => t.Elevation)))
+                                .Max();
+                    }
                 }
             }
         }
 
-        private static void Stone(Tile[,] tiles, TerrainParameters parameters, Color4[,] stoneData)
+        private static void Rivers(Map map, Random random)
         {
-            for (int i = 0; i < tiles.GetLength(0); ++i)
+            for (int i = 0; i < map.Width; ++i)
             {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
+                    for (int e = 4; e <= 6; ++e)
+                    {
+                        if (random.NextDouble() < .25f)
+                        {
+                            var other = coord + s_Neighbors[e % 6];
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(coord, other))).Type 
+                                = Edge.EdgeType.River;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void Stone(Map map, TerrainParameters parameters, Color4[,] stoneData)
+        {
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = stoneData[i, j];
                     var stone = GetBarycentric(tileData.R, tileData.G, parameters.Stone);
-                    tiles[i, j].Terrain.Stone = GetMaxComponent(stone);
+                    map.GetTile(new(i, j)).Terrain.Stone = GetMaxComponent(stone);
                 }
             }
         }
 
-        private static void Soil(Tile[,] tiles, TerrainParameters parameters, Color4[,] soilData)
+        private static void Soil(Map map, TerrainParameters parameters, Color4[,] soilData)
         {
-            for (int i = 0; i < tiles.GetLength(0); ++i)
+            for (int i = 0; i < map.Width; ++i)
             {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
+                for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = soilData[i, j];
-                    var tile = tiles[i, j];
+                    var tile = map.GetTile(new(i, j));
                     if (Math.Max(tileData.B, Math.Max(tile.Elevation, tile.Slope)) < parameters.SoilCover)
                     {
                         var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
@@ -392,30 +395,31 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
-        private static void Brush(Tile[,] tiles, TerrainParameters parameters, Color4[,] plantData)
+        private static void Brush(Map map, TerrainParameters parameters, Color4[,] plantData)
         {
-            for (int i = 0; i < tiles.GetLength(0); ++i)
+            for (int i = 0; i < map.Width; ++i)
             {
-                for (int j = 0; j < tiles.GetLength(1); ++j)
+                for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = plantData[i, j];
-                    if (tiles[i,j].Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
+                    var tile = map.GetTile(new(i, j));
+                    if (tile.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
                     {
                         var brush = GetCenter(new(tileData.R, tileData.G), s_Centers);
-                        tiles[i, j].Terrain.Brush = brush;
+                        tile.Terrain.Brush = brush;
                     }
                 }
             }
         }
 
-        private static T GetNeighborOrTile<T>(Tile tile, Vector2i neighbor, Tile[,] tiles, Func<Tile, T> readFn)
+        private static T GetNeighborOrTile<T>(Tile tile, Vector3i neighbor, Map map, Func<Tile, T> readFn)
         {
-            var coord = _axialOffset.Project(neighbor);
-            if (coord.X < 0 || coord.Y < 0 || coord.X >= tiles.GetLength(0) || coord.Y >= tiles.GetLength(1))
+            var coord = Cubic.HexagonalOffset.Instance.Project(neighbor);
+            if (coord.X < 0 || coord.Y < 0 || coord.X >= map.Width || coord.Y >= map.Height)
             {
                 return readFn(tile);
             }
-            return readFn(tiles[coord.X, coord.Y]);
+            return readFn(map.GetTile(coord));
         }
 
         private static float Distance(Vector3 left, Vector3 right)

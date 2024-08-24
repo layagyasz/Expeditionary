@@ -6,30 +6,47 @@ namespace Expeditionary.View
 {
     public class MapView : GraphicsResource, IRenderable
     {
-        private VertexBuffer<Vertex3>? _tileBases;
-        private readonly Texture _tileBaseTexture;
-        private readonly RenderShader _tileBaseShader;
+        private VertexBuffer<Vertex3>? _terrain;
+        private readonly Texture _terrainTexture;
+        private VertexBuffer<Vertex3>? _edges;
+        private readonly Texture _edgeTexture;
+        private readonly RenderShader _shader;
 
-        internal MapView(VertexBuffer<Vertex3> tileBases, Texture tileBaseTexture, RenderShader tileBaseShader)
+        internal MapView(
+            VertexBuffer<Vertex3> terrain, 
+            Texture terrainTexture,
+            VertexBuffer<Vertex3> edges, 
+            Texture edgeTexture,
+            RenderShader shader)
         {
-            _tileBases = tileBases;
-            _tileBaseTexture = tileBaseTexture;
-            _tileBaseShader = tileBaseShader;
+            _terrain = terrain;
+            _terrainTexture = terrainTexture;
+            _edges = edges;
+            _edgeTexture = edgeTexture;
+            _shader = shader;
         }
 
         protected override void DisposeImpl()
         {
-            _tileBases?.Dispose();
-            _tileBases = null;
+            _terrain?.Dispose();
+            _terrain = null;
+
+            _edges?.Dispose();
+            _edges = null;
         }
 
         public void Draw(IRenderTarget target, IUiContext context) 
         {
             target.Draw(
-                _tileBases!,
+                _terrain!,
                 0, 
-                _tileBases!.Length, 
-                new RenderResources(BlendMode.Alpha, _tileBaseShader, _tileBaseTexture));
+                _terrain!.Length, 
+                new RenderResources(BlendMode.Alpha, _shader, _terrainTexture));
+            target.Draw(
+                _edges!,
+                0,
+                _edges!.Length,
+                new RenderResources(BlendMode.Alpha, _shader, _edgeTexture));
         }
 
         public void Initialize() { }

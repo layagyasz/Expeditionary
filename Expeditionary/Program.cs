@@ -33,13 +33,13 @@ namespace Expeditionary
                     new RenderShader.Builder()
                         .SetVertex("Resources/View/Textures/Generation/default.vert")
                         .SetFragment("Resources/View/Textures/Generation/partition.frag").Build());
-            var tileBases = terrainTextureGenerator.Generate(attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+            var terrains = terrainTextureGenerator.Generate(attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
 
             var riverTextureGenerator = 
                 new RiverTextureGenerator(new RenderShader.Builder()
                     .SetVertex("Resources/View/Textures/Generation/default.vert")
                     .SetFragment("Resources/View/Textures/Generation/river.frag").Build());
-            var edges = riverTextureGenerator.Generate(attenuationRange: new(0f, 2f), seed: 0, count: 60);
+            var edges = riverTextureGenerator.Generate(attenuationRange: new(0f, 2f), seed: 0, count: 20);
 
             var mapGenerator = new MapGenerator();
             var sceneFactory = 
@@ -50,11 +50,12 @@ namespace Expeditionary
                             ElevationGradient = new(0.8f, 1.2f),
                             ElevationLevel = 5
                         },
-                        tileBases,
+                        new(edges, terrains),
                         new RenderShader.Builder()
                             .SetVertex("Resources/View/default.vert")
                             .SetFragment("Resources/View/default.frag")
                             .Build()));
+            edges.GetTexture().CopyToImage().SaveToFile("edges.png");
 
             ui.SetRoot(
                 sceneFactory.Create(

@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics.TexturePacking;
+﻿using Cardamom.Graphics;
+using Cardamom.Graphics.TexturePacking;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Textures
@@ -34,6 +35,11 @@ namespace Expeditionary.View.Textures
         {
             _texture = texture;
             _options = options;
+        }
+
+        public Texture GetTexture()
+        {
+            return _texture.GetTexture();
         }
 
         public IEnumerable<Option> Query(bool[] connected)

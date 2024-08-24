@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom.Collections;
+using Cardamom.Graphics;
 using Cardamom.Mathematics;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
@@ -10,30 +11,30 @@ namespace Expeditionary.View
 {
     public class MapViewFactory
     {
-        private static readonly Vector2i[] s_Neighbors =
+        private static readonly Vector3i[] s_Neighbors =
         {
-            new(-1, 1),
-            new(-1, 0),
-            new(0, -1)
+            new(-1, 1, 0),
+            new(-1, 0, 1),
+            new(0, -1, 1)
         };
 
         private readonly MapViewParameters _parameters;
-        private readonly TerrainLibrary _tileBaseLibrary;
-        private readonly RenderShader _tileBaseShader;
+        private readonly TextureLibrary _textureLibrary;
+        private readonly RenderShader _shader;
 
-        public MapViewFactory(
-            MapViewParameters parameters, TerrainLibrary tileBaseLibrary, RenderShader tileBaseShader)
+        public MapViewFactory(MapViewParameters parameters, TextureLibrary textureLibrary, RenderShader shader)
         {
             _parameters = parameters;
-            _tileBaseLibrary = tileBaseLibrary;
-            _tileBaseShader = tileBaseShader;
+            _textureLibrary = textureLibrary;
+            _shader = shader;
         }
 
         public MapView Create(Map map, TerrainViewParameters parameters, int seed)
         {
-            TerrainLibrary.Option[] options = _tileBaseLibrary.Query().ToArray();
+            TerrainLibrary.Option[] options = _textureLibrary.Terrain.Query().ToArray();
             var random = new Random(seed);
             Vertex3[] vertices = new Vertex3[18 * (map.Width - 1) * (map.Height - 1)];
+            ArrayList<Vertex3> edgeVertices = new();
             var xRange = new IntInterval(0, map.Width - 1);
             var yRange = new IntInterval(0, map.Height - 1);
             int v = 0;
@@ -41,26 +42,28 @@ namespace Expeditionary.View
             {
                 for (int y = 0; y < map.Height; ++y)
                 {
-                    var center = map.Get(new(x, y));
-                    var centerAxial = Axial.Offset.Instance.Wrap(new(x, y));
-                    var centerPos = Cartesian.FromAxial(centerAxial);
+                    var center = map.GetTile(new(x, y));
+                    var centerHex = Cubic.HexagonalOffset.Instance.Wrap(new(x, y));
+                    var centerPos = Cartesian.FromAxial(centerHex.Xy);
                     for (int i = 0; i < 2; ++i)
                     {
-                        var leftAxial = centerAxial + s_Neighbors[i];
-                        var leftOffset = Axial.Offset.Instance.Project(leftAxial);
+                        var leftHex = centerHex + s_Neighbors[i];
+                        var leftOffset = Cubic.HexagonalOffset.Instance.Project(leftHex);
                         if (!xRange.Contains(leftOffset.X) || !yRange.Contains(leftOffset.Y))
                         {
                             continue;
                         }
-                        var rightAxial = centerAxial + s_Neighbors[i + 1];
-                        var rightOffset = Axial.Offset.Instance.Project(rightAxial);
+                        var rightHex = centerHex + s_Neighbors[i + 1];
+                        var rightOffset = Cubic.HexagonalOffset.Instance.Project(rightHex);
                         if (!xRange.Contains(rightOffset.X) || !yRange.Contains(rightOffset.Y))
                         {
                             continue;
                         }
 
-                        var left = map.Get(leftOffset);
-                        var right = map.Get(rightOffset);
+                        var left = map.GetTile(leftOffset);
+                        var leftPos = Cartesian.FromAxial(leftHex.Xy);
+                        var right = map.GetTile(rightOffset);
+                        var rightPos = Cartesian.FromAxial(rightHex.Xy);
                         var selected = options[random.Next(options.Length)];
                         for (int j = 0; j < 3; ++j)
                         {
@@ -79,18 +82,39 @@ namespace Expeditionary.View
                             }
                             var color = GetTileColor(tile, parameters);
                             vertices[v++] = new(ToVector3(centerPos), color, selected.TexCoords[j][0]);
-                            vertices[v++] = 
-                                new(ToVector3(Cartesian.FromAxial(leftAxial)), color, selected.TexCoords[j][1]);
-                            vertices[v++] =
-                                new(ToVector3(Cartesian.FromAxial(rightAxial)), color, selected.TexCoords[j][2]);
+                            vertices[v++] = new(ToVector3(leftPos), color, selected.TexCoords[j][1]);
+                            vertices[v++] = new(ToVector3(rightPos), color, selected.TexCoords[j][2]);
+                        }
+                        var edgeA = 
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, leftHex)));
+                        var edgeB =
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(leftHex, rightHex)));
+                        var edgeC = 
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, rightHex)));
+                        bool[] query = 
+                            new bool[] 
+                            { 
+                                edgeA.Type == Edge.EdgeType.River,
+                                edgeB.Type == Edge.EdgeType.River,
+                                edgeC.Type == Edge.EdgeType.River 
+                            };
+                        if (query.Any(x => x))
+                        {
+                            var edgeOptions = _textureLibrary.Edges.Query(query).ToArray();
+                            var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
+                            edgeVertices.Add(new(ToVector3(centerPos), parameters.Liquid, selectedEdge.TexCoords[0]));
+                            edgeVertices.Add(new(ToVector3(leftPos), parameters.Liquid, selectedEdge.TexCoords[1]));
+                            edgeVertices.Add(new(ToVector3(rightPos), parameters.Liquid, selectedEdge.TexCoords[2]));
                         }
                     }
                 }
             }
             return new MapView(
                 new VertexBuffer<Vertex3>(vertices, PrimitiveType.Triangles),
-                _tileBaseLibrary.GetTexture(), 
-                _tileBaseShader);
+                _textureLibrary.Terrain.GetTexture(),
+                new VertexBuffer<Vertex3>(edgeVertices.GetData(), PrimitiveType.Triangles),
+                _textureLibrary.Edges.GetTexture(),
+                _shader); ;
         }
 
         private Color4 GetTileColor(Tile tile, TerrainViewParameters parameters)

@@ -126,7 +126,7 @@ namespace Expeditionary.View.Textures.Generation
                     options[3 * i + j] =
                         new EdgeLibrary.Option(
                             GetTexCoords(segment), 
-                            new bool[] { (s_Masks[j] & 1) > 1, (s_Masks[j] & 2) > 1, (s_Masks[j] & 4) > 1 });
+                            new bool[] { (s_Masks[j] & 1) > 0, (s_Masks[j] & 2) > 0, (s_Masks[j] & 4) > 0 });
                 }
             }
             canvasProvider.Dispose();
