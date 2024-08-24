@@ -15,11 +15,11 @@ layout(binding = 0) uniform sampler2D texture0;
 
 int min_component(vec3 pos)
 {
-    if (pos.x < pos.y && pos.x < pos.z)
+    if (pos.z < pos.y && pos.z < pos.x)
     {
         return 1;
     }
-    if (pos.y < pos.z)
+    if (pos.y < pos.x)
     {
         return 2;
     }
@@ -30,13 +30,13 @@ float get_dist(vec3 pos, int from_component)
 {
     if (from_component == 1)
     {
-        return abs(pos.y - pos.z);
+        return abs(pos.x - pos.y);
     }
     if (from_component == 2)
     {
         return abs(pos.x - pos.z);
     }
-    return abs(pos.x - pos.y);
+    return abs(pos.y - pos.z);
 }
 
 void main()

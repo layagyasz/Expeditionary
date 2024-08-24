@@ -32,9 +32,14 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
-        public Edge GetEdge(Vector2i offset)
+        public Edge? GetEdge(Vector2i offset)
         {
-            return _edges[offset.X + 1, offset.Y + 1];
+            offset += new Vector2i(1, 1);
+            if (offset.X < 0 || offset.Y < 0 || offset.X >= _edges.GetLength(0) || offset.Y >= _edges.GetLength(1))
+            {
+                return null;
+            }
+            return _edges[offset.X, offset.Y];
         }
 
         public Tile GetTile(Vector2i offset)

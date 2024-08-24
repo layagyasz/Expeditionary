@@ -8,6 +8,9 @@ using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
+using System.ComponentModel;
+using System.Diagnostics.Metrics;
+using static Expeditionary.Hexagons.Axial;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -74,7 +77,7 @@ namespace Expeditionary.Model.Mapping
                                 new() 
                                 {
                                     Seed = _elevationSeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.01f, .01f, .01f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -285,8 +288,9 @@ namespace Expeditionary.Model.Mapping
             var output = _pipeline.Run(_canvasProvider, input);
 
             var map = new Map(size);
-            Elevation(map, parameters, output[0].GetTexture().GetData());
-            Rivers(map, random);
+            var corners = new float[map.Width + 2, 2 * map.Height + 1];
+            Elevation(map, corners, parameters, output[0].GetTexture().GetData());
+            Rivers(map, corners, random);
             Stone(map, parameters, output[1].GetTexture().GetData());
             Soil(map, parameters, output[2].GetTexture().GetData());
             Brush(map, parameters, output[3].GetTexture().GetData());
@@ -300,7 +304,7 @@ namespace Expeditionary.Model.Mapping
             return map;
         }
 
-        private static void Elevation(Map map, TerrainParameters parameters, Color4[,] elevationData)
+        private static void Elevation(Map map, float[,] corners, TerrainParameters parameters, Color4[,] elevationData)
         {
             for (int i = 0; i < map.Width; ++i)
             {
@@ -340,26 +344,110 @@ namespace Expeditionary.Model.Mapping
                     }
                 }
             }
+            for (int i=0; i<corners.GetLength(0); ++i)
+            {
+                for (int j=0; j<corners.GetLength(1); ++j)
+                {
+                    var corner = Cubic.TriangularOffset.Instance.Wrap(new(i, j));
+                    int n = 0;
+                    float total = 0;
+                    foreach (var option in Geometry.GetCornerHexes(corner)
+                            .Select(Cubic.HexagonalOffset.Instance.Project)
+                            .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
+                            .Select(x => map.GetTile(x).Elevation))
+                    {
+                        n++;
+                        total += option;
+                    }
+                    corners[i, j] = total / n;
+                }
+            }
         }
 
-        private static void Rivers(Map map, Random random)
+        private static void Rivers(Map map, float[,] corners, Random random)
         {
-            for (int i = 0; i < map.Width; ++i)
+            for (int i = 0; i < 100; ++i)
             {
-                for (int j = 0; j < map.Height; ++j)
+                RiverTrace(RiverSelectStartCorner(map, random), map, corners);
+            }
+        }
+
+        private static Vector3i RiverSelectStartCorner(Map map, Random random)
+        {
+            while (true)
+            {
+                var coord = new Vector2i(random.Next(map.Width), random.Next(map.Height));
+                if (coord.X == 0 || coord.Y == 0 || coord.X == map.Width - 1 || coord.Y == map.Height - 1)
                 {
-                    var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    for (int e = 4; e <= 6; ++e)
+                    continue;
+                }
+                var hex = Cubic.HexagonalOffset.Instance.Wrap(coord);
+                Vector3i corner = Geometry.GetCorner(hex, random.Next(6));
+                if (!Geometry.GetCornerHexes(corner)
+                    .Select(Cubic.HexagonalOffset.Instance.Project)
+                    .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
+                    .Any(x => map.GetTile(x).Terrain.IsLiquid))
+                {
+                    return corner;
+                }
+            }
+        }
+
+        private static void RiverTrace(Vector3i start, Map map, float[,] corners)
+        {
+            Vector3i pos = start;
+            Vector2i index = Cubic.TriangularOffset.Instance.Project(start);
+            float elevation = corners[index.X, index.Y];
+            while (true)
+            {
+                var next = RiverSelectNext(pos, map, corners);
+                if (next == default)
+                {
+                    break;
+                }
+                map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(pos, next)))!.Type =
+                    Edge.EdgeType.River;
+                var nextIndex = Cubic.TriangularOffset.Instance.Project(next);
+                if (corners[nextIndex.X, nextIndex.Y] >= elevation)
+                {
+                    var tile = Geometry.GetCornerHexes(next)
+                        .Select(Cubic.HexagonalOffset.Instance.Project)
+                        .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
+                        .Select(map.GetTile)
+                        .ArgMin(x => x.Elevation);
+                    tile!.Terrain.IsLiquid = true;
+                    break;
+                }
+                if (Geometry.GetCornerHexes(pos)
+                    .Select(Cubic.HexagonalOffset.Instance.Project)
+                    .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
+                    .Any(x => map.GetTile(x).Terrain.IsLiquid))
+                {
+                    break;
+                }
+                pos = next;
+                index = nextIndex;
+                elevation = corners[nextIndex.X, nextIndex.Y];
+            }
+        }
+
+        private static Vector3i RiverSelectNext(Vector3i pos, Map map, float[,] corners)
+        {
+            foreach (var neighbor in Geometry.GetCornerNeighbors(pos))
+            {
+                foreach (var edge in Geometry.GetCornerEdges(neighbor))
+                {
+                    if (map.GetEdge(Cubic.TriangularOffset.Instance.Project(edge))?.Type == Edge.EdgeType.River)
                     {
-                        if (random.NextDouble() < .25f)
-                        {
-                            var other = coord + s_Neighbors[e % 6];
-                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(coord, other))).Type 
-                                = Edge.EdgeType.River;
-                        }
+                        return neighbor;
                     }
                 }
             }
+            var normalNext = Geometry.GetCornerNeighbors(pos)
+                .Select(Cubic.TriangularOffset.Instance.Project)
+                .Where(x => x.X >= 0 && x.Y >= 0 && x.X < corners.GetLength(0) && x.Y < corners.GetLength(1))
+                .ArgMin(x => corners[x.X, x.Y]);
+            return Cubic.TriangularOffset.Instance.Wrap(normalNext);
         }
 
         private static void Stone(Map map, TerrainParameters parameters, Color4[,] stoneData)

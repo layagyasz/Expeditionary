@@ -4,6 +4,61 @@ namespace Expeditionary.Hexagons
 {
     public static class Geometry
     {
+        private static readonly Vector3i[] s_HexCorners =
+        {
+            new(0, 0, 1),
+            new(0, -1, 0),
+            new(1, 0, 0),
+            new(0, 0, -1),
+            new(0, 1, 0),
+            new(-1, 0, 0)
+        };
+        private static readonly Vector3i[] s_CornerHexes =
+        {
+            new(-1, 0, 0),
+            new(0, -1, 0),
+            new(0, 0, -1)
+        };
+        private static readonly Vector3i[] s_CornerNeighbors =
+        {
+            new(-1, -1, 0),
+            new(0, -1, -1),
+            new(-1, 0, -1)
+        };
+
+        public static Vector3i GetCorner(Vector3i hex, int index)
+        {
+            return hex + s_HexCorners[index];
+        }
+
+        public static IEnumerable<Vector3i> GetCornerEdges(Vector3i corner)
+        {
+            int dir = GetCornerDirection(corner);
+            return s_CornerNeighbors.Select(x => 2 * corner + dir * x);
+        }
+
+        public static Vector3i GetCornerHex(Vector3i corner, int index)
+        {
+            return corner + GetCornerDirection(corner) * s_CornerHexes[index];
+        }
+
+        public static IEnumerable<Vector3i> GetCornerHexes(Vector3i corner)
+        {
+            int dir = GetCornerDirection(corner);
+            return s_CornerHexes.Select(x => corner + dir * x);
+        }
+
+        public static IEnumerable<Vector3i> GetCornerNeighbors(Vector3i corner)
+        {
+            int dir = GetCornerDirection(corner);
+            return s_CornerNeighbors.Select(x => corner + dir * x);
+        }
+
+        public static int GetCornerDirection(Vector3i corner)
+        {
+            return corner.X + corner.Y + corner.Z;
+        }
+
         public static Vector3i GetEdge(Vector3i left, Vector3i right)
         {
             return left + right;

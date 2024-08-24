@@ -86,11 +86,12 @@ namespace Expeditionary.View
                             vertices[v++] = new(ToVector3(rightPos), color, selected.TexCoords[j][2]);
                         }
                         var edgeA = 
-                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, leftHex)));
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, leftHex)))!;
                         var edgeB =
-                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(leftHex, rightHex)));
+                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(leftHex, rightHex)))!;
                         var edgeC = 
-                            map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, rightHex)));
+                            map.GetEdge(
+                                Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(centerHex, rightHex)))!;
                         bool[] query = 
                             new bool[] 
                             { 
