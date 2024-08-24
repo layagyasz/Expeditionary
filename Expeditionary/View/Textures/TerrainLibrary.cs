@@ -2,9 +2,9 @@
 using Cardamom.Graphics.TexturePacking;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Textures
 {
-    public class TerrainTextureLibrary
+    public class TerrainLibrary
     {
         private readonly static int[][] s_Transforms =
         {
@@ -18,10 +18,10 @@ namespace Expeditionary.View
 
         public record class Option(Vector2[][] TexCoords) { }
 
-        private readonly ITextureVolume _texture;
+        private readonly ITexturePage _texture;
         private readonly Option[] _options;
 
-        public TerrainTextureLibrary(ITextureVolume texture, Option[] options)
+        public TerrainLibrary(ITexturePage texture, Option[] options)
         {
             _texture = texture;
             _options = options;
@@ -29,14 +29,14 @@ namespace Expeditionary.View
 
         public Texture GetTexture()
         {
-            return _texture.GetTextures().First();
+            return _texture.GetTexture();
         }
 
         public IEnumerable<Option> Query()
         {
             foreach (var option in _options)
             {
-                for (int i=0; i<s_Transforms.Length; ++i)
+                for (int i = 0; i < s_Transforms.Length; ++i)
                 {
                     yield return new(
                         Transform(
@@ -48,7 +48,7 @@ namespace Expeditionary.View
         private static T[] Transform<T>(T[] array, int[] transform)
         {
             var result = new T[array.Length];
-            for (int i=0; i<array.Length; ++i)
+            for (int i = 0; i < array.Length; ++i)
             {
                 result[i] = array[transform[i]];
             }

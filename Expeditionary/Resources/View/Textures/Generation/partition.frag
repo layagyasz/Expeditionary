@@ -1,7 +1,5 @@
 #version 430 core
 
-#define EPSILON 0
-
 out vec4 out_color;
 
 in vec4 vert_color;
@@ -21,7 +19,6 @@ void main()
         3 * attenuation * max(0, edge_dist + edge_delta) * vec3(tex_color.r, tex_color.g, -tex_color.r - tex_color.g);
     blended = normalize(blended);
     blended *= blended;
-    blended += EPSILON * mask.rgb;
     vec4 p;
     if (blended.r >= blended.g && blended.r >= blended.b) {
         p = vec4(1, 0, 0, 1);

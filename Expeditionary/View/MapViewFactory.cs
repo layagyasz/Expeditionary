@@ -2,6 +2,7 @@
 using Cardamom.Mathematics;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
+using Expeditionary.View.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -17,11 +18,11 @@ namespace Expeditionary.View
         };
 
         private readonly MapViewParameters _parameters;
-        private readonly TerrainTextureLibrary _tileBaseLibrary;
+        private readonly TerrainLibrary _tileBaseLibrary;
         private readonly RenderShader _tileBaseShader;
 
         public MapViewFactory(
-            MapViewParameters parameters, TerrainTextureLibrary tileBaseLibrary, RenderShader tileBaseShader)
+            MapViewParameters parameters, TerrainLibrary tileBaseLibrary, RenderShader tileBaseShader)
         {
             _parameters = parameters;
             _tileBaseLibrary = tileBaseLibrary;
@@ -30,7 +31,7 @@ namespace Expeditionary.View
 
         public MapView Create(Map map, TerrainViewParameters parameters, int seed)
         {
-            TerrainTextureLibrary.Option[] options = _tileBaseLibrary.Query().ToArray();
+            TerrainLibrary.Option[] options = _tileBaseLibrary.Query().ToArray();
             var random = new Random(seed);
             Vertex3[] vertices = new Vertex3[18 * (map.Width - 1) * (map.Height - 1)];
             var xRange = new IntInterval(0, map.Width - 1);

@@ -2,10 +2,10 @@
 using Cardamom.Mathematics.Color;
 using Cardamom.Ui;
 using Cardamom.Window;
-using Expeditionary.Generation;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Spectra;
 using Expeditionary.View;
+using Expeditionary.View.Textures.Generation;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
@@ -28,12 +28,18 @@ namespace Expeditionary
             var baseColor =
                 Color4.ToHsl(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
-            var tileBaseGenerator = 
+            var terrainTextureGenerator = 
                 new TerrainTextureGenerator(
                     new RenderShader.Builder()
-                        .SetVertex("Resources/Generation/default.vert")
-                        .SetFragment("Resources/Generation/partition.frag").Build());
-            var tileBases = tileBaseGenerator.Generate(attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+                        .SetVertex("Resources/View/Textures/Generation/default.vert")
+                        .SetFragment("Resources/View/Textures/Generation/partition.frag").Build());
+            var tileBases = terrainTextureGenerator.Generate(attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+
+            var riverTextureGenerator = 
+                new RiverTextureGenerator(new RenderShader.Builder()
+                    .SetVertex("Resources/View/Textures/Generation/default.vert")
+                    .SetFragment("Resources/View/Textures/Generation/river.frag").Build());
+            var edges = riverTextureGenerator.Generate(attenuationRange: new(0f, 2f), seed: 0, count: 60);
 
             var mapGenerator = new MapGenerator();
             var sceneFactory = 
