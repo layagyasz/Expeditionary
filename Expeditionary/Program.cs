@@ -53,6 +53,10 @@ namespace Expeditionary
                         new(edges, terrains),
                         new RenderShader.Builder()
                             .SetVertex("Resources/View/default.vert")
+                            .SetFragment("Resources/View/default_no_tex.frag")
+                            .Build(),
+                        new RenderShader.Builder()
+                            .SetVertex("Resources/View/default.vert")
                             .SetFragment("Resources/View/default.frag")
                             .Build()));
             edges.GetTexture().CopyToImage().SaveToFile("edges.png");

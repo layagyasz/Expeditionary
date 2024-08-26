@@ -2,15 +2,11 @@
 using Cardamom.ImageProcessing;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
-using Cardamom.Mathematics.Coordinates.Projections;
 using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
-using System.ComponentModel;
-using System.Diagnostics.Metrics;
-using static Expeditionary.Hexagons.Axial;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -279,7 +275,7 @@ namespace Expeditionary.Model.Mapping
             {
                 for (int j=0; j<size.Y; ++j)
                 {
-                    var coord = Cartesian.FromOffset(new(i, j));
+                    var coord = Geometry.MapOffset(new(i, j));
                     centers[i, j] = new(coord.X, coord.Y, 0, 1);
                 }
             }
@@ -288,7 +284,7 @@ namespace Expeditionary.Model.Mapping
             var output = _pipeline.Run(_canvasProvider, input);
 
             var map = new Map(size);
-            var corners = new float[map.Width + 2, 2 * map.Height + 1];
+            var corners = new float[map.Width + 2, 2 * map.Height + 2];
             Elevation(map, corners, parameters, output[0].GetTexture().GetData());
             Rivers(map, corners, random);
             Stone(map, parameters, output[1].GetTexture().GetData());
@@ -311,7 +307,7 @@ namespace Expeditionary.Model.Mapping
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = elevationData[i, j];
-                    var tile = map.GetTile(new(i, j));
+                    var tile = map.GetTile(i, j)!;
                     tile.Elevation = tileData.R;
                     if (tileData.R < parameters.LiquidLevel)
                     {
@@ -323,7 +319,7 @@ namespace Expeditionary.Model.Mapping
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = map.GetTile(new(i, j));
+                    var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
                     if (tile.Terrain.IsLiquid)
                     {
@@ -352,9 +348,9 @@ namespace Expeditionary.Model.Mapping
                     int n = 0;
                     float total = 0;
                     foreach (var option in Geometry.GetCornerHexes(corner)
-                            .Select(Cubic.HexagonalOffset.Instance.Project)
-                            .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
-                            .Select(x => map.GetTile(x).Elevation))
+                            .Select(map.GetTile)
+                            .Where(x => x != null)
+                            .Select(x => x!.Elevation))
                     {
                         n++;
                         total += option;
@@ -377,16 +373,16 @@ namespace Expeditionary.Model.Mapping
             while (true)
             {
                 var coord = new Vector2i(random.Next(map.Width), random.Next(map.Height));
-                if (coord.X == 0 || coord.Y == 0 || coord.X == map.Width - 1 || coord.Y == map.Height - 1)
+                if (map.GetTile(coord) == null)
                 {
                     continue;
                 }
                 var hex = Cubic.HexagonalOffset.Instance.Wrap(coord);
                 Vector3i corner = Geometry.GetCorner(hex, random.Next(6));
                 if (!Geometry.GetCornerHexes(corner)
-                    .Select(Cubic.HexagonalOffset.Instance.Project)
-                    .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
-                    .Any(x => map.GetTile(x).Terrain.IsLiquid))
+                    .Select(map.GetTile)
+                    .Where(x => x != null)
+                    .Any(x => x!.Terrain.IsLiquid))
                 {
                     return corner;
                 }
@@ -398,6 +394,7 @@ namespace Expeditionary.Model.Mapping
             Vector3i pos = start;
             Vector2i index = Cubic.TriangularOffset.Instance.Project(start);
             float elevation = corners[index.X, index.Y];
+            ArrayList<Vector3i> edges = new();
             while (true)
             {
                 var next = RiverSelectNext(pos, map, corners);
@@ -405,29 +402,36 @@ namespace Expeditionary.Model.Mapping
                 {
                     break;
                 }
-                map.GetEdge(Cubic.HexagonalOffset.Instance.Project(Geometry.GetEdge(pos, next)))!.Type =
-                    Edge.EdgeType.River;
+                var newEdge = Geometry.GetEdge(pos, next);
+                if (map.GetEdge(newEdge) == null)
+                {
+                    break;
+                }
+                edges.Add(newEdge);
                 var nextIndex = Cubic.TriangularOffset.Instance.Project(next);
                 if (corners[nextIndex.X, nextIndex.Y] >= elevation)
                 {
                     var tile = Geometry.GetCornerHexes(next)
-                        .Select(Cubic.HexagonalOffset.Instance.Project)
-                        .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
                         .Select(map.GetTile)
-                        .ArgMin(x => x.Elevation);
+                        .Where(x => x != null)
+                        .ArgMin(x => x!.Elevation);
                     tile!.Terrain.IsLiquid = true;
                     break;
                 }
                 if (Geometry.GetCornerHexes(pos)
-                    .Select(Cubic.HexagonalOffset.Instance.Project)
-                    .Where(x => x.X >= 0 && x.Y >= 0 && x.X < map.Width && x.Y < map.Height)
-                    .Any(x => map.GetTile(x).Terrain.IsLiquid))
+                    .Select(map.GetTile)
+                    .Where(x => x != null)
+                    .Any(x => x!.Terrain.IsLiquid))
                 {
                     break;
                 }
                 pos = next;
                 index = nextIndex;
                 elevation = corners[nextIndex.X, nextIndex.Y];
+            }
+            foreach (var edge in edges)
+            {
+                map.GetEdge(edge)!.Type = Edge.EdgeType.River;
             }
         }
 
@@ -437,7 +441,7 @@ namespace Expeditionary.Model.Mapping
             {
                 foreach (var edge in Geometry.GetCornerEdges(neighbor))
                 {
-                    if (map.GetEdge(Cubic.TriangularOffset.Instance.Project(edge))?.Type == Edge.EdgeType.River)
+                    if (edge != Geometry.GetEdge(pos, neighbor) && map.GetEdge(edge)?.Type == Edge.EdgeType.River)
                     {
                         return neighbor;
                     }
@@ -458,7 +462,7 @@ namespace Expeditionary.Model.Mapping
                 {
                     Color4 tileData = stoneData[i, j];
                     var stone = GetBarycentric(tileData.R, tileData.G, parameters.Stone);
-                    map.GetTile(new(i, j)).Terrain.Stone = GetMaxComponent(stone);
+                    map.GetTile(i, j)!.Terrain.Stone = GetMaxComponent(stone);
                 }
             }
         }
@@ -470,8 +474,8 @@ namespace Expeditionary.Model.Mapping
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = soilData[i, j];
-                    var tile = map.GetTile(new(i, j));
-                    if (Math.Max(tileData.B, Math.Max(tile.Elevation, tile.Slope)) < parameters.SoilCover)
+                    var tile = map.GetTile(i, j)!;
+                    if (tileData.B + Math.Max(tile.Elevation, tile.Slope) - 0.6f < parameters.SoilCover)
                     {
                         var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
                         var soil = 
@@ -490,8 +494,8 @@ namespace Expeditionary.Model.Mapping
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = plantData[i, j];
-                    var tile = map.GetTile(new(i, j));
-                    if (tile.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
+                    var tile = map.GetTile(i, j);
+                    if (tile!.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
                     {
                         var brush = GetCenter(new(tileData.R, tileData.G), s_Centers);
                         tile.Terrain.Brush = brush;
@@ -502,12 +506,8 @@ namespace Expeditionary.Model.Mapping
 
         private static T GetNeighborOrTile<T>(Tile tile, Vector3i neighbor, Map map, Func<Tile, T> readFn)
         {
-            var coord = Cubic.HexagonalOffset.Instance.Project(neighbor);
-            if (coord.X < 0 || coord.Y < 0 || coord.X >= map.Width || coord.Y >= map.Height)
-            {
-                return readFn(tile);
-            }
-            return readFn(map.GetTile(coord));
+            var n = map.GetTile(neighbor);
+            return readFn(n == null ? tile: n);
         }
 
         private static float Distance(Vector3 left, Vector3 right)

@@ -4,6 +4,8 @@ namespace Expeditionary.Hexagons
 {
     public static class Geometry
     {
+        private static readonly float s_Sqrt3 = MathF.Sqrt(3);
+
         private static readonly Vector3i[] s_HexCorners =
         {
             new(0, 0, 1),
@@ -25,6 +27,17 @@ namespace Expeditionary.Hexagons
             new(0, -1, -1),
             new(-1, 0, -1)
         };
+
+
+        public static Vector2 MapAxial(Vector2i axial)
+        {
+            return new(1.5f * axial.X, 0.5f * s_Sqrt3 * axial.X + s_Sqrt3 * axial.Y);
+        }
+
+        public static Vector2 MapOffset(Vector2i offset)
+        {
+            return MapAxial(Axial.Offset.Instance.Wrap(offset));
+        }
 
         public static Vector3i GetCorner(Vector3i hex, int index)
         {

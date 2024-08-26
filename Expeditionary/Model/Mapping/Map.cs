@@ -1,4 +1,6 @@
-﻿using OpenTK.Mathematics;
+﻿using Expeditionary.Hexagons;
+using OpenTK.Mathematics;
+using static Expeditionary.Hexagons.Axial;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -32,9 +34,9 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
-        public Edge? GetEdge(Vector2i offset)
+        public Edge? GetEdge(Vector3i position)
         {
-            offset += new Vector2i(1, 1);
+            var offset = Cubic.HexagonalOffset.Instance.Project(position) + new Vector2i(1, 1);
             if (offset.X < 0 || offset.Y < 0 || offset.X >= _edges.GetLength(0) || offset.Y >= _edges.GetLength(1))
             {
                 return null;
@@ -42,19 +44,22 @@ namespace Expeditionary.Model.Mapping
             return _edges[offset.X, offset.Y];
         }
 
-        public Tile GetTile(Vector2i offset)
+        public Tile? GetTile(int x, int y)
         {
-            return _tiles[offset.X, offset.Y];
+            if (x < 0 || y < 0 || x >= Width || y >= Height)
+            {
+                return null;
+            }
+            return _tiles[x, y];
+        }
+        public Tile? GetTile(Vector2i offset)
+        {
+            return GetTile(offset.X, offset.Y);
         }
 
-        public void Set(Vector2i offset, Tile tile)
+        public Tile? GetTile(Vector3i position)
         {
-            _tiles[offset.X, offset.Y] = tile;
-        }
-
-        public void Set(Vector2i offset, Edge edge)
-        {
-            _edges[offset.X + 1, offset.Y + 1] = edge;
+            return GetTile(Cubic.HexagonalOffset.Instance.Project(position));
         }
     }
 }
