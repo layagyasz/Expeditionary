@@ -32,18 +32,18 @@ namespace Expeditionary.View
 
         private readonly MapViewParameters _parameters;
         private readonly TextureLibrary _textureLibrary;
-        private readonly RenderShader _noTexShader;
+        private readonly RenderShader _maskShader;
         private readonly RenderShader _texShader;
 
         public MapViewFactory(
             MapViewParameters parameters, 
             TextureLibrary textureLibrary,
-            RenderShader noTexShader,
+            RenderShader maskShader,
             RenderShader texShader)
         {
             _parameters = parameters;
             _textureLibrary = textureLibrary;
-            _noTexShader = noTexShader;
+            _maskShader = maskShader;
             _texShader = texShader;
         }
 
@@ -141,7 +141,7 @@ namespace Expeditionary.View
                 _textureLibrary.Terrain.GetTexture(),
                 new VertexBuffer<Vertex3>(edges.GetData(), PrimitiveType.Triangles),
                 _textureLibrary.Edges.GetTexture(),
-                _noTexShader,
+                _maskShader,
                 _texShader);
         }
 

@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\View\mask_no_tex.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\View\Textures\Generation\river.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -56,7 +56,7 @@ namespace Expeditionary
                         new(edges, terrains),
                         new RenderShader.Builder()
                             .SetVertex("Resources/View/default.vert")
-                            .SetFragment("Resources/View/default_no_tex.frag")
+                            .SetFragment("Resources/View/mask_no_tex.frag")
                             .Build(),
                         new RenderShader.Builder()
                             .SetVertex("Resources/View/default.vert")
@@ -66,7 +66,6 @@ namespace Expeditionary
 
             ui.SetRoot(
                 sceneFactory.Create(
-                    new(512, 512, 0), 
                     mapGenerator.Generate(
                         new(),
                         new(100, 100),

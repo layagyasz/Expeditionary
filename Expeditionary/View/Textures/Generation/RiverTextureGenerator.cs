@@ -136,7 +136,7 @@ namespace Expeditionary.View.Textures.Generation
                         verts.Length,
                         new(BlendMode.None, _riverShader, texture));
                     renderTexture.Display();
-                    sheet.Add(renderTexture.CopyTexture(), out var segment);
+                    sheet.Add(renderTexture.GetTexture(), out var segment);
                     options[3 * i + j] =
                         new EdgeLibrary.Option(
                             GetTexCoords(segment), 

@@ -11,8 +11,10 @@ namespace Expeditionary.View
         private readonly Texture _terrainTexture;
         private VertexBuffer<Vertex3>? _edges;
         private readonly Texture _edgeTexture;
-        private readonly RenderShader _noTexShader;
+        private readonly RenderShader _maskShader;
         private readonly RenderShader _texShader;
+
+        private RenderTexture? _maskTexture;
 
         internal MapView(
             VertexBuffer<Vertex3>? grid,
@@ -20,7 +22,7 @@ namespace Expeditionary.View
             Texture terrainTexture,
             VertexBuffer<Vertex3> edges, 
             Texture edgeTexture,
-            RenderShader noTexShader,
+            RenderShader maskShader,
             RenderShader texShader)
         {
             _grid = grid;
@@ -28,7 +30,7 @@ namespace Expeditionary.View
             _terrainTexture = terrainTexture;
             _edges = edges;
             _edgeTexture = edgeTexture;
-            _noTexShader = noTexShader;
+            _maskShader = maskShader;
             _texShader = texShader;
         }
 
@@ -56,12 +58,25 @@ namespace Expeditionary.View
                 0,
                 _edges!.Length,
                 new RenderResources(BlendMode.Alpha, _texShader, _edgeTexture));
-            target.Draw(_grid!, 0, _grid!.Length, new RenderResources(BlendMode.Alpha, _noTexShader));
+            target.Draw(
+                _grid!,
+                0, 
+                _grid!.Length,
+                new RenderResources(BlendMode.Alpha, _maskShader, _maskTexture!.GetTexture()));
         }
 
         public void Initialize() { }
 
-        public void ResizeContext(Vector3 size) { }
+        public void ResizeContext(Vector3 size)
+        {
+            _maskTexture?.Dispose();
+            _maskTexture = new RenderTexture(new((int)size.X, (int)size.Y));
+        }
+
+        public void SetGridAlpha(float alpha)
+        {
+            _maskTexture?.Clear(new(1, 1, 1, alpha));
+        }
 
         public void Update(long delta) { }
     }

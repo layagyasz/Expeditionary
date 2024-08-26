@@ -143,7 +143,7 @@ namespace Expeditionary.View.Textures.Generation
                         verts.Length,
                         new(BlendMode.None, _partitionShader, texture));
                     renderTexture.Display();
-                    sheet.Add(renderTexture.CopyTexture(), out var segment);
+                    sheet.Add(renderTexture.GetTexture(), out var segment);
                     texCoords[j] = GetTexCoords(segment);
                 }
                 options[i] = new(texCoords);
