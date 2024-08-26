@@ -17,15 +17,16 @@ namespace Expeditionary.View.Textures.Generation
 
         private readonly RenderShader _riverShader;
 
+        private readonly Pipeline _pipeline;
+        private readonly ConstantSupplier<int> _aSeed = new();
+        private readonly ConstantSupplier<int> _bSeed = new();
+        private readonly ConstantSupplier<int> _wSeed = new();
+        private readonly ConstantSupplier<Vector3> _frequency = new();
+
         public RiverTextureGenerator(RenderShader riverShader)
         {
             _riverShader = riverShader;
-        }
-
-        public EdgeLibrary Generate(Interval attenuationRange, int seed, int count)
-        {
-            var random = new Random(seed);
-            var noise =
+            _pipeline =
                 new Pipeline.Builder()
                     .AddNode(new GeneratorNode.Builder().SetKey("new"))
                     .AddNode(
@@ -49,7 +50,8 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _aSeed,
+                                    Frequency = _frequency
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -60,7 +62,8 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _bSeed,
+                                    Frequency = _frequency
                                 }))
                     .AddNode(
                         new WhiteNoiseNode.Builder()
@@ -71,10 +74,14 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _wSeed
                                 }))
                     .AddOutput("blue")
                     .Build();
+        }
+
+        public EdgeLibrary Generate(Interval frequencyRange, Interval attenuationRange, int seed, int count)
+        {  
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
 
             var renderTexture = new RenderTexture(new(64, 64));
@@ -101,12 +108,19 @@ namespace Expeditionary.View.Textures.Generation
                         MagFilter = TextureMagFilter.Nearest
                     });
             var options = new EdgeLibrary.Option[3 * count];
+            var random = new Random(seed);
             for (int i = 0; i < count; ++i)
             {
-                var result = noise.Run(canvasProvider)[0];
+                _aSeed.Value = random.Next();
+                _bSeed.Value = random.Next();
+                _wSeed.Value = random.Next();
+                var freq = frequencyRange.Minimum 
+                    + random.NextSingle() * (frequencyRange.Maximum - frequencyRange.Minimum);
+                _frequency.Value = new(freq, freq, freq);
+
+                var result = _pipeline.Run(canvasProvider)[0];
                 var texture = result.GetTexture();
                 canvasProvider.Return(result);
-                var texCoords = new Vector2[3][];
                 _riverShader.SetFloat(
                     "attenuation",
                     (float)(attenuationRange.Minimum

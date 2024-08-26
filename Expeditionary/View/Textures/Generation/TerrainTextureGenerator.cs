@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 using Cardamom.ImageProcessing;
 using Cardamom.Mathematics;
 using Expeditionary.View.Textures;
+using System;
 
 namespace Expeditionary.View.Textures.Generation
 {
@@ -22,16 +23,17 @@ namespace Expeditionary.View.Textures.Generation
         };
 
         private readonly RenderShader _partitionShader;
+        private readonly Pipeline _pipeline;
+
+        private readonly ConstantSupplier<int> _aSeed = new();
+        private readonly ConstantSupplier<int> _bSeed = new();
+        private readonly ConstantSupplier<int> _wSeed = new();
+        private readonly ConstantSupplier<Vector3> _frequency = new();
 
         public TerrainTextureGenerator(RenderShader partitionShader)
         {
             _partitionShader = partitionShader;
-        }
-
-        public TerrainLibrary Generate(Interval attenuationRange, int seed, int count)
-        {
-            var random = new Random(seed);
-            var noise =
+            _pipeline =
                 new Pipeline.Builder()
                     .AddNode(new GeneratorNode.Builder().SetKey("new"))
                     .AddNode(
@@ -55,7 +57,8 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _aSeed,
+                                    Frequency = _frequency
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -66,7 +69,8 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _bSeed,
+                                    Frequency = _frequency
                                 }))
                     .AddNode(
                         new WhiteNoiseNode.Builder()
@@ -77,10 +81,15 @@ namespace Expeditionary.View.Textures.Generation
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = new FuncSupplier<int>(random.Next)
+                                    Seed = _bSeed
                                 }))
                     .AddOutput("blue")
                     .Build();
+        }
+
+        public TerrainLibrary Generate(Interval frequencyRange, Interval attenuationRange, int seed, int count)
+        {
+            var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
 
             var renderTexture = new RenderTexture(new(64, 64));
@@ -109,10 +118,16 @@ namespace Expeditionary.View.Textures.Generation
             var options = new TerrainLibrary.Option[count];
             for (int i = 0; i < count; ++i)
             {
-                var result = noise.Run(canvasProvider)[0];
+                var result = _pipeline.Run(canvasProvider)[0];
                 var texture = result.GetTexture();
                 canvasProvider.Return(result);
                 var texCoords = new Vector2[3][];
+                _aSeed.Value = random.Next();
+                _bSeed.Value = random.Next();
+                _wSeed.Value = random.Next();
+                var freq = random.NextSingle() * (frequencyRange.Maximum - frequencyRange.Minimum) 
+                    + frequencyRange.Minimum;
+                _frequency.Value = new(freq, freq, freq);
                 _partitionShader.SetFloat(
                     "attenuation",
                     (float)(attenuationRange.Minimum

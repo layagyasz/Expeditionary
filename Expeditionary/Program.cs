@@ -33,13 +33,16 @@ namespace Expeditionary
                     new RenderShader.Builder()
                         .SetVertex("Resources/View/Textures/Generation/default.vert")
                         .SetFragment("Resources/View/Textures/Generation/partition.frag").Build());
-            var terrains = terrainTextureGenerator.Generate(attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+            var terrains = 
+                terrainTextureGenerator.Generate(
+                    frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
 
             var riverTextureGenerator = 
                 new RiverTextureGenerator(new RenderShader.Builder()
                     .SetVertex("Resources/View/Textures/Generation/default.vert")
                     .SetFragment("Resources/View/Textures/Generation/river.frag").Build());
-            var edges = riverTextureGenerator.Generate(attenuationRange: new(0f, 2f), seed: 0, count: 20);
+            var edges = riverTextureGenerator.Generate(
+                frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 20);
 
             var mapGenerator = new MapGenerator();
             var sceneFactory = 
