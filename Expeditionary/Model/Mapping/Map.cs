@@ -34,6 +34,17 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
+        public IEnumerable<Vector3i> GetCorners()
+        {
+            for (int i=0; i< Width + 2; ++i)
+            {
+                for (int j=0; j < 2 * Height +2; ++j)
+                {
+                    yield return Cubic.TriangularOffset.Instance.Wrap(new(i, j));
+                }
+            }
+        }
+
         public Edge? GetEdge(Vector3i position)
         {
             var offset = Cubic.HexagonalOffset.Instance.Project(position) + new Vector2i(1, 1);

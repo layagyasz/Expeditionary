@@ -26,7 +26,7 @@ namespace Expeditionary
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
                     File.ReadAllText("Resources/View/HumanEyeSensitivity.json"))!;
             var baseColor =
-                Color4.ToHsl(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
+                Color4.ToHsv(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
             var terrainTextureGenerator = 
                 new TerrainTextureGenerator(
@@ -62,39 +62,59 @@ namespace Expeditionary
                             .SetVertex("Resources/View/default.vert")
                             .SetFragment("Resources/View/default.frag")
                             .Build()));
-            edges.GetTexture().CopyToImage().SaveToFile("edges.png");
 
+            var terrainParameters =
+                new TerrainViewParameters()
+                {
+                    Liquid = new(27, 55, 85, 255),
+                    Stone0 = new(200, 200, 200, 255),
+                    Stone1 = new(240, 240, 240, 255),
+                    Stone2 = new(227, 173, 156, 255),
+                    Sand = new(248, 240, 133, 255),
+                    Clay = new(196, 164, 81, 255),
+                    Silt = new(59, 48, 45, 255),
+                    HotDry = Color4.FromHsv(CombineHsv(baseColor, new(-0.33f, 0.25f, 0.9f, 1f))),
+                    HotWet = Color4.FromHsv(CombineHsv(baseColor, new(-0.13f, 0.67f, 0.4f, 1f))),
+                    ColdDry = Color4.FromHsv(CombineHsv(baseColor, new(-0.34f, 0.32f, 0.7f, 1f))),
+                    ColdWet = Color4.FromHsv(CombineHsv(baseColor, new(0.03f, 0.2f, 0.7f, 1f))),
+                };
+            RecordPalette(Color4.FromHsv(baseColor), terrainParameters);
             ui.SetRoot(
                 sceneFactory.Create(
                     mapGenerator.Generate(
                         new(),
                         new(100, 100),
                         seed: new Random().Next()),
-                    new() 
-                    { 
-                        Liquid = new(27, 55, 85, 255),
-                        Stone0 = new(200, 200, 200, 255),
-                        Stone1 = new(240, 240, 240, 255),
-                        Stone2 = new(227, 173, 156, 255),
-                        Sand = new(248, 240, 133, 255),
-                        Clay = new(196, 164, 81, 255),
-                        Silt = new(59, 48, 45, 255),
-                        HotDry = Color4.FromHsl(CombineHsl(baseColor, new(-0.2f, 0.5f, 0.7f, 1f))),
-                        HotWet = Color4.FromHsl(CombineHsl(baseColor, new(-0.07f, 0.8f, 0.9f, 1f))),
-                        ColdDry = Color4.FromHsl(CombineHsl(baseColor, new(-0.34f, 0.32f, 0.7f, 1f))),
-                        ColdWet = Color4.FromHsl(CombineHsl(baseColor, new(0.03f, 0.2f, 0.7f, 1f))),
-                    },
+                    terrainParameters,
                     seed: 0));
             ui.Start();
         }
 
-        private static Vector4 CombineHsl(Vector4 color, Vector4 adjustment)
+        private static void RecordPalette(Color4 baseColor, TerrainViewParameters parameters)
         {
-            var hsl = color;
-            hsl.X = (hsl.X + 1 + adjustment.X) % 1;
-            hsl.Y = MathHelper.Clamp(hsl.Y * adjustment.Y, 0, 1);
-            hsl.Z = MathHelper.Clamp(hsl.Z * adjustment.Z, 0, 1);
-            return hsl;
+            var palette = new Cardamom.Graphics.Image(6, 3);
+            palette.Set(0, 0, baseColor);
+            palette.Set(1, 0, parameters.Liquid);
+            palette.Set(2, 0, parameters.Stone0);
+            palette.Set(2, 1, parameters.Stone1);
+            palette.Set(2, 2, parameters.Stone2);
+            palette.Set(3, 0, parameters.Sand);
+            palette.Set(3, 1, parameters.Clay);
+            palette.Set(3, 2, parameters.Silt);
+            palette.Set(4, 0, parameters.HotDry);
+            palette.Set(4, 1, parameters.HotWet);
+            palette.Set(5, 0, parameters.ColdDry);
+            palette.Set(5, 1, parameters.ColdWet);
+            palette.SaveToFile("palette.bmp");
+        }
+
+        private static Vector4 CombineHsv(Vector4 color, Vector4 adjustment)
+        {
+            var hsv = color;
+            hsv.X = (hsv.X + 1 + adjustment.X) % 1;
+            hsv.Y = MathHelper.Clamp(hsv.Y * adjustment.Y, 0, 1);
+            hsv.Z = MathHelper.Clamp(hsv.Z * adjustment.Z, 0, 1);
+            return hsv;
         }
     }
 }

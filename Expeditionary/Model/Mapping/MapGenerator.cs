@@ -285,11 +285,16 @@ namespace Expeditionary.Model.Mapping
 
             var map = new Map(size);
             var corners = new float[map.Width + 2, 2 * map.Height + 2];
-            Elevation(map, corners, parameters, output[0].GetTexture().GetData());
+            var elevation = output[0].GetTexture().GetData();
+            var stone = output[1].GetTexture().GetData();
+            var soil = output[2].GetTexture().GetData();
+            var plants = output[3].GetTexture().GetData();
+            Elevation(map, corners, parameters, elevation);
             Rivers(map, corners, random);
-            Stone(map, parameters, output[1].GetTexture().GetData());
-            Soil(map, parameters, output[2].GetTexture().GetData());
-            Brush(map, parameters, output[3].GetTexture().GetData());
+            AdjustMoisture(map, parameters, plants);
+            Stone(map, parameters, stone);
+            Soil(map, parameters, soil);
+            Brush(map, parameters, plants);
 
             _canvasProvider.Return(input);
             foreach (var canvas in output)
@@ -452,6 +457,29 @@ namespace Expeditionary.Model.Mapping
                 .Where(x => x.X >= 0 && x.Y >= 0 && x.X < corners.GetLength(0) && x.Y < corners.GetLength(1))
                 .ArgMin(x => corners[x.X, x.Y]);
             return Cubic.TriangularOffset.Instance.Wrap(normalNext);
+        }
+
+        private static void AdjustMoisture(Map map, TerrainParameters parameters, Color4[,] plantData)
+        {
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    Color4 tileData = plantData[i, j];
+                    var hex = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
+                    if (Geometry.GetEdges(hex)
+                            .Select(map.GetEdge)
+                            .Where(x => x != null)
+                            .Any(x => x!.Type == Edge.EdgeType.River
+                        || Geometry.GetNeighbors(hex)
+                            .Select(map.GetTile)
+                            .Where(x => x != null)
+                            .Any(x => x!.Terrain.IsLiquid)))
+                    {
+                        plantData[i, j].G += parameters.LiquidBonus;
+                    }
+                }
+            }
         }
 
         private static void Stone(Map map, TerrainParameters parameters, Color4[,] stoneData)

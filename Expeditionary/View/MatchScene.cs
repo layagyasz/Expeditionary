@@ -77,11 +77,11 @@ namespace Expeditionary.View
             {
                 return 1;
             }
-            if (distance > 50)
+            if (distance > 70)
             {
                 return 0;
             }
-            return .025f * (50 - distance);
+            return .017f * (60 - distance);
         }
     }
 }

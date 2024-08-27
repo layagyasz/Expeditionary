@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Expeditionary.Hexagons
 {
@@ -14,6 +15,15 @@ namespace Expeditionary.Hexagons
             new(0, 0, -1),
             new(0, 1, 0),
             new(-1, 0, 0)
+        };
+        private static readonly Vector3i[] s_HexNeighbors =
+        {
+            new(0, -1, 1),
+            new(1, -1, 0),
+            new(1, 0, -1),
+            new(0, 1, -1),
+            new(-1, 1, 0),
+            new(-1, 0, 1)
         };
         private static readonly Vector3i[] s_CornerHexes =
         {
@@ -75,6 +85,16 @@ namespace Expeditionary.Hexagons
         public static Vector3i GetEdge(Vector3i left, Vector3i right)
         {
             return left + right;
+        }
+
+        public static IEnumerable<Vector3i> GetEdges(Vector3i hex)
+        {
+            return s_HexNeighbors.Select(x => 2 * hex + x);
+        }
+
+        public static IEnumerable<Vector3i> GetNeighbors(Vector3i hex)
+        {
+            return s_HexNeighbors.Select(x => hex + x);
         }
     }
 }
