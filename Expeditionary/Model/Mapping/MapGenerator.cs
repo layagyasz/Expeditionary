@@ -58,6 +58,7 @@ namespace Expeditionary.Model.Mapping
         private readonly ConstantSupplier<int> _temperatureSeed = new();
         private readonly ConstantSupplier<int> _moistureSeed = new();
         private readonly ConstantSupplier<int> _brushCoverSeed = new();
+        private readonly ConstantSupplier<int> _foliageCoverSeed = new();
 
         public MapGenerator()
         {
@@ -169,11 +170,23 @@ namespace Expeditionary.Model.Mapping
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                     .AddNode(
+                        new LatticeNoiseNode.Builder()
+                            .SetKey("foliage-cover")
+                            .SetInput("input", "position")
+                            .SetOutput("brush-cover")
+                            .SetChannel(Channel.Alpha)
+                            .SetParameters(
+                                new()
+                                {
+                                    Seed = _foliageCoverSeed,
+                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
+                                }))
+                    .AddNode(
                         new DenormalizeNode.Builder().SetKey("elevation-denormalize").SetInput("input", "elevation"))
                     .AddNode(new DenormalizeNode.Builder().SetKey("stone-denormalize").SetInput("input", "stone-b"))
                     .AddNode(new DenormalizeNode.Builder().SetKey("soil-denormalize").SetInput("input", "soil-cover"))
                     .AddNode(
-                        new DenormalizeNode.Builder().SetKey("plant-denormalize").SetInput("input", "brush-cover"))
+                        new DenormalizeNode.Builder().SetKey("plant-denormalize").SetInput("input", "foliage-cover"))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("elevation-adjust")
@@ -235,7 +248,7 @@ namespace Expeditionary.Model.Mapping
                         new AdjustNode.Builder()
                             .SetKey("plant-adjust")
                             .SetInput("input", "plant-denormalize")
-                            .SetChannel(Channel.Color)
+                            .SetChannel(Channel.All)
                             .SetParameters(
                                 new()
                                 {
@@ -269,6 +282,7 @@ namespace Expeditionary.Model.Mapping
             _temperatureSeed.Value = random.Next();
             _moistureSeed.Value = random.Next();
             _brushCoverSeed.Value = random.Next();
+            _foliageCoverSeed.Value = random.Next();
             
             var centers = new Color4[s_Resolution, s_Resolution];
             for (int i=0; i<size.X; ++i)
@@ -295,6 +309,7 @@ namespace Expeditionary.Model.Mapping
             Stone(map, parameters, stone);
             Soil(map, parameters, soil);
             Brush(map, parameters, plants);
+            Foliage(map, parameters, plants);
 
             _canvasProvider.Return(input);
             foreach (var canvas in output)
@@ -337,10 +352,8 @@ namespace Expeditionary.Model.Mapping
                                 .Select(
                                     x =>
                                         Math.Abs(
-                                            GetNeighborOrTile(
-                                                tile, coord + s_Neighbors[x], map, t => t.Elevation) -
-                                            GetNeighborOrTile(
-                                                tile, coord + s_Neighbors[x + 3], map, t => t.Elevation)))
+                                            (map.GetTile(coord + s_Neighbors[x]) ?? tile)!.Elevation -
+                                            (map.GetTile(coord + s_Neighbors[x]) ?? tile)!.Elevation))
                                 .Max();
                     }
                 }
@@ -503,7 +516,7 @@ namespace Expeditionary.Model.Mapping
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.B + Math.Max(tile.Elevation, tile.Slope) - 0.6f < parameters.SoilCover)
+                    if (tileData.B + tile.Slope - 0.5f < parameters.SoilCover)
                     {
                         var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
                         var soil = 
@@ -525,17 +538,26 @@ namespace Expeditionary.Model.Mapping
                     var tile = map.GetTile(i, j);
                     if (tile!.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
                     {
-                        var brush = GetCenter(new(tileData.R, tileData.G), s_Centers);
-                        tile.Terrain.Brush = brush;
+                        tile.Terrain.Brush = GetCenter(new(tileData.R, tileData.G), s_Centers);
                     }
                 }
             }
         }
 
-        private static T GetNeighborOrTile<T>(Tile tile, Vector3i neighbor, Map map, Func<Tile, T> readFn)
+        private static void Foliage(Map map, TerrainParameters parameters, Color4[,] plantData)
         {
-            var n = map.GetTile(neighbor);
-            return readFn(n == null ? tile: n);
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    Color4 tileData = plantData[i, j];
+                    var tile = map.GetTile(i, j);
+                    if (tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
+                    {
+                        tile.Terrain.Foliage = GetCenter(new(tileData.R, tileData.G), s_Centers);
+                    }
+                }
+            }
         }
 
         private static float Distance(Vector3 left, Vector3 right)

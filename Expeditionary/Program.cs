@@ -67,16 +67,40 @@ namespace Expeditionary
                 new TerrainViewParameters()
                 {
                     Liquid = new(27, 55, 85, 255),
-                    Stone0 = new(200, 200, 200, 255),
-                    Stone1 = new(240, 240, 240, 255),
-                    Stone2 = new(227, 173, 156, 255),
-                    Sand = new(248, 240, 133, 255),
-                    Clay = new(196, 164, 81, 255),
-                    Silt = new(59, 48, 45, 255),
-                    HotDry = Color4.FromHsv(CombineHsv(baseColor, new(-0.33f, 0.25f, 0.9f, 1f))),
-                    HotWet = Color4.FromHsv(CombineHsv(baseColor, new(-0.13f, 0.67f, 0.4f, 1f))),
-                    ColdDry = Color4.FromHsv(CombineHsv(baseColor, new(-0.34f, 0.32f, 0.7f, 1f))),
-                    ColdWet = Color4.FromHsv(CombineHsv(baseColor, new(0.03f, 0.2f, 0.7f, 1f))),
+                    Stone = new()
+                    {
+                        A = new(200, 200, 200, 255),
+                        B = new(240, 240, 240, 255),
+                        C = new(227, 173, 156, 255)
+                    },
+                    Soil = new()
+                    {
+                        A = new(248, 240, 133, 255),
+                        B = new(196, 164, 81, 255),
+                        C = new(59, 48, 45, 255)
+                    },
+                    Brush = new()
+                    {
+                        // Hot & Dry
+                        TopRight = Color4.FromHsv(CombineHsv(baseColor, new(-0.33f, 0.25f, 0.9f, 1f))),
+                        // Hot & Wet
+                        BottomRight = Color4.FromHsv(CombineHsv(baseColor, new(-0.13f, 0.67f, 0.4f, 1f))),
+                        // Cold & Dry
+                        TopLeft = Color4.FromHsv(CombineHsv(baseColor, new(-0.34f, 0.32f, 0.7f, 1f))),
+                        // Cold & Wet
+                        BottomLeft = Color4.FromHsv(CombineHsv(baseColor, new(0.03f, 0.2f, 0.7f, 1f))),
+                    },
+                    Foliage = new()
+                    {
+                        // Hot & Dry
+                        TopRight = Color4.FromHsv(CombineHsv(baseColor, new(-0.32f, 0.45f, 0.5f, 1f))),
+                        // Hot & Wet
+                        BottomRight = Color4.FromHsv(CombineHsv(baseColor, new(-0.02f, 0.45f, 0.17f, 1f))),
+                        // Cold & Dry
+                        TopLeft = Color4.FromHsv(CombineHsv(baseColor, new(-0.08f, 0.64f, 0.5f, 1f))),
+                        // Cold & Wet
+                        BottomLeft = Color4.FromHsv(CombineHsv(baseColor, new(0.03f, 0.8f, 0.3f, 1f))),
+                    }
                 };
             RecordPalette(Color4.FromHsv(baseColor), terrainParameters);
             ui.SetRoot(
@@ -92,19 +116,23 @@ namespace Expeditionary
 
         private static void RecordPalette(Color4 baseColor, TerrainViewParameters parameters)
         {
-            var palette = new Cardamom.Graphics.Image(6, 3);
+            var palette = new Cardamom.Graphics.Image(8, 3);
             palette.Set(0, 0, baseColor);
             palette.Set(1, 0, parameters.Liquid);
-            palette.Set(2, 0, parameters.Stone0);
-            palette.Set(2, 1, parameters.Stone1);
-            palette.Set(2, 2, parameters.Stone2);
-            palette.Set(3, 0, parameters.Sand);
-            palette.Set(3, 1, parameters.Clay);
-            palette.Set(3, 2, parameters.Silt);
-            palette.Set(4, 0, parameters.HotDry);
-            palette.Set(4, 1, parameters.HotWet);
-            palette.Set(5, 0, parameters.ColdDry);
-            palette.Set(5, 1, parameters.ColdWet);
+            palette.Set(2, 0, parameters.Stone.A);
+            palette.Set(2, 1, parameters.Stone.B);
+            palette.Set(2, 2, parameters.Stone.C);
+            palette.Set(3, 0, parameters.Soil.A);
+            palette.Set(3, 1, parameters.Soil.B);
+            palette.Set(3, 2, parameters.Soil.C);
+            palette.Set(4, 0, parameters.Brush.TopLeft);
+            palette.Set(4, 1, parameters.Brush.BottomLeft);
+            palette.Set(5, 0, parameters.Brush.TopRight);
+            palette.Set(5, 1, parameters.Brush.BottomRight);
+            palette.Set(6, 0, parameters.Foliage.TopLeft);
+            palette.Set(6, 1, parameters.Foliage.BottomLeft);
+            palette.Set(7, 0, parameters.Foliage.TopRight);
+            palette.Set(7, 1, parameters.Foliage.BottomRight);
             palette.SaveToFile("palette.bmp");
         }
 

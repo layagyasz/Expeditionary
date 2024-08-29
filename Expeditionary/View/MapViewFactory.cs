@@ -120,7 +120,7 @@ namespace Expeditionary.View
         private Color4 GetTileColor(Tile tile, TerrainViewParameters parameters)
         {
             var e = (int)(tile.Elevation * _parameters.ElevationLevel) / (_parameters.ElevationLevel - 1f);
-            var color = (Color4)Color4.ToHsl(GetBaseTileColor(tile, parameters));
+            var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, parameters));
             if (!tile.Terrain.IsLiquid)
             {
                 var adj = _parameters.ElevationGradient.Minimum + e *
@@ -128,7 +128,7 @@ namespace Expeditionary.View
                         _parameters.ElevationGradient.Minimum);
                 color.B = MathHelper.Clamp(color.B * adj, 0, 1);
             }
-            return Color4.FromHsl((Vector4)color);
+            return Color4.FromHsv((Vector4)color);
         }
 
         private static Color4 GetBaseTileColor(Tile tile, TerrainViewParameters parameters)
@@ -137,30 +137,19 @@ namespace Expeditionary.View
             {
                 return parameters.Liquid;
             }
+            if (tile.Terrain.Foliage.HasValue)
+            {
+                return parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value);
+            }
             if (tile.Terrain.Brush.HasValue)
             {
-                var brush = tile.Terrain.Brush.Value;
-                return Lerp(
-                    Lerp(parameters.ColdDry, parameters.HotDry, brush.X),
-                    Lerp(parameters.ColdWet, parameters.HotWet, brush.X),
-                    brush.Y);
+                return parameters.Brush.Interpolate(tile.Terrain.Brush.Value);
             }
             if (tile.Terrain.Soil.HasValue)
             {
-                var soil = tile.Terrain.Soil.Value;
-                return (Color4)(soil.X * (Vector4)parameters.Silt
-                    + soil.Y * (Vector4)parameters.Clay
-                    + soil.Z * (Vector4)parameters.Silt);
+                return parameters.Soil.Interpolate(tile.Terrain.Soil.Value);
             }
-            var stone = tile.Terrain.Stone;
-            return (Color4)(stone.X * (Vector4)parameters.Stone0
-                    + stone.Y * (Vector4)parameters.Stone1
-                    + stone.Z * (Vector4)parameters.Stone2);
-        }
-
-        private static Color4 Lerp(Color4 a, Color4 b, float v)
-        {
-            return (Color4)((1 - v) * (Vector4)a + v * (Vector4)b);
+            return parameters.Stone.Interpolate(tile.Terrain.Stone);
         }
 
         private static Vector3 ToVector3(Vector2 x)
