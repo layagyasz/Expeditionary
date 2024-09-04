@@ -45,9 +45,18 @@ namespace Expeditionary.View
         {
             PartitionLibrary.Option[] options = _textureLibrary.Partitions.Query().ToArray();
             var random = new Random(seed);
-            Vertex3[] terrain = new Vertex3[18 * (map.Width - 1) * (map.Height - 1)];
-            ArrayList<Vertex3> edges = new();
-            int v = 0;
+            int triangles = 6 * (map.Width - 1) * (map.Height - 1);
+            var bufferBuilder =
+                new LayeredVertexBuffer.Builder()
+                    .SetRenderResources(GetRenderResources)
+                    .AddLayer(3 * triangles)
+                    .AddLayer(3 * triangles)
+                    .AddLayer(3 * triangles)
+                    .AddLayer(3 * triangles)
+                    .AddLayer(3 * triangles)
+                    .AddLayer(triangles);
+
+            int triangle = 0;
             foreach (var corner in map.GetCorners())
             {
                 var centerHex = Geometry.GetCornerHex(corner, 0);
@@ -64,15 +73,20 @@ namespace Expeditionary.View
                 var centerPos = ToVector3(Geometry.MapAxial(centerHex.Xy));
                 var leftPos = ToVector3(Geometry.MapAxial(leftHex.Xy));
                 var rightPos = ToVector3(Geometry.MapAxial(rightHex.Xy));
-                var selected = options[random.Next(options.Length)];
-                for (int j = 0; j < 3; ++j)
+                for (int layer = 0; layer < 5; ++layer)
                 {
-                    var tile = map.GetTile(Geometry.GetCornerHex(corner, j))!;
-                    var color = GetTileColor(tile, parameters);
-                    terrain[v++] = new(centerPos, color, selected.TexCoords[j][0]);
-                    terrain[v++] = new(leftPos, color, selected.TexCoords[j][1]);
-                    terrain[v++] = new(rightPos, color, selected.TexCoords[j][2]);
+                    var selected = options[random.Next(options.Length)];
+                    for (int hex = 0; hex < 3; ++hex)
+                    {
+                        var tile = map.GetTile(Geometry.GetCornerHex(corner, hex))!;
+                        var color = GetTileColor(tile, layer, parameters);
+                        var index = 9 * triangle + 3 * hex;
+                        bufferBuilder.SetVertex(layer, index, new(centerPos, color, selected.TexCoords[hex][0]));
+                        bufferBuilder.SetVertex(layer, index + 1, new(leftPos, color, selected.TexCoords[hex][1]));
+                        bufferBuilder.SetVertex(layer, index + 2, new(rightPos, color, selected.TexCoords[hex][2]));
+                    }
                 }
+
                 var edgeA = map.GetEdge(Geometry.GetEdge(centerHex, leftHex))!;
                 var edgeB = map.GetEdge(Geometry.GetEdge(leftHex, rightHex))!;
                 var edgeC = map.GetEdge(Geometry.GetEdge(centerHex, rightHex))!;
@@ -87,10 +101,15 @@ namespace Expeditionary.View
                 {
                     var edgeOptions = _textureLibrary.Edges.Query(query).ToArray();
                     var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
-                    edges.Add(new(centerPos, parameters.Liquid, selectedEdge.TexCoords[0]));
-                    edges.Add(new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
-                    edges.Add(new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
+                    bufferBuilder.SetVertex(
+                        layer: 5, 3 * triangle, new(centerPos, parameters.Liquid, selectedEdge.TexCoords[0]));
+                    bufferBuilder.SetVertex(
+                        layer: 5, 3 * triangle + 1, new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
+                    bufferBuilder.SetVertex(
+                        layer: 5, 3 * triangle + 2, new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
                 }
+
+                ++triangle;
             }
             ArrayList<Vertex3> grid = new();
             for (int i=0;i<map.Width;++i)
@@ -109,18 +128,14 @@ namespace Expeditionary.View
             }
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
-                new VertexBuffer<Vertex3>(terrain, PrimitiveType.Triangles),
-                _textureLibrary.Partitions.GetTexture(),
-                new VertexBuffer<Vertex3>(edges.GetData(), PrimitiveType.Triangles),
-                _textureLibrary.Edges.GetTexture(),
-                _maskShader,
-                _texShader);
+                bufferBuilder.Build(),
+                _maskShader);
         }
 
-        private Color4 GetTileColor(Tile tile, TerrainViewParameters parameters)
+        private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters)
         {
             var e = (int)(tile.Elevation * _parameters.ElevationLevel) / (_parameters.ElevationLevel - 1f);
-            var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, parameters));
+            var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, layer, parameters));
             if (!tile.Terrain.IsLiquid)
             {
                 var adj = _parameters.ElevationGradient.Minimum + e *
@@ -131,24 +146,39 @@ namespace Expeditionary.View
             return Color4.FromHsv((Vector4)color);
         }
 
-        private static Color4 GetBaseTileColor(Tile tile, TerrainViewParameters parameters)
+        private RenderResources GetRenderResources(int layer)
         {
-            if (tile.Terrain.IsLiquid)
+            if (layer == 5)
             {
-                return parameters.Liquid;
+                return new(BlendMode.Alpha, _texShader, _textureLibrary.Edges.GetTexture());
             }
-            if (tile.Terrain.Foliage.HasValue)
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.GetTexture());
+        }
+
+        private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)
+        {
+            // Water
+            if (layer == 4)
             {
-                return parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value);
+                return tile.Terrain.IsLiquid ? parameters.Liquid : new();
             }
-            if (tile.Terrain.Brush.HasValue)
+            // Foliage
+            if (layer == 3)
             {
-                return parameters.Brush.Interpolate(tile.Terrain.Brush.Value);
+                return tile.Terrain.Foliage.HasValue 
+                    ? parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value) : new();
             }
-            if (tile.Terrain.Soil.HasValue)
+            // Brush
+            if (layer == 2)
             {
-                return parameters.Soil.Interpolate(tile.Terrain.Soil.Value);
+                return tile.Terrain.Brush.HasValue ? parameters.Brush.Interpolate(tile.Terrain.Brush.Value) : new();
             }
+            // Soil
+            if (layer == 1)
+            {
+                return tile.Terrain.Soil.HasValue ? parameters.Soil.Interpolate(tile.Terrain.Soil.Value) : new();
+            }
+            // Stone
             return parameters.Stone.Interpolate(tile.Terrain.Stone);
         }
 

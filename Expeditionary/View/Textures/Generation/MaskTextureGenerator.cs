@@ -31,7 +31,6 @@ namespace Expeditionary.View.Textures.Generation
         private readonly Pipeline _pipeline;
 
         private readonly ConstantSupplier<int> _aSeed = new();
-        private readonly ConstantSupplier<int> _bSeed = new();
         private readonly ConstantSupplier<int> _wSeed = new();
         private readonly ConstantSupplier<Vector3> _frequency = new();
 
@@ -65,19 +64,7 @@ namespace Expeditionary.View.Textures.Generation
                                     Seed = _aSeed,
                                     Frequency = _frequency
                                 }))
-                    .AddNode(
-                        new LatticeNoiseNode.Builder()
-                            .SetKey("green")
-                            .SetInput("input", "gradient")
-                            .SetOutput("red")
-                            .SetChannel(Channel.Green)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = _bSeed,
-                                    Frequency = _frequency
-                                }))
-                    .AddNode(new DenormalizeNode.Builder().SetKey("denormalize").SetInput("input", "green"))
+                    .AddNode(new DenormalizeNode.Builder().SetKey("denormalize").SetInput("input", "red"))
                     .AddNode(
                         new WhiteNoiseNode.Builder()
                             .SetKey("blue")
@@ -126,7 +113,6 @@ namespace Expeditionary.View.Textures.Generation
                 for (int j = 0; j < count; ++j)
                 {
                     _aSeed.Value = random.Next();
-                    _bSeed.Value = random.Next();
                     _wSeed.Value = random.Next();
                     var freq = random.NextSingle() * (frequencyRange.Maximum - frequencyRange.Minimum)
                         + frequencyRange.Minimum;

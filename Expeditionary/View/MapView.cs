@@ -7,31 +7,19 @@ namespace Expeditionary.View
     public class MapView : GraphicsResource, IRenderable
     {
         private VertexBuffer<Vertex3>? _grid;
-        private VertexBuffer<Vertex3>? _terrain;
-        private readonly Texture _terrainTexture;
-        private VertexBuffer<Vertex3>? _edges;
-        private readonly Texture _edgeTexture;
+        private LayeredVertexBuffer? _terrain;
         private readonly RenderShader _maskShader;
-        private readonly RenderShader _texShader;
 
         private RenderTexture? _maskTexture;
 
         internal MapView(
             VertexBuffer<Vertex3>? grid,
-            VertexBuffer<Vertex3> terrain, 
-            Texture terrainTexture,
-            VertexBuffer<Vertex3> edges, 
-            Texture edgeTexture,
-            RenderShader maskShader,
-            RenderShader texShader)
+            LayeredVertexBuffer? terrain,
+            RenderShader maskShader)
         {
             _grid = grid;
             _terrain = terrain;
-            _terrainTexture = terrainTexture;
-            _edges = edges;
-            _edgeTexture = edgeTexture;
             _maskShader = maskShader;
-            _texShader = texShader;
         }
 
         protected override void DisposeImpl()
@@ -41,23 +29,11 @@ namespace Expeditionary.View
 
             _terrain?.Dispose();
             _terrain = null;
-
-            _edges?.Dispose();
-            _edges = null;
         }
 
         public void Draw(IRenderTarget target, IUiContext context) 
         {
-            target.Draw(
-                _terrain!,
-                0, 
-                _terrain!.Length, 
-                new RenderResources(BlendMode.Alpha, _texShader, _terrainTexture));
-            target.Draw(
-                _edges!,
-                0,
-                _edges!.Length,
-                new RenderResources(BlendMode.Alpha, _texShader, _edgeTexture));
+            _terrain!.Draw(target, context);
             target.Draw(
                 _grid!,
                 0, 

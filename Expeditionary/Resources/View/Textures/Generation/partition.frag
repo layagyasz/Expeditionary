@@ -30,5 +30,6 @@ void main()
         p = vec4(0, 0, 1, 1);
     }
     vec4 result = mask * p;
-    out_color = min(0.2f * tex_color.b + 0.9f, 1f) * vec4(1, 1, 1, result.r + result.g + result.b);
+    float noise = min(0.2f * tex_color.b + 0.9f, 1f);
+    out_color = vec4(noise, noise, noise, result.r + result.g + result.b);
 }
