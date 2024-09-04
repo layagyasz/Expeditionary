@@ -43,7 +43,7 @@ namespace Expeditionary.View
 
         public MapView Create(Map map, TerrainViewParameters parameters, int seed)
         {
-            TerrainLibrary.Option[] options = _textureLibrary.Terrain.Query().ToArray();
+            PartitionLibrary.Option[] options = _textureLibrary.Partitions.Query().ToArray();
             var random = new Random(seed);
             Vertex3[] terrain = new Vertex3[18 * (map.Width - 1) * (map.Height - 1)];
             ArrayList<Vertex3> edges = new();
@@ -110,7 +110,7 @@ namespace Expeditionary.View
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 new VertexBuffer<Vertex3>(terrain, PrimitiveType.Triangles),
-                _textureLibrary.Terrain.GetTexture(),
+                _textureLibrary.Partitions.GetTexture(),
                 new VertexBuffer<Vertex3>(edges.GetData(), PrimitiveType.Triangles),
                 _textureLibrary.Edges.GetTexture(),
                 _maskShader,

@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Textures
 {
-    public class TerrainLibrary
+    public class PartitionLibrary
     {
         private readonly static int[][] s_Transforms =
         {
@@ -21,7 +21,7 @@ namespace Expeditionary.View.Textures
         private readonly ITexturePage _texture;
         private readonly Option[] _options;
 
-        public TerrainLibrary(ITexturePage texture, Option[] options)
+        public PartitionLibrary(ITexturePage texture, Option[] options)
         {
             _texture = texture;
             _options = options;

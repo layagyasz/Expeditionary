@@ -28,21 +28,31 @@ namespace Expeditionary
             var baseColor =
                 Color4.ToHsv(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
-            var terrainTextureGenerator = 
-                new TerrainTextureGenerator(
+            var partitionTextureGenerator = 
+                new PartitionTextureGenerator(
                     new RenderShader.Builder()
                         .SetVertex("Resources/View/Textures/Generation/default.vert")
-                        .SetFragment("Resources/View/Textures/Generation/partition.frag").Build());
-            var terrains = 
-                terrainTextureGenerator.Generate(
+                        .SetFragment("Resources/View/Textures/Generation/partition.frag")
+                        .Build());
+            var partitions = 
+                partitionTextureGenerator.Generate(
                     frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+
+            var maskTextureGenerator =
+                new MaskTextureGenerator(
+                    new RenderShader.Builder()
+                        .SetVertex("Resources/View/Textures/Generation/default.vert")
+                        .SetFragment("Resources/View/Textures/Generation/mask.frag")
+                        .Build());
+            maskTextureGenerator.Generate(frequencyRange: new(4f, 8f), seed: 0, count: 16);
 
             var riverTextureGenerator = 
                 new RiverTextureGenerator(new RenderShader.Builder()
                     .SetVertex("Resources/View/Textures/Generation/default.vert")
-                    .SetFragment("Resources/View/Textures/Generation/river.frag").Build());
+                    .SetFragment("Resources/View/Textures/Generation/river.frag")
+                    .Build());
             var edges = riverTextureGenerator.Generate(
-                frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 20);
+                frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
 
             var mapGenerator = new MapGenerator();
             var sceneFactory = 
@@ -53,7 +63,7 @@ namespace Expeditionary
                             ElevationGradient = new(0.8f, 1.2f),
                             ElevationLevel = 5
                         },
-                        new(edges, terrains),
+                        new(partitions, edges),
                         new RenderShader.Builder()
                             .SetVertex("Resources/View/default.vert")
                             .SetFragment("Resources/View/mask_no_tex.frag")

@@ -3,12 +3,12 @@
     public class TextureLibrary
     {
         public EdgeLibrary Edges { get; }
-        public TerrainLibrary Terrain { get; }
+        public PartitionLibrary Partitions { get; }
 
-        public TextureLibrary(EdgeLibrary edges, TerrainLibrary terrain)
+        public TextureLibrary(PartitionLibrary partitions, EdgeLibrary edges)
         {
+            Partitions = partitions;
             Edges = edges;
-            Terrain = terrain;
         }
     }
 }

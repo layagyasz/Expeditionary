@@ -7,22 +7,27 @@ using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
 using Cardamom.ImageProcessing;
 using Cardamom.Mathematics;
-using Expeditionary.View.Textures;
-using System;
 
 namespace Expeditionary.View.Textures.Generation
 {
-    public class TerrainTextureGenerator
+    public class MaskTextureGenerator
     {
         private static readonly float s_Sqrt3 = MathF.Sqrt(3);
         private static readonly Color4[] s_Masks =
         {
+            new(1f, 1f, 1f, 1f),
+            new(1f, 1f, 0f, 1f),
             new(1f, 0f, 0f, 1f),
-            new(0f, 1f, 0f, 1f),
-            new(0f, 0f, 1f, 1f)
+
+            new(1f, 0.55f, 0.55f, 1f),
+            new(1f, 0.55f, 0f, 1f),
+
+            new(0.55f, 0.55f, 0.55f, 1f),
+            new(0.55f, 0.55f, 0f, 1f),
+            new(0.55f, 0f, 0f, 1f)
         };
 
-        private readonly RenderShader _partitionShader;
+        private readonly RenderShader _maskShader;
         private readonly Pipeline _pipeline;
 
         private readonly ConstantSupplier<int> _aSeed = new();
@@ -30,9 +35,9 @@ namespace Expeditionary.View.Textures.Generation
         private readonly ConstantSupplier<int> _wSeed = new();
         private readonly ConstantSupplier<Vector3> _frequency = new();
 
-        public TerrainTextureGenerator(RenderShader partitionShader)
+        public MaskTextureGenerator(RenderShader maskShader)
         {
-            _partitionShader = partitionShader;
+            _maskShader = maskShader;
             _pipeline =
                 new Pipeline.Builder()
                     .AddNode(new GeneratorNode.Builder().SetKey("new"))
@@ -72,22 +77,23 @@ namespace Expeditionary.View.Textures.Generation
                                     Seed = _bSeed,
                                     Frequency = _frequency
                                 }))
+                    .AddNode(new DenormalizeNode.Builder().SetKey("denormalize").SetInput("input", "green"))
                     .AddNode(
                         new WhiteNoiseNode.Builder()
                             .SetKey("blue")
                             .SetInput("input", "gradient")
-                            .SetOutput("green")
+                            .SetOutput("denormalize")
                             .SetChannel(Channel.Blue)
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _bSeed
+                                    Seed = _wSeed
                                 }))
                     .AddOutput("blue")
                     .Build();
         }
 
-        public TerrainLibrary Generate(Interval frequencyRange, Interval attenuationRange, int seed, int count)
+        public void Generate(Interval frequencyRange, int seed, int count)
         {
             var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
@@ -100,7 +106,7 @@ namespace Expeditionary.View.Textures.Generation
                 new(new(0.5f, -0.05f, 0f), new(0f, 1f, 0f, 1f), new(0f, 0f)),
                 new(new(1.05f, h, 0f), new(0f, 0f, 1f, 1f), new(1f, 1f))
             };
-            _partitionShader.SetFloat("edge_delta", -0.05f);
+            _maskShader.SetFloat("edge_delta", -0.05f);
             renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(0, 1, 0, 1, -10, 10)));
             renderTexture.PushViewMatrix(Matrix4.Identity);
             renderTexture.PushModelMatrix(Matrix4.Identity);
@@ -115,41 +121,36 @@ namespace Expeditionary.View.Textures.Generation
                         MinFilter = TextureMinFilter.Nearest,
                         MagFilter = TextureMagFilter.Nearest
                     });
-            var options = new TerrainLibrary.Option[count];
-            for (int i = 0; i < count; ++i)
+            for (int i = 0; i < s_Masks.Length; ++i)
             {
-                var result = _pipeline.Run(canvasProvider)[0];
-                var texture = result.GetTexture();
-                canvasProvider.Return(result);
-                var texCoords = new Vector2[3][];
-                _aSeed.Value = random.Next();
-                _bSeed.Value = random.Next();
-                _wSeed.Value = random.Next();
-                var freq = random.NextSingle() * (frequencyRange.Maximum - frequencyRange.Minimum) 
-                    + frequencyRange.Minimum;
-                _frequency.Value = new(freq, freq, freq);
-                _partitionShader.SetFloat(
-                    "attenuation",
-                    (float)(attenuationRange.Minimum
-                        + random.NextDouble() * (attenuationRange.Maximum - attenuationRange.Minimum)));
-                for (int j = 0; j < s_Masks.Length; ++j)
+                for (int j = 0; j < count; ++j)
                 {
-                    _partitionShader.SetColor("mask", s_Masks[j]);
+                    _aSeed.Value = random.Next();
+                    _bSeed.Value = random.Next();
+                    _wSeed.Value = random.Next();
+                    var freq = random.NextSingle() * (frequencyRange.Maximum - frequencyRange.Minimum)
+                        + frequencyRange.Minimum;
+                    _frequency.Value = new(freq, freq, freq);
+
+                    var result = _pipeline.Run(canvasProvider)[0];
+                    var texture = result.GetTexture();
+                    canvasProvider.Return(result);
+
+                    _maskShader.SetColor("mask", s_Masks[i]);
                     renderTexture.Clear();
                     renderTexture.Draw(
                         verts,
                         PrimitiveType.Triangles,
                         0,
                         verts.Length,
-                        new(BlendMode.None, _partitionShader, texture));
+                        new(BlendMode.None, _maskShader, texture));
                     renderTexture.Display();
                     sheet.Add(renderTexture.GetTexture(), out var segment);
-                    texCoords[j] = GetTexCoords(segment);
+                    var texCoords = GetTexCoords(segment);
                 }
-                options[i] = new(texCoords);
             }
+            sheet.GetTexture().CopyToImage().SaveToFile("mask.png");
             canvasProvider.Dispose();
-            return new(sheet, options);
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)
