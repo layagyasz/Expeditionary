@@ -65,12 +65,12 @@ namespace Expeditionary
                         },
                         new(partitions, edges),
                         new RenderShader.Builder()
-                            .SetVertex("Resources/View/default.vert")
-                            .SetFragment("Resources/View/mask_no_tex.frag")
+                            .SetVertex("Resources/View/Shaders/default.vert")
+                            .SetFragment("Resources/View/Shaders/mask_no_tex.frag")
                             .Build(),
                         new RenderShader.Builder()
-                            .SetVertex("Resources/View/default.vert")
-                            .SetFragment("Resources/View/default.frag")
+                            .SetVertex("Resources/View/Shaders/default.vert")
+                            .SetFragment("Resources/View/Shaders/default.frag")
                             .Build()));
 
             var terrainParameters =

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\View\mask_no_tex.frag">
+    <None Update="Resources\View\Shaders\mask_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Generation\mask.frag">
@@ -25,10 +25,10 @@
     <None Update="Resources\View\Textures\Generation\river.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\default.frag">
+    <None Update="Resources\View\Shaders\default.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\default.vert">
+    <None Update="Resources\View\Shaders\default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Generation\partition.frag">
@@ -37,7 +37,7 @@
     <None Update="Resources\View\Textures\Generation\default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\default_no_tex.frag">
+    <None Update="Resources\View\Shaders\default_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\HumanEyeSensitivity.json">
@@ -55,7 +55,16 @@
     <None Update="Resources\View\Textures\Units\icon-unit-lower-bicycle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-cbrn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-long.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-marine.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-medium.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-mine-launching.png">
@@ -70,13 +79,22 @@
     <None Update="Resources\View\Textures\Units\icon-unit-lower-mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-orbit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-rail.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-recovery.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-short.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-ski.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-stellar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-towed.png">
@@ -106,10 +124,16 @@
     <None Update="Resources\View\Textures\Units\icon-unit-main-artillery.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-main-assault.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\View\Textures\Units\icon-unit-main-engineer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-main-fixed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\View\Textures\Units\icon-unit-main-flame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-main-food.png">
