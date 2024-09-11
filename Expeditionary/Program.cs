@@ -1,4 +1,5 @@
 ﻿using Cardamom.Graphics;
+using Cardamom.Json.OpenTK;
 using Cardamom.Mathematics.Color;
 using Cardamom.Ui;
 using Cardamom.Window;
@@ -6,9 +7,12 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Textures.Generation;
+using Expeditionary.View.Textures.Generation.Combat;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using Cardamom.Json.Graphics.TexturePacking;
 
 namespace Expeditionary
 {
@@ -21,6 +25,19 @@ namespace Expeditionary
             ui.Bind(new MouseListener());
             ui.Bind(
                 new KeyboardListener(SimpleKeyMapper.Us, new Keys[] { Keys.Left, Keys.Right, Keys.Up, Keys.Down }));
+
+            JsonSerializerOptions options = new()
+            {
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                ReadCommentHandling = JsonCommentHandling.Skip
+            };
+            options.Converters.Add(new ColorJsonConverter());
+            options.Converters.Add(new Vector2iJsonConverter());
+            options.Converters.Add(new TextureVolumeJsonConverter());
+            var unitTextureGeneratorSettings =
+                JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
+                    File.ReadAllText("Resources/View/UnitTextureGeneratorSettings.json"), options)!;
+            unitTextureGeneratorSettings.Components!.GetTextures().First().CopyToImage().SaveToFile("components.png");
 
             var sensitivity = 
                 JsonSerializer.Deserialize<SpectrumSensitivity>(

@@ -52,7 +52,7 @@
     <None Update="Resources\View\Textures\Units\icon-unit-lower-arctic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-lower-bicycle.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-mounted-manual.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-cbrn.png">
@@ -70,16 +70,16 @@
     <None Update="Resources\View\Textures\Units\icon-unit-lower-mine-launching.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-lower-mobile.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-empyrean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-lower-motorcycle.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-mounted-automatic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-orbit.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-lower-range-orbital.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-lower-rail.png">
@@ -106,7 +106,7 @@
     <None Update="Resources\View\Textures\Units\icon-unit-lower-wheeled.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-main-aa.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-main-anti-air.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-main-ammo.png">
@@ -184,7 +184,7 @@
     <None Update="Resources\View\Textures\Units\icon-unit-main-ordnance.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\View\Textures\Units\icon-unit-main-recon.png">
+    <None Update="Resources\View\Textures\Units\icon-unit-main-cavalry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-main-signal.png">
@@ -221,6 +221,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\View\Textures\Units\icon-unit-upper-sniper.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\View\UnitTextureGeneratorSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
