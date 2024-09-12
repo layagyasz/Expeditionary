@@ -1,19 +1,26 @@
 ﻿using Cardamom.Collections;
+using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Combat
 {
     public class UnitType
     {
-        public UnitOffense Offense { get; }
+        public ImmutableList<UnitOffense> Offense { get; }
         public UnitDefenseEnvelope Defense { get; }
+        public UnitPersistence Persistence { get; }
         public UnitSpeed Speed { get; }
         public UnitCapabilities Capabilities { get; }
 
         public UnitType(
-            UnitOffense offense, UnitDefenseEnvelope defense, UnitSpeed speed, UnitCapabilities capabilities)
+            IEnumerable<UnitOffense> offense, 
+            UnitDefenseEnvelope defense, 
+            UnitPersistence persistence, 
+            UnitSpeed speed,
+            UnitCapabilities capabilities)
         {
-            Offense = offense;
+            Offense = ImmutableList.CreateRange(offense);
             Defense = defense;
+            Persistence = persistence;
             Speed = speed;
             Capabilities = capabilities;
         }

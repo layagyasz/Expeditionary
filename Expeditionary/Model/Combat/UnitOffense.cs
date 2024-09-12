@@ -2,6 +2,7 @@
 {
     public class UnitOffense
     {
+        public float Volume { get; set; }
         public float Range { get; set; }
         public float Accuracy { get; set; }
         public float Tracking { get; set; }
