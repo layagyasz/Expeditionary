@@ -1,0 +1,3 @@
+{
+  "UnitTraits": [ "Resources/Config/Default/Units/Traits::*.json" ]
+}

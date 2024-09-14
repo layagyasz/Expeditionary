@@ -1,8 +1,10 @@
 ﻿namespace Expeditionary.Model.Combat
 {
-    public struct UnitDefense
+    public class UnitDefense
     {
-        public float Minimum { get; set; }
-        public float Value { get; set; }
+        public UnitBoundedValue Profile { get; set; }
+        public UnitBoundedValue Maneuver { get; set; }
+        public UnitBoundedValue Armor { get; set; }
+        public UnitBoundedValue Vitality { get; set; }
     }
 }

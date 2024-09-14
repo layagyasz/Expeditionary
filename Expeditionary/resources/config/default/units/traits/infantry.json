@@ -1,0 +1,144 @@
+[
+  {
+    "Key": "trait-infantry",
+    "Name": "Infantry",
+    "Modifiers": {
+      "capability.detection.audio": "+1x1",
+      "capability.detection.visual": "+1x1",
+      "defense.armor": "+.25x1",
+      "defense.armor.min": "+0.05x1",
+      "defense.profile": "+1x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality": "+2x1",
+      "defense.vitality.min": "+0.2x1",
+      "persistence.number": "+40x1",
+      "persistence.morale": "+40x1",
+      "persistence.stamina": "+1x1"
+    }
+  },
+  {
+    "Key": "trait-infantry-armor-coverage-n1",
+    "Name": "No Armoring",
+    "Family": "trait-infantry-armor-coverage",
+    "Cost": -1,
+    "Level": -1,
+    "Modifiers": {
+      "defense.armor": "+0x0",
+      "defense.armor.min": "+0x0"
+    }
+  },
+  {
+    "Key": "trait-infantry-armor-coverage-2",
+    "Name": "Extra Armoring",
+    "Family": "trait-infantry-armor-coverage",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "defense.armor": "+.25x1",
+      "defense.armor.min": "+0.1x1"
+    }
+  },
+  {
+    "Key": "trait-infantry-armor-coverage-3",
+    "Name": "Full Armoring",
+    "Family": "trait-infantry-armor-coverage",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "defense.armor": "+.25x1",
+      "defense.armor.min": "+0.2x1"
+    }
+  },
+  {
+    "Key": "trait-infantry-armor-weight-n1",
+    "Name": "Light Armor",
+    "Family": "trait-infantry-armor-weight",
+    "Cost": -2,
+    "Level": -1,
+    "Modifiers": {
+      "defense.armor": "+0x0.5",
+      "defense.armor.min": "+0x0.5"
+    }
+  },
+  {
+    "Key": "trait-infantry-armor-weight-1",
+    "Name": "Heavy Armor",
+    "Family": "trait-infantry-armor-weight",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "defense.armor": "+0x1.5",
+      "defense.armor.min": "+0x1.5"
+    }
+  },
+  {
+    "Key": "trait-infantry-recruitment-n1",
+    "Name": "Conscript",
+    "Family": "trait-infantry-recruitment",
+    "Cost": -2,
+    "Level": -1,
+    "Modifiers": {
+      "persistence.morale": "+0x0.5"
+    }
+  },
+  {
+    "Key": "trait-infantry-recruitment-1",
+    "Name": "Volunteer",
+    "Family": "trait-infantry-recruitment",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "persistence.morale": "+0x1.5"
+    }
+  },
+  {
+    "Key": "trait-infantry-recruitment-2",
+    "Name": "Fanatic",
+    "Family": "trait-infantry-recruitment",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "persistence.morale": "+0x2"
+    }
+  },
+  {
+    "Key": "trait-infantry-training-endurance-1",
+    "Name": "Basic Endurance Training",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "persistence.stamina": "+0x1.25"
+    }
+  },
+  {
+    "Key": "trait-infantry-training-endurance-2",
+    "Name": "Endurance Training 2",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "persistence.stamina": "+0x1.5"
+    }
+  },
+  {
+    "Key": "trait-infantry-training-endurance-3",
+    "Name": "Endurance Training 3",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "persistence.stamina": "+0x1.75"
+    }
+  },
+  {
+    "Key": "trait-infantry-training-endurance-4",
+    "Name": "Elite Endurance Training",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "persistence.stamina": "+0x2"
+    }
+  }
+]

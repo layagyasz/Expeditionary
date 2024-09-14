@@ -13,6 +13,8 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Cardamom.Json.Graphics.TexturePacking;
+using Expeditionary.Model;
+using Cardamom.Json;
 
 namespace Expeditionary
 {
@@ -29,27 +31,31 @@ namespace Expeditionary
             JsonSerializerOptions options = new()
             {
                 NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                ReadCommentHandling = JsonCommentHandling.Skip
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                ReferenceHandler = new KeyedReferenceHandler()
             };
             options.Converters.Add(new ColorJsonConverter());
             options.Converters.Add(new Vector2iJsonConverter());
             options.Converters.Add(new TextureVolumeJsonConverter());
+            var module =
+                JsonSerializer.Deserialize<GameModule>(
+                    File.ReadAllText("resources/config/default/module.json"), options)!;
             var unitTextureGeneratorSettings =
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
-                    File.ReadAllText("Resources/View/UnitTextureGeneratorSettings.json"), options)!;
+                    File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;
             unitTextureGeneratorSettings.Components!.GetTextures().First().CopyToImage().SaveToFile("components.png");
 
             var sensitivity = 
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
-                    File.ReadAllText("Resources/View/HumanEyeSensitivity.json"))!;
+                    File.ReadAllText("resources/view/human_eye_sensitivity.json"))!;
             var baseColor =
                 Color4.ToHsv(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
             var partitionTextureGenerator = 
                 new PartitionTextureGenerator(
                     new RenderShader.Builder()
-                        .SetVertex("Resources/View/Textures/Generation/default.vert")
-                        .SetFragment("Resources/View/Textures/Generation/partition.frag")
+                        .SetVertex("resources/view/textures/generation/default.vert")
+                        .SetFragment("resources/view/textures/generation/partition.frag")
                         .Build());
             var partitions = 
                 partitionTextureGenerator.Generate(
@@ -58,15 +64,15 @@ namespace Expeditionary
             var maskTextureGenerator =
                 new MaskTextureGenerator(
                     new RenderShader.Builder()
-                        .SetVertex("Resources/View/Textures/Generation/default.vert")
-                        .SetFragment("Resources/View/Textures/Generation/mask.frag")
+                        .SetVertex("resources/view/textures/generation/default.vert")
+                        .SetFragment("resources/view/textures/generation/mask.frag")
                         .Build());
             maskTextureGenerator.Generate(frequencyRange: new(4f, 8f), seed: 0, count: 16);
 
             var riverTextureGenerator = 
                 new RiverTextureGenerator(new RenderShader.Builder()
-                    .SetVertex("Resources/View/Textures/Generation/default.vert")
-                    .SetFragment("Resources/View/Textures/Generation/river.frag")
+                    .SetVertex("resources/view/textures/generation/default.vert")
+                    .SetFragment("resources/view/textures/generation/river.frag")
                     .Build());
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
@@ -82,12 +88,12 @@ namespace Expeditionary
                         },
                         new(partitions, edges),
                         new RenderShader.Builder()
-                            .SetVertex("Resources/View/Shaders/default.vert")
-                            .SetFragment("Resources/View/Shaders/mask_no_tex.frag")
+                            .SetVertex("resources/view/shaders/default.vert")
+                            .SetFragment("resources/view/shaders/mask_no_tex.frag")
                             .Build(),
                         new RenderShader.Builder()
-                            .SetVertex("Resources/View/Shaders/default.vert")
-                            .SetFragment("Resources/View/Shaders/default.frag")
+                            .SetVertex("resources/view/shaders/default.vert")
+                            .SetFragment("resources/view/shaders/default.frag")
                             .Build()));
 
             var terrainParameters =
