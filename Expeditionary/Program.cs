@@ -1,21 +1,20 @@
 ﻿using Cardamom.Graphics;
+using Cardamom.Json;
+using Cardamom.Json.Graphics.TexturePacking;
 using Cardamom.Json.OpenTK;
 using Cardamom.Mathematics.Color;
 using Cardamom.Ui;
 using Cardamom.Window;
-using Expeditionary.Model.Mapping;
+using Expeditionary.Model;
+using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Textures.Generation;
+using Expeditionary.View.Textures.Generation.Combat.Units;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Cardamom.Json.Graphics.TexturePacking;
-using Expeditionary.Model;
-using Cardamom.Json;
-using Expeditionary.view.textures.generation.combat.units;
-using Expeditionary.model.mapping.generator;
 
 namespace Expeditionary
 {

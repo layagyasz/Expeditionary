@@ -1,7 +1,7 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
 
-namespace Expeditionary.model.combat.units
+namespace Expeditionary.Model.Combat.Units
 {
     public class UnitTrait : IKeyed
     {

@@ -16,229 +16,229 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="resources\config\default\module.json">
+    <None Update="Resources\config\default\module.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\config\default\units\definitions\example.json">
+    <None Update="Resources\config\default\units\definitions\example.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\config\default\units\traits\infantry.json">
+    <None Update="Resources\config\default\units\traits\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\shaders\mask_no_tex.frag">
+    <None Update="Resources\view\shaders\mask_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\generation\mask.frag">
+    <None Update="Resources\view\textures\generation\mask.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\generation\river.frag">
+    <None Update="Resources\view\textures\generation\river.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\shaders\default.frag">
+    <None Update="Resources\view\shaders\default.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\shaders\default.vert">
+    <None Update="Resources\view\shaders\default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\generation\partition.frag">
+    <None Update="Resources\view\textures\generation\partition.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\generation\default.vert">
+    <None Update="Resources\view\textures\generation\default.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\shaders\default_no_tex.frag">
+    <None Update="Resources\view\shaders\default_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\human_eye_sensitivity.json">
+    <None Update="Resources\view\human_eye_sensitivity.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_background.png">
+    <None Update="Resources\view\textures\units\icon_unit_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_airborne.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_airborne.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_arctic.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_arctic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_mounted_manual.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_mounted_manual.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_cbrn.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_cbrn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_range_long.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_range_long.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_marine.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_marine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_range_medium.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_range_medium.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_mine_launching.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_mine_launching.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_empyrean.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_empyrean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_mounted_automatic.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_mounted_automatic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_mountain.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_range_orbital.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_range_orbital.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_rail.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_rail.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_recovery.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_recovery.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_range_short.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_range_short.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_ski.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_ski.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_stellar.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_stellar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_towed.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_towed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_tracked.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_tracked.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_lower_wheeled.png">
+    <None Update="Resources\view\textures\units\icon_unit_lower_wheeled.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_anti_air.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_anti_air.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_ammo.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_ammo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_amphibious.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_amphibious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_antitank.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_antitank.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_armor.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_armor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_artillery.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_artillery.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_assault.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_assault.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_engineer.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_engineer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_fixed.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_fixed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_flame.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_flame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_food.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_food.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_fuel.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_fuel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_heavy.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_heavy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_hq.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_hq.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_infantry.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_infantry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_jamming.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_jamming.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_labor.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_labor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_light.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_maintenance.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_maintenance.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_medical.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_medical.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_mg.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_mg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_mine.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_mine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_missile_defense.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_missile_defense.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_missile.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_missile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_mortar.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_mortar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_ordnance.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_ordnance.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_cavalry.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_cavalry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_signal.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_signal.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_supply.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_supply.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_transport.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_transport.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_main_uav.png">
+    <None Update="Resources\view\textures\units\icon_unit_main_uav.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_outline.png">
+    <None Update="Resources\view\textures\units\icon_unit_outline.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_size_platoon.png">
+    <None Update="Resources\view\textures\units\icon_unit_size_platoon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_mine_clearing.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_mine_clearing.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_mine_laying.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_mine_laying.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_rocket.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_rocket.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_security.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_security.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_sensor.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_sensor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\textures\units\icon_unit_upper_sniper.png">
+    <None Update="Resources\view\textures\units\icon_unit_upper_sniper.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\view\unit_texture_generator_settings.json">
+    <None Update="Resources\view\unit_texture_generator_settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="resources\config\default\factions\" />
+    <Folder Include="Resources\config\default\factions\" />
   </ItemGroup>
 
 </Project>

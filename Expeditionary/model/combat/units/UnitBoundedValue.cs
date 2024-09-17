@@ -1,4 +1,4 @@
-﻿namespace Expeditionary.model.combat.units
+﻿namespace Expeditionary.Model.Combat.Units
 {
     public struct UnitBoundedValue
     {

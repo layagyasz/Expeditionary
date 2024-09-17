@@ -9,7 +9,7 @@ using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.model.mapping.generator
+namespace Expeditionary.Model.Mapping.Generator
 {
     public class MapGenerator
     {

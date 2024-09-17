@@ -3,7 +3,7 @@ using Cardamom.Collections;
 using Cardamom.Json.Collections;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.model.combat.units
+namespace Expeditionary.Model.Combat.Units
 {
     public class UnitDefinition : IKeyed
     {

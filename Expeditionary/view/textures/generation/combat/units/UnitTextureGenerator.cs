@@ -1,7 +1,7 @@
 ﻿using Cardamom.Graphics.TexturePacking;
-using Expeditionary.model.combat.units;
+using Expeditionary.Model.Combat.Units;
 
-namespace Expeditionary.view.textures.generation.combat.units
+namespace Expeditionary.View.Textures.Generation.Combat.Units
 {
     public class UnitTextureGenerator
     {

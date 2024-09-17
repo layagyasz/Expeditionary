@@ -1,9 +1,9 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Graphics.TexturePacking;
-using Expeditionary.model.combat.units;
+using Expeditionary.Model.Combat.Units;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.view.textures.generation.combat.units
+namespace Expeditionary.View.Textures.Generation.Combat.Units
 {
     public class UnitTextureGeneratorSettings
     {

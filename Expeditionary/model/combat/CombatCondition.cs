@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Expeditionary.model.combat
+namespace Expeditionary.Model.Combat
 {
     [Flags]
     [JsonConverter(typeof(JsonStringEnumConverter))]

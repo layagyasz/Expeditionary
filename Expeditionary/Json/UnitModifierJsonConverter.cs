@@ -1,4 +1,4 @@
-﻿using Expeditionary.model.combat.units;
+﻿using Expeditionary.Model.Combat.Units;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

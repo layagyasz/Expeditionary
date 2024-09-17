@@ -1,6 +1,6 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
-using Expeditionary.model.combat.units;
+using Expeditionary.Model.Combat.Units;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model

@@ -3,7 +3,7 @@ using Cardamom.Json;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.model.combat.units
+namespace Expeditionary.Model.Combat.Units
 {
     [JsonConverter(typeof(BuilderJsonConverter))]
     [BuilderClass(typeof(UnitDefinition))]
