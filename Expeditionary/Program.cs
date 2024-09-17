@@ -40,6 +40,7 @@ namespace Expeditionary
             var module =
                 JsonSerializer.Deserialize<GameModule>(
                     File.ReadAllText("resources/config/default/module.json"), options)!;
+            var units = module.UnitDefinitions.Values.Select(x => x.Build()).ToList();
             var unitTextureGeneratorSettings =
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
                     File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;

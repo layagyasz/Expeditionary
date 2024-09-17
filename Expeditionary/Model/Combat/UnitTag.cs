@@ -1,5 +1,8 @@
-﻿namespace Expeditionary.Model.Combat
+﻿using System.Text.Json.Serialization;
+
+namespace Expeditionary.Model.Combat
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UnitTag
     {
         None,

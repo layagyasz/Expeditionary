@@ -19,6 +19,9 @@
     <None Update="resources\config\default\module.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="resources\config\default\units\definitions\example.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="resources\config\default\units\traits\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -232,6 +235,10 @@
     <None Update="resources\view\unit_texture_generator_settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\config\default\factions\" />
   </ItemGroup>
 
 </Project>

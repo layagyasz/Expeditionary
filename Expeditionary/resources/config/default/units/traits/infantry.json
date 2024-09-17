@@ -1,7 +1,8 @@
 [
   {
-    "Key": "trait-infantry",
+    "$id": "trait-infantry",
     "Name": "Infantry",
+    "Tags": [ "Infantry" ],
     "Modifiers": {
       "capability.detection.audio": "+1x1",
       "capability.detection.visual": "+1x1",
@@ -17,62 +18,93 @@
     }
   },
   {
-    "Key": "trait-infantry-armor-coverage-n1",
-    "Name": "No Armoring",
-    "Family": "trait-infantry-armor-coverage",
-    "Cost": -1,
-    "Level": -1,
+    "$id": "trait-infantry-rifle",
+    "Name": "Rifle",
+    "Cost": 0,
     "Modifiers": {
-      "defense.armor": "+0x0",
-      "defense.armor.min": "+0x0"
+      "attack.volume": "+40x1",
+      "attack.range": "+1x1",
+      "attack.accuracy": "+0.5x1",
+      "attack.tracking": "+5x1",
+      "attack.penetration": "+1x1",
+      "attack.lethality": "+1x1"
     }
   },
   {
-    "Key": "trait-infantry-armor-coverage-2",
-    "Name": "Extra Armoring",
-    "Family": "trait-infantry-armor-coverage",
+    "$id": "trait-infantry-mg",
+    "Name": "MG",
+    "Cost": 4,
+    "Tags": [ "MG" ],
+    "Modifiers": {
+      "attack.volume": "+200x1",
+      "attack.range": "+2x1",
+      "attack.accuracy": "+0.25x1",
+      "attack.tracking": "+4x1",
+      "attack.penetration": "+2x1",
+      "attack.lethality": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-sniper",
+    "Name": "Sniper",
+    "Cost": 4,
+    "Tags": [ "Sniper" ],
+    "Modifiers": {
+      "attack.volume": "+10x1",
+      "attack.range": "+4x1",
+      "attack.accuracy": "+2x1",
+      "attack.tracking": "+1x1",
+      "attack.penetration": "+2x1",
+      "attack.lethality": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-armor-1",
+    "Name": "Light Armor",
+    "Family": "trait-infantry-armor",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "defense.armor": "+0.25x1",
+      "defense.armor.min": "+0.05x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-armor-2",
+    "Name": "Tactical Armor",
+    "Family": "trait-infantry-armor",
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "defense.armor": "+.25x1",
+      "defense.armor": "+0.5x1",
       "defense.armor.min": "+0.1x1"
     }
   },
   {
-    "Key": "trait-infantry-armor-coverage-3",
-    "Name": "Full Armoring",
-    "Family": "trait-infantry-armor-coverage",
+    "$id": "trait-infantry-armor-3",
+    "Name": "Battle Armor",
+    "Family": "trait-infantry-armor",
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "defense.armor": "+.25x1",
+      "defense.armor": "+0.5x1",
       "defense.armor.min": "+0.2x1"
     }
   },
   {
-    "Key": "trait-infantry-armor-weight-n1",
-    "Name": "Light Armor",
-    "Family": "trait-infantry-armor-weight",
-    "Cost": -2,
-    "Level": -1,
-    "Modifiers": {
-      "defense.armor": "+0x0.5",
-      "defense.armor.min": "+0x0.5"
-    }
-  },
-  {
-    "Key": "trait-infantry-armor-weight-1",
+    "$id": "trait-infantry-armor-4",
     "Name": "Heavy Armor",
-    "Family": "trait-infantry-armor-weight",
-    "Cost": 2,
-    "Level": 1,
+    "Family": "trait-infantry-armor",
+    "Cost": 4,
+    "Level": 4,
+    "Tags": [ "Heavy" ],
     "Modifiers": {
-      "defense.armor": "+0x1.5",
-      "defense.armor.min": "+0x1.5"
+      "defense.armor": "+0.75x1",
+      "defense.armor.min": "+0.3x1"
     }
   },
   {
-    "Key": "trait-infantry-recruitment-n1",
+    "$id": "trait-infantry-recruitment-n1",
     "Name": "Conscript",
     "Family": "trait-infantry-recruitment",
     "Cost": -2,
@@ -82,7 +114,7 @@
     }
   },
   {
-    "Key": "trait-infantry-recruitment-1",
+    "$id": "trait-infantry-recruitment-1",
     "Name": "Volunteer",
     "Family": "trait-infantry-recruitment",
     "Cost": 2,
@@ -92,7 +124,7 @@
     }
   },
   {
-    "Key": "trait-infantry-recruitment-2",
+    "$id": "trait-infantry-recruitment-2",
     "Name": "Fanatic",
     "Family": "trait-infantry-recruitment",
     "Cost": 4,
@@ -102,7 +134,7 @@
     }
   },
   {
-    "Key": "trait-infantry-training-endurance-1",
+    "$id": "trait-infantry-training-endurance-1",
     "Name": "Basic Endurance Training",
     "Family": "trait-infantry-training-endurance",
     "Cost": 1,
@@ -112,7 +144,7 @@
     }
   },
   {
-    "Key": "trait-infantry-training-endurance-2",
+    "$id": "trait-infantry-training-endurance-2",
     "Name": "Endurance Training 2",
     "Family": "trait-infantry-training-endurance",
     "Cost": 2,
@@ -122,7 +154,7 @@
     }
   },
   {
-    "Key": "trait-infantry-training-endurance-3",
+    "$id": "trait-infantry-training-endurance-3",
     "Name": "Endurance Training 3",
     "Family": "trait-infantry-training-endurance",
     "Cost": 3,
@@ -132,13 +164,57 @@
     }
   },
   {
-    "Key": "trait-infantry-training-endurance-4",
+    "$id": "trait-infantry-training-endurance-4",
     "Name": "Elite Endurance Training",
     "Family": "trait-infantry-training-endurance",
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
       "persistence.stamina": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-1",
+    "Name": "Basic Marksman Training",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "attack.accuracy": "+0x1.25",
+      "attack.lethality": "+0x1.25"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-2",
+    "Name": "Marksman Training 2",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "attack.accuracy": "+0x1.5",
+      "attack.lethality": "+0x1.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-3",
+    "Name": "Marksman Training 3",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "attack.accuracy": "+0x1.75",
+      "attack.lethality": "+0x1.75"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-4",
+    "Name": "Elite Marksman Training",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "attack.accuracy": "+0x2",
+      "attack.lethality": "+0x2"
     }
   }
 ]

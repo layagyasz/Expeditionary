@@ -1,17 +1,32 @@
-﻿using Cardamom.Collections;
+﻿using Cardamom;
+using Cardamom.Collections;
+using Cardamom.Json.Collections;
+using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Combat
 {
-    public class UnitDefinition
+    public class UnitDefinition : IKeyed
     {
-        public List<List<UnitTraitSet>> Offenses { get; set; } = new();
-        public List<UnitTraitSet> Traits { get; set; } = new();
+        public class UnitTraitSet
+        {
+            [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
+            public List<UnitTrait> Traits { get; set; } = new();
+        }
+
+        public string Key { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string? Symbol { get; set; }
+
+        public List<UnitTraitSet> Offenses { get; set; } = new();
+
+        [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
+        public List<UnitTrait> Traits { get; set; } = new();
 
         public UnitType Build()
         {
             var attributes = Combine(Traits);
             return new(
-                Offenses.Select(x => BuildOffense(Combine(x), attributes)),
+                Offenses.Select(x => BuildOffense(Combine(x.Traits), attributes)),
                 BuildDefenseEnvelope(attributes), 
                 BuildPersistence(attributes), 
                 BuildSpeed(attributes),
@@ -23,8 +38,7 @@ namespace Expeditionary.Model.Combat
             return new()
             {
                 Detection = 
-                    GetMap<UnitDetectionBand, UnitBoundedValue>(
-                        "capabilities.detection", x => BuildBounded(attributes, x)),
+                    GetMap<UnitDetectionBand, float>("capabilities.detection", x => GetOrDefault(attributes, x, 0)),
                 Concealment = 
                     GetMap<UnitDetectionBand, UnitBoundedValue>(
                         "capabilities.concealment", x => BuildBounded(attributes, x))
@@ -86,10 +100,9 @@ namespace Expeditionary.Model.Combat
             return new();
         }
 
-        private static Dictionary<string, float> Combine(IEnumerable<UnitTraitSet> traitSets)
+        private static Dictionary<string, float> Combine(IEnumerable<UnitTrait> traits)
         {
-            return traitSets.SelectMany(x => x.Traits)
-                .SelectMany(x => x.Modifiers)
+            return traits.SelectMany(x => x.Modifiers)
                 .GroupBy(x => x.Key, x => x.Value)
                 .ToDictionary(x => x.Key, x => x.Aggregate((x,y) => x + y).GetValue());
         }

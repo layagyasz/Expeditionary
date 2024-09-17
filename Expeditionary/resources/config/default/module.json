@@ -1,3 +1,4 @@
 {
-  "UnitTraits": [ "Resources/Config/Default/Units/Traits::*.json" ]
+  "UnitTraits": [ "resources/config/default/units/traits::*.json" ],
+  "UnitDefinitions": [ "resources/config/default/units/definitions::*json" ]
 }
