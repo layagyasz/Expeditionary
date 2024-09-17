@@ -1,6 +1,6 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
-using Expeditionary.Model.Combat;
+using Expeditionary.model.combat.units;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model
@@ -13,6 +13,6 @@ namespace Expeditionary.Model
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         [JsonPropertyOrder(1)]
-        public Library<UnitDefinition> UnitDefinitions { get; set; } = new();
+        public Library<UnitType> UnitTypes { get; set; } = new();
     }
 }

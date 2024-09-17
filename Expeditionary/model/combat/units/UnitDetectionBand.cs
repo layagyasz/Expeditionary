@@ -1,9 +1,8 @@
-﻿namespace Expeditionary.Model.Combat
+﻿namespace Expeditionary.model.combat.units
 {
     public enum UnitDetectionBand
     {
         Visual,
-        Infrared,
         Thermal,
         Electronic,
         Audio

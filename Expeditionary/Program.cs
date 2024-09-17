@@ -7,7 +7,6 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Textures.Generation;
-using Expeditionary.View.Textures.Generation.Combat;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
@@ -15,6 +14,8 @@ using System.Text.Json.Serialization;
 using Cardamom.Json.Graphics.TexturePacking;
 using Expeditionary.Model;
 using Cardamom.Json;
+using Expeditionary.view.textures.generation.combat.units;
+using Expeditionary.model.mapping.generator;
 
 namespace Expeditionary
 {
@@ -40,7 +41,6 @@ namespace Expeditionary
             var module =
                 JsonSerializer.Deserialize<GameModule>(
                     File.ReadAllText("resources/config/default/module.json"), options)!;
-            var units = module.UnitDefinitions.Values.Select(x => x.Build()).ToList();
             var unitTextureGeneratorSettings =
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
                     File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;

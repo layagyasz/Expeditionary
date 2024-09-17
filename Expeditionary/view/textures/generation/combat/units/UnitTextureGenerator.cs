@@ -1,7 +1,7 @@
 ﻿using Cardamom.Graphics.TexturePacking;
-using Expeditionary.Model.Combat;
+using Expeditionary.model.combat.units;
 
-namespace Expeditionary.View.Textures.Generation.Combat
+namespace Expeditionary.view.textures.generation.combat.units
 {
     public class UnitTextureGenerator
     {
@@ -16,7 +16,7 @@ namespace Expeditionary.View.Textures.Generation.Combat
         {
             return new DynamicTextureVolume(
                 new DynamicStaticSizeTexturePage.Supplier(
-                    _settings.TextureSize, _settings.ElementSize, new(), new(), new()), 
+                    _settings.TextureSize, _settings.ElementSize, new(), new(), new()),
                 checkAllPages: false);
         }
     }

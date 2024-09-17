@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Combat
+namespace Expeditionary.model.combat.units
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UnitTag

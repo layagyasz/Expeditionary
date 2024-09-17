@@ -1,4 +1,4 @@
-﻿namespace Expeditionary.Model.Combat
+﻿namespace Expeditionary.model.combat.units
 {
     public class UnitDefense
     {

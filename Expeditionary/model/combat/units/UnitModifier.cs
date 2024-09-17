@@ -1,11 +1,13 @@
 ﻿using Expeditionary.Json;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Combat
+namespace Expeditionary.model.combat.units
 {
     [JsonConverter(typeof(UnitModifierJsonConverter))]
     public struct UnitModifier
     {
+        public static readonly UnitModifier None = new(1, 0);
+
         public float Multiplier { get; set; } = 1f;
         public float Bonus { get; set; } = 0f;
 

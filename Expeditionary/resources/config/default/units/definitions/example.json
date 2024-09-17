@@ -2,8 +2,9 @@
   {
     "$id": "def-infantry-example",
     "Name": "Example Infantry",
-    "Offenses": [
+    "Attacks": [
       {
+        "Condition": "Ranged",
         "Traits": [
           "trait-infantry-rifle"
         ]
