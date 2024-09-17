@@ -6,9 +6,10 @@ using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
+using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Model.Mapping
+namespace Expeditionary.model.mapping.generator
 {
     public class MapGenerator
     {
@@ -45,7 +46,7 @@ namespace Expeditionary.Model.Mapping
             new(1, 1)
         };
 
-        private readonly ICanvasProvider _canvasProvider = 
+        private readonly ICanvasProvider _canvasProvider =
             new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
 
         private readonly Pipeline _pipeline;
@@ -62,7 +63,7 @@ namespace Expeditionary.Model.Mapping
 
         public MapGenerator()
         {
-            _pipeline = 
+            _pipeline =
                 new Pipeline.Builder()
                     .AddNode(new InputNode.Builder().SetKey("position").SetIndex(0))
                     .AddNode(
@@ -71,7 +72,7 @@ namespace Expeditionary.Model.Mapping
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
                             .SetParameters(
-                                new() 
+                                new()
                                 {
                                     Seed = _elevationSeed,
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
@@ -283,11 +284,11 @@ namespace Expeditionary.Model.Mapping
             _moistureSeed.Value = random.Next();
             _brushCoverSeed.Value = random.Next();
             _foliageCoverSeed.Value = random.Next();
-            
+
             var centers = new Color4[s_Resolution, s_Resolution];
-            for (int i=0; i<size.X; ++i)
+            for (int i = 0; i < size.X; ++i)
             {
-                for (int j=0; j<size.Y; ++j)
+                for (int j = 0; j < size.Y; ++j)
                 {
                     var coord = Geometry.MapOffset(new(i, j));
                     centers[i, j] = new(coord.X, coord.Y, 0, 1);
@@ -304,7 +305,7 @@ namespace Expeditionary.Model.Mapping
             var soil = output[2].GetTexture().GetData();
             var plants = output[3].GetTexture().GetData();
             Elevation(map, corners, parameters, elevation);
-            Rivers(map, corners, random);
+            RiverGenerator.Generate(map, corners, random);
             AdjustMoisture(map, parameters, plants);
             Stone(map, parameters, stone);
             Soil(map, parameters, soil);
@@ -335,7 +336,7 @@ namespace Expeditionary.Model.Mapping
                     }
                 }
             }
-            for (int i = 0; i <map.Width; ++i)
+            for (int i = 0; i < map.Width; ++i)
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
@@ -358,9 +359,9 @@ namespace Expeditionary.Model.Mapping
                     }
                 }
             }
-            for (int i=0; i<corners.GetLength(0); ++i)
+            for (int i = 0; i < corners.GetLength(0); ++i)
             {
-                for (int j=0; j<corners.GetLength(1); ++j)
+                for (int j = 0; j < corners.GetLength(1); ++j)
                 {
                     var corner = Cubic.TriangularOffset.Instance.Wrap(new(i, j));
                     int n = 0;
@@ -376,100 +377,6 @@ namespace Expeditionary.Model.Mapping
                     corners[i, j] = total / n;
                 }
             }
-        }
-
-        private static void Rivers(Map map, float[,] corners, Random random)
-        {
-            for (int i = 0; i < 100; ++i)
-            {
-                RiverTrace(RiverSelectStartCorner(map, random), map, corners);
-            }
-        }
-
-        private static Vector3i RiverSelectStartCorner(Map map, Random random)
-        {
-            while (true)
-            {
-                var coord = new Vector2i(random.Next(map.Width), random.Next(map.Height));
-                if (map.GetTile(coord) == null)
-                {
-                    continue;
-                }
-                var hex = Cubic.HexagonalOffset.Instance.Wrap(coord);
-                Vector3i corner = Geometry.GetCorner(hex, random.Next(6));
-                if (!Geometry.GetCornerHexes(corner)
-                    .Select(map.GetTile)
-                    .Where(x => x != null)
-                    .Any(x => x!.Terrain.IsLiquid))
-                {
-                    return corner;
-                }
-            }
-        }
-
-        private static void RiverTrace(Vector3i start, Map map, float[,] corners)
-        {
-            Vector3i pos = start;
-            Vector2i index = Cubic.TriangularOffset.Instance.Project(start);
-            float elevation = corners[index.X, index.Y];
-            ArrayList<Vector3i> edges = new();
-            while (true)
-            {
-                var next = RiverSelectNext(pos, map, corners);
-                if (next == default)
-                {
-                    break;
-                }
-                var newEdge = Geometry.GetEdge(pos, next);
-                if (map.GetEdge(newEdge) == null)
-                {
-                    break;
-                }
-                edges.Add(newEdge);
-                var nextIndex = Cubic.TriangularOffset.Instance.Project(next);
-                if (corners[nextIndex.X, nextIndex.Y] >= elevation)
-                {
-                    var tile = Geometry.GetCornerHexes(next)
-                        .Select(map.GetTile)
-                        .Where(x => x != null)
-                        .ArgMin(x => x!.Elevation);
-                    tile!.Terrain.IsLiquid = true;
-                    break;
-                }
-                if (Geometry.GetCornerHexes(pos)
-                    .Select(map.GetTile)
-                    .Where(x => x != null)
-                    .Any(x => x!.Terrain.IsLiquid))
-                {
-                    break;
-                }
-                pos = next;
-                index = nextIndex;
-                elevation = corners[nextIndex.X, nextIndex.Y];
-            }
-            foreach (var edge in edges)
-            {
-                map.GetEdge(edge)!.Type = Edge.EdgeType.River;
-            }
-        }
-
-        private static Vector3i RiverSelectNext(Vector3i pos, Map map, float[,] corners)
-        {
-            foreach (var neighbor in Geometry.GetCornerNeighbors(pos))
-            {
-                foreach (var edge in Geometry.GetCornerEdges(neighbor))
-                {
-                    if (edge != Geometry.GetEdge(pos, neighbor) && map.GetEdge(edge)?.Type == Edge.EdgeType.River)
-                    {
-                        return neighbor;
-                    }
-                }
-            }
-            var normalNext = Geometry.GetCornerNeighbors(pos)
-                .Select(Cubic.TriangularOffset.Instance.Project)
-                .Where(x => x.X >= 0 && x.Y >= 0 && x.X < corners.GetLength(0) && x.Y < corners.GetLength(1))
-                .ArgMin(x => corners[x.X, x.Y]);
-            return Cubic.TriangularOffset.Instance.Wrap(normalNext);
         }
 
         private static void AdjustMoisture(Map map, TerrainParameters parameters, Color4[,] plantData)
@@ -519,7 +426,7 @@ namespace Expeditionary.Model.Mapping
                     if (tileData.B + tile.Slope - 0.5f < parameters.SoilCover)
                     {
                         var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
-                        var soil = 
+                        var soil =
                             GetCenter(
                                 GetBarycentric(tileData.R, tileData.G, parameters.Soil * soilModifier), s_Barycenters);
                         tile.Terrain.Soil = soil;
@@ -573,7 +480,7 @@ namespace Expeditionary.Model.Mapping
 
         private static Vector3 GetCenter(Vector3 x, Vector3[] options)
         {
-           return options.ArgMin(y => Distance(x, y));
+            return options.ArgMin(y => Distance(x, y));
         }
 
         private static Vector2 GetCenter(Vector2 x, Vector2[] options)
