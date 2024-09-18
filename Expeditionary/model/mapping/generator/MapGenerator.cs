@@ -459,7 +459,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = plantData[i, j];
                     var tile = map.GetTile(i, j);
-                    if (tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
+                    if (!tile!.Terrain.IsLiquid && tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
                     {
                         tile.Terrain.Foliage = GetCenter(new(tileData.R, tileData.G), s_Centers);
                     }
