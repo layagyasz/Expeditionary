@@ -1,12 +1,24 @@
 ﻿using Cardamom.Collections;
+using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Hexagons;
-using MathNet.Numerics.Distributions;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
     public class CityGenerator
     {
+        public class Parameters
+        {
+            public int Cores { get; set; }
+            public int Candidates { get; set; }
+            public ISampler Size { get; set; } = new NormalSampler(20, 10);
+            public float BasePenalty { get; set; } = 0.1f;
+            public float SlopePenalty { get; set; } = 1;
+            public float ElevationPenalty { get; set; } = 1;
+            public float NoLiquidPenalty { get; set; } = 2;
+            public float NoRiverPenalty { get; set; } = 1;
+        }
+
         private class Core
         {
             public int Max { get; }
@@ -35,7 +47,7 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        public static void Generate(CityParameters parameters, Map map, Random random)
+        public static void Generate(Parameters parameters, Map map, Random random)
         {
             var costDict = map.GetTiles().ToDictionary(x => x, x => GetCost(x, map, parameters));
             var candidates = costDict.OrderBy(x => x.Value).Take(parameters.Candidates).ToList();
@@ -53,7 +65,8 @@ namespace Expeditionary.Model.Mapping.Generator
                     { 
                         Core = core,
                         Open = true,
-                        Distance = 0
+                        Distance = 0,
+                        Cost = candidate.Value
                     };
                 nodes.Add(candidate.Key, node);
                 open.Push(node, 0);
@@ -106,7 +119,7 @@ namespace Expeditionary.Model.Mapping.Generator
 
             foreach (var node in  nodes.Values)
             {
-                if (node.Closed)
+                if (node.Closed && node.Core != null)
                 {
                     map.GetTile(node.Hex)!.Structure =
                         new()
@@ -118,7 +131,7 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        private static float GetCost(Vector3i hex, Map map, CityParameters parameters)
+        private static float GetCost(Vector3i hex, Map map, Parameters parameters)
         {
             var tile = map.GetTile(hex);
             if (tile == null || tile.Terrain.IsLiquid)

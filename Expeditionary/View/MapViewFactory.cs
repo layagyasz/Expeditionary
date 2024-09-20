@@ -51,6 +51,7 @@ namespace Expeditionary.View
                     .SetRenderResources(GetRenderResources)
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
+                    .AddLayer(3 * triangles)
                     .AddLayer(triangles);
 
             int triangle = 0;
@@ -70,7 +71,7 @@ namespace Expeditionary.View
                 var centerPos = ToVector3(Geometry.MapAxial(centerHex.Xy));
                 var leftPos = ToVector3(Geometry.MapAxial(leftHex.Xy));
                 var rightPos = ToVector3(Geometry.MapAxial(rightHex.Xy));
-                for (int layer = 0; layer < 2; ++layer)
+                for (int layer = 0; layer < 3; ++layer)
                 {
                     var selected = options[random.Next(options.Length)];
                     for (int hex = 0; hex < 3; ++hex)
@@ -99,11 +100,11 @@ namespace Expeditionary.View
                     var edgeOptions = _textureLibrary.Edges.Query(query).ToArray();
                     var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
                     bufferBuilder.SetVertex(
-                        layer: 2, 3 * triangle, new(centerPos, parameters.Liquid, selectedEdge.TexCoords[0]));
+                        layer: 3, 3 * triangle, new(centerPos, parameters.Liquid, selectedEdge.TexCoords[0]));
                     bufferBuilder.SetVertex(
-                        layer: 2, 3 * triangle + 1, new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
+                        layer: 3, 3 * triangle + 1, new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
                     bufferBuilder.SetVertex(
-                        layer: 2, 3 * triangle + 2, new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
+                        layer: 3, 3 * triangle + 2, new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
                 }
 
                 ++triangle;
@@ -146,7 +147,7 @@ namespace Expeditionary.View
         private RenderResources GetRenderResources(int layer)
         {
             // Rivers
-            if (layer == 2)
+            if (layer == 3)
             {
                 return new(BlendMode.Alpha, _texShader, _textureLibrary.Edges.GetTexture());
             }
@@ -155,19 +156,21 @@ namespace Expeditionary.View
 
         private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)
         {
+            // City
+            // TODO: this should be rendered with special tiles
+            if (layer == 2)
+            {
+                return tile.Structure.Type != StructureType.None ? new(0.25f, 0.25f, 0.25f, 1f) : new();
+            }
+
             // Foliage
             if (layer == 1)
             {
-                return (tile.Terrain.Foliage.HasValue && tile.Structure.Type == StructureType.None)
+                return tile.Terrain.Foliage.HasValue 
                     ? parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value) : new();
             }
+
             // Base
-            // City
-            // TODO: this should be rendered with special tiles
-            if (tile.Structure.Type != StructureType.None)
-            {
-                return new(0.25f, 0.25f, 0.25f, 1f);
-            }
             // Ocean
             if (tile.Terrain.IsLiquid)
             {
