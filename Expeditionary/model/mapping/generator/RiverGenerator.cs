@@ -1,15 +1,14 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Hexagons;
-using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
     internal class RiverGenerator
     {
-        public static void Generate(Map map, float[,] corners, Random random)
+        public static void Generate(int count, Map map, float[,] corners, Random random)
         {
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 Trace(SelectStartCorner(map, random), map, corners);
             }

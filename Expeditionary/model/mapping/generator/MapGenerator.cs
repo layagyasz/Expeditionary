@@ -6,7 +6,6 @@ using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
-using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
@@ -14,15 +13,6 @@ namespace Expeditionary.Model.Mapping.Generator
     public class MapGenerator
     {
         private static readonly int s_Resolution = 1024;
-        private static readonly Vector3i[] s_Neighbors =
-        {
-            new(0, -1, 1),
-            new(1, -1, 0),
-            new(1, 0, -1),
-            new(0, 1, -1),
-            new(-1, 1, 0),
-            new(-1, 0, 1)
-        };
         private static readonly Vector3[] s_Barycenters =
         {
             new(1, 0, 0),
@@ -271,7 +261,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     .Build();
         }
 
-        public Map Generate(TerrainParameters parameters, Vector2i size, int seed)
+        public Map Generate(MapParameters parameters, Vector2i size, int seed)
         {
             var random = new Random(seed);
             _elevationSeed.Value = random.Next();
@@ -304,19 +294,20 @@ namespace Expeditionary.Model.Mapping.Generator
             var stone = output[1].GetTexture().GetData();
             var soil = output[2].GetTexture().GetData();
             var plants = output[3].GetTexture().GetData();
-            Elevation(map, corners, parameters, elevation);
-            RiverGenerator.Generate(map, corners, random);
-            AdjustMoisture(map, parameters, plants);
-            Stone(map, parameters, stone);
-            Soil(map, parameters, soil);
-            Brush(map, parameters, plants);
-            Foliage(map, parameters, plants);
-
             _canvasProvider.Return(input);
             foreach (var canvas in output)
             {
                 _canvasProvider.Return(canvas);
             }
+
+            Elevation(map, corners, parameters.Terrain, elevation);
+            RiverGenerator.Generate(parameters.Terrain.Rivers, map, corners, random);
+            AdjustMoisture(map, parameters.Terrain, plants);
+            Stone(map, parameters.Terrain, stone);
+            Soil(map, parameters.Terrain, soil);
+            Brush(map, parameters.Terrain, plants);
+            Foliage(map, parameters.Terrain, plants);
+            CityGenerator.Generate(parameters.Cities, map, random);
 
             return map;
         }
@@ -353,8 +344,8 @@ namespace Expeditionary.Model.Mapping.Generator
                                 .Select(
                                     x =>
                                         Math.Abs(
-                                            (map.GetTile(coord + s_Neighbors[x]) ?? tile)!.Elevation -
-                                            (map.GetTile(coord + s_Neighbors[x]) ?? tile)!.Elevation))
+                                            (map.GetTile(Geometry.GetNeighbor(coord, x)) ?? tile)!.Elevation -
+                                            (map.GetTile(Geometry.GetNeighbor(coord, x + 3)) ?? tile)!.Elevation))
                                 .Max();
                     }
                 }

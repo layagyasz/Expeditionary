@@ -96,5 +96,10 @@ namespace Expeditionary.Hexagons
         {
             return s_HexNeighbors.Select(x => hex + x);
         }
+
+        public static Vector3i GetNeighbor(Vector3i hex, int neighbor)
+        {
+            return hex + s_HexNeighbors[neighbor];
+        }
     }
 }

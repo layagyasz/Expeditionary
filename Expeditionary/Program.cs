@@ -139,7 +139,20 @@ namespace Expeditionary
             ui.SetRoot(
                 sceneFactory.Create(
                     mapGenerator.Generate(
-                        new(),
+                        new()
+                        {
+                            Terrain = 
+                                new()
+                                {
+                                    Rivers = 100
+                                },
+                            Cities =
+                                new()
+                                {
+                                    Cores = 10,
+                                    Candidates = 200
+                                }
+                        },
                         new(100, 100),
                         seed: new Random().Next()),
                     terrainParameters,

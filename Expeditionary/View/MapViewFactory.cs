@@ -158,10 +158,16 @@ namespace Expeditionary.View
             // Foliage
             if (layer == 1)
             {
-                return tile.Terrain.Foliage.HasValue 
+                return (tile.Terrain.Foliage.HasValue && tile.Structure.Type == StructureType.None)
                     ? parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value) : new();
             }
             // Base
+            // City
+            // TODO: this should be rendered with special tiles
+            if (tile.Structure.Type != StructureType.None)
+            {
+                return new(0.25f, 0.25f, 0.25f, 1f);
+            }
             // Ocean
             if (tile.Terrain.IsLiquid)
             {

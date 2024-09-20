@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Expeditionary.Model.Mapping
+namespace Expeditionary.Model.Mapping.Generator
 {
     public class TerrainParameters
     {
@@ -11,5 +11,6 @@ namespace Expeditionary.Model.Mapping
         public float BrushCover { get; set; } = 0.9f;
         public float FoliageCover { get; set; } = 0.6f;
         public float LiquidBonus = 0.2f;
+        public int Rivers { get; set; }
     }
 }

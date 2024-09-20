@@ -1,6 +1,5 @@
 ﻿using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
-using static Expeditionary.Hexagons.Axial;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -41,6 +40,17 @@ namespace Expeditionary.Model.Mapping
                 for (int j=0; j < 2 * Height +2; ++j)
                 {
                     yield return Cubic.TriangularOffset.Instance.Wrap(new(i, j));
+                }
+            }
+        }
+
+        public IEnumerable<Vector3i> GetTiles()
+        {
+            for (int i = 0; i < Width; ++i)
+            {
+                for (int j = 0; j <  Height; ++j)
+                {
+                    yield return Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
                 }
             }
         }
