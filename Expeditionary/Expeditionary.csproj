@@ -25,6 +25,12 @@
     <None Update="Resources\config\default\units\traits\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\fonts\Anton-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\fonts\OFL.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\shaders\mask_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

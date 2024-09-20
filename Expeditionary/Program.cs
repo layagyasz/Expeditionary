@@ -43,7 +43,9 @@ namespace Expeditionary
             var unitTextureGeneratorSettings =
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
                     File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;
-            unitTextureGeneratorSettings.Components!.GetTextures().First().CopyToImage().SaveToFile("components.png");
+            var unitTextureGenerator = new UnitTextureGenerator(unitTextureGeneratorSettings);
+            unitTextureGenerator.Generate(module.UnitTypes.Values)
+                .GetTextures().First().CopyToImage().SaveToFile("units.png");
 
             var sensitivity = 
                 JsonSerializer.Deserialize<SpectrumSensitivity>(

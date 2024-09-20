@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public CityGenerator.Parameters Cities { get; set; } = new();
         }
 
-        private TerrainGenerator _terrainGenerator = new();
+        private readonly TerrainGenerator _terrainGenerator = new();
 
         public Map Generate(Parameters parameters, Vector2i size, int seed)
         {

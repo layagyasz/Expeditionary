@@ -15,5 +15,22 @@
       "trait-infantry-armor-2",
       "trait-infantry-recruitment-n1"
     ]
+  },
+  {
+    "$id": "def-mg-example",
+    "Name": "Example MG",
+    "Attacks": [
+      {
+        "Condition": "Ranged",
+        "Traits": [
+          "trait-infantry-mg"
+        ]
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-n1"
+    ]
   }
 ]

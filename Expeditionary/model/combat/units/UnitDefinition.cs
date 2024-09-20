@@ -24,10 +24,16 @@ namespace Expeditionary.Model.Combat.Units
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<UnitTrait> Traits { get; set; } = new();
 
+        public EnumSet<UnitTag> GetTags()
+        {
+            return Enumerable.Concat(Attacks.SelectMany(x => x.Traits), Traits).SelectMany(x => x.Tags).ToEnumSet();
+        }
+
         public UnitType Build()
         {
             var attributes = Combine(Traits);
             return new(
+                this,
                 Attacks.Select(x => BuildAttack(Combine(x.Traits))),
                 BuildDefenseEnvelope(attributes),
                 BuildPersistence(attributes),

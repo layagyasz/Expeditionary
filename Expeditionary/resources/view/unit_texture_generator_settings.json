@@ -1,14 +1,22 @@
 {
+  "Shader": {
+    "Vertex": "Resources/view/shaders/default.vert",
+    "Fragment": "Resources/view/shaders/default.frag"
+  },
   "TextureSize": [ 1024, 1024 ],
-  "ElementSize": [ 64, 64 ],
-  "Components": {
+  "ElementSize": [ 128, 128 ],
+  "Images": {
     "$type": "DynamicStaticSize",
     "ElementSize": [ 96, 64 ],
     "Textures": {
       "Implicit": [ "Resources/View/Textures/Units::*.png" ]
     }
   },
-  "TagMapping": {
+  "Font": "Resources/view/fonts/Anton-Regular.ttf",
+  "BackgroundImage": "icon_unit_background",
+  "BorderImage": "icon_unit_outline",
+  "SizeImage": "icon_unit_size_platoon",
+  "TagImages": {
     "Airborne": "icon_unit_lower_airborne",
     "Ammo": "icon_unit_main_amphibious",
     "Amphibious": "icon_unit_main_amphibious",
@@ -65,6 +73,6 @@
     "Tracked": "icon_unit_lower_tracked",
     "Transport": "icon_unit_main_transport",
     "UAV": "icon_unit_main_uav",
-    "Wheeled":  "icon_unit_lower_wheeled"
+    "Wheeled": "icon_unit_lower_wheeled"
   }
 }
