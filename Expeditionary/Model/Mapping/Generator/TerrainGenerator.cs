@@ -398,6 +398,9 @@ namespace Expeditionary.Model.Mapping.Generator
                     {
                         plantData[i, j].G += parameters.LiquidBonus;
                     }
+                    var tile = map.GetTile(i, j)!;
+                    tile.Heat = plantData[i, j].R;
+                    tile.Moisture = plantData[i, j].G;
                 }
             }
         }
@@ -445,7 +448,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     var tile = map.GetTile(i, j);
                     if (tile!.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
                     {
-                        tile.Terrain.Brush = GetCenter(new(tileData.R, tileData.G), s_Centers);
+                        tile.Terrain.Brush = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
                     }
                 }
             }
@@ -461,7 +464,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     var tile = map.GetTile(i, j);
                     if (!tile!.Terrain.IsLiquid && tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
                     {
-                        tile.Terrain.Foliage = GetCenter(new(tileData.R, tileData.G), s_Centers);
+                        tile.Terrain.Foliage = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
                     }
                 }
             }

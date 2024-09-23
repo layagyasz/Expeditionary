@@ -12,20 +12,31 @@ namespace Expeditionary.Model.Mapping.Generator
             public int Cores { get; set; }
             public int Candidates { get; set; }
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
-            public float BasePenalty { get; set; } = 0.1f;
-            public float SlopePenalty { get; set; } = 1;
-            public float ElevationPenalty { get; set; } = 1;
-            public float NoLiquidPenalty { get; set; } = 2;
-            public float NoRiverPenalty { get; set; } = 1;
+            public StructureType Type { get; set; }
+            public int Level { get; set; } = 1;
+            public Vector3i Center { get; set; }
+            public Quadratic DistancePenalty { get; set; }
+            public Quadratic SprawlPenalty { get; set; } = new(0f, 0.5f, 0f);
+            public Quadratic SlopePenalty { get; set; } = new(0f, 1f, 0f);
+            public Quadratic ElevationPenalty { get; set; } = new(0f, 1f, 0f);
+            public Quadratic CoastPenalty { get; set; } = new(0f, -2f, 2);
+            public Quadratic RiverPenalty { get; set; } = new(0f, -1f, 1);
+            public Quadratic SandPenalty { get; set; } = new(0f, 1f, 0f);
+            public Quadratic ClayPenalty { get; set; }
+            public Quadratic SiltPenalty { get; set; }
+            public Quadratic HeatPenality { get; set; }
+            public Quadratic MoisturePenalty { get; set; }
         }
 
         private class Core
         {
+            public Parameters Parameters { get; }
             public int Max { get; }
             public int Count { get; set; }
 
-            internal Core(int max) 
+            internal Core(Parameters parameters, int max) 
             { 
+                Parameters = parameters;
                 Max = max;
             }
         }
@@ -47,30 +58,36 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        public static void Generate(Parameters parameters, Map map, Random random)
+        public static void Generate(IEnumerable<Parameters> parameters, Map map, Random random)
         {
-            var costDict = map.GetTiles().ToDictionary(x => x, x => GetCost(x, map, parameters));
-            var candidates = costDict.OrderBy(x => x.Value).Take(parameters.Candidates).ToList();
-            candidates.Shuffle(random);
+            var closed = new HashSet<Vector3i>();
+            var open = new Heap<Node, float>();
+            var nodes = new Dictionary<Vector3i, Node>();
 
-
-            Dictionary<Vector3i, Node> nodes = new();
-            Heap<Node, float> open = new();
-            List<Core> cores = new();
-            foreach (var candidate in candidates.Take(parameters.Cores))
+            foreach (var param in parameters)
             {
-                var core = new Core((int)parameters.Size.Generate(random));
-                var node =
-                    new Node(candidate.Key) 
-                    { 
-                        Core = core,
-                        Open = true,
-                        Distance = 0,
-                        Cost = candidate.Value
-                    };
-                nodes.Add(candidate.Key, node);
-                open.Push(node, 0);
+                var costDict = 
+                    map.GetTiles().Where(x => !closed.Contains(x)).ToDictionary(x => x, x => GetCost(x, map, param));
+                var candidates = costDict.OrderBy(x => x.Value).Take(param.Candidates).ToList();
+                candidates.Shuffle(random);
+
+                foreach (var candidate in candidates.Take(param.Cores))
+                {
+                    closed.Add(candidate.Key);
+                    var core = new Core(param, (int)Math.Max(1, param.Size.Generate(random)));
+                    var node =
+                        new Node(candidate.Key)
+                        {
+                            Core = core,
+                            Open = true,
+                            Distance = 0,
+                            Cost = candidate.Value
+                        };
+                    nodes.Add(candidate.Key, node);
+                    open.Push(node, 0);
+                }
             }
+
             while (open.Count > 0)
             {
                 var current = open.Pop();
@@ -86,10 +103,11 @@ namespace Expeditionary.Model.Mapping.Generator
                     continue;
                 }
                 current.Core.Count++;
+                var p = current.Core.Parameters;
                 foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
                 {
-                    var distance = current.Distance + parameters.BasePenalty;
-                    var cost = distance + GetCost(neighbor, map, parameters);
+                    var distance = current.Distance + 1;
+                    var cost = p.SprawlPenalty.Evaluate(distance) + GetCost(neighbor, map, p);
                     if (cost == float.MaxValue)
                     {
                         continue;
@@ -124,8 +142,8 @@ namespace Expeditionary.Model.Mapping.Generator
                     map.GetTile(node.Hex)!.Structure =
                         new()
                         {
-                            Type = StructureType.Residential,
-                            Level = 1
+                            Type = node.Core.Parameters.Type,
+                            Level = node.Core.Parameters.Level
                         };
                 }
             }
@@ -143,10 +161,16 @@ namespace Expeditionary.Model.Mapping.Generator
             bool neighborsRiver =
                 Geometry.GetEdges(hex)
                     .Select(map.GetEdge).Where(x => x != null).Any(x => x!.Type == Edge.EdgeType.River);
-            return parameters.SlopePenalty * tile.Slope 
-                + parameters.ElevationPenalty * tile.Elevation 
-                + (neighborsWater ? 0 : parameters.NoLiquidPenalty) 
-                + (neighborsRiver ? 0 : parameters.NoLiquidPenalty);
+            return parameters.DistancePenalty.Evaluate(Geometry.GetDistance(hex, parameters.Center))
+                + parameters.SlopePenalty.Evaluate(tile.Slope)
+                + parameters.ElevationPenalty.Evaluate(tile.Elevation)
+                + parameters.CoastPenalty.Evaluate(neighborsWater ? 1 : 0)
+                + parameters.RiverPenalty.Evaluate(neighborsRiver ? 1 : 0)
+                + parameters.SandPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.X : 0)
+                + parameters.ClayPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Y : 0)
+                + parameters.SiltPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Z : 0)
+                + parameters.HeatPenality.Evaluate(tile.Heat)
+                + parameters.MoisturePenalty.Evaluate(tile.Moisture);
         }
     }
 }

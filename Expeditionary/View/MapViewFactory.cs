@@ -160,7 +160,21 @@ namespace Expeditionary.View
             // TODO: this should be rendered with special tiles
             if (layer == 2)
             {
-                return tile.Structure.Type != StructureType.None ? new(0.25f, 0.25f, 0.25f, 1f) : new();
+                switch (tile.Structure.Type)
+                {
+                    case StructureType.Agricultural:
+                        return new(0f, 1f, 0f, 1f);
+                    case StructureType.Mining:
+                        return new(1f, 1f, 0f, 1f);
+                    case StructureType.Residential:
+                        return new(0f, 1f, 1f, 1f);
+                    case StructureType.Commercial:
+                        return new(0f, 0f, 1f, 1f);
+                    case StructureType.Industrial:
+                        return new(1f, 0f, 0f, 1f);
+                    default:
+                        return new();
+                }
             }
 
             // Foliage

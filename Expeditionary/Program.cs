@@ -4,8 +4,11 @@ using Cardamom.Json.Graphics.TexturePacking;
 using Cardamom.Json.OpenTK;
 using Cardamom.Mathematics.Color;
 using Cardamom.Ui;
+using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Window;
+using Expeditionary.Hexagons;
 using Expeditionary.Model;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Spectra;
 using Expeditionary.View;
@@ -151,8 +154,52 @@ namespace Expeditionary
                             Cities =
                                 new()
                                 {
-                                    Cores = 10,
-                                    Candidates = 200
+                                    new()
+                                    {
+                                        Cores = 5,
+                                        Candidates = 100,
+                                        Type = StructureType.Mining,
+                                        Size = new NormalSampler(3f, 1f),
+                                        Center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)),
+                                        DistancePenalty = new(0f, 0.02f, 0f),
+                                        RiverPenalty = new(),
+                                        CoastPenalty = new(),
+                                        SlopePenalty = new(0f, -1f, 1f),
+                                        ElevationPenalty = new(0f, -1f, 1f)
+                                    },
+                                    new()
+                                    {
+                                        Cores = 20,
+                                        Candidates = 100,
+                                        Type = StructureType.Agricultural,
+                                        Size = new NormalSampler(40f, 20f),
+                                        RiverPenalty = new(0f, -2f, 2f),
+                                        CoastPenalty = new(),
+                                        SiltPenalty = new(0f, -2f, 2f),
+                                        MoisturePenalty = new(0, -1f, 1f)
+                                    },
+                                    new()
+                                    {
+                                        Cores = 10,
+                                        Candidates = 200,
+                                        Type = StructureType.Commercial,
+                                        Size = new NormalSampler(10f, 5f)
+                                    },
+                                    new()
+                                    {
+                                        Cores = 40,
+                                        Candidates = 200,
+                                        Type = StructureType.Residential,
+                                        Size = new NormalSampler(20f, 8f)
+                                    },
+                                    new()
+                                    {
+                                        Cores = 10,
+                                        Candidates = 200,
+                                        Type = StructureType.Industrial,
+                                        Size = new NormalSampler(3f, 1f),
+                                        RiverPenalty = new(),
+                                    }
                                 }
                         },
                         new(100, 100),

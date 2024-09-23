@@ -4,9 +4,10 @@
     {
         None,
 
+        Agricultural,
+        Mining,
         Residential,
         Commercial,
         Industrial,
-        Mixed
     }
 }

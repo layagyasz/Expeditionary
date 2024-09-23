@@ -82,6 +82,12 @@ namespace Expeditionary.Hexagons
             return corner.X + corner.Y + corner.Z;
         }
 
+        public static int GetDistance(Vector3i hexA, Vector3i hexB)
+        {
+            return Math.Max(
+                Math.Abs(hexA.X - hexB.X), Math.Max(Math.Abs(hexA.Y - hexB.Y), Math.Abs(hexA.Z - hexB.Z)));
+        }
+
         public static Vector3i GetEdge(Vector3i left, Vector3i right)
         {
             return left + right;
