@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Expeditionary.View.Common.Gradients;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.View
 {

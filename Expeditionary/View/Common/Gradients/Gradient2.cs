@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Common.Gradients
 {
     public struct Gradient2
     {

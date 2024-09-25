@@ -8,10 +8,12 @@ namespace Expeditionary.View
     public class SceneFactory
     {
         private readonly MapViewFactory _mapViewFactory;
+        private readonly AssetLayerFactory _assetLayerFactory;
 
-        public SceneFactory(MapViewFactory mapViewFactory)
+        public SceneFactory(MapViewFactory mapViewFactory, AssetLayerFactory assetLayerFactory)
         {
             _mapViewFactory = mapViewFactory;
+            _assetLayerFactory = assetLayerFactory;
         }
 
         public IScene Create(Map map, TerrainViewParameters parameters, int seed)
@@ -28,7 +30,8 @@ namespace Expeditionary.View
                     MouseWheelSensitivity = 2
                 },
                 camera,
-                _mapViewFactory.Create(map, parameters, seed));
+                _mapViewFactory.Create(map, parameters, seed),
+                _assetLayerFactory.Create());
         }
     }
 }

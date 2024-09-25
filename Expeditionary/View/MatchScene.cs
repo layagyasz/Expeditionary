@@ -15,15 +15,18 @@ namespace Expeditionary.View
         public float? OverrideDepth { get; set; }
 
         private readonly MapView _map;
+        private readonly AssetLayer _assets;
 
         public MatchScene(
             IElementController controller,
             ICamera camera,
-            MapView map) 
+            MapView map,
+            AssetLayer assets) 
         {
             Controller = controller;
             Camera = camera;
             _map = map;
+            _assets = assets;
 
             Camera.Changed += HandleCameraChanged;
         }
@@ -40,6 +43,7 @@ namespace Expeditionary.View
             target.PushProjection(Camera.GetProjection());
             context.Register(this);
             _map.Draw(target, context);
+            _assets.Draw(target, context);
             target.PopProjectionMatrix();
             target.PopViewMatrix();
         }
@@ -64,6 +68,7 @@ namespace Expeditionary.View
         public void Update(long delta)
         {
             _map.Update(delta);
+            _assets.Update(delta);
         }
 
         private void HandleCameraChanged(object? sender, EventArgs e)

@@ -1,11 +1,11 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Common.Gradients
 {
     public struct GradientBarycentric
     {
         public Color4 A { get; set; }
-        public Color4 B { get;set;}
+        public Color4 B { get; set; }
         public Color4 C { get; set; }
 
         public Color4 Interpolate(Vector3 v)

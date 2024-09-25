@@ -3,7 +3,7 @@ using Cardamom.Ui;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Common.Buffers
 {
     public class LayeredVertexBuffer : GraphicsResource, IRenderable
     {
@@ -33,7 +33,7 @@ namespace Expeditionary.View
             public LayeredVertexBuffer Build()
             {
                 var layers = new Layer[_layers.Count];
-                for (int i=0; i<layers.Length; ++i)
+                for (int i = 0; i < layers.Length; ++i)
                 {
                     layers[i] = new(i, _resourcesFn!, new(_layers[i], PrimitiveType.Triangles));
                 }
@@ -44,7 +44,7 @@ namespace Expeditionary.View
         private class Layer : GraphicsResource, IRenderable
         {
             private readonly int _id;
-            private Func<int, RenderResources> _resourcesFn;
+            private readonly Func<int, RenderResources> _resourcesFn;
 
             private VertexBuffer<Vertex3>? _vertices;
 
@@ -82,7 +82,7 @@ namespace Expeditionary.View
 
         protected override void DisposeImpl()
         {
-            for (int i=0; i<_layers.Length; ++i)
+            for (int i = 0; i < _layers.Length; ++i)
             {
                 _layers[i]?.Dispose();
                 _layers[i] = null;

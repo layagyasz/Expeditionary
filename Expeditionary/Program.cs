@@ -47,8 +47,8 @@ namespace Expeditionary
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
                     File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;
             var unitTextureGenerator = new UnitTextureGenerator(unitTextureGeneratorSettings);
-            unitTextureGenerator.Generate(module.UnitTypes.Values)
-                .GetTextures().First().CopyToImage().SaveToFile("units.png");
+            var unitTextures = unitTextureGenerator.Generate(module.UnitTypes.Values);
+            unitTextures.GetTextures().First().CopyToImage().SaveToFile("units.png");
 
             var sensitivity = 
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
@@ -99,7 +99,13 @@ namespace Expeditionary
                         new RenderShader.Builder()
                             .SetVertex("resources/view/shaders/default.vert")
                             .SetFragment("resources/view/shaders/default.frag")
-                            .Build()));
+                            .Build()),
+                    new AssetLayerFactory(
+                        new RenderShader.Builder()
+                            .SetVertex("resources/view/shaders/default.vert")
+                            .SetFragment("resources/view/shaders/default.frag")
+                            .Build(), 
+                        unitTextures));
 
             var terrainParameters =
                 new TerrainViewParameters()
@@ -169,8 +175,8 @@ namespace Expeditionary
                                     },
                                     new()
                                     {
-                                        Cores = 20,
-                                        Candidates = 100,
+                                        Cores = 40,
+                                        Candidates = 200,
                                         Type = StructureType.Agricultural,
                                         Size = new NormalSampler(40f, 20f),
                                         RiverPenalty = new(0f, -2f, 2f),
