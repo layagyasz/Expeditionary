@@ -3,6 +3,7 @@ using Cardamom.Graphics.Camera;
 using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller.Element;
+using Expeditionary.Model.Combat;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View
@@ -55,8 +56,9 @@ namespace Expeditionary.View
 
         public void Initialize()
         {
-            Controller.Bind(this);
             _map.Initialize();
+            _assets.Initialize();
+            Controller.Bind(this);
         }
 
         public void ResizeContext(Vector3 bounds)
@@ -69,6 +71,16 @@ namespace Expeditionary.View
         {
             _map.Update(delta);
             _assets.Update(delta);
+        }
+
+        public void AddAsset(IAsset asset)
+        {
+            _assets.Add(asset);
+        }
+
+        public void RemoveAsset(IAsset asset)
+        {
+            _assets.Remove(asset);
         }
 
         private void HandleCameraChanged(object? sender, EventArgs e)

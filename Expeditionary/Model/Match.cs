@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Combat.Units;
+﻿using Expeditionary.Model.Combat;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -6,13 +7,13 @@ namespace Expeditionary.Model
 {
     public class Match
     {
-        public EventHandler<Unit>? AssetAdded { get; set; }
-        public EventHandler<Unit>? AssetRemoved { get; set; }
+        public EventHandler<IAsset>? AssetAdded { get; set; }
+        public EventHandler<IAsset>? AssetRemoved { get; set; }
 
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
 
-        private readonly List<Unit> _units = new();
+        private readonly List<IAsset> _assets = new();
 
         public Match(IIdGenerator idGenerator, Map map)
         {
@@ -23,7 +24,7 @@ namespace Expeditionary.Model
         public void Add(UnitType unitType, Vector3i position)
         {
             var asset = new Unit(_idGenerator.Next(), unitType) {  Position = position };
-            _units.Add(asset);
+            _assets.Add(asset);
             AssetAdded?.Invoke(this, asset);
         }
 
@@ -32,9 +33,15 @@ namespace Expeditionary.Model
             return _map;
         }
 
-        public IEnumerable<Unit> GetAssets()
+        public IEnumerable<IAsset> GetAssets()
         {
-            return _units;
+            return _assets;
+        }
+
+        public void Remove(IAsset asset)
+        {
+            _assets.Remove(asset);
+            AssetRemoved?.Invoke(this, asset);
         }
     }
 }

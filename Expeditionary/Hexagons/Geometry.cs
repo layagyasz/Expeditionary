@@ -44,6 +44,11 @@ namespace Expeditionary.Hexagons
             return new(1.5f * axial.X, 0.5f * s_Sqrt3 * axial.X + s_Sqrt3 * axial.Y);
         }
 
+        public static Vector2 MapCubic(Vector3i cubic)
+        {
+            return MapAxial(cubic.Xy);
+        }
+
         public static Vector2 MapOffset(Vector2i offset)
         {
             return MapAxial(Axial.Offset.Instance.Wrap(offset));

@@ -147,71 +147,72 @@ namespace Expeditionary
                     }
                 };
             RecordPalette(Color4.FromHsv(baseColor), terrainParameters);
-            ui.SetRoot(
-                sceneFactory.Create(
-                    mapGenerator.Generate(
-                        new()
-                        {
-                            Terrain = 
+
+            var map =
+                mapGenerator.Generate(
+                    new()
+                    {
+                        Terrain =
+                            new()
+                            {
+                                Rivers = 100
+                            },
+                        Cities =
+                            new()
+                            {
                                 new()
                                 {
-                                    Rivers = 100
+                                    Cores = 5,
+                                    Candidates = 100,
+                                    Type = StructureType.Mining,
+                                    Size = new NormalSampler(3f, 1f),
+                                    Center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)),
+                                    DistancePenalty = new(0f, 0.02f, 0f),
+                                    RiverPenalty = new(),
+                                    CoastPenalty = new(),
+                                    SlopePenalty = new(0f, -1f, 1f),
+                                    ElevationPenalty = new(0f, -1f, 1f)
                                 },
-                            Cities =
                                 new()
                                 {
-                                    new()
-                                    {
-                                        Cores = 5,
-                                        Candidates = 100,
-                                        Type = StructureType.Mining,
-                                        Size = new NormalSampler(3f, 1f),
-                                        Center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)),
-                                        DistancePenalty = new(0f, 0.02f, 0f),
-                                        RiverPenalty = new(),
-                                        CoastPenalty = new(),
-                                        SlopePenalty = new(0f, -1f, 1f),
-                                        ElevationPenalty = new(0f, -1f, 1f)
-                                    },
-                                    new()
-                                    {
-                                        Cores = 40,
-                                        Candidates = 200,
-                                        Type = StructureType.Agricultural,
-                                        Size = new NormalSampler(40f, 20f),
-                                        RiverPenalty = new(0f, -2f, 2f),
-                                        CoastPenalty = new(),
-                                        SiltPenalty = new(0f, -2f, 2f),
-                                        MoisturePenalty = new(0, -1f, 1f)
-                                    },
-                                    new()
-                                    {
-                                        Cores = 10,
-                                        Candidates = 200,
-                                        Type = StructureType.Commercial,
-                                        Size = new NormalSampler(10f, 5f)
-                                    },
-                                    new()
-                                    {
-                                        Cores = 40,
-                                        Candidates = 200,
-                                        Type = StructureType.Residential,
-                                        Size = new NormalSampler(20f, 8f)
-                                    },
-                                    new()
-                                    {
-                                        Cores = 10,
-                                        Candidates = 200,
-                                        Type = StructureType.Industrial,
-                                        Size = new NormalSampler(3f, 1f),
-                                        RiverPenalty = new(),
-                                    }
+                                    Cores = 40,
+                                    Candidates = 200,
+                                    Type = StructureType.Agricultural,
+                                    Size = new NormalSampler(40f, 20f),
+                                    RiverPenalty = new(0f, -2f, 2f),
+                                    CoastPenalty = new(),
+                                    SiltPenalty = new(0f, -2f, 2f),
+                                    MoisturePenalty = new(0, -1f, 1f)
+                                },
+                                new()
+                                {
+                                    Cores = 10,
+                                    Candidates = 200,
+                                    Type = StructureType.Commercial,
+                                    Size = new NormalSampler(10f, 5f)
+                                },
+                                new()
+                                {
+                                    Cores = 40,
+                                    Candidates = 200,
+                                    Type = StructureType.Residential,
+                                    Size = new NormalSampler(20f, 8f)
+                                },
+                                new()
+                                {
+                                    Cores = 10,
+                                    Candidates = 200,
+                                    Type = StructureType.Industrial,
+                                    Size = new NormalSampler(3f, 1f),
+                                    RiverPenalty = new(),
                                 }
-                        },
-                        new(100, 100),
-                        seed: new Random().Next()),
-                    terrainParameters,
-                    seed: 0));
+                            }
+                    },
+                    new(100, 100),
+                    seed: new Random().Next());
+            var match = new Match(new SerialIdGenerator(), map);
+            match.Add(module.UnitTypes.First().Value, Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
+            ui.SetRoot(sceneFactory.Create(match, terrainParameters, seed: 0));
             ui.Start();
         }
 

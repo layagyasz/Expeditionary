@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Ui;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -55,6 +56,12 @@ namespace Expeditionary.View.Common.Buffers
         }
 
         public void ResizeContext(Vector3 context) { }
+
+        public void Set(int block, T[] vertices)
+        {
+            Precondition.Check(vertices.Length >= _blockSize);
+            _vertices!.Sub(vertices, block * _blockSize, vertices.Length);
+        }
 
         public void Update(long delta) { }
 
