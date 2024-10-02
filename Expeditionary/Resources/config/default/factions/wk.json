@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-wk",
+    "Name": "Windhelm Kreslov PMC",
+    "ColorScheme": {
+      "Background": "#404080ff",
+      "Foreground": "#ccccccff"
+    }
+  }
+]

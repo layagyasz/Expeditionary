@@ -10,6 +10,7 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
 {
     public class UnitTextureGenerator
     {
+        private static readonly string s_BackgroundKey = "icon_unit_background";
         private static Vector3 s_SizeOffset = new(0, -0.5f, 0);
         private static Vector3 s_Scale = new(0.6f, 0.4f, 1f);
         private static readonly Vector3[] s_Vertices =
@@ -47,31 +48,46 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
                 renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(-1, 1, -1, 1, -10, 10)));
                 renderTexture.PushViewMatrix(Matrix4.Identity);
                 renderTexture.PushModelMatrix(Matrix4.Identity);
-                using (var text = new Text())
+                using var text = new Text();
+                text.SetFont(_settings.Font!);
+                text.SetColor(Color4.White);
+                text.SetCharacterSize(s_TextSize);
+                text.SetShader(_settings.Shader!);
+
+                RenderBackground(renderTexture);
+                volume.Add(s_BackgroundKey, renderTexture.GetTexture());
+                foreach (var unit in units)
                 {
-                    text.SetFont(_settings.Font!);
-                    text.SetColor(Color4.White);
-                    text.SetCharacterSize(s_TextSize);
-                    text.SetShader(_settings.Shader!);
-                    foreach (var unit in units)
-                    {
-                        RenderUnit(unit, text, renderTexture);
-                        volume.Add(unit.Definition.Key, renderTexture.GetTexture());
-                    }
+                    RenderUnit(unit, text, renderTexture);
+                    volume.Add(unit.Definition.Key, renderTexture.GetTexture());
                 }
             }
 
             return volume;
         }
 
+        private void RenderBackground(IRenderTarget target)
+        {
+            var vertices = new ArrayList<Vertex3>();
+            AddSegment(vertices, _settings.Images!.Get(_settings.BackgroundImage), Color4.White, new());
+            target.Clear();
+            target.Draw(
+                vertices.GetData(),
+                PrimitiveType.Triangles, 
+                0, 
+                vertices.Count, 
+                new(BlendMode.Alpha, _settings.Shader!, _settings.Images.GetTextures().First()));
+            target.Display();
+        }
+
         private void RenderUnit(UnitType unit, Text text, IRenderTarget target) 
         {
             var vertices = new ArrayList<Vertex3>();
-            AddSegment(_settings.Images!.Get(_settings.BorderImage), Color4.White, new(), vertices);
-            AddSegment(_settings.Images!.Get(_settings.SizeImage), Color4.White, s_SizeOffset, vertices);
+            AddSegment(vertices, _settings.Images!.Get(_settings.BorderImage), Color4.White, new());
+            AddSegment(vertices, _settings.Images!.Get(_settings.SizeImage), Color4.White, s_SizeOffset);
             foreach (var tag in unit.GetTags())
             {
-                AddSegment(_settings.Images!.Get(_settings.TagImages[tag]), Color4.White, new(), vertices);
+                AddSegment(vertices, _settings.Images!.Get(_settings.TagImages[tag]), Color4.White, new());
             }
             target.Clear();
             target.Draw(
@@ -93,7 +109,8 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
             target.Display();
         }
 
-        private static void AddSegment(TextureSegment segment, Color4 color, Vector3 offset, ArrayList<Vertex3> vertices)
+        private static void AddSegment(
+            ArrayList<Vertex3> vertices, TextureSegment segment, Color4 color, Vector3 offset)
         {
             vertices.Add(new(offset + s_Vertices[0], color, segment.TextureView.Min));
             vertices.Add(

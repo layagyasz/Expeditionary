@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-orion",
+    "Name": "Orion Confederation",
+    "ColorScheme": {
+      "Background": "#406080ff",
+      "Foreground": "#cccc66ff"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-redstar",
+    "Name": "Redstar Republic",
+    "ColorScheme": {
+      "Background": "#804040ff",
+      "Foreground": "#cccc66ff"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-earth",
+    "Name": "New Earth Empire",
+    "ColorScheme": {
+      "Background": "#333333ff",
+      "Foreground": "#cccc66ff"
+    }
+  }
+]

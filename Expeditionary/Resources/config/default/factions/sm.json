@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-sm",
+    "Name": "Sterner Mashling Material Concerns",
+    "ColorScheme": {
+      "Background": "#cccc66ff",
+      "Foreground": "#333333ff"
+    }
+  }
+]

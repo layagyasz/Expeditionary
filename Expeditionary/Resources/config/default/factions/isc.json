@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-isc",
+    "Name": "Intersystem Security Coalition",
+    "ColorScheme": {
+      "Background": "#b37436ff",
+      "Foreground": "#ccccccff"
+    }
+  }
+]

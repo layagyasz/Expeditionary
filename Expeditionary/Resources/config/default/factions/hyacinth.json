@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "faction-hyacinth",
+    "Name": "Hyacinth Protectorate",
+    "ColorScheme": {
+      "Background": "#66ccccff",
+      "Foreground": "#333333ff"
+    }
+  }
+]

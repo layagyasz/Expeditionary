@@ -1,0 +1,10 @@
+﻿[
+  {
+    "$id": "faction-whitestar",
+    "Name": "Whitestar Republic",
+    "ColorScheme": {
+      "Background": "#ccccccff",
+      "Foreground": "#333333ff"
+    }
+  }
+]

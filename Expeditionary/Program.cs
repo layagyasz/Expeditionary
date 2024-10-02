@@ -211,7 +211,10 @@ namespace Expeditionary
                     new(100, 100),
                     seed: new Random().Next());
             var match = new Match(new SerialIdGenerator(), map);
-            match.Add(module.UnitTypes.First().Value, Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
+            match.Add(
+                module.UnitTypes.First().Value,
+                module.Factions["faction-redstar"], 
+                Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
             ui.SetRoot(sceneFactory.Create(match, terrainParameters, seed: 0));
             ui.Start();
         }

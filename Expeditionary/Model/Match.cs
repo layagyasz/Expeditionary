@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Factions;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -21,9 +22,9 @@ namespace Expeditionary.Model
             _map = map;
         }
 
-        public void Add(UnitType unitType, Vector3i position)
+        public void Add(UnitType unitType, Faction faction, Vector3i position)
         {
-            var asset = new Unit(_idGenerator.Next(), unitType) {  Position = position };
+            var asset = new Unit(_idGenerator.Next(), faction, unitType) {  Position = position };
             _assets.Add(asset);
             AssetAdded?.Invoke(this, asset);
         }
