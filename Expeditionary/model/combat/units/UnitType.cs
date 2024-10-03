@@ -23,6 +23,7 @@ namespace Expeditionary.Model.Combat.Units
         public UnitPersistence Persistence { get; }
         public UnitSpeed Speed { get; }
         public UnitCapabilities Capabilities { get; }
+        public UnitIntrinsics Intrinsics { get; }
 
         public UnitType(
             UnitDefinition definition,
@@ -30,7 +31,8 @@ namespace Expeditionary.Model.Combat.Units
             UnitDefense defense,
             UnitPersistence persistence,
             UnitSpeed speed,
-            UnitCapabilities capabilities)
+            UnitCapabilities capabilities,
+            UnitIntrinsics intrinsics)
         {
             Definition = definition;
             Attack = ImmutableList.CreateRange(attack);
@@ -38,6 +40,7 @@ namespace Expeditionary.Model.Combat.Units
             Persistence = persistence;
             Speed = speed;
             Capabilities = capabilities;
+            Intrinsics = intrinsics;
         }
 
         public EnumSet<UnitTag> GetTags()

@@ -9,13 +9,24 @@
       "capability.detection[visual]": "+1x1",
       "defense.armor": "+.25x1",
       "defense.armor.min": "+0.05x1",
-      "defense.profile": "+1x1",
       "defense.maneuver": "+1x1",
       "defense.vitality": "+2x1",
       "defense.vitality/min": "+0.2x1",
+      "intrinsic.mass": "+1x1",
+      "intrinsic.power": "+1x1",
+      "intrinsic.profile": "+1x1",
       "persistence.number": "+40x1",
       "persistence.morale": "+40x1",
-      "persistence.stamina": "+1x1"
+      "persistence.stamina": "+1x1",
+      "speed.roughness/min": "+0x1",
+      "speed.roughness/max": "+0x1",
+      "speed.roughness/cap": "+4x1",
+      "speed.softness/min": "+0x1",
+      "speed.softness/max": "+0x1",
+      "speed.softness/cap": "+5x1",
+      "speed.waterdepth/min": "+0x1",
+      "speed.waterdepth/max": "+0x1",
+      "speed.waterdepth/cap": "+3x1"
     }
   },
   {
@@ -111,7 +122,7 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "defense.concealment[visual]": "+0.5x1"
+      "capability.concealment[visual]": "+0.5x1"
     }
   },
   {
@@ -121,7 +132,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "defense.concealment[visual]": "+1x1"
+      "capability.concealment[visual]": "+1x1"
     }
   },
   {
@@ -131,7 +142,7 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "defense.concealment[visual]": "+1.5x1"
+      "capability.concealment[visual]": "+1.5x1"
     }
   },
   {
@@ -141,7 +152,47 @@
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
-      "defense.concealment[visual]": "+2x1"
+      "capability.concealment[visual]": "+2x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-camo-urban-1",
+    "Name": "Basic Urban Camouflage",
+    "Family": "trait-infantry-camo-urban",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-camo-urban-2",
+    "Name": "Urban Camouflage 2",
+    "Family": "trait-infantry-camo-urban",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+2x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-camo-urban-3",
+    "Name": "Urban Camouflage 3",
+    "Family": "trait-infantry-camo-urban",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+3x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-camo-urban-4",
+    "Name": "Elite Urban Camouflage",
+    "Family": "trait-infantry-camo-urban",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+4x1"
     }
   },
   {
@@ -256,6 +307,53 @@
     "Modifiers": {
       "capabilities.accuracy": "+0x2",
       "capabilities.lethality": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-1",
+    "Name": "Basic Mountain Training",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 1,
+    "Level": 1,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "speed.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-2",
+    "Name": "Mountain Training 2",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 2,
+    "Level": 2,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "persistence.stamina": "+0x1.25",
+      "speed.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-3",
+    "Name": "Mountain Training 3",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 3,
+    "Level": 3,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "persistence.stamina": "+0x1.5",
+      "speed.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-4",
+    "Name": "Elite Mountain Training",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 4,
+    "Level": 4,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "persistence.stamina": "+0x1.75",
+      "speed.roughness/cap": "+1x1"
     }
   }
 ]

@@ -38,7 +38,8 @@ namespace Expeditionary.Model.Combat.Units
                 BuildDefenseEnvelope(attributes),
                 BuildPersistence(attributes),
                 BuildSpeed(attributes),
-                BuildCapabilities(attributes));
+                BuildCapabilities(attributes),
+                BuildIntrinsics(attributes));
         }
 
         private static UnitAttack BuildAttack(IDictionary<string, UnitModifier> attributes)
@@ -78,7 +79,6 @@ namespace Expeditionary.Model.Combat.Units
         {
             return new()
             {
-                Profile = BuildBounded(attributes, "defense.profile"),
                 Maneuver = BuildBounded(attributes, "defense.maneuver"),
                 Armor = BuildBounded(attributes, "defense.armor"),
                 Vitality = BuildBounded(attributes, "defense.vitality")
@@ -94,6 +94,27 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
+        private static UnitSpeed.Hindrance BuildHindrance(
+            IDictionary<string, UnitModifier> attributes, string attribute)
+        {
+            return new()
+            {
+                Minimum = GetOrDefault(attributes, attribute + "/min", UnitModifier.None),
+                Maximum = GetOrDefault(attributes, attribute + "/max", UnitModifier.None),
+                Cap = GetOrDefault(attributes, attribute + "/cap", UnitModifier.None)
+            };
+        }
+
+        private static UnitIntrinsics BuildIntrinsics(IDictionary<string, UnitModifier> attributes)
+        {
+            return new()
+            {
+                Mass = GetOrDefault(attributes, "intrinsic.mass", UnitModifier.None),
+                Power = GetOrDefault(attributes, "intrinsic.power", UnitModifier.None),
+                Profile = GetOrDefault(attributes, "intrinsic.profile", UnitModifier.None),
+            };
+        }
+
         private static UnitPersistence BuildPersistence(IDictionary<string, UnitModifier> attributes)
         {
             return new()
@@ -106,7 +127,12 @@ namespace Expeditionary.Model.Combat.Units
 
         private static UnitSpeed BuildSpeed(IDictionary<string, UnitModifier> attributes)
         {
-            return new();
+            return new()
+            {
+                Roughness = BuildHindrance(attributes, "speed.roughness"),
+                Softness = BuildHindrance(attributes, "speed.softness"),
+                WaterDepth = BuildHindrance(attributes, "speed.waterdepth")
+            };
         }
 
         private static Dictionary<string, UnitModifier> Combine(IEnumerable<UnitTrait> traits)
