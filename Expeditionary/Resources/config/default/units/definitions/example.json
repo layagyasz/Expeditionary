@@ -1,0 +1,53 @@
+[
+  {
+    "$id": "def-infantry-example",
+    "Name": "Example Infantry",
+    "Attacks": [
+      {
+        "Condition": "Ranged",
+        "Traits": [
+          "trait-infantry-rifle"
+        ]
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-camo-urban-2",
+      "trait-infantry-recruitment-n1"
+    ]
+  },
+  {
+    "$id": "def-mountain-example",
+    "Name": "Example Mountain",
+    "Attacks": [
+      {
+        "Condition": "Ranged",
+        "Traits": [
+          "trait-infantry-rifle"
+        ]
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-camo-2",
+      "trait-infantry-training-mountain-2"
+    ]
+  },
+  {
+    "$id": "def-mg-example",
+    "Name": "Example MG",
+    "Attacks": [
+      {
+        "Condition": "Ranged",
+        "Traits": [
+          "trait-infantry-mg"
+        ]
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-n1"
+    ]
+  }
+]

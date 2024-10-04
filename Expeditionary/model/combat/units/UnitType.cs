@@ -20,7 +20,6 @@ namespace Expeditionary.Model.Combat.Units
         public UnitDefinition Definition { get; }
         public ImmutableList<UnitAttack> Attack { get; }
         public UnitDefense Defense { get; }
-        public UnitPersistence Persistence { get; }
         public UnitSpeed Speed { get; }
         public UnitCapabilities Capabilities { get; }
         public UnitIntrinsics Intrinsics { get; }
@@ -29,7 +28,6 @@ namespace Expeditionary.Model.Combat.Units
             UnitDefinition definition,
             IEnumerable<UnitAttack> attack,
             UnitDefense defense,
-            UnitPersistence persistence,
             UnitSpeed speed,
             UnitCapabilities capabilities,
             UnitIntrinsics intrinsics)
@@ -37,7 +35,6 @@ namespace Expeditionary.Model.Combat.Units
             Definition = definition;
             Attack = ImmutableList.CreateRange(attack);
             Defense = defense;
-            Persistence = persistence;
             Speed = speed;
             Capabilities = capabilities;
             Intrinsics = intrinsics;

@@ -36,7 +36,6 @@ namespace Expeditionary.Model.Combat.Units
                 this,
                 Attacks.Select(x => BuildAttack(Combine(x.Traits))),
                 BuildDefenseEnvelope(attributes),
-                BuildPersistence(attributes),
                 BuildSpeed(attributes),
                 BuildCapabilities(attributes),
                 BuildIntrinsics(attributes));
@@ -109,19 +108,12 @@ namespace Expeditionary.Model.Combat.Units
         {
             return new()
             {
+                Number = GetOrDefault(attributes, "intrinsic.number", UnitModifier.None),
                 Mass = GetOrDefault(attributes, "intrinsic.mass", UnitModifier.None),
+                Morale = GetOrDefault(attributes, "intrinsic.morale", UnitModifier.None),
                 Power = GetOrDefault(attributes, "intrinsic.power", UnitModifier.None),
                 Profile = GetOrDefault(attributes, "intrinsic.profile", UnitModifier.None),
-            };
-        }
-
-        private static UnitPersistence BuildPersistence(IDictionary<string, UnitModifier> attributes)
-        {
-            return new()
-            {
-                Number = GetOrDefault(attributes, "persistence.number", UnitModifier.None),
-                Morale = GetOrDefault(attributes, "persistence.morale", UnitModifier.None),
-                Stamina = GetOrDefault(attributes, "persistence.stamina", UnitModifier.None)
+                Stamina = GetOrDefault(attributes, "intrinsic.stamina", UnitModifier.None)
             };
         }
 
