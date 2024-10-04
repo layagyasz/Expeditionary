@@ -7,17 +7,15 @@
     "Modifiers": {
       "capability.detection[audio]": "+1x1",
       "capability.detection[visual]": "+1x1",
-      "defense.armor": "+.25x1",
-      "defense.armor.min": "+0.05x1",
       "defense.maneuver": "+1x1",
       "defense.vitality": "+2x1",
       "defense.vitality/min": "+0.2x1",
       "intrinsic.mass": "+1x1",
       "intrinsic.power": "+1x1",
       "intrinsic.profile": "+1x1",
-      "persistence.number": "+40x1",
-      "persistence.morale": "+40x1",
-      "persistence.stamina": "+1x1",
+      "intrinsic.number": "+40x1",
+      "intrinsic.morale": "+40x1",
+      "intrinsic.stamina": "+1x1",
       "speed.roughness/min": "+0x1",
       "speed.roughness/max": "+0x1",
       "speed.roughness/cap": "+4x1",
@@ -202,7 +200,7 @@
     "Cost": -2,
     "Level": -1,
     "Modifiers": {
-      "persistence.morale": "+0x0.5"
+      "intrinsic.morale": "+0x0.5"
     }
   },
   {
@@ -212,7 +210,7 @@
     "Cost": 2,
     "Level": 1,
     "Modifiers": {
-      "persistence.morale": "+0x1.5"
+      "intrinsic.morale": "+0x1.5"
     }
   },
   {
@@ -222,7 +220,7 @@
     "Cost": 4,
     "Level": 2,
     "Modifiers": {
-      "persistence.morale": "+0x2"
+      "intrinsic.morale": "+0x2"
     }
   },
   {
@@ -232,7 +230,7 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "persistence.stamina": "+0x1.25"
+      "intrinsic.stamina": "+0x1.25"
     }
   },
   {
@@ -242,7 +240,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "persistence.stamina": "+0x1.5"
+      "intrinsic.stamina": "+0x1.5"
     }
   },
   {
@@ -252,7 +250,7 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "persistence.stamina": "+0x1.75"
+      "intrinsic.stamina": "+0x1.75"
     }
   },
   {
@@ -262,7 +260,7 @@
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
-      "persistence.stamina": "+0x2"
+      "intrinsic.stamina": "+0x2"
     }
   },
   {
@@ -328,7 +326,7 @@
     "Level": 2,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "persistence.stamina": "+0x1.25",
+      "intrinsic.stamina": "+0x1.25",
       "speed.roughness/cap": "+1x1"
     }
   },
@@ -340,7 +338,7 @@
     "Level": 3,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "persistence.stamina": "+0x1.5",
+      "intrinsic.stamina": "+0x1.5",
       "speed.roughness/cap": "+1x1"
     }
   },
@@ -352,7 +350,7 @@
     "Level": 4,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "persistence.stamina": "+0x1.75",
+      "intrinsic.stamina": "+0x1.75",
       "speed.roughness/cap": "+1x1"
     }
   }
