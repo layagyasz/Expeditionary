@@ -1,5 +1,0 @@
-{
-  "UnitTraits": [ "resources/config/default/units/traits::*.json" ],
-  "UnitTypes": [ "resources/config/default/units/definitions::*json" ],
-  "Factions": [ "resources/config/default/factions::*.json"]
-}
