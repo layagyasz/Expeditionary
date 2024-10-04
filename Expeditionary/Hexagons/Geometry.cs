@@ -1,12 +1,9 @@
 ﻿using OpenTK.Mathematics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Expeditionary.Hexagons
 {
     public static class Geometry
     {
-        private static readonly float s_Sqrt3 = MathF.Sqrt(3);
-
         private static readonly Vector3i[] s_HexCorners =
         {
             new(0, 0, 1),
@@ -37,22 +34,6 @@ namespace Expeditionary.Hexagons
             new(0, -1, -1),
             new(-1, 0, -1)
         };
-
-
-        public static Vector2 MapAxial(Vector2i axial)
-        {
-            return new(1.5f * axial.X, 0.5f * s_Sqrt3 * axial.X + s_Sqrt3 * axial.Y);
-        }
-
-        public static Vector2 MapCubic(Vector3i cubic)
-        {
-            return MapAxial(cubic.Xy);
-        }
-
-        public static Vector2 MapOffset(Vector2i offset)
-        {
-            return MapAxial(Axial.Offset.Instance.Wrap(offset));
-        }
 
         public static Vector3i GetCorner(Vector3i hex, int index)
         {
@@ -111,6 +92,31 @@ namespace Expeditionary.Hexagons
         public static Vector3i GetNeighbor(Vector3i hex, int neighbor)
         {
             return hex + s_HexNeighbors[neighbor];
+        }
+
+        public static Vector3i RoundHex(Vector3 hex)
+        {
+            var q = (int)Math.Round(hex.X);
+            var r = (int)Math.Round(hex.Y);
+            var s = (int)Math.Round(hex.Z);
+
+            var dQ = Math.Abs(q - hex.X);
+            var dR = Math.Abs(r - hex.Y);
+            var dS = Math.Abs(s - hex.Z);
+
+            if (dQ > dR && dQ > dS)
+            {
+                q = -r - s;
+            }
+            else if (dR > dS)
+            {
+                r = -q - s;
+            }
+            else
+            {
+                s = -q - r;
+            }
+            return new(q, r, s);
         }
     }
 }

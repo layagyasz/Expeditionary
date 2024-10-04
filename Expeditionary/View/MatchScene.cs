@@ -3,6 +3,7 @@ using Cardamom.Graphics.Camera;
 using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller.Element;
+using Cardamom.Ui.Elements;
 using Expeditionary.Model.Combat;
 using OpenTK.Mathematics;
 
@@ -15,26 +16,23 @@ namespace Expeditionary.View
         public ICamera Camera { get; }
         public float? OverrideDepth { get; set; }
 
-        private readonly MapView _map;
+        private readonly InteractiveModel _map;
         private readonly AssetLayer _assets;
 
         public MatchScene(
             IElementController controller,
             ICamera camera,
-            MapView map,
+            InteractiveModel map,
             AssetLayer assets) 
         {
             Controller = controller;
             Camera = camera;
             _map = map;
             _assets = assets;
-
-            Camera.Changed += HandleCameraChanged;
         }
 
         protected override void DisposeImpl()
         {
-            Camera.Changed -= HandleCameraChanged;
             _map.Dispose();
         }
 
@@ -81,24 +79,6 @@ namespace Expeditionary.View
         public void RemoveAsset(IAsset asset)
         {
             _assets.Remove(asset);
-        }
-
-        private void HandleCameraChanged(object? sender, EventArgs e)
-        {
-            _map.SetGridAlpha(GetGridAlpha(Camera.Position.Y));
-        }
-
-        private static float GetGridAlpha(float distance)
-        {
-            if (distance < 10)
-            {
-                return 1;
-            }
-            if (distance > 70)
-            {
-                return 0;
-            }
-            return .017f * (60 - distance);
         }
     }
 }

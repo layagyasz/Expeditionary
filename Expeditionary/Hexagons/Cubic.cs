@@ -5,6 +5,22 @@ namespace Expeditionary.Hexagons
 {
     public static class Cubic
     {
+        public class Cartesian : IProjection<Vector3, Vector2>
+        {
+            public static readonly Cartesian Instance = new();
+
+            public Vector2 Project(Vector3 hex)
+            {
+                return Axial.Cartesian.Instance.Project(hex.Xy);
+            }
+
+            public Vector3 Wrap(Vector2 cartesian)
+            {
+                var axial = Axial.Cartesian.Instance.Wrap(cartesian);
+                return new(axial.X, axial.Y, -axial.X - axial.Y);
+            }
+        }
+
         public class HexagonalOffset : IProjection<Vector3i, Vector2i>
         {
             public static readonly HexagonalOffset Instance = new();

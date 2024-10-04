@@ -1,7 +1,10 @@
 ﻿using Cardamom.Graphics.Camera;
+using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui;
+using Cardamom.Ui.Elements;
 using Expeditionary.Controller;
 using Expeditionary.Model;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.View
 {
@@ -22,18 +25,31 @@ namespace Expeditionary.View
             camera.SetPitch(-MathF.PI / 2);
             camera.SetYaw(MathF.PI / 2);
             camera.SetDistance(20);
-            return new MatchScene(
-                new SceneController(
-                    new Camera2dController(camera)
-                    {
-                        KeySensitivity = 0.0005f,
-                        DistanceRange = new(5, 100),
-                        MouseWheelSensitivity = 2
-                    }, 
-                    new MatchSceneController(match)),
-                camera,
-                _mapViewFactory.Create(match.GetMap(), parameters, seed),
-                _assetLayerFactory.Create());
+
+            var mapController = new MapController();
+            var map = 
+                new InteractiveModel(
+                    _mapViewFactory.Create(match.GetMap(), parameters, seed),
+                    new Plane(new(), Vector3.UnitY),
+                    mapController);
+
+            var scene =
+                new MatchScene(
+                    new SceneController(
+                        new Camera2dController(camera)
+                        {
+                            KeySensitivity = 0.0005f,
+                            DistanceRange = new(5, 100),
+                            MouseWheelSensitivity = 2
+                        }, 
+                        new MatchSceneController(match, camera, mapController)),
+                    camera,
+                    map,
+                    _assetLayerFactory.Create());
+
+            map.Parent = scene;
+
+            return scene;
         }
     }
 }

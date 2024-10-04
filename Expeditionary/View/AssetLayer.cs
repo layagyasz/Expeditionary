@@ -42,7 +42,7 @@ namespace Expeditionary.View
             _addressMap.Add(asset.Id, block);
 
             var vertices = new Vertex3[12];
-            var position = ToVector3(Geometry.MapCubic(asset.Position));
+            var position = ToVector3(Cubic.Cartesian.Instance.Project(asset.Position));
             SetVertices(vertices, 0, position, GetBackground(asset), _textures.Get(s_BackgroundKey).TextureView);
             SetVertices(vertices, 6, position, GetForeground(asset), _textures.Get(asset.TypeKey).TextureView);
             _vertices!.Set(block, vertices);

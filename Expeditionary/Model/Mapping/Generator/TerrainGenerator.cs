@@ -293,7 +293,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var coord = Geometry.MapOffset(new(i, j));
+                    var coord = Axial.Cartesian.Instance.Project(Axial.Offset.Instance.Wrap(new(i, j)));
                     centers[i, j] = new(coord.X, coord.Y, 0, 1);
                 }
             }

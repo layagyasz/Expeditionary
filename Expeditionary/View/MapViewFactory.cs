@@ -69,9 +69,9 @@ namespace Expeditionary.View
                     continue;
                 }
 
-                var centerPos = ToVector3(Geometry.MapAxial(centerHex.Xy));
-                var leftPos = ToVector3(Geometry.MapAxial(leftHex.Xy));
-                var rightPos = ToVector3(Geometry.MapAxial(rightHex.Xy));
+                var centerPos = ToVector3(Axial.Cartesian.Instance.Project(centerHex.Xy));
+                var leftPos = ToVector3(Axial.Cartesian.Instance.Project(leftHex.Xy));
+                var rightPos = ToVector3(Axial.Cartesian.Instance.Project(rightHex.Xy));
                 for (int layer = 0; layer < 3; ++layer)
                 {
                     var selected = options[random.Next(options.Length)];
@@ -115,7 +115,7 @@ namespace Expeditionary.View
             {
                 for (int j=0;j<map.Height;++j)
                 {
-                    var centerPos = ToVector3(Geometry.MapAxial(Cubic.HexagonalOffset.Instance.Wrap(new(i, j)).Xy));
+                    var centerPos = ToVector3(Axial.Cartesian.Instance.Project(Axial.Offset.Instance.Wrap(new(i, j))));
                     Shapes.AddVertices(
                         grid,
                         s_GridColor,
@@ -129,6 +129,7 @@ namespace Expeditionary.View
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
                 _maskShader);
+                
         }
 
         private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters)
