@@ -4,7 +4,6 @@ using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
-using Expeditionary.Model.Combat;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View
@@ -17,13 +16,13 @@ namespace Expeditionary.View
         public float? OverrideDepth { get; set; }
 
         private readonly InteractiveModel _map;
-        private readonly AssetLayer _assets;
+        private readonly InteractiveModel _assets;
 
         public MatchScene(
             IElementController controller,
             ICamera camera,
             InteractiveModel map,
-            AssetLayer assets) 
+            InteractiveModel assets) 
         {
             Controller = controller;
             Camera = camera;
@@ -69,16 +68,6 @@ namespace Expeditionary.View
         {
             _map.Update(delta);
             _assets.Update(delta);
-        }
-
-        public void AddAsset(IAsset asset)
-        {
-            _assets.Add(asset);
-        }
-
-        public void RemoveAsset(IAsset asset)
-        {
-            _assets.Remove(asset);
         }
     }
 }

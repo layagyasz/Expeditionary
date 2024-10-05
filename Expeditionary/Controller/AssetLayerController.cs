@@ -1,14 +1,17 @@
-﻿using Cardamom.Ui;
+﻿using Cardamom.Collections;
+using Cardamom.Ui;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Hexagons;
+using Expeditionary.Model.Combat;
 using Expeditionary.View;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 namespace Expeditionary.Controller
 {
-    public class MapController : IElementController
+    public class AssetLayerController : IElementController
     {
         public EventHandler<MouseButtonClickEventArgs>? Clicked { get; set; }
         public EventHandler<EventArgs>? Focused { get; set; }
@@ -17,16 +20,30 @@ namespace Expeditionary.Controller
         public EventHandler<EventArgs>? MouseEntered { get; set; }
         public EventHandler<EventArgs>? MouseLeft { get; set; }
 
-        private MapView? _map;
+        private AssetLayer? _assetLayer;
+
+        private readonly MultiMap<Vector3i, IAsset> _positionMap = new();
 
         public void Bind(object @object)
         {
-            _map = ((InteractiveModel)@object).GetModel() as MapView;
+            _assetLayer = ((InteractiveModel)@object).GetModel() as AssetLayer;
         }
 
         public void Unbind()
         {
-            _map = null;
+            _assetLayer = null;
+        }
+
+        public void AddAsset(IAsset asset)
+        {
+            _positionMap.Add(asset.Position, asset);
+            _assetLayer!.Add(asset);
+        }
+
+        public void RemoveAsset(IAsset asset)
+        {
+            _positionMap.Remove(asset.Position, asset);
+            _assetLayer!.Remove(asset);
         }
 
         public bool HandleKeyDown(KeyDownEventArgs e)
@@ -51,8 +68,13 @@ namespace Expeditionary.Controller
 
         public bool HandleMouseButtonClicked(MouseButtonClickEventArgs e)
         {
-            Console.WriteLine(Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz)));
-            return true;
+            var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
+            if (_positionMap.TryGetValue(hex, out var assets))
+            {
+                Console.WriteLine(assets.First());
+                return true;
+            }
+            return false;
         }
 
         public bool HandleMouseButtonDragged(MouseButtonDragEventArgs e)
@@ -83,24 +105,6 @@ namespace Expeditionary.Controller
         public bool HandleFocusLeft()
         {
             return false;
-        }
-
-        public void UpdateGridAlpha(float distance)
-        {
-            _map!.SetGridAlpha(GetGridAlpha(distance));
-        }
-
-        private static float GetGridAlpha(float distance)
-        {
-            if (distance < 10)
-            {
-                return 1;
-            }
-            if (distance > 70)
-            {
-                return 0;
-            }
-            return .017f * (60 - distance);
         }
     }
 }

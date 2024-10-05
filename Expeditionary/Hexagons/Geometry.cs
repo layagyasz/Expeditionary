@@ -94,7 +94,7 @@ namespace Expeditionary.Hexagons
             return hex + s_HexNeighbors[neighbor];
         }
 
-        public static Vector3i RoundHex(Vector3 hex)
+        public static Vector3i SnapToHex(Vector3 hex)
         {
             var q = (int)Math.Round(hex.X);
             var r = (int)Math.Round(hex.Y);

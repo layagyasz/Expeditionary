@@ -33,6 +33,10 @@ namespace Expeditionary.View
                     new Plane(new(), Vector3.UnitY),
                     mapController);
 
+            var assetController = new AssetLayerController();
+            var assetLayer =
+                new InteractiveModel(_assetLayerFactory.Create(), new Plane(new(), Vector3.UnitY), assetController);
+
             var scene =
                 new MatchScene(
                     new SceneController(
@@ -42,12 +46,13 @@ namespace Expeditionary.View
                             DistanceRange = new(5, 100),
                             MouseWheelSensitivity = 2
                         }, 
-                        new MatchSceneController(match, camera, mapController)),
+                        new MatchSceneController(match, camera, mapController, assetController)),
                     camera,
                     map,
-                    _assetLayerFactory.Create());
+                    assetLayer);
 
             map.Parent = scene;
+            assetLayer.Parent = map;
 
             return scene;
         }
