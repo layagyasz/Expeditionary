@@ -17,6 +17,8 @@ namespace Expeditionary.Controller
         public EventHandler<EventArgs>? MouseEntered { get; set; }
         public EventHandler<EventArgs>? MouseLeft { get; set; }
 
+        public EventHandler<HexClickedEventArgs>? HexClicked { get; set; }
+
         private MapView? _map;
 
         public void Bind(object @object)
@@ -51,7 +53,7 @@ namespace Expeditionary.Controller
 
         public bool HandleMouseButtonClicked(MouseButtonClickEventArgs e)
         {
-            Console.WriteLine(Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz)));
+            HexClicked?.Invoke(this, new(Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz)), e));
             return true;
         }
 

@@ -2,6 +2,7 @@
 using Cardamom.Ui.Controller;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.View;
 
 namespace Expeditionary.Controller
@@ -37,6 +38,9 @@ namespace Expeditionary.Controller
             }
 
             _camera.Changed += HandleCameraChanged;
+
+            _assetLayerController.AssetClicked += HandleAssetClicked;
+            _mapController.HexClicked += HandleHexClicked;
         }
 
         public void Unbind()
@@ -47,6 +51,9 @@ namespace Expeditionary.Controller
             _match.AssetRemoved -= HandleAssetRemoved;
 
             _camera.Changed -= HandleCameraChanged;
+
+            _assetLayerController.AssetClicked -= HandleAssetClicked;
+            _mapController.HexClicked -= HandleHexClicked;
         }
 
         private void HandleAssetAdded(object? sender, IAsset asset)
@@ -62,6 +69,27 @@ namespace Expeditionary.Controller
         private void HandleCameraChanged(object? sender, EventArgs e)
         {
             _mapController.UpdateGridAlpha(_camera.Position.Y);
+        }
+
+        private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
+        {
+            var asset = e.Assets.First();
+            Console.WriteLine(asset);
+            if (asset is Unit unit)
+            {
+                foreach (var option in Pathing.GetPathOptions(unit.Position, unit.Type.Speed, unit.Type.Movement))
+                {
+                    Console.WriteLine(option);
+                }
+            }
+        }
+
+        private void HandleHexClicked(object? sender, HexClickedEventArgs e)
+        {
+            if (_match.GetMap().GetTile(e.Hex) != null)
+            {
+                Console.WriteLine(e.Hex);
+            }
         }
     }
 }

@@ -4,7 +4,9 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Hexagons;
+using Expeditionary.Model;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.View;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -19,6 +21,8 @@ namespace Expeditionary.Controller
         public EventHandler<MouseButtonDragEventArgs>? MouseDragged { get; set; }
         public EventHandler<EventArgs>? MouseEntered { get; set; }
         public EventHandler<EventArgs>? MouseLeft { get; set; }
+
+        public EventHandler<AssetClickedEventArgs>? AssetClicked { get; set; }
 
         private AssetLayer? _assetLayer;
 
@@ -71,7 +75,7 @@ namespace Expeditionary.Controller
             var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
             if (_positionMap.TryGetValue(hex, out var assets))
             {
-                Console.WriteLine(assets.First());
+                AssetClicked?.Invoke(this, new(assets.ToList(), e));
                 return true;
             }
             return false;

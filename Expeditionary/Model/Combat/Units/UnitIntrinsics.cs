@@ -8,10 +8,5 @@
         public UnitModifier Power { get; set; }
         public UnitModifier Profile { get; set; }
         public UnitModifier Stamina { get; set; }
-
-        public float GetSpeed()
-        {
-            return Mass.GetValue() / Power.GetValue();
-        }
     }
 }

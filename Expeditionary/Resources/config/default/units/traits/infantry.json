@@ -16,15 +16,15 @@
       "intrinsic.number": "+40x1",
       "intrinsic.morale": "+40x1",
       "intrinsic.stamina": "+1x1",
-      "speed.roughness/min": "+0x1",
-      "speed.roughness/max": "+0x1",
-      "speed.roughness/cap": "+4x1",
-      "speed.softness/min": "+0x1",
-      "speed.softness/max": "+0x1",
-      "speed.softness/cap": "+5x1",
-      "speed.waterdepth/min": "+0x1",
-      "speed.waterdepth/max": "+0x1",
-      "speed.waterdepth/cap": "+3x1"
+      "movement.roughness/min": "+0x1",
+      "movement.roughness/max": "+0x1",
+      "movement.roughness/cap": "+4x1",
+      "movement.softness/min": "+0x1",
+      "movement.softness/max": "+0x1",
+      "movement.softness/cap": "+5x1",
+      "movement.waterdepth/min": "+0x1",
+      "movement.waterdepth/max": "+0x1",
+      "movement.waterdepth/cap": "+3x1"
     }
   },
   {
@@ -315,7 +315,7 @@
     "Level": 1,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "speed.roughness/cap": "+1x1"
+      "movement.roughness/cap": "+1x1"
     }
   },
   {
@@ -327,7 +327,7 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x1.25",
-      "speed.roughness/cap": "+1x1"
+      "movement.roughness/cap": "+1x1"
     }
   },
   {
@@ -339,7 +339,7 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x1.5",
-      "speed.roughness/cap": "+1x1"
+      "movement.roughness/cap": "+1x1"
     }
   },
   {
@@ -351,7 +351,7 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x1.75",
-      "speed.roughness/cap": "+1x1"
+      "movement.roughness/cap": "+1x1"
     }
   }
 ]

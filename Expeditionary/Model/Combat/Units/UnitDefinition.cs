@@ -36,7 +36,7 @@ namespace Expeditionary.Model.Combat.Units
                 this,
                 Attacks.Select(x => BuildAttack(Combine(x.Traits))),
                 BuildDefenseEnvelope(attributes),
-                BuildSpeed(attributes),
+                BuildMovement(attributes),
                 BuildCapabilities(attributes),
                 BuildIntrinsics(attributes));
         }
@@ -93,7 +93,7 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static UnitSpeed.Hindrance BuildHindrance(
+        private static UnitMovement.Hindrance BuildHindrance(
             IDictionary<string, UnitModifier> attributes, string attribute)
         {
             return new()
@@ -117,13 +117,13 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static UnitSpeed BuildSpeed(IDictionary<string, UnitModifier> attributes)
+        private static UnitMovement BuildMovement(IDictionary<string, UnitModifier> attributes)
         {
             return new()
             {
-                Roughness = BuildHindrance(attributes, "speed.roughness"),
-                Softness = BuildHindrance(attributes, "speed.softness"),
-                WaterDepth = BuildHindrance(attributes, "speed.waterdepth")
+                Roughness = BuildHindrance(attributes, "movement.roughness"),
+                Softness = BuildHindrance(attributes, "movement.softness"),
+                WaterDepth = BuildHindrance(attributes, "movement.waterdepth")
             };
         }
 

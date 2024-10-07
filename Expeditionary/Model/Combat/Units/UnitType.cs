@@ -20,24 +20,26 @@ namespace Expeditionary.Model.Combat.Units
         public UnitDefinition Definition { get; }
         public ImmutableList<UnitAttack> Attack { get; }
         public UnitDefense Defense { get; }
-        public UnitSpeed Speed { get; }
+        public UnitMovement Movement { get; }
         public UnitCapabilities Capabilities { get; }
         public UnitIntrinsics Intrinsics { get; }
+        public float Speed { get; }
 
         public UnitType(
             UnitDefinition definition,
             IEnumerable<UnitAttack> attack,
             UnitDefense defense,
-            UnitSpeed speed,
+            UnitMovement movement,
             UnitCapabilities capabilities,
             UnitIntrinsics intrinsics)
         {
             Definition = definition;
             Attack = ImmutableList.CreateRange(attack);
             Defense = defense;
-            Speed = speed;
+            Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
+            Speed = intrinsics.Power.GetValue() / intrinsics.Mass.GetValue();
         }
 
         public EnumSet<UnitTag> GetTags()

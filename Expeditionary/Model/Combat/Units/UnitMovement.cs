@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.Model.Combat.Units
 {
-    public class UnitSpeed
+    public class UnitMovement
     {
         public struct Hindrance
         {
