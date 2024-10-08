@@ -44,17 +44,24 @@ namespace Expeditionary.Model
                 current.Closed = true;
                 foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
                 {
+                    if (!nodes.TryGetValue(neighbor, out var neighborNode))
+                    {
+                        neighborNode = new(neighbor);
+                        nodes.Add(neighbor, neighborNode);
+                    }
+                    
+                    if (neighborNode.Closed)
+                    {
+                        continue;
+                    }
+
                     // TODO -- read from map
                     var cost = current.Cost + movement.GetCost(0, 0, 0);
                     if (cost > maxTravel)
                     {
                         continue;
                     }
-                    if (!nodes.TryGetValue(neighbor, out var neighborNode))
-                    {
-                        neighborNode = new(neighbor);
-                        nodes.Add(neighbor, neighborNode);
-                    }
+
                     if (cost < neighborNode.Cost)
                     {
                         if (neighborNode.Open)

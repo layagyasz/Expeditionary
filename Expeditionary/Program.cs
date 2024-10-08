@@ -83,7 +83,7 @@ namespace Expeditionary
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
 
             var mapGenerator = new MapGenerator();
-            var sceneFactory = 
+            var sceneFactory =
                 new SceneFactory(
                     new MapViewFactory(
                         new()
@@ -104,8 +104,13 @@ namespace Expeditionary
                         new RenderShader.Builder()
                             .SetVertex("resources/view/shaders/default.vert")
                             .SetFragment("resources/view/shaders/default.frag")
-                            .Build(), 
-                        unitTextures));
+                            .Build(),
+                        unitTextures),
+                    new HighlightLayerFactory(
+                        new RenderShader.Builder()
+                            .SetVertex("resources/view/shaders/default.vert")
+                            .SetFragment("resources/view/shaders/default_no_tex.frag")
+                            .Build()));
 
             var terrainParameters =
                 new TerrainViewParameters()

@@ -13,16 +13,22 @@ namespace Expeditionary.Controller
         private readonly ICamera _camera;
         private readonly MapController _mapController;
         private readonly AssetLayerController _assetLayerController;
+        private readonly HighlightLayer _highlightLayer;
 
         private MatchScene? _scene;
         
         public MatchSceneController(
-            Match match, ICamera camera, MapController mapController, AssetLayerController assetLayerController)
+            Match match, 
+            ICamera camera,
+            MapController mapController,
+            AssetLayerController assetLayerController, 
+            HighlightLayer highlightLayer)
         {
             _match = match;
             _camera = camera;
             _mapController = mapController;
             _assetLayerController = assetLayerController;
+            _highlightLayer = highlightLayer;
         }
 
         public void Bind(object @object)
@@ -74,13 +80,11 @@ namespace Expeditionary.Controller
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
         {
             var asset = e.Assets.First();
-            Console.WriteLine(asset);
             if (asset is Unit unit)
             {
-                foreach (var option in Pathing.GetPathOptions(unit.Position, unit.Type.Speed, unit.Type.Movement))
-                {
-                    Console.WriteLine(option);
-                }
+                _highlightLayer.SetHighlight(
+                    Pathing.GetPathOptions(unit.Position, unit.Type.Speed, unit.Type.Movement)
+                        .Select(x => new HighlightLayer.HexHighlight(x.Destination, 0)));
             }
         }
 

@@ -106,17 +106,25 @@ namespace Expeditionary.Model.Mapping.Generator
                 var p = current.Core.Parameters;
                 foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
                 {
+
+                    if (!nodes.TryGetValue(neighbor, out var neighborNode))
+                    {
+                        neighborNode = new(neighbor);
+                        nodes.Add(neighbor, neighborNode);
+                    }
+
+                    if (neighborNode.Closed)
+                    {
+                        continue;
+                    }
+
                     var distance = current.Distance + 1;
                     var cost = p.SprawlPenalty.Evaluate(distance) + GetCost(neighbor, map, p);
                     if (cost == float.MaxValue)
                     {
                         continue;
                     }
-                    if (!nodes.TryGetValue(neighbor, out var neighborNode))
-                    {
-                        neighborNode = new(neighbor);
-                        nodes.Add(neighbor, neighborNode);
-                    }
+
                     if (cost < neighborNode.Cost)
                     {
                         if (neighborNode.Open)

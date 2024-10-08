@@ -12,11 +12,16 @@ namespace Expeditionary.View
     {
         private readonly MapViewFactory _mapViewFactory;
         private readonly AssetLayerFactory _assetLayerFactory;
+        private readonly HighlightLayerFactory _highlightLayerFactory;
 
-        public SceneFactory(MapViewFactory mapViewFactory, AssetLayerFactory assetLayerFactory)
+        public SceneFactory(
+            MapViewFactory mapViewFactory,
+            AssetLayerFactory assetLayerFactory,
+            HighlightLayerFactory highlightLayerFactory)
         {
             _mapViewFactory = mapViewFactory;
             _assetLayerFactory = assetLayerFactory;
+            _highlightLayerFactory = highlightLayerFactory;
         }
 
         public IScene Create(Match match, TerrainViewParameters parameters, int seed)
@@ -37,6 +42,8 @@ namespace Expeditionary.View
             var assetLayer =
                 new InteractiveModel(_assetLayerFactory.Create(), new Plane(new(), Vector3.UnitY), assetController);
 
+            var highlightLayer = _highlightLayerFactory.Create();
+
             var scene =
                 new MatchScene(
                     new SceneController(
@@ -46,10 +53,11 @@ namespace Expeditionary.View
                             DistanceRange = new(5, 100),
                             MouseWheelSensitivity = 2
                         }, 
-                        new MatchSceneController(match, camera, mapController, assetController)),
+                        new MatchSceneController(match, camera, mapController, assetController, highlightLayer)),
                     camera,
                     map,
-                    assetLayer);
+                    assetLayer,
+                    highlightLayer);
 
             map.Parent = scene;
             assetLayer.Parent = map;

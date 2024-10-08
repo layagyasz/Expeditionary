@@ -9,7 +9,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View
 {
-    public class AssetLayer: GraphicsResource, IRenderable
+    public class AssetLayer : GraphicsResource, IRenderable
     {
         private static readonly string s_BackgroundKey = "icon_unit_background";
         private static readonly float s_Sqrt3_2 = 0.5f * MathF.Sqrt(3);

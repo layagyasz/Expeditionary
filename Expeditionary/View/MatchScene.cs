@@ -17,22 +17,27 @@ namespace Expeditionary.View
 
         private readonly InteractiveModel _map;
         private readonly InteractiveModel _assets;
+        private readonly HighlightLayer _highlight;
 
         public MatchScene(
             IElementController controller,
             ICamera camera,
             InteractiveModel map,
-            InteractiveModel assets) 
+            InteractiveModel assets,
+            HighlightLayer highlight) 
         {
             Controller = controller;
             Camera = camera;
             _map = map;
             _assets = assets;
+            _highlight = highlight;
         }
 
         protected override void DisposeImpl()
         {
             _map.Dispose();
+            _assets.Dispose();
+            _highlight.Dispose();
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
@@ -41,6 +46,7 @@ namespace Expeditionary.View
             target.PushProjection(Camera.GetProjection());
             context.Register(this);
             _map.Draw(target, context);
+            _highlight.Draw(target, context);
             _assets.Draw(target, context);
             target.PopProjectionMatrix();
             target.PopViewMatrix();
@@ -55,6 +61,7 @@ namespace Expeditionary.View
         {
             _map.Initialize();
             _assets.Initialize();
+            _highlight.Initialize();
             Controller.Bind(this);
         }
 
@@ -68,6 +75,7 @@ namespace Expeditionary.View
         {
             _map.Update(delta);
             _assets.Update(delta);
+            _highlight.Update(delta);
         }
     }
 }

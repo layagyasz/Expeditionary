@@ -1,0 +1,88 @@
+﻿using Cardamom.Graphics;
+using Cardamom.Ui;
+using Expeditionary.Hexagons;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
+
+namespace Expeditionary.View
+{
+    public class HighlightLayer : GraphicsResource, IRenderable
+    {
+        public record struct HexHighlight(Vector3i Hex, int Level);
+
+        private static readonly float s_Sqrt3d2 = 0.5f * MathF.Sqrt(3);
+        private static readonly Vector3[] s_Corners =
+        {
+            new(-0.5f, 0, -s_Sqrt3d2),
+            new(0.5f, 0, -s_Sqrt3d2),
+            new(1, 0, 0),
+            new(0.5f, 0, s_Sqrt3d2),
+            new(-0.5f, 0, s_Sqrt3d2),
+            new(-1, 0, 0)
+        };
+        private static readonly float s_Scale = 0.9f;
+
+        private static readonly Color4[] s_Levels =
+        {
+            new(0f, 1f, 0f, 0.5f),
+            new(1f, 1f, 0f, 0.5f),
+            new(1f, 0.5f, 0f, 0.5f),
+            new(1f, 0f, 0f, 0.5f)
+        };
+
+        private readonly RenderShader _shader;
+
+        private VertexBuffer<Vertex3>? _vertices;
+
+        public HighlightLayer(RenderShader shader)
+        {
+            _shader = shader;
+            _vertices = new(PrimitiveType.Triangles);
+        }
+
+        public void Draw(IRenderTarget target, IUiContext context)
+        {
+            target.Draw(_vertices!, 0, _vertices!.Length, new(BlendMode.Alpha, _shader));
+        }
+
+        public void Initialize()
+        {
+            _vertices!.Buffer(Array.Empty<Vertex3>());
+        }
+
+        public void ResizeContext(Vector3 context) { }
+
+        public void SetHighlight(IEnumerable<HexHighlight> highlight)
+        {
+            var hexes = highlight.ToArray();
+            var vertices = new Vertex3[18 * hexes.Length];
+            int v = 0;
+            for (int i=0; i<hexes.Length; ++i)
+            {
+                var hex = hexes[i];
+                var color = s_Levels[hex.Level];
+                var center = Cubic.Cartesian.Instance.Project(hex.Hex);
+                for (int j=0; j<6; ++j)
+                {
+                    vertices[v++] = new(ToVector3(center), color, new());
+                    vertices[v++] = new(ToVector3(center) + s_Scale * s_Corners[j], color, new());
+                    vertices[v++] = new(ToVector3(center) + s_Scale * s_Corners[(j + 1) % 6], color, new());
+                }
+            }
+            _vertices!.Buffer(vertices);
+        }
+
+        public void Update(long delta) { }
+
+        protected override void DisposeImpl()
+        {
+            _vertices?.Dispose();
+            _vertices = null;
+        }
+
+        private static Vector3 ToVector3(Vector2 x)
+        {
+            return new(x.X, 0, x.Y);
+        }
+    }
+}
