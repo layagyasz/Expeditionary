@@ -75,12 +75,21 @@ namespace Expeditionary
             maskTextureGenerator.Generate(frequencyRange: new(4f, 8f), seed: 0, count: 16);
 
             var riverTextureGenerator = 
-                new RiverTextureGenerator(new RenderShader.Builder()
-                    .SetVertex("resources/view/textures/generation/default.vert")
-                    .SetFragment("resources/view/textures/generation/river.frag")
-                    .Build());
+                new RiverTextureGenerator(
+                    new RenderShader.Builder()
+                        .SetVertex("resources/view/textures/generation/default.vert")
+                        .SetFragment("resources/view/textures/generation/river.frag")
+                        .Build());
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
+
+            var habitationTextureGenerator =
+                new HabitationTextureGenerator(
+                    new RenderShader.Builder()
+                            .SetVertex("resources/view/shaders/default.vert")
+                            .SetFragment("resources/view/shaders/default_no_tex.frag")
+                            .Build());
+            habitationTextureGenerator.Generate();
 
             var mapGenerator = new MapGenerator();
             var sceneFactory =

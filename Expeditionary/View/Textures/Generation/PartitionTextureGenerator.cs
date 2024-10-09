@@ -148,6 +148,7 @@ namespace Expeditionary.View.Textures.Generation
                 options[i] = new(texCoords);
             }
             canvasProvider.Dispose();
+            renderTexture.Dispose();
             return new(sheet, options);
         }
 

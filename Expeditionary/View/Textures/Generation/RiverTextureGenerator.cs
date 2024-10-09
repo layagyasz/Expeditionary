@@ -144,6 +144,7 @@ namespace Expeditionary.View.Textures.Generation
                 }
             }
             canvasProvider.Dispose();
+            renderTexture.Dispose();
             return new(sheet, options);
         }
 

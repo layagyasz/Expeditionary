@@ -9,6 +9,8 @@ namespace Expeditionary.View
 {
     public static class Shapes
     {
+        private static readonly float Epsilon = 1e-07f;
+
         public struct WideSegment
         {
             public Vector3 NearLeft { get; set; }
@@ -49,7 +51,11 @@ namespace Expeditionary.View
                     var dl = (l.Left - l.Right).Normalized();
                     var d = (segment.Right - segment.Left).Normalized();
                     left = dl + d;
-                    if (!HasSameDirection(Vector3.Cross(dl, d), line.GetNormal(i)))
+                    if (IsZero(left))
+                    {
+                        left = -Vector3.Cross(line.GetNormal(i), d);
+                    }
+                    else if (!HasSameDirection(Vector3.Cross(dl, d), line.GetNormal(i)))
                     {
                         left *= -1;
                     }
@@ -64,7 +70,11 @@ namespace Expeditionary.View
                     var dr = (r.Right - r.Left).Normalized();
                     var d = (segment.Left - segment.Right).Normalized();
                     right = dr + d;
-                    if (!HasSameDirection(Vector3.Cross(d, dr), line.GetNormal(i + 1)))
+                    if (IsZero(right))
+                    {
+                        right = Vector3.Cross(line.GetNormal(i), d);
+                    }
+                    else if (!HasSameDirection(Vector3.Cross(d, dr), line.GetNormal(i + 1)))
                     {
                         right *= -1;
                     }
@@ -104,6 +114,11 @@ namespace Expeditionary.View
         private static bool HasSameDirection(Vector3 left, Vector3 right)
         {
             return Vector3.Dot(left, right) > 0;
+        }
+
+        private static bool IsZero(Vector3 v)
+        { 
+            return Math.Abs(v.X) < Epsilon && Math.Abs(v.Y) < Epsilon && Math.Abs(v.Z) < Epsilon;
         }
     }
 }

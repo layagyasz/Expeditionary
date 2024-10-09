@@ -137,6 +137,7 @@ namespace Expeditionary.View.Textures.Generation
             }
             sheet.GetTexture().CopyToImage().SaveToFile("mask.png");
             canvasProvider.Dispose();
+            renderTexture.Dispose();
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)
