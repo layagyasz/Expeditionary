@@ -1,4 +1,5 @@
 ﻿using Cardamom.Graphics;
+using Cardamom.Mathematics;
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
 using OpenTK.Graphics.OpenGL4;
@@ -29,6 +30,7 @@ namespace Expeditionary.View
             new(1f, 0.5f, 0f, 0.5f),
             new(1f, 0f, 0f, 0.5f)
         };
+        public static readonly int Levels = s_Levels.Length;
 
         private readonly RenderShader _shader;
 
@@ -78,6 +80,20 @@ namespace Expeditionary.View
         {
             _vertices?.Dispose();
             _vertices = null;
+        }
+
+        public static int GetLevel(float value, Interval interval)
+        {
+            if (value <= interval.Minimum)
+            {
+                return 0;
+            }
+            if (value >= interval.Maximum)
+            {
+                return Levels - 1;
+            }
+            return (int)(Levels * (value - interval.Minimum) / (interval.Maximum - interval.Minimum));
+            
         }
 
         private static Vector3 ToVector3(Vector2 x)

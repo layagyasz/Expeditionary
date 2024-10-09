@@ -23,7 +23,8 @@ namespace Expeditionary.Model
             }
         }
 
-        public static IEnumerable<PathOption> GetPathOptions(Vector3i position, float maxTravel, UnitMovement movement)
+        public static IEnumerable<PathOption> GetPathField(
+            Vector3i position, float maxTravel, UnitMovement movement)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();

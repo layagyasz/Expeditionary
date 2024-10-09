@@ -82,9 +82,11 @@ namespace Expeditionary.Controller
             var asset = e.Assets.First();
             if (asset is Unit unit)
             {
+                var range = (int)unit.Type.Attack.First().Range.GetValue();
                 _highlightLayer.SetHighlight(
-                    Pathing.GetPathOptions(unit.Position, unit.Type.Speed, unit.Type.Movement)
-                        .Select(x => new HighlightLayer.HexHighlight(x.Destination, 0)));
+                    Sighting.GetSightField(_match.GetMap(), unit.Position, range)
+                        .Select(x => new HighlightLayer.HexHighlight(
+                            x.Target, HighlightLayer.GetLevel(x.Distance, new(0, range)))));
             }
         }
 
@@ -92,7 +94,11 @@ namespace Expeditionary.Controller
         {
             if (_match.GetMap().GetTile(e.Hex) != null)
             {
-                Console.WriteLine(e.Hex);
+                var range = 10;
+                _highlightLayer.SetHighlight(
+                    Sighting.GetSightField(_match.GetMap(), e.Hex, range)
+                        .Select(x => new HighlightLayer.HexHighlight(
+                            x.Target, HighlightLayer.GetLevel(x.Distance, new(0, range)))));
             }
         }
     }

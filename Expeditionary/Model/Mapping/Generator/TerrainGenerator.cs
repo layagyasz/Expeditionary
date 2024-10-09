@@ -1,4 +1,5 @@
-﻿using Cardamom.ImageProcessing;
+﻿using Cardamom.Collections;
+using Cardamom.ImageProcessing;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
 using Cardamom.Utils.Suppliers;
@@ -6,9 +7,6 @@ using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
-using static Cardamom.Graphing.SeededGraphPartition;
-using System.Drawing;
-using Cardamom.Collections;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
@@ -16,6 +14,7 @@ namespace Expeditionary.Model.Mapping.Generator
     {
         public class Parameters
         {
+            public int ElevationLevels { get; set; } = 5;
             public float LiquidLevel { get; set; } = 0.25f;
             public Vector3 Stone { get; set; } = new(1, 1, 1);
             public float SoilCover { get; set; } = 0.9f;
@@ -329,10 +328,15 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = elevationData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    tile.Elevation = tileData.R;
                     if (tileData.R < parameters.LiquidLevel)
                     {
                         tile.Terrain.IsLiquid = true;
+                        tile.Elevation = parameters.LiquidLevel;
+                    }
+                    else
+                    {
+                        tile.Elevation = 
+                            (int)(parameters.ElevationLevels * tileData.R) / (parameters.ElevationLevels - 1);
                     }
                 }
             }

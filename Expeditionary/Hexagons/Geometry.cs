@@ -68,10 +68,14 @@ namespace Expeditionary.Hexagons
             return corner.X + corner.Y + corner.Z;
         }
 
+        public static int GetDisplacement(Vector3i delta)
+        {
+            return Math.Max(Math.Abs(delta.X), Math.Max(Math.Abs(delta.Y), Math.Abs(delta.Z)));
+        }
+
         public static int GetDistance(Vector3i hexA, Vector3i hexB)
         {
-            return Math.Max(
-                Math.Abs(hexA.X - hexB.X), Math.Max(Math.Abs(hexA.Y - hexB.Y), Math.Abs(hexA.Z - hexB.Z)));
+            return GetDisplacement(hexB - hexA);
         }
 
         public static Vector3i GetEdge(Vector3i left, Vector3i right)
