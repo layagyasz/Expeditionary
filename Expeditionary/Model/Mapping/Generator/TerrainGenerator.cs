@@ -136,7 +136,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = _soilCoverSeed,
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                                         .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -328,15 +328,10 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = elevationData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.R < parameters.LiquidLevel)
+                    tile.Elevation = tileData.R;
+                    if (tile.Elevation < parameters.LiquidLevel)
                     {
                         tile.Terrain.IsLiquid = true;
-                        tile.Elevation = parameters.LiquidLevel;
-                    }
-                    else
-                    {
-                        tile.Elevation = 
-                            (int)(parameters.ElevationLevels * tileData.R) / (parameters.ElevationLevels - 1);
                     }
                 }
             }
@@ -379,6 +374,23 @@ namespace Expeditionary.Model.Mapping.Generator
                         total += option;
                     }
                     corners[i, j] = total / n;
+                }
+            }
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
+                    if (tile.Terrain.IsLiquid)
+                    {
+                        tile.Elevation = (int)(parameters.ElevationLevels * parameters.LiquidLevel)
+                                / (parameters.ElevationLevels - 1f);
+                    }
+                    else
+                    {
+                        tile.Elevation = (int)(parameters.ElevationLevels * tile.Elevation)
+                                / (parameters.ElevationLevels - 1f);
+                    }
                 }
             }
         }
@@ -430,7 +442,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.B + tile.Slope - 0.5f < parameters.SoilCover)
+                    if (tileData.B + tile.Slope < parameters.SoilCover)
                     {
                         var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
                         var soil =

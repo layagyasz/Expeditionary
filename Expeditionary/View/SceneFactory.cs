@@ -4,6 +4,7 @@ using Cardamom.Ui;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller;
 using Expeditionary.Model;
+using Expeditionary.View.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View

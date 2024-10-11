@@ -1,7 +1,7 @@
 ﻿using Expeditionary.View.Common.Gradients;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Mapping
 {
     public class TerrainViewParameters
     {

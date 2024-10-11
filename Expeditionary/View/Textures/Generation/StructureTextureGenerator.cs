@@ -7,7 +7,7 @@ using Cardamom.Mathematics.Geometry;
 
 namespace Expeditionary.View.Textures.Generation
 {
-    public class HabitationTextureGenerator
+    public class StructureTextureGenerator
     {
         private record struct Endpoint(int Face, int Anchor, int Angle);
         private record struct Arc(Endpoint Left, Endpoint Right);
@@ -116,7 +116,7 @@ namespace Expeditionary.View.Textures.Generation
 
         private readonly RenderShader _shader;
 
-        public HabitationTextureGenerator(RenderShader shader)
+        public StructureTextureGenerator(RenderShader shader)
         {
             _shader = shader;
         }

@@ -50,8 +50,8 @@ namespace Expeditionary.View.Textures
                 {
                     var transformed = 
                         new Option(
-                            Transform(option.TexCoords, s_CornerTransforms[i]), 
-                            Transform(option.Connected, s_EdgeTransforms[i]));
+                            Utils.Transform(option.TexCoords, s_CornerTransforms[i]), 
+                            Utils.Transform(option.Connected, s_EdgeTransforms[i]));
                     if (Satisfies(connected, transformed.Connected))
                     {
                         yield return transformed;
@@ -60,17 +60,7 @@ namespace Expeditionary.View.Textures
             }
         }
 
-        private static T[] Transform<T>(T[] array, int[] transform)
-        {
-            var result = new T[array.Length];
-            for (int i = 0; i < array.Length; ++i)
-            {
-                result[i] = array[transform[i]];
-            }
-            return result;
-        }
-
-        private bool Satisfies<T>(T[] requirement, T[] option)
+        private static bool Satisfies<T>(T[] requirement, T[] option)
         {
             for (int i=0; i<option.Length; ++i)
             {

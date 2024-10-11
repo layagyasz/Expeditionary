@@ -3,7 +3,7 @@ using Cardamom.Ui;
 using Expeditionary.View.Common.Buffers;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Mapping
 {
     public class MapView : GraphicsResource, IRenderable
     {
@@ -32,12 +32,12 @@ namespace Expeditionary.View
             _terrain = null;
         }
 
-        public void Draw(IRenderTarget target, IUiContext context) 
+        public void Draw(IRenderTarget target, IUiContext context)
         {
             _terrain!.Draw(target, context);
             target.Draw(
                 _grid!,
-                0, 
+                0,
                 _grid!.Length,
                 new RenderResources(BlendMode.Alpha, _maskShader, _maskTexture!.GetTexture()));
         }

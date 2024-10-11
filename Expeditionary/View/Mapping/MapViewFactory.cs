@@ -8,7 +8,7 @@ using Expeditionary.View.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Mapping
 {
     public class MapViewFactory
     {
@@ -31,7 +31,7 @@ namespace Expeditionary.View
         private readonly RenderShader _texShader;
 
         public MapViewFactory(
-            MapViewParameters parameters, 
+            MapViewParameters parameters,
             TextureLibrary textureLibrary,
             RenderShader maskShader,
             RenderShader texShader)
@@ -111,9 +111,9 @@ namespace Expeditionary.View
                 ++triangle;
             }
             ArrayList<Vertex3> grid = new();
-            for (int i=0;i<map.Width;++i)
+            for (int i = 0; i < map.Width; ++i)
             {
-                for (int j=0;j<map.Height;++j)
+                for (int j = 0; j < map.Height; ++j)
                 {
                     var centerPos = ToVector3(Axial.Cartesian.Instance.Project(Axial.Offset.Instance.Wrap(new(i, j))));
                     Shapes.AddVertices(
@@ -129,16 +129,15 @@ namespace Expeditionary.View
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
                 _maskShader);
-                
+
         }
 
         private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters)
         {
-            var e = (int)(tile.Elevation * _parameters.ElevationLevel) / (_parameters.ElevationLevel - 1f);
             var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, layer, parameters));
             if (!tile.Terrain.IsLiquid)
             {
-                var adj = _parameters.ElevationGradient.Minimum + e *
+                var adj = _parameters.ElevationGradient.Minimum + tile.Elevation *
                     (_parameters.ElevationGradient.Maximum -
                         _parameters.ElevationGradient.Minimum);
                 color.B = MathHelper.Clamp(color.B * adj, 0, 1);
@@ -182,7 +181,7 @@ namespace Expeditionary.View
             // Foliage
             if (layer == 1)
             {
-                return tile.Terrain.Foliage.HasValue 
+                return tile.Terrain.Foliage.HasValue
                     ? parameters.Foliage.Interpolate(tile.Terrain.Foliage.Value) : new();
             }
 

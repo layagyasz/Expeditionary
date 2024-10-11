@@ -3,7 +3,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Hexagons;
-using Expeditionary.View;
+using Expeditionary.View.Mapping;
 using OpenTK.Windowing.Common;
 
 namespace Expeditionary.Controller

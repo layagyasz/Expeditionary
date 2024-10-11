@@ -12,6 +12,7 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Spectra;
 using Expeditionary.View;
+using Expeditionary.View.Mapping;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
 using OpenTK.Mathematics;
@@ -84,7 +85,7 @@ namespace Expeditionary
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
 
             var habitationTextureGenerator =
-                new HabitationTextureGenerator(
+                new StructureTextureGenerator(
                     new RenderShader.Builder()
                             .SetVertex("resources/view/shaders/default.vert")
                             .SetFragment("resources/view/shaders/default_no_tex.frag")
@@ -98,7 +99,6 @@ namespace Expeditionary
                         new()
                         {
                             ElevationGradient = new(0.8f, 1.2f),
-                            ElevationLevel = 5
                         },
                         new(partitions, edges),
                         new RenderShader.Builder()

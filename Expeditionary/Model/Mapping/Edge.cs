@@ -5,9 +5,11 @@
         public enum EdgeType
         {
             None,
-            River
+            River,
+            Road
         }
 
         public EdgeType Type { get; set; }
+        public int Level { get; set; }
     }
 }
