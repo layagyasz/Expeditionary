@@ -11,6 +11,6 @@ namespace Expeditionary.Model.Combat.Units
         public int Cost { get; set; }
         public int Level { get; set; }
         public EnumSet<UnitTag> Tags { get; set; } = new();
-        public Dictionary<string, UnitModifier> Modifiers { get; set; } = new();
+        public Dictionary<string, Modifier> Modifiers { get; set; } = new();
     }
 }

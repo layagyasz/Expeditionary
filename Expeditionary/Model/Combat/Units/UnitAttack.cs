@@ -2,11 +2,11 @@
 {
     public class UnitAttack
     {
-        public UnitModifier Volume { get; set; }
-        public UnitModifier Range { get; set; }
-        public UnitModifier Accuracy { get; set; }
-        public UnitModifier Tracking { get; set; }
-        public UnitModifier Penetration { get; set; }
-        public UnitModifier Lethality { get; set; }
+        public Modifier Volume { get; set; }
+        public Modifier Range { get; set; }
+        public Modifier Accuracy { get; set; }
+        public Modifier Tracking { get; set; }
+        public Modifier Penetration { get; set; }
+        public Modifier Lethality { get; set; }
     }
 }

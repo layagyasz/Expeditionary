@@ -1,12 +1,14 @@
-﻿namespace Expeditionary.Model.Combat.Units
+﻿namespace Expeditionary.Model
 {
-    public class UnitMovement
+    public class Movement
     {
         public struct Hindrance
         {
-            public UnitModifier Minimum { get; set; }
-            public UnitModifier Maximum { get; set; }
-            public UnitModifier Cap { get; set; }
+            public Modifier Minimum { get; set; } = Modifier.None;
+            public Modifier Maximum { get; set; } = Modifier.None;
+            public Modifier Cap { get; set; } = new(1, 5);
+
+            public Hindrance() { }
 
             public float GetCost(int value)
             {
@@ -18,9 +20,9 @@
             }
         }
 
-        public Hindrance Roughness { get; set; }
-        public Hindrance Softness { get; set; }
-        public Hindrance WaterDepth { get; set; }
+        public Hindrance Roughness { get; set; } = new();
+        public Hindrance Softness { get; set; } = new();
+        public Hindrance WaterDepth { get; set; } = new();
 
         public float GetCost(int roughness, int softness, int waterDepth)
         {

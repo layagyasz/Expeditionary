@@ -2,7 +2,7 @@
 {
     public struct UnitBoundedValue
     {
-        public UnitModifier Minimum { get; set; }
-        public UnitModifier Value { get; set; }
+        public Modifier Minimum { get; set; }
+        public Modifier Value { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace Expeditionary.View.Mapping
                     foreach (var edge in Geometry.GetEdges(hex).Select(map.GetEdge))
                     {
                         var query = new List<(StructureLibrary.ConnectionType, int)>();
-                        if (edge != null && edge.Levels.TryGetValue(Edge.EdgeType.Road, out var level))
+                        if (edge != null && edge.Levels.TryGetValue(EdgeType.Road, out var level))
                         {
                             query.Add((StructureLibrary.ConnectionType.Road, level));
                         }
@@ -60,7 +60,7 @@ namespace Expeditionary.View.Mapping
             var hexCenter = ToVector3(Cubic.Cartesian.Instance.Project(hex));
             for (int i=0; i<6; ++i)
             {
-                AddTriangle(bufferBuilder, index, hexCenter, i, option);
+                AddTriangle(bufferBuilder, 18 * index, hexCenter, i, option);
             }
         }
 

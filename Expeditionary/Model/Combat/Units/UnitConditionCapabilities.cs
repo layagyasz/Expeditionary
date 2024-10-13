@@ -4,17 +4,17 @@ namespace Expeditionary.Model.Combat.Units
 {
     public class UnitConditionCapabilities
     {
-        private readonly UnitModifier _volume;
-        private readonly UnitModifier _accuracy;
-        private readonly UnitModifier _lethality;
-        private readonly EnumMap<UnitDetectionBand, UnitModifier> _detection;
+        private readonly Modifier _volume;
+        private readonly Modifier _accuracy;
+        private readonly Modifier _lethality;
+        private readonly EnumMap<UnitDetectionBand, Modifier> _detection;
         private readonly EnumMap<UnitDetectionBand, UnitBoundedValue> _concealment;
 
         public UnitConditionCapabilities(
-            UnitModifier volume,
-            UnitModifier accuracy,
-            UnitModifier lethality,
-            EnumMap<UnitDetectionBand, UnitModifier> detection,
+            Modifier volume,
+            Modifier accuracy,
+            Modifier lethality,
+            EnumMap<UnitDetectionBand, Modifier> detection,
             EnumMap<UnitDetectionBand, UnitBoundedValue> concealment)
         {
             _volume = volume;

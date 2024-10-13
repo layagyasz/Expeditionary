@@ -1,12 +1,12 @@
-﻿using Expeditionary.Model.Combat.Units;
+﻿using Expeditionary.Model;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Json
 {
-    public class UnitModifierJsonConverter : JsonConverter<UnitModifier>
+    public class ModifierJsonConverter : JsonConverter<Modifier>
     {
-        public override UnitModifier Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override Modifier Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string stringValue = reader.GetString()!;
             if (stringValue[0] != '+' || !stringValue.Contains('x'))
@@ -21,7 +21,7 @@ namespace Expeditionary.Json
             };
         }
 
-        public override void Write(Utf8JsonWriter writer, UnitModifier @object, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, Modifier @object, JsonSerializerOptions options)
         {
             writer.WriteStringValue(string.Format("+{0}x{1}", @object.Bonus, @object.Multiplier));
         }

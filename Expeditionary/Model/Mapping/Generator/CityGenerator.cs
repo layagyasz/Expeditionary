@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
-    public class CityGenerator
+    public static class CityGenerator
     {
         public class Parameters
         {
@@ -58,11 +58,12 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        public static void Generate(IEnumerable<Parameters> parameters, Map map, Random random)
+        public static List<Vector3i> Generate(IEnumerable<Parameters> parameters, Map map, Random random)
         {
             var closed = new HashSet<Vector3i>();
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
+            var cores = new List<Vector3i>();
 
             foreach (var param in parameters)
             {
@@ -85,6 +86,7 @@ namespace Expeditionary.Model.Mapping.Generator
                         };
                     nodes.Add(candidate.Key, node);
                     open.Push(node, 0);
+                    cores.Add(candidate.Key);
                 }
             }
 
@@ -155,6 +157,8 @@ namespace Expeditionary.Model.Mapping.Generator
                         };
                 }
             }
+
+            return cores;
         }
 
         private static float GetCost(Vector3i hex, Map map, Parameters parameters)
@@ -168,7 +172,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 Geometry.GetNeighbors(hex).Select(map.GetTile).Where(x => x != null).Any(x => x!.Terrain.IsLiquid);
             bool neighborsRiver =
                 Geometry.GetEdges(hex)
-                    .Select(map.GetEdge).Where(x => x != null).Any(x => x!.Levels.ContainsKey(Edge.EdgeType.River));
+                    .Select(map.GetEdge).Where(x => x != null).Any(x => x!.Levels.ContainsKey(EdgeType.River));
             return parameters.DistancePenalty.Evaluate(Geometry.GetDistance(hex, parameters.Center))
                 + parameters.SlopePenalty.Evaluate(tile.Slope)
                 + parameters.ElevationPenalty.Evaluate(tile.Elevation)

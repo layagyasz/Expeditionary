@@ -41,20 +41,20 @@ namespace Expeditionary.Model.Combat.Units
                 BuildIntrinsics(attributes));
         }
 
-        private static UnitAttack BuildAttack(IDictionary<string, UnitModifier> attributes)
+        private static UnitAttack BuildAttack(IDictionary<string, Modifier> attributes)
         {
             return new()
             {
-                Volume = GetOrDefault(attributes, "attack.volume", UnitModifier.None),
-                Range = GetOrDefault(attributes, "attack.range", UnitModifier.None),
-                Accuracy = GetOrDefault(attributes, "attack.accuracy", UnitModifier.None),
-                Tracking = GetOrDefault(attributes, "attack.tracking", UnitModifier.None),
-                Penetration = GetOrDefault(attributes, "attack.penetration", UnitModifier.None),
-                Lethality = GetOrDefault(attributes, "attack.lethality", UnitModifier.None)
+                Volume = GetOrDefault(attributes, "attack.volume", Modifier.None),
+                Range = GetOrDefault(attributes, "attack.range", Modifier.None),
+                Accuracy = GetOrDefault(attributes, "attack.accuracy", Modifier.None),
+                Tracking = GetOrDefault(attributes, "attack.tracking", Modifier.None),
+                Penetration = GetOrDefault(attributes, "attack.penetration", Modifier.None),
+                Lethality = GetOrDefault(attributes, "attack.lethality", Modifier.None)
             };
         }
 
-        private static UnitCapabilities BuildCapabilities(IDictionary<string, UnitModifier> attributes)
+        private static UnitCapabilities BuildCapabilities(IDictionary<string, Modifier> attributes)
         {
             return new(
                 GetMap<CombatCondition, UnitConditionCapabilities>(
@@ -62,19 +62,19 @@ namespace Expeditionary.Model.Combat.Units
         }
 
         private static UnitConditionCapabilities BuildConditionCapabilities(
-            string prefix, IDictionary<string, UnitModifier> attributes)
+            string prefix, IDictionary<string, Modifier> attributes)
         {
             return new(
-                GetOrDefault(attributes, prefix + ".volume" , UnitModifier.None),
-                GetOrDefault(attributes, prefix + ".accuracy", UnitModifier.None),
-                GetOrDefault(attributes, prefix + ".lethality", UnitModifier.None),
-                GetMap<UnitDetectionBand, UnitModifier>(
-                    prefix + ".detection", x => GetOrDefault(attributes, x, UnitModifier.None)),
+                GetOrDefault(attributes, prefix + ".volume" , Modifier.None),
+                GetOrDefault(attributes, prefix + ".accuracy", Modifier.None),
+                GetOrDefault(attributes, prefix + ".lethality", Modifier.None),
+                GetMap<UnitDetectionBand, Modifier>(
+                    prefix + ".detection", x => GetOrDefault(attributes, x, Modifier.None)),
                 GetMap<UnitDetectionBand, UnitBoundedValue>(
                     prefix + ".concealment", x => BuildBounded(attributes, x)));
         }
 
-        private static UnitDefense BuildDefenseEnvelope(IDictionary<string, UnitModifier> attributes)
+        private static UnitDefense BuildDefenseEnvelope(IDictionary<string, Modifier> attributes)
         {
             return new()
             {
@@ -84,40 +84,40 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static UnitBoundedValue BuildBounded(IDictionary<string, UnitModifier> attributes, string attribute)
+        private static UnitBoundedValue BuildBounded(IDictionary<string, Modifier> attributes, string attribute)
         {
             return new()
             {
-                Minimum = GetOrDefault(attributes, attribute + "/min", UnitModifier.None),
-                Value = GetOrDefault(attributes, attribute, UnitModifier.None)
+                Minimum = GetOrDefault(attributes, attribute + "/min", Modifier.None),
+                Value = GetOrDefault(attributes, attribute, Modifier.None)
             };
         }
 
-        private static UnitMovement.Hindrance BuildHindrance(
-            IDictionary<string, UnitModifier> attributes, string attribute)
+        private static Movement.Hindrance BuildHindrance(
+            IDictionary<string, Modifier> attributes, string attribute)
         {
             return new()
             {
-                Minimum = GetOrDefault(attributes, attribute + "/min", UnitModifier.None),
-                Maximum = GetOrDefault(attributes, attribute + "/max", UnitModifier.None),
-                Cap = GetOrDefault(attributes, attribute + "/cap", UnitModifier.None)
+                Minimum = GetOrDefault(attributes, attribute + "/min", Modifier.None),
+                Maximum = GetOrDefault(attributes, attribute + "/max", Modifier.None),
+                Cap = GetOrDefault(attributes, attribute + "/cap", Modifier.None)
             };
         }
 
-        private static UnitIntrinsics BuildIntrinsics(IDictionary<string, UnitModifier> attributes)
+        private static UnitIntrinsics BuildIntrinsics(IDictionary<string, Modifier> attributes)
         {
             return new()
             {
-                Number = GetOrDefault(attributes, "intrinsic.number", UnitModifier.None),
-                Mass = GetOrDefault(attributes, "intrinsic.mass", UnitModifier.None),
-                Morale = GetOrDefault(attributes, "intrinsic.morale", UnitModifier.None),
-                Power = GetOrDefault(attributes, "intrinsic.power", UnitModifier.None),
-                Profile = GetOrDefault(attributes, "intrinsic.profile", UnitModifier.None),
-                Stamina = GetOrDefault(attributes, "intrinsic.stamina", UnitModifier.None)
+                Number = GetOrDefault(attributes, "intrinsic.number", Modifier.None),
+                Mass = GetOrDefault(attributes, "intrinsic.mass", Modifier.None),
+                Morale = GetOrDefault(attributes, "intrinsic.morale", Modifier.None),
+                Power = GetOrDefault(attributes, "intrinsic.power", Modifier.None),
+                Profile = GetOrDefault(attributes, "intrinsic.profile", Modifier.None),
+                Stamina = GetOrDefault(attributes, "intrinsic.stamina", Modifier.None)
             };
         }
 
-        private static UnitMovement BuildMovement(IDictionary<string, UnitModifier> attributes)
+        private static Movement BuildMovement(IDictionary<string, Modifier> attributes)
         {
             return new()
             {
@@ -127,7 +127,7 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static Dictionary<string, UnitModifier> Combine(IEnumerable<UnitTrait> traits)
+        private static Dictionary<string, Modifier> Combine(IEnumerable<UnitTrait> traits)
         {
             return traits.SelectMany(x => x.Modifiers)
                 .GroupBy(x => x.Key, x => x.Value)

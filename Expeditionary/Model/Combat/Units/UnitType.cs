@@ -20,7 +20,7 @@ namespace Expeditionary.Model.Combat.Units
         public UnitDefinition Definition { get; }
         public ImmutableList<UnitAttack> Attack { get; }
         public UnitDefense Defense { get; }
-        public UnitMovement Movement { get; }
+        public Movement Movement { get; }
         public UnitCapabilities Capabilities { get; }
         public UnitIntrinsics Intrinsics { get; }
         public float Speed { get; }
@@ -29,7 +29,7 @@ namespace Expeditionary.Model.Combat.Units
             UnitDefinition definition,
             IEnumerable<UnitAttack> attack,
             UnitDefense defense,
-            UnitMovement movement,
+            Movement movement,
             UnitCapabilities capabilities,
             UnitIntrinsics intrinsics)
         {

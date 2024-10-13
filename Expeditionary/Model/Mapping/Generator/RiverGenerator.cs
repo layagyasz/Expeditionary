@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
-    internal class RiverGenerator
+    public static class RiverGenerator
     {
         public static void Generate(int count, Map map, float[,] corners, Random random)
         {
@@ -77,7 +77,7 @@ namespace Expeditionary.Model.Mapping.Generator
             }
             foreach (var edge in edges)
             {
-                map.GetEdge(edge)!.Levels.Add(Edge.EdgeType.River, 1);
+                map.GetEdge(edge)!.Levels.Add(EdgeType.River, 1);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 foreach (var edge in Geometry.GetCornerEdges(neighbor))
                 {
                     if (edge != Geometry.GetEdge(pos, neighbor) 
-                        && (map.GetEdge(edge)?.Levels?.ContainsKey(Edge.EdgeType.River) ?? false))
+                        && (map.GetEdge(edge)?.Levels?.ContainsKey(EdgeType.River) ?? false))
                     {
                         return neighbor;
                     }

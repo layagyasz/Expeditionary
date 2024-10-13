@@ -2,11 +2,11 @@
 {
     public class UnitIntrinsics
     {
-        public UnitModifier Mass { get; set; }
-        public UnitModifier Morale { get; set; }
-        public UnitModifier Number { get; set; }
-        public UnitModifier Power { get; set; }
-        public UnitModifier Profile { get; set; }
-        public UnitModifier Stamina { get; set; }
+        public Modifier Mass { get; set; }
+        public Modifier Morale { get; set; }
+        public Modifier Number { get; set; }
+        public Modifier Power { get; set; }
+        public Modifier Profile { get; set; }
+        public Modifier Stamina { get; set; }
     }
 }

@@ -1,19 +1,19 @@
 ﻿using Expeditionary.Json;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Combat.Units
+namespace Expeditionary.Model
 {
-    [JsonConverter(typeof(UnitModifierJsonConverter))]
-    public struct UnitModifier
+    [JsonConverter(typeof(ModifierJsonConverter))]
+    public struct Modifier
     {
-        public static readonly UnitModifier None = new(1, 0);
+        public static readonly Modifier None = new(1, 0);
 
         public float Multiplier { get; set; } = 1f;
         public float Bonus { get; set; } = 0f;
 
-        public UnitModifier() { }
+        public Modifier() { }
 
-        public UnitModifier(float multiplier, float bonus)
+        public Modifier(float multiplier, float bonus)
         {
             Multiplier = multiplier;
             Bonus = bonus;
@@ -24,7 +24,7 @@ namespace Expeditionary.Model.Combat.Units
             return Bonus * Multiplier;
         }
 
-        public static UnitModifier operator +(UnitModifier left, UnitModifier right)
+        public static Modifier operator +(Modifier left, Modifier right)
         {
             return new(left.Multiplier * right.Multiplier, left.Bonus + right.Bonus);
         }

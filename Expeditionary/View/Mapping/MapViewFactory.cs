@@ -93,9 +93,9 @@ namespace Expeditionary.View.Mapping
                 bool[] query =
                     new bool[]
                     {
-                            edgeA.Levels.ContainsKey(Edge.EdgeType.River),
-                            edgeB.Levels.ContainsKey(Edge.EdgeType.River),
-                            edgeC.Levels.ContainsKey(Edge.EdgeType.River)
+                            edgeA.Levels.ContainsKey(EdgeType.River),
+                            edgeB.Levels.ContainsKey(EdgeType.River),
+                            edgeC.Levels.ContainsKey(EdgeType.River)
                     };
                 if (query.Any(x => x))
                 {

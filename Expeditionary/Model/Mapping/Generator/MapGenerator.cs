@@ -17,7 +17,8 @@ namespace Expeditionary.Model.Mapping.Generator
             var random = new Random(seed);
             var map = new Map(size);
             _terrainGenerator.Generate(parameters.Terrain, map, random);
-            CityGenerator.Generate(parameters.Cities, map, random);
+            var cores = CityGenerator.Generate(parameters.Cities, map, random);
+            TransportGenerator.Generate(cores, map, random);
             return map;
         }
     }

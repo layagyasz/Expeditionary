@@ -53,6 +53,7 @@ namespace Expeditionary.View.Textures.Generation
         private static readonly Arc[][] s_Arcs =
         {
             Array.Empty<Arc>(),
+            new Arc[] { new(new(0, 0, 0), new(0, 0, 0)) },
             new Arc[] { new(new(0, 0, 0), new(1, 0, 0)) },
             new Arc[] { new(new(0, 0, 0), new(2, 0, 0)) },
             new Arc[] { new(new(0, 0, 0), new(3, 0, 0)) },
@@ -203,7 +204,7 @@ namespace Expeditionary.View.Textures.Generation
             }
             return new StructureLibrary.Option(
                 segment.Center,
-                s_Corners.Select(x => ToVector2(x) + segment.Center).ToArray(), 
+                s_Corners.Select(x => 64f * x.Xy + segment.Center).ToArray(), 
                 StructureType.None,
                 0, 
                 connections);
@@ -215,11 +216,6 @@ namespace Expeditionary.View.Textures.Generation
             connection.Type[endpoint.Anchor] = StructureLibrary.ConnectionType.Road;
             connection.Level[endpoint.Anchor] = 1;
             connection.Angle[endpoint.Anchor] = endpoint.Anchor;
-        }
-
-        private static Vector2 ToVector2(Vector3 x)
-        {
-            return new(x.X, x.Z);
         }
     }
 }
