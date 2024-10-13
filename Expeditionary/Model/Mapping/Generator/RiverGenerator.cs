@@ -77,7 +77,7 @@ namespace Expeditionary.Model.Mapping.Generator
             }
             foreach (var edge in edges)
             {
-                map.GetEdge(edge)!.Type = Edge.EdgeType.River;
+                map.GetEdge(edge)!.Levels.Add(Edge.EdgeType.River, 1);
             }
         }
 
@@ -87,7 +87,8 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 foreach (var edge in Geometry.GetCornerEdges(neighbor))
                 {
-                    if (edge != Geometry.GetEdge(pos, neighbor) && map.GetEdge(edge)?.Type == Edge.EdgeType.River)
+                    if (edge != Geometry.GetEdge(pos, neighbor) 
+                        && (map.GetEdge(edge)?.Levels?.ContainsKey(Edge.EdgeType.River) ?? false))
                     {
                         return neighbor;
                     }

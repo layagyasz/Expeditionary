@@ -13,11 +13,88 @@ namespace Expeditionary.View.Textures
             Road
         }
 
-        public record class Connection(ConnectionType[] Type, int[] Level, int[] Angle);
+        public interface IConnectionQuery
+        {
+            bool Matches(Connection connection);
+        }
+
+        public record class OpenConnectionQuery(IList<(ConnectionType, int)> TypesAndLevels) : IConnectionQuery
+        {
+            public bool Matches(Connection connection)
+            {
+                foreach (var (type, level) in TypesAndLevels)
+                {
+                    if (!OtherContains(connection, type, level))
+                    {
+                        return false;
+                    }
+                }
+                for (int i=0; i<5; ++i)
+                {
+                    if (!ThisContains(connection.Type[i], connection.Level[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            private static bool OtherContains(Connection connection, ConnectionType type, int level)
+            {
+                for (int i = 0; i < 5; ++i)
+                {
+                    if (type == connection.Type[i] && level == connection.Level[i])
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            private bool ThisContains(ConnectionType type, int level)
+            {
+                if (type == ConnectionType.None || level == 0)
+                {
+                    return true;
+                }
+                foreach (var (t, l) in TypesAndLevels)
+                {
+                    if (t == type && l == level)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        public record class Connection(ConnectionType[] Type, int[] Level, int[] Angle) : IConnectionQuery
+        {
+            public bool Matches(Connection connection)
+            {
+                for (int i = 0; i < 5; ++i)
+                {
+                    if (Type[i] != connection.Type[i])
+                    {
+                        return false;
+                    }
+                    if (Level[i] != connection.Level[i])
+                    {
+                        return false;
+                    }
+                    if (Angle[i] != connection.Angle[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         public record class Option(
             Vector2 TexCenter, Vector2[] TexCoords, StructureType Type, int Level, Connection[] Connections);
 
-        public record class StructureQuery(StructureType Type, int Level, Connection[] Connections);
+        public record class StructureQuery(StructureType Type, int Level, IConnectionQuery[] Connections);
 
         private readonly ITexturePage _texture;
         private readonly Option[] _options;
@@ -102,27 +179,7 @@ namespace Expeditionary.View.Textures
             }
             for (int i=0; i<6; ++i)
             {
-                if (!Satisfies(query.Connections[i], option.Connections[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private static bool Satisfies(Connection query, Connection connection)
-        {
-            for (int i=0; i<5; ++i)
-            {
-                if (query.Type[i] != connection.Type[i])
-                {
-                    return false;
-                }
-                if (query.Level[i] != connection.Level[i])
-                {
-                    return false;
-                }
-                if (query.Angle[i] != connection.Angle[i])
+                if (!query.Connections[i].Matches(option.Connections[i]))
                 {
                     return false;
                 }

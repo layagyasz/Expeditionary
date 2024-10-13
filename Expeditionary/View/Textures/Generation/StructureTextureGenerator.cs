@@ -4,6 +4,7 @@ using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
 using Cardamom.Collections;
 using Cardamom.Mathematics.Geometry;
+using Expeditionary.Model.Mapping;
 
 namespace Expeditionary.View.Textures.Generation
 {
@@ -51,6 +52,7 @@ namespace Expeditionary.View.Textures.Generation
 
         private static readonly Arc[][] s_Arcs =
         {
+            Array.Empty<Arc>(),
             new Arc[] { new(new(0, 0, 0), new(1, 0, 0)) },
             new Arc[] { new(new(0, 0, 0), new(2, 0, 0)) },
             new Arc[] { new(new(0, 0, 0), new(3, 0, 0)) },
@@ -121,7 +123,7 @@ namespace Expeditionary.View.Textures.Generation
             _shader = shader;
         }
 
-        public void Generate()
+        public StructureLibrary Generate()
         {
             var renderTexture = new RenderTexture(new(128, 128));
             renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(-64, 64, -64, 64, -10, 10)));
@@ -139,8 +141,10 @@ namespace Expeditionary.View.Textures.Generation
                         MagFilter = TextureMagFilter.Nearest
                     });
 
-            foreach (var arcs in s_Arcs)
+            var options = new StructureLibrary.Option[s_Arcs.Length];
+            for (int i=0; i<s_Arcs.Length; ++i)
             {
+                var arcs = s_Arcs[i];
                 var vertices = new ArrayList<Vertex3>();
                 foreach (var arc in arcs)
                 {
@@ -162,9 +166,12 @@ namespace Expeditionary.View.Textures.Generation
                     vertices.GetData(), PrimitiveType.Triangles, 0, vertices.Count, new(BlendMode.None, _shader));
                 renderTexture.Display();
                 sheet.Add(renderTexture.GetTexture(), out var segment);
+
+                options[i] = MakeOption(arcs, segment);
             }
 
             sheet.GetTexture().CopyToImage().SaveToFile("habitation.png");
+            return StructureLibrary.Create(sheet, options);
         }
 
         private static Vector3 GetAnchor(int face, int anchor)
@@ -178,6 +185,41 @@ namespace Expeditionary.View.Textures.Generation
         private static Vector3 GetAngle(int face, int angle)
         {
             return 128f * s_Angles[(2 * face + angle + 12) % 12];
+        }
+
+        private static StructureLibrary.Option MakeOption(Arc[] arcs, Box2i segment)
+        {
+            var connections = new StructureLibrary.Connection[6];
+            for (int i=0; i<6; ++i)
+            {
+                connections[i] = 
+                    new StructureLibrary.Connection(
+                        new StructureLibrary.ConnectionType[5], new int[5], new int[5]);
+            }
+            foreach (var arc in arcs)
+            {
+                AddEndpoint(connections, arc.Left);
+                AddEndpoint(connections, arc.Right);
+            }
+            return new StructureLibrary.Option(
+                segment.Center,
+                s_Corners.Select(x => ToVector2(x) + segment.Center).ToArray(), 
+                StructureType.None,
+                0, 
+                connections);
+        }
+
+        private static void AddEndpoint(StructureLibrary.Connection[] connections, Endpoint endpoint)
+        {
+            var connection = connections[endpoint.Face];
+            connection.Type[endpoint.Anchor] = StructureLibrary.ConnectionType.Road;
+            connection.Level[endpoint.Anchor] = 1;
+            connection.Angle[endpoint.Anchor] = endpoint.Anchor;
+        }
+
+        private static Vector2 ToVector2(Vector3 x)
+        {
+            return new(x.X, x.Z);
         }
     }
 }

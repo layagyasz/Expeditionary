@@ -406,11 +406,11 @@ namespace Expeditionary.Model.Mapping.Generator
                     if (Geometry.GetEdges(hex)
                             .Select(map.GetEdge)
                             .Where(x => x != null)
-                            .Any(x => x!.Type == Edge.EdgeType.River
+                            .Any(x => x!.Levels.ContainsKey(Edge.EdgeType.River))
                         || Geometry.GetNeighbors(hex)
                             .Select(map.GetTile)
                             .Where(x => x != null)
-                            .Any(x => x!.Terrain.IsLiquid)))
+                            .Any(x => x!.Terrain.IsLiquid))
                     {
                         plantData[i, j].G += parameters.LiquidBonus;
                     }

@@ -53,7 +53,8 @@ namespace Expeditionary.View.Mapping
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
-                    .AddLayer(triangles);
+                    .AddLayer(triangles)
+                    .AddLayer(18 * map.Width * map.Height);
 
             int triangle = 0;
             foreach (var corner in map.GetCorners())
@@ -92,9 +93,9 @@ namespace Expeditionary.View.Mapping
                 bool[] query =
                     new bool[]
                     {
-                            edgeA.Type == Edge.EdgeType.River,
-                            edgeB.Type == Edge.EdgeType.River,
-                            edgeC.Type == Edge.EdgeType.River
+                            edgeA.Levels.ContainsKey(Edge.EdgeType.River),
+                            edgeB.Levels.ContainsKey(Edge.EdgeType.River),
+                            edgeC.Levels.ContainsKey(Edge.EdgeType.River)
                     };
                 if (query.Any(x => x))
                 {
@@ -110,6 +111,9 @@ namespace Expeditionary.View.Mapping
 
                 ++triangle;
             }
+
+            StructureLayerCreator.Create(bufferBuilder, map, _textureLibrary.Structures, random);
+
             ArrayList<Vertex3> grid = new();
             for (int i = 0; i < map.Width; ++i)
             {
@@ -147,6 +151,11 @@ namespace Expeditionary.View.Mapping
 
         private RenderResources GetRenderResources(int layer)
         {
+            // Structures
+            if (layer == 4)
+            {
+                return new(BlendMode.Alpha, _texShader, _textureLibrary.Structures.GetTexture());
+            }
             // Rivers
             if (layer == 3)
             {

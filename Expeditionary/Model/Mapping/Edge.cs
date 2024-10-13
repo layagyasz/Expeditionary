@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Mapping
+﻿using Cardamom.Collections;
+
+namespace Expeditionary.Model.Mapping
 {
     public class Edge
     {
@@ -9,7 +11,6 @@
             Road
         }
 
-        public EdgeType Type { get; set; }
-        public int Level { get; set; }
+        public EnumMap<EdgeType, int> Levels { get; set; } = new();
     }
 }

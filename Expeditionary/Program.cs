@@ -84,13 +84,13 @@ namespace Expeditionary
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
 
-            var habitationTextureGenerator =
+            var structureTextureGenerator =
                 new StructureTextureGenerator(
                     new RenderShader.Builder()
                             .SetVertex("resources/view/shaders/default.vert")
                             .SetFragment("resources/view/shaders/default_no_tex.frag")
                             .Build());
-            habitationTextureGenerator.Generate();
+            var structures = structureTextureGenerator.Generate();
 
             var mapGenerator = new MapGenerator();
             var sceneFactory =
@@ -100,7 +100,7 @@ namespace Expeditionary
                         {
                             ElevationGradient = new(0.8f, 1.2f),
                         },
-                        new(partitions, edges),
+                        new(partitions, edges, structures),
                         new RenderShader.Builder()
                             .SetVertex("resources/view/shaders/default.vert")
                             .SetFragment("resources/view/shaders/mask_no_tex.frag")
