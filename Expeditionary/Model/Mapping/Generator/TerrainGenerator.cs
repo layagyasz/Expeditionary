@@ -318,6 +318,7 @@ namespace Expeditionary.Model.Mapping.Generator
             Soil(map, parameters, soil);
             Brush(map, parameters, plants);
             Foliage(map, parameters, plants);
+            Hindrance(map);
         }
 
         private static void Elevation(Map map, float[,] corners, Parameters parameters, Color4[,] elevationData)
@@ -482,6 +483,32 @@ namespace Expeditionary.Model.Mapping.Generator
                     {
                         tile.Terrain.Foliage = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
                     }
+                }
+            }
+        }
+
+        private static void Hindrance(Map map)
+        {
+            for (int i=0; i<map.Width; ++i)
+            {
+                for (int j=0; j<map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
+                    var hindrance = new Movement.Hindrance();
+                    if (tile.Terrain.Foliage != null)
+                    {
+                        hindrance.Roughness = 2;
+                    } 
+                    else if (tile.Terrain.Soil != null)
+                    {
+                        hindrance.Roughness = 1;
+                    }
+                    else
+                    {
+                        hindrance.Roughness = 3;
+                    }
+                    hindrance.Softness = (int)(3 * tile.Moisture);
+                    tile.Hindrance = hindrance;
                 }
             }
         }

@@ -7,6 +7,7 @@
         public float Heat { get; set; }
         public float Moisture { get; set; }
         public Terrain Terrain { get; set; } = new();
+        public Movement.Hindrance Hindrance { get; set; }
         public Structure Structure { get; set; }
     }
 }

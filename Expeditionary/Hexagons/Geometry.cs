@@ -73,7 +73,12 @@ namespace Expeditionary.Hexagons
             return Math.Max(Math.Abs(delta.X), Math.Max(Math.Abs(delta.Y), Math.Abs(delta.Z)));
         }
 
-        public static int GetDistance(Vector3i hexA, Vector3i hexB)
+        public static float GetCartesianDistance(Vector3i hexA, Vector3i hexB)
+        {
+            return Vector2.Distance(Cubic.Cartesian.Instance.Project(hexA), Cubic.Cartesian.Instance.Project(hexB));
+        }
+
+        public static int GetCubicDistance(Vector3i hexA, Vector3i hexB)
         {
             return GetDisplacement(hexB - hexA);
         }

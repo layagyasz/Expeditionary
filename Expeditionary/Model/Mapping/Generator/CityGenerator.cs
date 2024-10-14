@@ -173,7 +173,7 @@ namespace Expeditionary.Model.Mapping.Generator
             bool neighborsRiver =
                 Geometry.GetEdges(hex)
                     .Select(map.GetEdge).Where(x => x != null).Any(x => x!.Levels.ContainsKey(EdgeType.River));
-            return parameters.DistancePenalty.Evaluate(Geometry.GetDistance(hex, parameters.Center))
+            return parameters.DistancePenalty.Evaluate(Geometry.GetCubicDistance(hex, parameters.Center))
                 + parameters.SlopePenalty.Evaluate(tile.Slope)
                 + parameters.ElevationPenalty.Evaluate(tile.Elevation)
                 + parameters.CoastPenalty.Evaluate(neighborsWater ? 1 : 0)

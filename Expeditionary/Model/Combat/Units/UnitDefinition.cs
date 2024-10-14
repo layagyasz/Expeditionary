@@ -93,7 +93,7 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static Movement.Hindrance BuildHindrance(
+        private static Movement.CostFunction BuildHindrance(
             IDictionary<string, Modifier> attributes, string attribute)
         {
             return new()

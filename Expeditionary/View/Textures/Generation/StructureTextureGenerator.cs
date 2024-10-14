@@ -180,7 +180,7 @@ namespace Expeditionary.View.Textures.Generation
             var left = s_Corners[face];
             var right = s_Corners[(face + 1) % 6];
             var a = s_Anchors[anchor + 2];
-            return 64f * ((1 - a) * left + a * right);
+            return 1.05f * 64f * ((1 - a) * left + a * right);
         }
 
         private static Vector3 GetAngle(int face, int angle)

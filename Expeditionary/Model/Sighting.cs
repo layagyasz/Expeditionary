@@ -20,7 +20,7 @@ namespace Expeditionary.Model
                     var target = position + new Vector3i(q, r, -q - r);
                     if (IsValidLineOfSightInternal(map, position, target))
                     {
-                        yield return new(target, Geometry.GetDistance(target, position));
+                        yield return new(target, Geometry.GetCubicDistance(target, position));
                     }
                 }
             }
@@ -32,7 +32,7 @@ namespace Expeditionary.Model
             {
                 return true;
             }
-            if (Geometry.GetDistance(position, target) > range)
+            if (Geometry.GetCubicDistance(position, target) > range)
             {
                 return false;
             }
@@ -41,7 +41,7 @@ namespace Expeditionary.Model
 
         private static bool IsValidLineOfSightInternal(Map map, Vector3i position, Vector3i target)
         {
-            var distance = Geometry.GetDistance(target, position);
+            var distance = Geometry.GetCubicDistance(target, position);
             if (distance < 2)
             {
                 return true;

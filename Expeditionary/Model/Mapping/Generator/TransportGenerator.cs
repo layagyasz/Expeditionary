@@ -26,11 +26,15 @@ namespace Expeditionary.Model.Mapping.Generator
             public void AddNeighbors(IEnumerable<Node> neighbors)
             {
                 _edges.AddRange(
-                    neighbors.Select(x => new DefaultGraphEdge(this, x, Geometry.GetDistance(Hex, x.Hex))));
+                    neighbors.Select(x => new DefaultGraphEdge(this, x, Geometry.GetCubicDistance(Hex, x.Hex))));
             }
         }
 
-        private static readonly Movement s_Movement = new();
+        private static readonly Movement s_Movement =
+            new(
+                roughness: new(new(1, 0), new(1, 5), new(1, 5)), 
+                softness: new(new(1, 0), new(1, 10), new(1, 5)),
+                waterDepth: new(new(1, 0), new(1, 50), new(1, 5)));
 
         public static void Generate(List<Vector3i> nodes, Map map, Random random)
         {
@@ -47,7 +51,7 @@ namespace Expeditionary.Model.Mapping.Generator
             var mst = MinimalSpanningTree.Compute(wrappers);
             foreach (var edge in mst)
             {
-                var path = Pathing.GetShortestPath(((Node)edge.Start).Hex, ((Node)edge.End).Hex, s_Movement);
+                var path = Pathing.GetShortestPath(((Node)edge.Start).Hex, ((Node)edge.End).Hex, s_Movement, map);
                 while (path.Steps.TryPop(out var step))
                 {
                     if (path.Steps.TryPeek(out var next))
