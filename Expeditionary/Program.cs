@@ -220,6 +220,23 @@ namespace Expeditionary
                                     Size = new NormalSampler(3f, 1f),
                                     RiverPenalty = new(),
                                 }
+                            },
+                        Transport =
+                            new()
+                            {
+                                new()
+                                {
+                                    Type = EdgeType.Road,
+                                    Level = 1,
+                                    SupportedStructures = 
+                                        new()
+                                        {
+                                            { StructureType.Commercial, 1 },
+                                            { StructureType.Industrial, 1 },
+                                            { StructureType.Mining, 1 },
+                                            { StructureType.Residential, 1 }
+                                        }
+                                }
                             }
                     },
                     new(100, 100),

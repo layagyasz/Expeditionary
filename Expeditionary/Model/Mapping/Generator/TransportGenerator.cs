@@ -1,12 +1,24 @@
-﻿using Cardamom.Graphing;
+﻿using Cardamom.Collections;
+using Cardamom.Graphing;
 using DelaunayTriangulator;
 using Expeditionary.Hexagons;
+using MathNet.Numerics.Statistics;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
     public static class TransportGenerator
     {
+        public class Parameters
+        {
+            public EdgeType Type { get; set; }
+            public int Level { get; set; }
+            public EnumMap<StructureType, int> SupportedStructures { get; set; } = new();
+            public float MaximumCost { get; set; } = 250f;
+            public float Density { get; set; } = 1f;
+            public float Dropoff { get; set; } = 2f;
+        }
+
         private class Node : IGraphNode
         {
             public Vector3i Hex { get; }
@@ -36,36 +48,80 @@ namespace Expeditionary.Model.Mapping.Generator
                 softness: new(new(1, 0), new(1, 10), new(1, 5)),
                 waterDepth: new(new(1, 0), new(1, 50), new(1, 5)));
 
-        public static void Generate(List<Vector3i> nodes, Map map, Random random)
+        public static void Generate(IEnumerable<Parameters> parameters, List<Vector3i> nodes, Map map, Random random)
         {
-            var voronoiVerts =
-                nodes.Select(x => Cubic.Cartesian.Instance.Project(x)).Select(x => new Vertex(x.X, x.Y)).ToList();
-            var voronoiTris = VoronoiGrapher.GetTriangulation(voronoiVerts);
-            var graph = VoronoiGrapher.GetNeighbors(voronoiVerts, voronoiTris);
+            foreach (var p in parameters)
+            {
+                var wrappers = nodes.Where(x => IsSupported(map.GetTile(x)!, p)).Select(x => new Node(x)).ToList();
 
-            var wrappers = nodes.Select(x => new Node(x)).ToList();
-            for (int i=0; i<wrappers.Count; ++i)
-            {
-                wrappers[i].AddNeighbors(graph.Neighbors[i].Where(x => x >= 0).Select(x => wrappers[x]));
-            }
-            var mst = MinimalSpanningTree.Compute(wrappers);
-            foreach (var edge in mst)
-            {
-                var path = Pathing.GetShortestPath(((Node)edge.Start).Hex, ((Node)edge.End).Hex, s_Movement, map);
-                while (path.Steps.TryPop(out var step))
+                var voronoiVerts =
+                    wrappers
+                        .Select(x => Cubic.Cartesian.Instance.Project(x.Hex))
+                        .Select(x => new Vertex(x.X, x.Y))
+                        .ToList();
+                var voronoiTris = VoronoiGrapher.GetTriangulation(voronoiVerts);
+                var graph = VoronoiGrapher.GetNeighbors(voronoiVerts, voronoiTris);
+
+                for (int i=0; i<wrappers.Count; ++i)
                 {
-                    if (path.Steps.TryPeek(out var next))
+                    wrappers[i].AddNeighbors(graph.Neighbors[i].Where(x => x >= 0).Select(x => wrappers[x]));
+                }
+                var mst = MinimalSpanningTree.Compute(wrappers).ToHashSet();
+                foreach (var edge in mst)
+                {
+                    AddEdge(((Node)edge.Start).Hex, ((Node)edge.End).Hex, p, map);
+                }
+
+                (double mean, double stdDev) =
+                    wrappers.SelectMany(x => x.GetEdges()).Select(x => x.Cost).MeanStandardDeviation();
+                var closed = new HashSet<Node>();
+                foreach (var wrapper in wrappers)
+                {
+                    foreach (var edge in wrapper.GetEdges())
                     {
-                        var e = map.GetEdge(Geometry.GetEdge(step, next));
-                        if (e != null)
+                        if (mst.Contains(edge) || closed.Contains(edge.End))
                         {
-                            e.Levels[EdgeType.Road] = 1;
+                            continue;
+                        }
+                        closed.Add(wrapper);
+                        if (random.NextDouble() < GetDensity(p.Density, p.Dropoff, (edge.Cost - mean) / stdDev))
+                        {
+                            AddEdge(((Node)edge.Start).Hex, ((Node)edge.End).Hex, p, map);
                         }
                     }
                 }
             }
+        }
 
-            // TODO -- Add random extra roads based on density
+        private static void AddEdge(Vector3i origin, Vector3i destination, Parameters parameters, Map map)
+        {
+            var path = Pathing.GetShortestPath(origin, destination, s_Movement, map);
+            if (path.Cost> parameters.MaximumCost)
+            {
+                return;
+            }
+            while (path.Steps.TryPop(out var step))
+            {
+                if (path.Steps.TryPeek(out var next))
+                {
+                    var e = map.GetEdge(Geometry.GetEdge(step, next));
+                    if (e != null)
+                    {
+                        e.Levels[parameters.Type] = parameters.Level;
+                    }
+                }
+            }
+        }
+
+        private static bool IsSupported(Tile tile, Parameters parameters)
+        {
+            int supportedLevel = parameters.SupportedStructures[tile.Structure.Type];
+            return supportedLevel > 0 && supportedLevel <= tile.Structure.Level;
+        }
+
+        private static double GetDensity(double density, double droppoff, double deviations)
+        {
+            return 2 * density / (1 + Math.Exp(droppoff * deviations));
         }
     }
 }

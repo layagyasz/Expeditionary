@@ -8,6 +8,7 @@ namespace Expeditionary.Model.Mapping.Generator
         {
             public TerrainGenerator.Parameters Terrain { get; set; } = new();
             public List<CityGenerator.Parameters> Cities { get; set; } = new();
+            public List<TransportGenerator.Parameters> Transport { get; set; } = new();
         }
 
         private readonly TerrainGenerator _terrainGenerator = new();
@@ -18,7 +19,7 @@ namespace Expeditionary.Model.Mapping.Generator
             var map = new Map(size);
             _terrainGenerator.Generate(parameters.Terrain, map, random);
             var cores = CityGenerator.Generate(parameters.Cities, map, random);
-            TransportGenerator.Generate(cores, map, random);
+            TransportGenerator.Generate(parameters.Transport, cores, map, random);
             return map;
         }
     }
