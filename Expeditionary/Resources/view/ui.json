@@ -1,0 +1,6 @@
+{
+  "Shaders": "Resources/view/shaders.json",
+  "Textures": {
+    "Volumes": [ "Resources/view/ui_textures.json" ]
+  }
+}

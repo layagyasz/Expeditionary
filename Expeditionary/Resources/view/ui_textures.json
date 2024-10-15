@@ -1,0 +1,10 @@
+[
+  {
+    "$type": "DynamicStaticSize",
+    "ElementSize": [ 64, 64 ],
+    "Textures": {
+      "Prefix": "",
+      "Implicit": [ "Resources/view/textures/buttons/*.png" ]
+    }
+  }
+]

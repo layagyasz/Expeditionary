@@ -1,0 +1,51 @@
+[
+  {
+    "$id": "shader-default",
+    "Element": {
+      "Vertex": "Resources/view/shaders/default.vert",
+      "Fragment": "Resources/view/shaders/default.frag"
+    }
+  },
+  {
+    "$id": "shader-default-no-tex",
+    "Element": {
+      "Vertex": "Resources/view/shaders/default.vert",
+      "Fragment": "Resources/view/shaders/default_no_tex.frag"
+    }
+  },
+  {
+    "$id": "shader-mask",
+    "Element": {
+      "Vertex": "Resources/view/textures/generation/default.vert",
+      "Fragment": "Resources/view/textures/generation/mask.frag"
+    }
+  },
+  {
+    "$id": "shader-mask-no-tex",
+    "Element": {
+      "Vertex": "Resources/view/shaders/default.vert",
+      "Fragment": "Resources/view/shaders/mask_no_tex.frag"
+    }
+  },
+  {
+    "$id": "shader-partition",
+    "Element": {
+      "Vertex": "Resources/view/textures/generation/default.vert",
+      "Fragment": "Resources/view/textures/generation/partition.frag"
+    }
+  },
+  {
+    "$id": "shader-river",
+    "Element": {
+      "Vertex": "Resources/view/textures/generation/default.vert",
+      "Fragment": "Resources/view/textures/generation/river.frag"
+    }
+  },
+  {
+    "$id": "shader-ui",
+    "Element": {
+      "Vertex": "Resources/view/shaders/ui.vert",
+      "Fragment": "Resources/view/shaders/ui.frag"
+    }
+  }
+]

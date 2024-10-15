@@ -2,13 +2,15 @@
 using Cardamom.Ui.Controller;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.View;
 
 namespace Expeditionary.Controller
 {
     public class MatchSceneController : IController
     {
+        public EventHandler<AssetClickedEventArgs>? AssetClicked { get; set; }
+        public EventHandler<HexClickedEventArgs>? HexClicked { get; set; }
+
         private readonly Match _match;
         private readonly ICamera _camera;
         private readonly MapController _mapController;
@@ -79,27 +81,12 @@ namespace Expeditionary.Controller
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
         {
-            var asset = e.Assets.First();
-            if (asset is Unit unit)
-            {
-                var range = (int)unit.Type.Attack.First().Range.GetValue();
-                _highlightLayer.SetHighlight(
-                    Sighting.GetSightField(_match.GetMap(), unit.Position, range)
-                        .Select(x => new HighlightLayer.HexHighlight(
-                            x.Target, HighlightLayer.GetLevel(x.Distance, new(0, range)))));
-            }
+            AssetClicked?.Invoke(this, e);
         }
 
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
-            if (_match.GetMap().GetTile(e.Hex) != null)
-            {
-                var range = 10;
-                _highlightLayer.SetHighlight(
-                    Sighting.GetSightField(_match.GetMap(), e.Hex, range)
-                        .Select(x => new HighlightLayer.HexHighlight(
-                            x.Target, HighlightLayer.GetLevel(x.Distance, new(0, range)))));
-            }
+            HexClicked?.Invoke(this, e);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Json;
 using Cardamom.Json.Graphics.TexturePacking;
 using Cardamom.Json.OpenTK;
@@ -32,6 +33,8 @@ namespace Expeditionary
             ui.Bind(
                 new KeyboardListener(SimpleKeyMapper.Us, new Keys[] { Keys.Left, Keys.Right, Keys.Up, Keys.Down }));
 
+            var resources = GameResources.Builder.ReadFrom("resources/view/ui.json").Build();
+
             JsonSerializerOptions options = new()
             {
                 NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
@@ -57,39 +60,20 @@ namespace Expeditionary
             var baseColor =
                 Color4.ToHsv(ColorSystem.Ntsc.Transform(sensitivity.GetColor(new BlackbodySpectrum(5772).GetPeak())));
 
-            var partitionTextureGenerator = 
-                new PartitionTextureGenerator(
-                    new RenderShader.Builder()
-                        .SetVertex("resources/view/textures/generation/default.vert")
-                        .SetFragment("resources/view/textures/generation/partition.frag")
-                        .Build());
+            var partitionTextureGenerator = new PartitionTextureGenerator(resources.GetShader("shader-partition"));
             var partitions = 
                 partitionTextureGenerator.Generate(
                     frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
 
-            var maskTextureGenerator =
-                new MaskTextureGenerator(
-                    new RenderShader.Builder()
-                        .SetVertex("resources/view/textures/generation/default.vert")
-                        .SetFragment("resources/view/textures/generation/mask.frag")
-                        .Build());
+            var maskTextureGenerator = new MaskTextureGenerator(resources.GetShader("shader-mask"));
             maskTextureGenerator.Generate(frequencyRange: new(4f, 8f), seed: 0, count: 16);
 
-            var riverTextureGenerator = 
-                new RiverTextureGenerator(
-                    new RenderShader.Builder()
-                        .SetVertex("resources/view/textures/generation/default.vert")
-                        .SetFragment("resources/view/textures/generation/river.frag")
-                        .Build());
+            var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-river"));
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
 
-            var structureTextureGenerator =
-                new StructureTextureGenerator(
-                    new RenderShader.Builder()
-                            .SetVertex("resources/view/shaders/default.vert")
-                            .SetFragment("resources/view/shaders/default_no_tex.frag")
-                            .Build());
+            var structureTextureGenerator = 
+                new StructureTextureGenerator(resources.GetShader("shader-default-no-tex"));
             var structures = structureTextureGenerator.Generate();
 
             var mapGenerator = new MapGenerator();
@@ -101,25 +85,12 @@ namespace Expeditionary
                             ElevationGradient = new(0.8f, 1.2f),
                         },
                         new(partitions, edges, structures),
-                        new RenderShader.Builder()
-                            .SetVertex("resources/view/shaders/default.vert")
-                            .SetFragment("resources/view/shaders/mask_no_tex.frag")
-                            .Build(),
-                        new RenderShader.Builder()
-                            .SetVertex("resources/view/shaders/default.vert")
-                            .SetFragment("resources/view/shaders/default.frag")
-                            .Build()),
+                        resources.GetShader("shader-mask-no-tex"),
+                        resources.GetShader("shader-default")),
                     new AssetLayerFactory(
-                        new RenderShader.Builder()
-                            .SetVertex("resources/view/shaders/default.vert")
-                            .SetFragment("resources/view/shaders/default.frag")
-                            .Build(),
+                        resources.GetShader("shader-default"),
                         unitTextures),
-                    new HighlightLayerFactory(
-                        new RenderShader.Builder()
-                            .SetVertex("resources/view/shaders/default.vert")
-                            .SetFragment("resources/view/shaders/default_no_tex.frag")
-                            .Build()));
+                    new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
             var terrainParameters =
                 new TerrainViewParameters()
