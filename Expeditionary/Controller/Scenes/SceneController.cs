@@ -1,10 +1,9 @@
 ﻿using Cardamom.Ui;
-using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Window;
 using OpenTK.Windowing.Common;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Scenes
 {
     public class SceneController : IElementController
     {
@@ -16,23 +15,15 @@ namespace Expeditionary.Controller
         public EventHandler<EventArgs>? MouseLeft { get; set; }
 
         private readonly IElementController _cameraController;
-        private readonly IController _mainController;
 
-        public SceneController(IElementController cameraController, IController mainController)
+        protected SceneController(IElementController cameraController)
         {
             _cameraController = cameraController;
-            _mainController = mainController;
         }
 
-        public void Bind(object @object)
-        {
-            _mainController.Bind(@object);
-        }
+        public virtual void Bind(object @object) { }
 
-        public void Unbind()
-        {
-            _mainController.Unbind();
-        }
+        public virtual void Unbind() { }
 
         public bool HandleKeyDown(KeyDownEventArgs e)
         {

@@ -1,0 +1,39 @@
+[
+  {
+    "$id": "unit-overlay-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 320, "DynamicContents" ],
+      "Margin": [ 8 ],
+      "Padding": [ 2 ],
+      "DisableScissor": true
+    }
+  },
+  {
+    "$id": "unit-overlay-order-container",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 320, 44 ],
+      "Margin": [ 2 ],
+      "Padding": [ 1 ],
+      "DisableScissor": true
+    }
+  },
+  {
+    "$id": "unit-overlay-order-attack",
+    "Parent": "base-tex-button",
+    "Default": {
+      "Size": [ 40, 40 ],
+      "Margin": [ 1 ],
+      "CornerRadius": [ [ 20, 20 ] ],
+      "Texture": "button_attack"
+    }
+  },
+  {
+    "$id": "unit-overlay-order-move",
+    "Parent": "unit-overlay-order-attack",
+    "Default": {
+      "Texture": "button_move"
+    }
+  }
+]

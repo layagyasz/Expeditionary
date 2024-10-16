@@ -1,7 +1,9 @@
 ﻿using Cardamom.Ui.Controller;
+using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Factions;
+using Expeditionary.View;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Expeditionary.Controller
@@ -10,27 +12,30 @@ namespace Expeditionary.Controller
     {
         private readonly Match _match;
         private readonly Faction _faction;
-        private readonly MatchSceneController _controller;
+
+        private MatchScreen? _screen;
+        private MatchSceneController? _controller;
 
         private Unit? _selectedUnit;
 
-        public MatchController(Match match, Faction faction, MatchSceneController controller)
+        public MatchController(Match match, Faction faction)
         {
             _match = match;
             _faction = faction;
-            _controller = controller;
         }
 
         public void Bind(object @object)
         {
+            _screen = (MatchScreen)@object;
+            _controller = (MatchSceneController)_screen.Scene!.Controller;
             _controller.AssetClicked += HandleAssetClicked;
             _controller.HexClicked += HandleHexClicked;
         }
 
         public void Unbind()
         {
-            _controller.AssetClicked -= HandleAssetClicked;
-            _controller.HexClicked -= HandleHexClicked;
+            _controller!.AssetClicked -= HandleAssetClicked;
+            _controller!.HexClicked -= HandleHexClicked;
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)

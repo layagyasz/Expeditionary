@@ -1,13 +1,16 @@
 ﻿using Cardamom.Graphics.Camera;
 using Cardamom.Mathematics.Geometry;
-using Cardamom.Ui;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller;
+using Expeditionary.Controller.Mapping;
+using Expeditionary.Controller.Scenes;
+using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Model;
 using Expeditionary.View.Mapping;
+using Expeditionary.View.Scenes.Matches;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes
 {
     public class SceneFactory
     {
@@ -25,7 +28,7 @@ namespace Expeditionary.View
             _highlightLayerFactory = highlightLayerFactory;
         }
 
-        public IScene Create(Match match, TerrainViewParameters parameters, int seed)
+        public MatchScene Create(Match match, TerrainViewParameters parameters, int seed)
         {
             var camera = new SubjectiveCamera3d(100);
             camera.SetPitch(-MathF.PI / 2);
@@ -33,7 +36,7 @@ namespace Expeditionary.View
             camera.SetDistance(20);
 
             var mapController = new MapController();
-            var map = 
+            var map =
                 new InteractiveModel(
                     _mapViewFactory.Create(match.GetMap(), parameters, seed),
                     new Plane(new(), Vector3.UnitY),
@@ -47,14 +50,18 @@ namespace Expeditionary.View
 
             var scene =
                 new MatchScene(
-                    new SceneController(
+                    new MatchSceneController(
+                        match, 
                         new Camera2dController(camera)
                         {
                             KeySensitivity = 0.0005f,
                             DistanceRange = new(5, 100),
                             MouseWheelSensitivity = 2
-                        }, 
-                        new MatchSceneController(match, camera, mapController, assetController, highlightLayer)),
+                        },
+                        camera, 
+                        mapController, 
+                        assetController,
+                        highlightLayer),
                     camera,
                     map,
                     assetLayer,

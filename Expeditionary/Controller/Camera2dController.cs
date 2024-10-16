@@ -12,6 +12,7 @@ namespace Expeditionary.Controller
 {
     public class Camera2dController : IElementController
     {
+        public EventHandler<EventArgs>? Changed { get; set; }
         public EventHandler<MouseButtonClickEventArgs>? Clicked { get; set; }
         public EventHandler<EventArgs>? Focused { get; set; }
         public EventHandler<EventArgs>? FocusLeft { get; set; }

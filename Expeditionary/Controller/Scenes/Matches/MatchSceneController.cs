@@ -1,12 +1,14 @@
 ﻿using Cardamom.Graphics.Camera;
-using Cardamom.Ui.Controller;
+using Cardamom.Ui.Controller.Element;
+using Expeditionary.Controller.Mapping;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.View;
+using Expeditionary.View.Scenes.Matches;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Scenes.Matches
 {
-    public class MatchSceneController : IController
+    public class MatchSceneController : SceneController
     {
         public EventHandler<AssetClickedEventArgs>? AssetClicked { get; set; }
         public EventHandler<HexClickedEventArgs>? HexClicked { get; set; }
@@ -18,13 +20,15 @@ namespace Expeditionary.Controller
         private readonly HighlightLayer _highlightLayer;
 
         private MatchScene? _scene;
-        
+
         public MatchSceneController(
-            Match match, 
+            Match match,
+            Camera2dController cameraController,
             ICamera camera,
             MapController mapController,
-            AssetLayerController assetLayerController, 
+            AssetLayerController assetLayerController,
             HighlightLayer highlightLayer)
+            : base(cameraController)
         {
             _match = match;
             _camera = camera;
@@ -33,7 +37,7 @@ namespace Expeditionary.Controller
             _highlightLayer = highlightLayer;
         }
 
-        public void Bind(object @object)
+        public override void Bind(object @object)
         {
             _scene = @object as MatchScene;
 
@@ -51,7 +55,7 @@ namespace Expeditionary.Controller
             _mapController.HexClicked += HandleHexClicked;
         }
 
-        public void Unbind()
+        public override void Unbind()
         {
             _scene = null;
 

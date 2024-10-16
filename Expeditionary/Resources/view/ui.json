@@ -1,6 +1,8 @@
 {
+  "Fonts": "Resources/view/fonts.json",
   "Shaders": "Resources/view/shaders.json",
   "Textures": {
     "Volumes": [ "Resources/view/ui_textures.json" ]
-  }
+  },
+  "Classes": [ "Resources/view/style::*.json" ]
 }

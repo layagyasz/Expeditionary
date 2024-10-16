@@ -6,7 +6,7 @@ using Expeditionary.Hexagons;
 using Expeditionary.View.Mapping;
 using OpenTK.Windowing.Common;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Mapping
 {
     public class MapController : IElementController
     {

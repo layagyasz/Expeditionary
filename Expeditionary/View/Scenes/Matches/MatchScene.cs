@@ -6,7 +6,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches
 {
     public class MatchScene : GraphicsResource, IScene
     {
@@ -24,7 +24,7 @@ namespace Expeditionary.View
             ICamera camera,
             InteractiveModel map,
             InteractiveModel assets,
-            HighlightLayer highlight) 
+            HighlightLayer highlight)
         {
             Controller = controller;
             Camera = camera;

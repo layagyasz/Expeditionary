@@ -58,10 +58,19 @@
     <None Update="Resources\config\default\units\traits\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\fonts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\fonts\Anton-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\fonts\OFL.txt">
+    <None Update="Resources\view\fonts\OFL_anton.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\fonts\OFL_syne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\fonts\SyneMono-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\shaders.json">
@@ -76,16 +85,22 @@
     <None Update="Resources\view\shaders\ui.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\textures\buttons\load.png">
+    <None Update="Resources\view\style\base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\textures\buttons\move.png">
+    <None Update="Resources\view\style\unit_overlay.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\textures\buttons\targeted.png">
+    <None Update="Resources\view\textures\buttons\button_load.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\textures\buttons\unload.png">
+    <None Update="Resources\view\textures\buttons\button_move.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\buttons\button_attack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\buttons\button_unload.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\generation\mask.frag">
@@ -301,6 +316,10 @@
     <None Update="Resources\view\unit_texture_generator_settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\view\style\" />
   </ItemGroup>
 
 </Project>

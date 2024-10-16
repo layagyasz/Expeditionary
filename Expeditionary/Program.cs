@@ -1,5 +1,4 @@
 ﻿using Cardamom;
-using Cardamom.Graphics;
 using Cardamom.Json;
 using Cardamom.Json.Graphics.TexturePacking;
 using Cardamom.Json.OpenTK;
@@ -7,6 +6,7 @@ using Cardamom.Mathematics.Color;
 using Cardamom.Ui;
 using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Window;
+using Expeditionary.Controller;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
@@ -14,6 +14,8 @@ using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Mapping;
+using Expeditionary.View.Scenes;
+using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
 using OpenTK.Mathematics;
@@ -34,6 +36,7 @@ namespace Expeditionary
                 new KeyboardListener(SimpleKeyMapper.Us, new Keys[] { Keys.Left, Keys.Right, Keys.Up, Keys.Down }));
 
             var resources = GameResources.Builder.ReadFrom("resources/view/ui.json").Build();
+            var uiElementFactory = new UiElementFactory(resources);
 
             JsonSerializerOptions options = new()
             {
@@ -82,7 +85,7 @@ namespace Expeditionary
                     new MapViewFactory(
                         new()
                         {
-                            ElevationGradient = new(0.8f, 1.2f),
+                            ElevationGradient = new(0.5f, 2f),
                         },
                         new(partitions, edges, structures),
                         resources.GetShader("shader-mask-no-tex"),
@@ -213,11 +216,16 @@ namespace Expeditionary
                     new(100, 100),
                     seed: new Random().Next());
             var match = new Match(new SerialIdGenerator(), map);
+            var faction = module.Factions["faction-hyacinth"];
             match.Add(
                 module.UnitTypes.First().Value,
-                module.Factions["faction-redstar"], 
+                faction, 
                 Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
-            ui.SetRoot(sceneFactory.Create(match, terrainParameters, seed: 0));
+            ui.SetRoot(
+                new MatchScreen(
+                    new MatchController(match, faction), 
+                    sceneFactory.Create(match, terrainParameters, seed: 0), 
+                    new UnitOverlay(uiElementFactory)));
             ui.Start();
         }
 

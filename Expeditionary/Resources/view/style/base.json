@@ -1,0 +1,51 @@
+[
+  {
+    "$id": "base-container",
+    "Default": {
+      "BackgroundColor": [ "#00000000" ],
+      "BackgroundShader": "shader-ui"
+    }
+  },
+  {
+    "$id": "base-block",
+    "Default": {
+      "BackgroundColor": [ "#666666ff" ],
+      "BackgroundShader": "shader-ui"
+    }
+  },
+  {
+    "$id": "base-span",
+    "Parent": "base-container",
+    "Default": {
+      "FontFace": "font-syne-mono",
+      "Color": "#ffffffff",
+      "Shader": "shader-default",
+      "DisableScissor": true
+    }
+  },
+  {
+    "$id": "base-tex-button",
+    "Default": {
+      "BackgroundColor": [ "#ffffff00" ],
+      "ForegroundColor": "#ffffffff",
+      "BorderWidth": [ 2 ],
+      "BorderColor": [ "#ffffff00" ],
+      "BackgroundShader": "shader-ui",
+      "DisableScissor": true
+    },
+    "States": [
+      {
+        "State": [ "Hover" ],
+        "Attributes": {
+          "BorderColor": [ "#ffffffff" ]
+        }
+      },
+      {
+        "State": [ "Toggle" ],
+        "Attributes": {
+          "BackgroundColor": [ "#aaaaaaff" ]
+        }
+      }
+    ]
+  }
+]
