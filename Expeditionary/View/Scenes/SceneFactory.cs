@@ -57,11 +57,7 @@ namespace Expeditionary.View.Scenes
                             KeySensitivity = 0.0005f,
                             DistanceRange = new(5, 100),
                             MouseWheelSensitivity = 2
-                        },
-                        camera, 
-                        mapController, 
-                        assetController,
-                        highlightLayer),
+                        }),
                     camera,
                     map,
                     assetLayer,

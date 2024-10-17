@@ -15,9 +15,9 @@ namespace Expeditionary.View.Scenes.Matches
         public ICamera Camera { get; }
         public float? OverrideDepth { get; set; }
 
-        private readonly InteractiveModel _map;
-        private readonly InteractiveModel _assets;
-        private readonly HighlightLayer _highlight;
+        public InteractiveModel Map { get; }
+        public InteractiveModel Assets { get; }
+        public HighlightLayer Highlight { get; }
 
         public MatchScene(
             IElementController controller,
@@ -28,16 +28,16 @@ namespace Expeditionary.View.Scenes.Matches
         {
             Controller = controller;
             Camera = camera;
-            _map = map;
-            _assets = assets;
-            _highlight = highlight;
+            Map = map;
+            Assets = assets;
+            Highlight = highlight;
         }
 
         protected override void DisposeImpl()
         {
-            _map.Dispose();
-            _assets.Dispose();
-            _highlight.Dispose();
+            Map.Dispose();
+            Assets.Dispose();
+            Highlight.Dispose();
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
@@ -45,9 +45,9 @@ namespace Expeditionary.View.Scenes.Matches
             target.PushViewMatrix(Camera.GetViewMatrix());
             target.PushProjection(Camera.GetProjection());
             context.Register(this);
-            _map.Draw(target, context);
-            _highlight.Draw(target, context);
-            _assets.Draw(target, context);
+            Map.Draw(target, context);
+            Highlight.Draw(target, context);
+            Assets.Draw(target, context);
             target.PopProjectionMatrix();
             target.PopViewMatrix();
         }
@@ -59,23 +59,23 @@ namespace Expeditionary.View.Scenes.Matches
 
         public void Initialize()
         {
-            _map.Initialize();
-            _assets.Initialize();
-            _highlight.Initialize();
+            Map.Initialize();
+            Assets.Initialize();
+            Highlight.Initialize();
             Controller.Bind(this);
         }
 
         public void ResizeContext(Vector3 bounds)
         {
             Camera.SetAspectRatio(bounds.X / bounds.Y);
-            _map.ResizeContext(bounds);
+            Map.ResizeContext(bounds);
         }
 
         public void Update(long delta)
         {
-            _map.Update(delta);
-            _assets.Update(delta);
-            _highlight.Update(delta);
+            Map.Update(delta);
+            Assets.Update(delta);
+            Highlight.Update(delta);
         }
     }
 }

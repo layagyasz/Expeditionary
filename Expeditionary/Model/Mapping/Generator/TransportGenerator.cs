@@ -95,7 +95,7 @@ namespace Expeditionary.Model.Mapping.Generator
 
         private static void AddEdge(Vector3i origin, Vector3i destination, Parameters parameters, Map map)
         {
-            var path = Pathing.GetShortestPath(origin, destination, s_Movement, map);
+            var path = Pathing.GetShortestPath(map, origin, destination, s_Movement);
             if (path.Cost> parameters.MaximumCost)
             {
                 return;

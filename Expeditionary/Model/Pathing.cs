@@ -28,7 +28,7 @@ namespace Expeditionary.Model
         }
 
         public static IEnumerable<PathOption> GetPathField(
-            Vector3i position, float maxTravel, Movement movement, Map map)
+            Map map, Vector3i position, float maxTravel, Movement movement)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
@@ -101,7 +101,7 @@ namespace Expeditionary.Model
             }
         }
 
-        public static Path GetShortestPath(Vector3i position, Vector3i destination, Movement movement, Map map)
+        public static Path GetShortestPath(Map map, Vector3i position, Vector3i destination, Movement movement)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();

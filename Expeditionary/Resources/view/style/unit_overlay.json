@@ -3,7 +3,7 @@
     "$id": "unit-overlay-container",
     "Parent": "base-container",
     "Default": {
-      "Size": [ 320, "DynamicContents" ],
+      "Size": [ 400, "DynamicContents" ],
       "Margin": [ 8 ],
       "Padding": [ 2 ],
       "DisableScissor": true
@@ -13,7 +13,7 @@
     "$id": "unit-overlay-order-container",
     "Parent": "base-block",
     "Default": {
-      "Size": [ 320, 44 ],
+      "Size": [ 392, 36 ],
       "Margin": [ 2 ],
       "Padding": [ 1 ],
       "DisableScissor": true
@@ -23,9 +23,9 @@
     "$id": "unit-overlay-order-attack",
     "Parent": "base-tex-button",
     "Default": {
-      "Size": [ 40, 40 ],
+      "Size": [ 32, 32 ],
       "Margin": [ 1 ],
-      "CornerRadius": [ [ 20, 20 ] ],
+      "CornerRadius": [ [ 16, 16 ] ],
       "Texture": "button_attack"
     }
   },

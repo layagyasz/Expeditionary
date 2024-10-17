@@ -2,6 +2,7 @@
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
+using Expeditionary.Controller.Scenes.Matches;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Matches
@@ -17,7 +18,7 @@ namespace Expeditionary.View.Scenes.Matches
 
         public UnitOverlay(UiElementFactory uiElementFactory)
             : base(
-                  new NoOpController(),
+                  new UnitOverlayController(),
                   new UiSerialContainer(
                       uiElementFactory.GetClass(s_Container),
                       new NoOpElementController(),
@@ -25,7 +26,7 @@ namespace Expeditionary.View.Scenes.Matches
         {
             Orders =
                 new UiCompoundComponent(
-                    new RadioController<ButtonId>(ButtonId.Attack),
+                    new RadioController<ButtonId>(),
                     uiElementFactory.CreateTableRow(
                         s_OrderContainer, 
                         new List<IUiElement>()
