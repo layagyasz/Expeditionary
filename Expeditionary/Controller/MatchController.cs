@@ -88,11 +88,13 @@ namespace Expeditionary.Controller
             if (_selectedUnit != null)
             {
                 _screen!.UnitOverlay!.Visible = true;
+                _unitOverlayController!.SetUnit(_selectedUnit);
                 _unitOverlayController!.SetOrder(ButtonId.Attack);
             }
             else
             {
                 _screen!.UnitOverlay!.Visible = false;
+                _unitOverlayController!.SetUnit(null);
                 _highlightLayer!.SetHighlight(Enumerable.Empty<HighlightLayer.HexHighlight>());
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Cardamom.Ui.Controller;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.View.Scenes.Matches;
 
 namespace Expeditionary.Controller.Scenes.Matches
@@ -29,6 +30,18 @@ namespace Expeditionary.Controller.Scenes.Matches
         public ButtonId GetOrder()
         {
             return _orderSelectController!.GetValue();
+        }
+
+        public void SetUnit(Unit? unit)
+        {
+            if (unit == null)
+            {
+                _overlay!.Title.SetText(string.Empty);
+            }
+            else
+            {
+                _overlay!.Title.SetText($"{unit.Type.Name} (#{unit.Id})");
+            }
         }
 
         public void SetOrder(ButtonId order)

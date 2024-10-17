@@ -17,8 +17,9 @@
   },
   {
     "$id": "base-span",
-    "Parent": "base-container",
     "Default": {
+      "BackgroundColor": [ "#ffffff00" ],
+      "BackgroundShader": "shader-ui",
       "FontFace": "font-syne-mono",
       "Color": "#ffffffdf",
       "Shader": "shader-default",
@@ -26,11 +27,13 @@
     }
   },
   {
-    "$id": "base-tex-button",
+    "$id": "base-button",
     "Default": {
+      "Size": [ "DynamicContents", 24 ],
+      "Margin": [ 1 ],
+      "Padding": [ 2 ],
+      "CornerRadius": [ [ 12, 12 ] ],
       "BackgroundColor": [ "#ffcc80ff" ],
-      "ForegroundColor": "#121212ff",
-      "Color": "#121212ff",
       "BorderWidth": [ 1 ],
       "BorderColor": [ "#ffffff00" ],
       "BackgroundShader": "shader-ui",
@@ -40,7 +43,7 @@
       {
         "State": [ "Hover" ],
         "Attributes": {
-          "BackgroundColor": [ "#fea339ff" ]
+          "BackgroundColor": [ "#ffb74dff" ]
         }
       },
       {
@@ -50,5 +53,24 @@
         }
       }
     ]
+  },
+  {
+    "$id": "base-button-image",
+    "Default": {
+      "Size": [ 20, 20 ],
+      "BackgroundColor": [ "#ffffff00" ],
+      "BackgroundShader": "shader-ui",
+      "ForegroundColor": "#121212ff"
+    }
+  },
+  {
+    "$id": "base-button-text",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ "DynamicContents", 32 ],
+      "FontSize": 12,
+      "Padding": [ 2 ],
+      "Color": "#121212ff"
+    }
   }
 ]
