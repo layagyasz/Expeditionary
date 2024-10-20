@@ -89,7 +89,7 @@ namespace Expeditionary.View
         {
             if (asset is Unit unit)
             {
-                return unit.Faction.ColorScheme.Background;
+                return unit.Player.Faction.ColorScheme.Background;
             }
             return Color4.White;
         }
@@ -98,7 +98,7 @@ namespace Expeditionary.View
         {
             if (asset is Unit unit)
             {
-                return unit.Faction.ColorScheme.Foreground;
+                return unit.Player.Faction.ColorScheme.Foreground;
             }
             return Color4.Black;
         }

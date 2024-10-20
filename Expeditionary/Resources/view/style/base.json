@@ -33,7 +33,7 @@
       "Margin": [ 1 ],
       "Padding": [ 2 ],
       "CornerRadius": [ [ 12, 12 ] ],
-      "BackgroundColor": [ "#ffcc80ff" ],
+      "BackgroundColor": [ "#ffa726ff" ],
       "BorderWidth": [ 1 ],
       "BorderColor": [ "#ffffff00" ],
       "BackgroundShader": "shader-ui",
@@ -50,6 +50,12 @@
         "State": [ "Toggle" ],
         "Attributes": {
           "BorderColor": [ "#ffffffff" ]
+        }
+      },
+      {
+        "State": [ "Disable" ],
+        "Attributes": {
+          "BorderColor": [ "#ffffff1c" ]
         }
       }
     ]

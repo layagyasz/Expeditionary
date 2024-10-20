@@ -3,7 +3,6 @@ using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat.Units;
-using Expeditionary.Model.Factions;
 using Expeditionary.View;
 using Expeditionary.View.Scenes.Matches;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -12,8 +11,8 @@ namespace Expeditionary.Controller
 {
     public class MatchController : IController
     {
-        private readonly Match _match;
-        private readonly Faction _faction;
+        private readonly GameDriver _driver;
+        private readonly Player _player;
 
         private MatchScreen? _screen;
         private HighlightLayer? _highlightLayer;
@@ -23,10 +22,10 @@ namespace Expeditionary.Controller
         private Unit? _selectedUnit;
         private ButtonId _selectedOrder;
 
-        public MatchController(Match match, Faction faction)
+        public MatchController(GameDriver driver, Player player)
         {
-            _match = match;
-            _faction = faction;
+            _driver = driver;
+            _player = player;
         }
 
         public void Bind(object @object)
@@ -58,7 +57,7 @@ namespace Expeditionary.Controller
         {
             if (e.Button.Button == MouseButton.Left)
             {
-                var units = e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Faction == _faction).ToList();
+                var units = e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).ToList();
                 int index = _selectedUnit == null ? -1 : units.IndexOf(_selectedUnit);
                 if (index == -1)
                 {
@@ -108,7 +107,7 @@ namespace Expeditionary.Controller
                 {
                     var range = (int)_selectedUnit.Type.Attack.First().Range.GetValue();
                     _highlightLayer!.SetHighlight(
-                        Sighting.GetSightField(_match.GetMap(), _selectedUnit.Position, range)
+                        Sighting.GetSightField(_driver.GetMatch().GetMap(), _selectedUnit.Position, range)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
@@ -117,7 +116,7 @@ namespace Expeditionary.Controller
                     var movement = (int)_selectedUnit.Type.Speed;
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
-                            _match.GetMap(), _selectedUnit.Position, movement, _selectedUnit.Type.Movement)
+                            _driver.GetMatch().GetMap(), _selectedUnit.Position, movement, _selectedUnit.Type.Movement)
                         .Select(x => new HighlightLayer.HexHighlight(
                             x.Destination, HighlightLayer.GetLevel(x.Cost, new Interval(0, movement)))));
                 }

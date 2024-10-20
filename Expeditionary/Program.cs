@@ -217,13 +217,15 @@ namespace Expeditionary
                     seed: new Random().Next());
             var match = new Match(new SerialIdGenerator(), map);
             var faction = module.Factions["faction-hyacinth"];
+            var player = new Player(Id: 0, Team: 0, faction);
+            var driver = new GameDriver(match, new List<Player>() { player });
             match.Add(
                 module.UnitTypes.First().Value,
-                faction, 
+                player, 
                 Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(match, faction), 
+                    new MatchController(driver, player), 
                     sceneFactory.Create(match, terrainParameters, seed: 0), 
                     new UnitOverlay(uiElementFactory)));
             ui.Start();
