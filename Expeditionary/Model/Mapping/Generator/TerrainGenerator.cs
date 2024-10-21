@@ -14,20 +14,20 @@ namespace Expeditionary.Model.Mapping.Generator
     {
         public class Parameters
         {
-            public int ElevationLevels { get; set; } = 5;
-            public float LiquidLevel { get; set; } = 0.25f;
-            public Vector3 Stone { get; set; } = new(1, 1, 1);
-            public float SoilCover { get; set; } = 0.9f;
-            public SoilParameters SoilA { get; set; }
-            public SoilParameters SoilB { get; set; }
-            public SoilParameters SoilC { get; set; }
-            public float BrushCover { get; set; } = 0.9f;
-            public float FoliageCover { get; set; } = 0.6f;
-            public float LiquidMoistureBonus = 0.2f;
+            public int ElevationLevels { get; set; }
+            public float LiquidLevel { get; set; }
+            public Vector3 Stone { get; set; }
+            public float SoilCover { get; set; }
+            public SoilParameters SoilA { get; set; } = new();
+            public SoilParameters SoilB { get; set; } = new();
+            public SoilParameters SoilC { get; set; } = new();
+            public float BrushCover { get; set; }
+            public float FoliageCover { get; set; }
+            public float LiquidMoistureBonus { get; set; }
             public int Rivers { get; set; }
         }
 
-        public struct SoilParameters
+        public class SoilParameters
         {
             public float Weight { get; set; }
             public Quadratic ElevationWeight { get; set; }

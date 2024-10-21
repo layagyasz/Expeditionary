@@ -1,0 +1,9 @@
+[
+  {
+    "$id": "environment-default",
+    "Name": "Default",
+    "Modifiers": [
+      "script_environment_default"
+    ]
+  }
+]

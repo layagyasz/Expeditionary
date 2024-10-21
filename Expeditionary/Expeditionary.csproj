@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="NLua" Version="1.7.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\factions\wk.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_default.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\module.json">
@@ -319,6 +326,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\config\default\generation\environments\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>
 
