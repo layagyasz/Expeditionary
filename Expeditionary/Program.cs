@@ -83,7 +83,7 @@ namespace Expeditionary
                     new MapViewFactory(
                         new()
                         {
-                            ElevationGradient = new(0.5f, 2f),
+                            ElevationGradient = new(0.75f, 2f),
                         },
                         new(partitions, edges, structures),
                         resources.GetShader("shader-mask-no-tex"),

@@ -340,7 +340,6 @@ namespace Expeditionary.Model.Mapping.Generator
                     Color4 tileData = elevationData[i, j];
                     var tile = map.GetTile(i, j)!;
                     tile.Elevation = tileData.R;
-                    
                     elevations[i * map.Height + j] = tile.Elevation;
                 }
             }
@@ -351,8 +350,16 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     var tile = map.GetTile(i, j)!;
+                    tile.Elevation = (tile.Elevation - liquidLevel) / (1f - liquidLevel);
+                }
+            }
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (tile.Elevation < liquidLevel)
+                    if (tile.Elevation <= 0)
                     {
                         tile.Terrain.IsLiquid = true;
                         tile.Slope = 0;
