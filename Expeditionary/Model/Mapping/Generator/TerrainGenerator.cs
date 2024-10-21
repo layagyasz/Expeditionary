@@ -18,11 +18,20 @@ namespace Expeditionary.Model.Mapping.Generator
             public float LiquidLevel { get; set; } = 0.25f;
             public Vector3 Stone { get; set; } = new(1, 1, 1);
             public float SoilCover { get; set; } = 0.9f;
-            public Vector3 Soil { get; set; } = new(1, 1, 1);
+            public SoilParameters SoilA { get; set; }
+            public SoilParameters SoilB { get; set; }
+            public SoilParameters SoilC { get; set; }
             public float BrushCover { get; set; } = 0.9f;
             public float FoliageCover { get; set; } = 0.6f;
-            public float LiquidBonus = 0.2f;
+            public float LiquidMoistureBonus = 0.2f;
             public int Rivers { get; set; }
+        }
+
+        public struct SoilParameters
+        {
+            public float Weight { get; set; }
+            public Quadratic ElevationWeight { get; set; }
+            public Quadratic SlopeWeight { get; set; }
         }
 
         private static readonly int s_Resolution = 1024;
@@ -323,6 +332,7 @@ namespace Expeditionary.Model.Mapping.Generator
 
         private static void Elevation(Map map, float[,] corners, Parameters parameters, Color4[,] elevationData)
         {
+            float[] elevations = new float[map.Width * map.Height];
             for (int i = 0; i < map.Width; ++i)
             {
                 for (int j = 0; j < map.Height; ++j)
@@ -330,20 +340,21 @@ namespace Expeditionary.Model.Mapping.Generator
                     Color4 tileData = elevationData[i, j];
                     var tile = map.GetTile(i, j)!;
                     tile.Elevation = tileData.R;
-                    if (tile.Elevation < parameters.LiquidLevel)
-                    {
-                        tile.Terrain.IsLiquid = true;
-                    }
+                    
+                    elevations[i * map.Height + j] = tile.Elevation;
                 }
             }
+            Array.Sort(elevations);
+            var liquidLevel = elevations[(int)(parameters.LiquidLevel * (elevations.Length - 1))];
             for (int i = 0; i < map.Width; ++i)
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
                     var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (tile.Terrain.IsLiquid)
+                    if (tile.Elevation < liquidLevel)
                     {
+                        tile.Terrain.IsLiquid = true;
                         tile.Slope = 0;
                     }
                     else
@@ -413,7 +424,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .Where(x => x != null)
                             .Any(x => x!.Terrain.IsLiquid))
                     {
-                        plantData[i, j].G += parameters.LiquidBonus;
+                        plantData[i, j].G += parameters.LiquidMoistureBonus;
                     }
                     var tile = map.GetTile(i, j)!;
                     tile.Heat = plantData[i, j].R;
@@ -445,10 +456,16 @@ namespace Expeditionary.Model.Mapping.Generator
                     var tile = map.GetTile(i, j)!;
                     if (tileData.B + tile.Slope < parameters.SoilCover)
                     {
-                        var soilModifier = new Vector3(1 - tile.Elevation, 1, 2 - tile.Slope - tile.Elevation);
+                        var modifiers = 
+                            new Vector3(
+                                EvaluateSoil(parameters.SoilA, tile.Elevation, tile.Slope),
+                                EvaluateSoil(parameters.SoilB, tile.Elevation, tile.Slope), 
+                                EvaluateSoil(parameters.SoilC, tile.Elevation, tile.Slope));
+                        var weights = 
+                            new Vector3(parameters.SoilA.Weight, parameters.SoilB.Weight, parameters.SoilC.Weight);
                         var soil =
                             GetCenter(
-                                GetBarycentric(tileData.R, tileData.G, parameters.Soil * soilModifier), s_Barycenters);
+                                GetBarycentric(tileData.R, tileData.G, weights * modifiers), s_Barycenters);
                         tile.Terrain.Soil = soil;
                     }
                 }
@@ -485,6 +502,11 @@ namespace Expeditionary.Model.Mapping.Generator
                     }
                 }
             }
+        }
+
+        private static float EvaluateSoil(SoilParameters parameters, float elevation, float slope)
+        {
+            return parameters.ElevationWeight.Evaluate(elevation) + parameters.SlopeWeight.Evaluate(slope);
         }
 
         private static void Hindrance(Map map)

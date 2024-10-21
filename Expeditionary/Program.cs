@@ -101,14 +101,20 @@ namespace Expeditionary
                     Liquid = new(27, 55, 85, 255),
                     Stone = new()
                     {
+                        // Gray
                         A = new(200, 200, 200, 255),
+                        // White
                         B = new(240, 240, 240, 255),
+                        // Granite
                         C = new(227, 173, 156, 255)
                     },
                     Soil = new()
                     {
+                        // Sand
                         A = new(248, 240, 133, 255),
+                        // Clay
                         B = new(196, 164, 81, 255),
+                        // Silt
                         C = new(59, 48, 45, 255)
                     },
                     Brush = new()
@@ -143,6 +149,24 @@ namespace Expeditionary
                         Terrain =
                             new()
                             {
+                                SoilA =
+                                    new()
+                                    {
+                                        Weight = 1,
+                                        ElevationWeight = new(0, -1, 1),
+                                        SlopeWeight = new(0, -1, 1)
+                                    },
+                                SoilB =
+                                    new()
+                                    {
+                                        Weight = 1
+                                    },
+                                SoilC =
+                                    new()
+                                    { 
+                                        Weight = 1,
+                                        ElevationWeight = new(0, -1, 1)
+                                    },
                                 Rivers = 100
                             },
                         Cities =
