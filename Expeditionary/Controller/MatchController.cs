@@ -1,8 +1,11 @@
 ﻿using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
+using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Orders;
 using Expeditionary.View;
 using Expeditionary.View.Scenes.Matches;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -41,6 +44,8 @@ namespace Expeditionary.Controller
             _unitOverlayController = _screen.UnitOverlay!.ComponentController as UnitOverlayController;
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
 
+            _driver.GetMatch().AssetMoved += HandleAssetMoved;
+
             _screen.UnitOverlay.Visible = false;
         }
 
@@ -50,7 +55,10 @@ namespace Expeditionary.Controller
             _sceneController!.HexClicked -= HandleHexClicked;
             _sceneController = null;
 
+            _unitOverlayController!.OrderChanged -= HandleOrderChanged;
             _unitOverlayController = null;
+
+            _driver.GetMatch().AssetMoved -= HandleAssetMoved;
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
@@ -72,9 +80,32 @@ namespace Expeditionary.Controller
             }
         }
 
+        private void HandleAssetMoved(object? sender, AssetMovedEventArgs e)
+        {
+            if (e.Asset == _selectedUnit && _selectedUnit != null)
+            {
+                UpdateOrder();
+            }
+        }
+
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
-
+            if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
+            {
+                // Cheap check to make sure hex is reachable
+                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Type.Speed)
+                {
+                    _driver.DoOrder(
+                        new MoveOrder(
+                            _selectedUnit, 
+                            Pathing.GetShortestPath(
+                                _driver.GetMatch().GetMap(),
+                                _selectedUnit.Position,
+                                e.Hex,
+                                _selectedUnit.Type.Movement, 
+                                _selectedUnit.Type.Speed)));
+                }
+            }
         }
 
         private void HandleOrderChanged(object? sender, EventArgs e)
@@ -114,11 +145,15 @@ namespace Expeditionary.Controller
                 else if (_selectedOrder == ButtonId.Move)
                 {
                     var movement = (int)_selectedUnit.Type.Speed;
+                    var used = _selectedUnit.Type.Speed - _selectedUnit.Movement;
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
-                            _driver.GetMatch().GetMap(), _selectedUnit.Position, movement, _selectedUnit.Type.Movement)
-                        .Select(x => new HighlightLayer.HexHighlight(
-                            x.Destination, HighlightLayer.GetLevel(x.Cost, new Interval(0, movement)))));
+                            _driver.GetMatch().GetMap(), 
+                            _selectedUnit.Position, 
+                            _selectedUnit.Type.Movement, 
+                            _selectedUnit.Movement)
+                            .Select(x => new HighlightLayer.HexHighlight(
+                                x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));
                 }
             }
         }

@@ -36,16 +36,11 @@ namespace Expeditionary.View
             _vertices = new(512, 12, GetRenderResources);
         }
 
-        public void Add(IAsset asset)
+        public void Add(IAsset asset, Vector3i position)
         {
             int block = _vertices!.Reserve();
             _addressMap.Add(asset.Id, block);
-
-            var vertices = new Vertex3[12];
-            var position = ToVector3(Cubic.Cartesian.Instance.Project(asset.Position));
-            SetVertices(vertices, 0, position, GetBackground(asset), _textures.Get(s_BackgroundKey).TextureView);
-            SetVertices(vertices, 6, position, GetForeground(asset), _textures.Get(asset.TypeKey).TextureView);
-            _vertices!.Set(block, vertices);
+            Place(asset, position, block);
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
@@ -56,6 +51,11 @@ namespace Expeditionary.View
         public void Initialize()
         {
             _vertices!.Initialize();
+        }
+
+        public void Move(IAsset asset, Vector3i position)
+        {
+            Place(asset, position, _addressMap[asset.Id]);
         }
 
         public void Remove(IAsset asset)
@@ -78,6 +78,15 @@ namespace Expeditionary.View
         {
             _vertices?.Dispose();
             _vertices = null;
+        }
+
+        private void Place(IAsset asset, Vector3i position, int block)
+        {
+            var vertices = new Vertex3[12];
+            var p = ToVector3(Cubic.Cartesian.Instance.Project(position));
+            SetVertices(vertices, 0, p, GetBackground(asset), _textures.Get(s_BackgroundKey).TextureView);
+            SetVertices(vertices, 6, p, GetForeground(asset), _textures.Get(asset.TypeKey).TextureView);
+            _vertices!.Set(block, vertices);
         }
 
         private RenderResources GetRenderResources()

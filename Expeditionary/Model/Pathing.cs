@@ -7,7 +7,7 @@ namespace Expeditionary.Model
 {
     public static class Pathing
     {
-        public record class Path(Stack<Vector3i> Steps, float Cost);
+        public record class Path(Vector3i Origin, Vector3i Destination, Stack<Vector3i> Steps, float Cost);
         public record class PathOption(Vector3i Destination, float Cost);
 
         private class Node
@@ -28,7 +28,7 @@ namespace Expeditionary.Model
         }
 
         public static IEnumerable<PathOption> GetPathField(
-            Map map, Vector3i position, float maxTravel, Movement movement)
+            Map map, Vector3i position, Movement movement, float maxCost = float.PositiveInfinity)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
@@ -70,12 +70,7 @@ namespace Expeditionary.Model
                         + movement.GetCost(
                             GetHindrance(
                                 current.Tile, neighborTile, map.GetEdge(Geometry.GetEdge(current.Hex, neighbor))!));
-                    if (cost > maxTravel)
-                    {
-                        continue;
-                    }
-
-                    if (cost < neighborNode.Cost)
+                    if (cost <= maxCost && cost < neighborNode.Cost)
                     {
                         if (neighborNode.Open)
                         {
@@ -94,14 +89,19 @@ namespace Expeditionary.Model
 
             foreach (var node in nodes.Values)
             {
-                if (node.Closed && !(node.Cost > maxTravel))
+                if (node.Closed && !(node.Cost > maxCost))
                 {
                     yield return new(node.Hex, node.Cost);
                 }
             }
         }
 
-        public static Path GetShortestPath(Map map, Vector3i position, Vector3i destination, Movement movement)
+        public static Path? GetShortestPath(
+            Map map, 
+            Vector3i position, 
+            Vector3i destination, 
+            Movement movement, 
+            float maxCost = float.PositiveInfinity)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
@@ -150,7 +150,7 @@ namespace Expeditionary.Model
                             GetHindrance(
                                 current.Tile, neighborTile, map.GetEdge(Geometry.GetEdge(current.Hex, neighbor))!));
 
-                    if (cost < neighborNode.Cost)
+                    if (cost <= maxCost && cost < neighborNode.Cost)
                     {
                         if (neighborNode.Open)
                         {
@@ -167,7 +167,7 @@ namespace Expeditionary.Model
                 }
             }
 
-            throw new InvalidOperationException(string.Format($"No path found from {position} to {destination}"));
+            return null;
         }
 
         private static Movement.Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
@@ -202,7 +202,7 @@ namespace Expeditionary.Model
                 current = current.Parent;
                 steps.Push(current.Hex);
             }
-            return new(steps, destination.Cost);
+            return new(current.Hex, destination.Hex, steps, destination.Cost);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Factions;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Combat.Units
 {
@@ -10,12 +9,20 @@ namespace Expeditionary.Model.Combat.Units
         public string TypeKey => Type.Key;
         public Vector3i Position { get; set; }
         public UnitType Type { get; }
+        public float Movement { get; set; }
 
         public Unit(int id, Player player, UnitType type)
         {
             Id = id;
             Player = player;
             Type = type;
+
+            Reset();
+        }
+
+        public void Reset()
+        {
+            Movement = Type.Speed;
         }
     }
 }

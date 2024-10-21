@@ -1,16 +1,18 @@
-﻿using Expeditionary.Model.Orders;
+﻿using Cardamom.Logging;
+using Expeditionary.Model.Orders;
 
 namespace Expeditionary.Model
 {
     public class GameDriver
     {
+        private static readonly ILogger s_Logger = new Logger(new ConsoleBackend(), LogLevel.Info);
+
         public EventHandler<IOrder>? OrderAdded { get; set; }
         public EventHandler<IOrder>? OrderRemoved { get; set; }
         public EventHandler<EventArgs>? Stepped { get; set; }
 
         private readonly Match _match;
         private readonly List<Player> _players;
-        private readonly OrderBuffer _orderBuffer;
 
         private int _activePlayer = -1;
 
@@ -18,9 +20,6 @@ namespace Expeditionary.Model
         {
             _match = match;
             _players = players.ToList();
-            _orderBuffer = new(match);
-            _orderBuffer.Added += HandleOrderAdded;
-            _orderBuffer.Removed += HandleOrderRemoved;
         }
 
         public Match GetMatch()
@@ -28,45 +27,37 @@ namespace Expeditionary.Model
             return _match;
         }
 
-        public bool AddOrder(IOrder order)
+        public bool DoOrder(IOrder order)
         {
             if (!ValidatePlayer(order.Unit.Player))
             {
+                s_Logger.Log($"{order} failed player validation");
                 return false;
             }
-            return _orderBuffer.Add(order);
-        }
-
-        public bool RemoveOrder(IOrder order)
-        {
-            if (!ValidatePlayer(order.Unit.Player))
+            if (!order.Validate(_match))
             {
+                s_Logger.Log($"{order} failed match validation");
                 return false;
             }
-            return _orderBuffer.Remove(order);
+            s_Logger.Log($"{order} executed");
+            order.Execute(_match);
+            return true;
         }
 
         public void Step()
         {
             _activePlayer++;
-            _activePlayer %= _players.Count;
-            _orderBuffer.Flush();
+            if (_activePlayer >= _players.Count)
+            {
+                _activePlayer = 0;
+                _match.Reset();
+            }
             Stepped?.Invoke(this, EventArgs.Empty);
         }
 
         private bool ValidatePlayer(Player player)
         {
             return player.Id == _activePlayer;
-        }
-
-        private void HandleOrderAdded(object? sender, IOrder order)
-        {
-            OrderAdded?.Invoke(this, order);
-        }
-
-        private void HandleOrderRemoved(object? sender, IOrder order)
-        {
-            OrderRemoved?.Invoke(this, order);
         }
     }
 }

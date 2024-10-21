@@ -38,16 +38,23 @@ namespace Expeditionary.Controller
             _assetLayer = null;
         }
 
-        public void AddAsset(IAsset asset)
+        public void AddAsset(IAsset asset, Vector3i position)
         {
-            _positionMap.Add(asset.Position, asset);
-            _assetLayer!.Add(asset);
+            _positionMap.Add(position, asset);
+            _assetLayer!.Add(asset, position);
         }
 
         public void RemoveAsset(IAsset asset)
         {
             _positionMap.Remove(asset.Position, asset);
             _assetLayer!.Remove(asset);
+        }
+
+        public void MoveAsset(IAsset asset, Vector3i origin, Vector3i destination)
+        {
+            _positionMap.Remove(origin, asset);
+            _positionMap.Add(destination, asset);
+            _assetLayer!.Move(asset, destination);
         }
 
         public bool HandleKeyDown(KeyDownEventArgs e)

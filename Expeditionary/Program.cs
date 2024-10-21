@@ -219,6 +219,7 @@ namespace Expeditionary
             var faction = module.Factions["faction-hyacinth"];
             var player = new Player(Id: 0, Team: 0, faction);
             var driver = new GameDriver(match, new List<Player>() { player });
+            driver.Step();
             match.Add(
                 module.UnitTypes.First().Value,
                 player, 

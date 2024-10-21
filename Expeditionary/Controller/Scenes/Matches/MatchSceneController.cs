@@ -37,10 +37,11 @@ namespace Expeditionary.Controller.Scenes.Matches
 
             _match.AssetAdded += HandleAssetAdded;
             _match.AssetRemoved += HandleAssetRemoved;
+            _match.AssetMoved += HandleAssetMoved;
 
             foreach (var asset in _match.GetAssets())
             {
-                _assetLayerController!.AddAsset(asset);
+                _assetLayerController!.AddAsset(asset, asset.Position);
             }
 
             _camera.Changed += HandleCameraChanged;
@@ -68,7 +69,12 @@ namespace Expeditionary.Controller.Scenes.Matches
 
         private void HandleAssetAdded(object? sender, IAsset asset)
         {
-            _assetLayerController!.AddAsset(asset);
+            _assetLayerController!.AddAsset(asset, asset.Position);
+        }
+
+        private void HandleAssetMoved(object? sender, AssetMovedEventArgs e)
+        {
+            _assetLayerController!.MoveAsset(e.Asset, e.Origin, e.Destination);
         }
 
         private void HandleAssetRemoved(object? sender, IAsset asset)

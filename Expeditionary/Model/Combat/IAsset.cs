@@ -7,5 +7,6 @@ namespace Expeditionary.Model.Combat
         int Id { get; }
         string TypeKey { get; }
         public Vector3i Position { get; set; }
+        public void Reset();
     }
 }
