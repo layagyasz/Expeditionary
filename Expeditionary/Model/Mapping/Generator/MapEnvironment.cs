@@ -1,6 +1,5 @@
 ﻿using Cardamom;
 using Cardamom.Json.Collections;
-using Expeditionary.Scripting;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Mapping.Generator
@@ -11,14 +10,14 @@ namespace Expeditionary.Model.Mapping.Generator
         public string Name { get; set; } = string.Empty;
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
-        public List<LuaScript> Modifiers { get; set; } = new();
+        public List<MapEnvironmentModifier> Modifiers { get; set; } = new();
 
         public MapGenerator.Parameters GetParameters()
         {
             var parameters = new MapGenerator.Parameters();
-            foreach (var script in Modifiers)
+            foreach (var modifier in Modifiers)
             {
-                script.Get("MutateMapParameters").Call(parameters);
+                modifier.Apply!.Call(modifier, parameters);
             }
             return parameters;
         }

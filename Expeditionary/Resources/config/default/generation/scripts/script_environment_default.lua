@@ -4,13 +4,17 @@ luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 CityGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.CityGenerator+Parameters')
 EdgeType=luanet.import_type('Expeditionary.Model.Mapping.EdgeType')
+MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.Generator.MapEnvironmentModifier')
 NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampler')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
 Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
-function MutateMapParameters(parameters)
+Default = MapEnvironmentModifier()
+Default.Key = "environment-modifier-default"
+Default.Name = "Default"
+function Default:Apply(parameters)
 	-- Basic
 	parameters.Terrain.ElevationLevels = 5
 	parameters.Terrain.LiquidLevel = 0.25
@@ -88,4 +92,8 @@ function MutateMapParameters(parameters)
 	roads.SupportedStructures:Add(StructureType.Mining, 1)
 	roads.SupportedStructures:Add(StructureType.Industrial, 1)
 	parameters.Transport:Add(roads)
+end
+
+function Load()
+	return { Default }
 end

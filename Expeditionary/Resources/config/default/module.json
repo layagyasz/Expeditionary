@@ -1,7 +1,5 @@
 {
-  "Scripts": {
-    "Paths": [ "resources/config/default/generation/scripts::*.lua" ]
-  },
+  "MapEnvironmentModifiers": [ "resources/config/default/generation/scripts::*.lua" ],
   "Environments": [ "resources/config/default/generation/environments::*json" ],
   "UnitTraits": [ "resources/config/default/units/traits::*.json" ],
   "UnitTypes": [ "resources/config/default/units/definitions::*json" ],

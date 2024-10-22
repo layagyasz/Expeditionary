@@ -359,7 +359,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (tile.Elevation <= 0)
+                    if (tile.Elevation < 0)
                     {
                         tile.Terrain.IsLiquid = true;
                         tile.Slope = 0;

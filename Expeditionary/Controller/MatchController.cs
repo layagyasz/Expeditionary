@@ -93,7 +93,7 @@ namespace Expeditionary.Controller
             if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
-                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Type.Speed)
+                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Movement)
                 {
                     _driver.DoOrder(
                         new MoveOrder(
