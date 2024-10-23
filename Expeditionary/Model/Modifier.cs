@@ -24,6 +24,11 @@ namespace Expeditionary.Model
             return Bonus * Multiplier;
         }
 
+        public static Modifier Add(Modifier left, Modifier right)
+        {
+            return left + right;
+        }
+
         public static Modifier operator +(Modifier left, Modifier right)
         {
             return new(left.Multiplier * right.Multiplier, left.Bonus + right.Bonus);

@@ -4,9 +4,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Hexagons;
-using Expeditionary.Model;
 using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.View;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -15,6 +13,9 @@ namespace Expeditionary.Controller
 {
     public class AssetLayerController : IElementController
     {
+        private static readonly Vector2 s_Scale = 0.5f * MathF.Sqrt(3) * new Vector2(0.6f, 0.4f);
+        private static readonly Box2 s_Bounds = new(-s_Scale, s_Scale);
+
         public EventHandler<MouseButtonClickEventArgs>? Clicked { get; set; }
         public EventHandler<EventArgs>? Focused { get; set; }
         public EventHandler<EventArgs>? FocusLeft { get; set; }
@@ -80,7 +81,8 @@ namespace Expeditionary.Controller
         public bool HandleMouseButtonClicked(MouseButtonClickEventArgs e)
         {
             var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
-            if (_positionMap.TryGetValue(hex, out var assets))
+            var coord = e.Position.Xz - Cubic.Cartesian.Instance.Project(hex);
+            if (s_Bounds.ContainsInclusive(coord) && _positionMap.TryGetValue(hex, out var assets))
             {
                 AssetClicked?.Invoke(this, new(assets.ToList(), e));
                 return true;
