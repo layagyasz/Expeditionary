@@ -13,13 +13,15 @@ namespace Expeditionary.Model
 
         private readonly Match _match;
         private readonly List<Player> _players;
+        private readonly Random _random;
 
         private int _activePlayer = -1;
 
-        public GameDriver(Match match, IEnumerable<Player> players)
+        public GameDriver(Match match, IEnumerable<Player> players, Random random)
         {
             _match = match;
             _players = players.ToList();
+            _random = random;
         }
 
         public Match GetMatch()
@@ -40,7 +42,7 @@ namespace Expeditionary.Model
                 return false;
             }
             s_Logger.Log($"{order} executed");
-            order.Execute(_match);
+            order.Execute(_match, _random);
             return true;
         }
 

@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Orders
             return Path != null && Path.Cost <= Unit.Movement;
         }
 
-        public void Execute(Match match)
+        public void Execute(Match match, Random random)
         {
             Unit.Movement -= Path!.Cost;
             match.Move(Unit, Path!);

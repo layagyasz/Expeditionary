@@ -4,6 +4,8 @@
     "Name": "Example Infantry",
     "Attacks": [
       {
+        "IsDistributed": true,
+        "Number": 10,
         "Condition": "Ranged",
         "Traits": [
           "trait-infantry-rifle"
@@ -21,6 +23,8 @@
     "Name": "Example Mountain",
     "Attacks": [
       {
+        "IsDistributed": true,
+        "Number": 10,
         "Condition": "Ranged",
         "Traits": [
           "trait-infantry-rifle"
@@ -38,9 +42,17 @@
     "Name": "Example MG",
     "Attacks": [
       {
+        "Number": 4,
         "Condition": "Ranged",
         "Traits": [
           "trait-infantry-mg"
+        ]
+      },
+      {
+        "Number": 6,
+        "Condition": "Ranged",
+        "Traits": [
+          "trait-infantry-rifle"
         ]
       }
     ],

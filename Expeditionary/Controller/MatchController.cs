@@ -78,6 +78,13 @@ namespace Expeditionary.Controller
                 UpdateUnitOverlay();
                 UpdateOrder();
             }
+            if (e.Button.Button == MouseButton.Right 
+                && _selectedOrder == ButtonId.Attack 
+                && _selectedUnit != null
+                && e.Assets.First() is Unit defender)
+            {
+                _driver.DoOrder(new AttackOrder(_selectedUnit, _selectedUnit.Type.Attacks.First(), defender));
+            }
         }
 
         private void HandleAssetMoved(object? sender, AssetMovedEventArgs e)
@@ -136,7 +143,7 @@ namespace Expeditionary.Controller
             {
                 if (_selectedOrder == ButtonId.Attack)
                 {
-                    var range = (int)_selectedUnit.Type.Attack.First().Range.GetValue();
+                    var range = (int)_selectedUnit.Type.Attacks.First().Range.GetValue();
                     _highlightLayer!.SetHighlight(
                         Sighting.GetSightField(_driver.GetMatch().GetMap(), _selectedUnit.Position, range)
                             .Select(x => new HighlightLayer.HexHighlight(

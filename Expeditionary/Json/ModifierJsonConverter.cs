@@ -16,7 +16,7 @@ namespace Expeditionary.Json
             string[] tokens = stringValue.Split('x');
             return new()
             {
-                Bonus = float.Parse(tokens[0].Substring(1)),
+                Bonus = float.Parse(tokens[0][1..]),
                 Multiplier = float.Parse(tokens[1])
             };
         }

@@ -25,7 +25,7 @@ namespace Expeditionary
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             var window = new RenderWindow("Expeditionary", new(512, 512));
             var ui = new UiWindow(window);
@@ -144,14 +144,18 @@ namespace Expeditionary
             var mapParameters = environment.GetParameters();
             var map = mapGenerator.Generate(mapParameters, new(100, 100), seed: new Random().Next());
             var match = new Match(new SerialIdGenerator(), map);
-            var faction = module.Factions["faction-hyacinth"];
-            var player = new Player(Id: 0, Team: 0, faction);
-            var driver = new GameDriver(match, new List<Player>() { player });
+            var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
+            var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
+            var driver = new GameDriver(match, new List<Player>() { player, opponent }, new());
             driver.Step();
-            match.Add(
-                module.UnitTypes.First().Value,
-                player, 
-                Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)));
+
+            var center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50));
+            match.Add(module.UnitTypes["def-mg-example"], player, center);
+            foreach (var surround in Geometry.GetNeighbors(center))
+            {
+                match.Add(module.UnitTypes.First().Value, opponent, surround);
+            }
+
             ui.SetRoot(
                 new MatchScreen(
                     new MatchController(driver, player), 

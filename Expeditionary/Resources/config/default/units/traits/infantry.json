@@ -13,8 +13,8 @@
       "intrinsic.mass": "+1x1",
       "intrinsic.power": "+1x1",
       "intrinsic.profile": "+1x1",
-      "intrinsic.number": "+40x1",
-      "intrinsic.morale": "+40x1",
+      "intrinsic.number": "+10x1",
+      "intrinsic.morale": "+10x1",
       "intrinsic.stamina": "+1x1",
       "movement.roughness/min": "+0x1",
       "movement.roughness/max": "+0x1",
@@ -32,7 +32,7 @@
     "Name": "Rifle",
     "Cost": 0,
     "Modifiers": {
-      "attack.volume": "+40x1",
+      "attack.volume": "+1x1",
       "attack.range": "+1x1",
       "attack.accuracy": "+0.5x1",
       "attack.tracking": "+5x1",
@@ -46,12 +46,12 @@
     "Cost": 4,
     "Tags": [ "MG" ],
     "Modifiers": {
-      "attack.volume": "+200x1",
+      "attack.volume": "+4x1",
       "attack.range": "+2x1",
       "attack.accuracy": "+0.25x1",
       "attack.tracking": "+4x1",
       "attack.penetration": "+2x1",
-      "attack.lethality": "+1x1"
+      "attack.lethality": "+2x1"
     }
   },
   {

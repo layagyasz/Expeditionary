@@ -9,6 +9,8 @@ namespace Expeditionary.Model.Combat.Units
     {
         public class AttackDefinition
         {
+            public bool IsDistributed { get; set; }
+            public int Number { get; set; }
             public CombatCondition Condition { get; set; }
 
             [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
@@ -34,17 +36,21 @@ namespace Expeditionary.Model.Combat.Units
             var attributes = Combine(Traits);
             return new(
                 this,
-                Attacks.Select(x => BuildAttack(Combine(x.Traits))),
+                Attacks.Select(BuildAttack),
                 BuildDefenseEnvelope(attributes),
                 BuildMovement(attributes),
                 BuildCapabilities(attributes),
                 BuildIntrinsics(attributes));
         }
 
-        private static UnitAttack BuildAttack(IDictionary<string, Modifier> attributes)
+        private static UnitAttack BuildAttack(AttackDefinition definition)
         {
+            var attributes = Combine(definition.Traits);
             return new()
             {
+                IsDistributed = definition.IsDistributed,
+                Number = definition.Number,
+                Condition = definition.Condition,
                 Volume = GetOrDefault(attributes, "attack.volume", Modifier.None),
                 Range = GetOrDefault(attributes, "attack.range", Modifier.None),
                 Accuracy = GetOrDefault(attributes, "attack.accuracy", Modifier.None),

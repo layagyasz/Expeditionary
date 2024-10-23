@@ -26,15 +26,11 @@ namespace Expeditionary.Model
             }
         }
 
-        public static bool IsValidLineOfSight(Map map, Vector3i position, Vector3i target, int range)
+        public static bool IsValidLineOfSight(Map map, Vector3i position, Vector3i target)
         {
             if (position == target)
             {
                 return true;
-            }
-            if (Geometry.GetCubicDistance(position, target) > range)
-            {
-                return false;
             }
             return IsValidLineOfSightInternal(map, position, target);
         }

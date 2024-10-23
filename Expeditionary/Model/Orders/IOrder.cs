@@ -6,6 +6,6 @@ namespace Expeditionary.Model.Orders
     {
         Unit Unit { get; }
         bool Validate(Match match);
-        void Execute(Match match);
+        void Execute(Match match, Random random);
     }
 }
