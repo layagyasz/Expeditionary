@@ -2,9 +2,9 @@
 using Cardamom.Json.Collections;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Mapping.Generator
+namespace Expeditionary.Model.Mapping
 {
-    public class MapEnvironment : IKeyed
+    public class MapEnvironmentDefinition : IKeyed
     {
         public string Key { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -12,14 +12,14 @@ namespace Expeditionary.Model.Mapping.Generator
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<MapEnvironmentModifier> Modifiers { get; set; } = new();
 
-        public MapGenerator.Parameters GetParameters()
+        public MapEnvironment GetEnvironment()
         {
-            var parameters = new MapGenerator.Parameters();
+            var env = new MapEnvironment();
             foreach (var modifier in Modifiers)
             {
-                modifier.Apply!.Call(modifier, parameters);
+                modifier.Apply!.Call(modifier, env);
             }
-            return parameters;
+            return env;
         }
     }
 }

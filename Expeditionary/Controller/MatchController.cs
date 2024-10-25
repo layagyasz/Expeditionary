@@ -66,6 +66,10 @@ namespace Expeditionary.Controller
             if (e.Button.Button == MouseButton.Left)
             {
                 var units = e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).ToList();
+                if (units.Count == 0)
+                {
+                    return;
+                }
                 int index = _selectedUnit == null ? -1 : units.IndexOf(_selectedUnit);
                 if (index == -1)
                 {
@@ -78,7 +82,7 @@ namespace Expeditionary.Controller
                 UpdateUnitOverlay();
                 UpdateOrder();
             }
-            if (e.Button.Button == MouseButton.Right 
+            else if (e.Button.Button == MouseButton.Right 
                 && _selectedOrder == ButtonId.Attack 
                 && _selectedUnit != null
                 && e.Assets.First() is Unit defender)

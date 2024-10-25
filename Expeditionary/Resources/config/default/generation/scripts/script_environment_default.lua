@@ -3,10 +3,13 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 CityGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.CityGenerator+Parameters')
+Color4=luanet.import_type('OpenTK.Mathematics.Color4')
 EdgeType=luanet.import_type('Expeditionary.Model.Mapping.EdgeType')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.Generator.MapEnvironmentModifier')
+MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
 NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampler')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
+SolarOutputOffsetColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+SolarOutputOffsetColoring')
+StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
 Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
@@ -14,27 +17,59 @@ Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 Default = MapEnvironmentModifier()
 Default.Key = "environment-modifier-default"
 Default.Name = "Default"
-function Default:Apply(parameters)
-	-- Basic
-	parameters.Terrain.ElevationLevels = 5
-	parameters.Terrain.LiquidLevel = 0.25
-	parameters.Terrain.Stone = Vector3(1, 1, 1)
-	parameters.Terrain.SoilCover = 0.9
-	parameters.Terrain.BrushCover = 0.9
-	parameters.Terrain.FoliageCover = 0.6
-	parameters.Terrain.LiquidMoistureBonus = 0.2
-	parameters.Terrain.Rivers = 100
+function Default:Apply(environment)
+	local appearance = environment.Appearance;
+
+	-- Liquid
+	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
+	 
+	-- Stone
+	appearance.Stone.A = StaticColoring(Color4(0.78, 0.78, 0.78, 1))
+	appearance.Stone.B = StaticColoring(Color4(0.94, 0.94, 0.94, 1))
+	appearance.Stone.C = StaticColoring(Color4(0.89, 0.68, 0.61, 1))
 
 	-- Soil
 	-- Sand
-	parameters.Terrain.SoilA.Weight = 1
-	parameters.Terrain.SoilA.ElevationWeight = Quadratic(0, -1, 1)
-	parameters.Terrain.SoilA.SlopeWeight = Quadratic(0, -1, 1)
+	appearance.Soil.A = StaticColoring(Color4(0.97, 0.94, 0.52, 1))
 	-- Clay
-	parameters.Terrain.SoilB.Weight = 1
+	appearance.Soil.B = StaticColoring(Color4(0.77, 0.64, 0.32, 1))
 	-- Silt
-	parameters.Terrain.SoilC.Weight = 1
-	parameters.Terrain.SoilC.ElevationWeight = Quadratic(0, -1, 1)
+	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
+
+	-- Brush
+	appearance.Brush.HotDry = SolarOutputOffsetColoring(Color4(-0.33, 0.25, 0.9, 1))
+	appearance.Brush.HotWet = SolarOutputOffsetColoring(Color4(-0.13, 0.67, 0.4, 1))
+	appearance.Brush.ColdDry = SolarOutputOffsetColoring(Color4(-0.34, 0.32, 0.7, 1))
+	appearance.Brush.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.2, 0.7, 1))
+	-- Foliage
+	appearance.Foliage.HotDry = SolarOutputOffsetColoring(Color4(-0.32, 0.45, 0.5, 1))
+	appearance.Foliage.HotWet = SolarOutputOffsetColoring(Color4(-0.02, 0.45, 0.17, 1))
+	appearance.Foliage.ColdDry = SolarOutputOffsetColoring(Color4(-0.08, 0.64, 0.5, 1))
+	appearance.Foliage.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.8, 0.3, 1))
+
+	local parameters = environment.Parameters
+	local terrain = parameters.Terrain
+
+	-- Basic
+	terrain.ElevationLevels = 5
+	terrain.LiquidLevel = 0.25
+	terrain.Stone = Vector3(1, 1, 1)
+	terrain.SoilCover = 0.9
+	terrain.BrushCover = 0.9
+	terrain.FoliageCover = 0.6
+	terrain.LiquidMoistureBonus = 0.2
+	terrain.Rivers = 100
+
+	-- Soil
+	-- Sand
+	terrain.SoilA.Weight = 1
+	terrain.SoilA.ElevationWeight = Quadratic(0, -1, 1)
+	terrain.SoilA.SlopeWeight = Quadratic(0, -1, 1)
+	-- Clay
+	terrain.SoilB.Weight = 1
+	-- Silt
+	terrain.SoilC.Weight = 1
+	terrain.SoilC.ElevationWeight = Quadratic(0, -1, 1)
 
 	-- Habitation
 	-- Mining

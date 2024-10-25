@@ -1,7 +1,7 @@
 ﻿using Cardamom;
 using NLua;
 
-namespace Expeditionary.Model.Mapping.Generator
+namespace Expeditionary.Model.Mapping
 {
     public class MapEnvironmentModifier : IKeyed
     {

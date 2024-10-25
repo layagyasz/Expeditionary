@@ -3,7 +3,7 @@ using Cardamom.Json.Collections;
 using Expeditionary.Json;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Factions;
-using Expeditionary.Model.Mapping.Generator;
+using Expeditionary.Model.Mapping;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model
@@ -14,7 +14,7 @@ namespace Expeditionary.Model
         public Library<MapEnvironmentModifier> MapEnvironmentModifiers { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
-        public Library<MapEnvironment> Environments { get; set; } = new();
+        public Library<MapEnvironmentDefinition> Environments { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<UnitTrait> UnitTraits { get; set; } = new();
