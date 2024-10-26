@@ -24,7 +24,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public float BrushCover { get; set; }
             public float FoliageCover { get; set; }
             public float LiquidMoistureBonus { get; set; }
-            public int Rivers { get; set; }
+            public float RiverDensity { get; set; }
         }
 
         public class SoilParameters
@@ -321,7 +321,8 @@ namespace Expeditionary.Model.Mapping.Generator
             }
 
             Elevation(map, corners, parameters, elevation);
-            RiverGenerator.Generate(parameters.Rivers, map, corners, random);
+            var numRivers = (int)(parameters.RiverDensity * map.Height * map.Width * (1 - parameters.LiquidLevel));
+            RiverGenerator.Generate(numRivers, map, corners, random);
             AdjustMoisture(map, parameters, plants);
             Stone(map, parameters, stone);
             Soil(map, parameters, soil);

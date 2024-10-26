@@ -3,8 +3,11 @@
     "$id": "environment-default",
     "Name": "Default",
     "Modifiers": [
-      "environment-modifier-star-class-g",
-      "environment-modifier-default"
+      "environment-modifier-default",
+      "environment-modifier-star-sol",
+      "environment-modifier-liquid-level-coast",
+      "environment-modifier-erosion-none",
+      "environment-modifier-flora-nominal"
     ]
   }
 ]

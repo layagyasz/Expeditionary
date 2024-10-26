@@ -30,7 +30,7 @@ function Default:Apply(environment)
 
 	-- Soil
 	-- Sand
-	appearance.Soil.A = StaticColoring(Color4(0.97, 0.94, 0.52, 1))
+	appearance.Soil.A = StaticColoring(Color4(0.96, 0.83, 0.68, 1))
 	-- Clay
 	appearance.Soil.B = StaticColoring(Color4(0.77, 0.64, 0.32, 1))
 	-- Silt
@@ -52,23 +52,12 @@ function Default:Apply(environment)
 
 	-- Basic
 	terrain.ElevationLevels = 5
-	terrain.LiquidLevel = 0.25
 	terrain.Stone = Vector3(1, 1, 1)
-	terrain.SoilCover = 0.9
-	terrain.BrushCover = 0.9
-	terrain.FoliageCover = 0.6
 	terrain.LiquidMoistureBonus = 0.2
-	terrain.Rivers = 100
 
 	-- Soil
-	-- Sand
-	terrain.SoilA.Weight = 1
 	terrain.SoilA.ElevationWeight = Quadratic(0, -1, 1)
 	terrain.SoilA.SlopeWeight = Quadratic(0, -1, 1)
-	-- Clay
-	terrain.SoilB.Weight = 1
-	-- Silt
-	terrain.SoilC.Weight = 1
 	terrain.SoilC.ElevationWeight = Quadratic(0, -1, 1)
 
 	-- Habitation
