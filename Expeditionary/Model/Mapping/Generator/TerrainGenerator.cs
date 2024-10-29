@@ -462,7 +462,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.B + tile.Slope < parameters.SoilCover)
+                    if (tileData.B - 0.5f + tile.Elevation < parameters.SoilCover)
                     {
                         var modifiers = 
                             new Vector3(

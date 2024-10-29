@@ -3,7 +3,6 @@ using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller;
 using Expeditionary.Controller.Mapping;
-using Expeditionary.Controller.Scenes;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Model;
 using Expeditionary.View.Mapping;
@@ -14,16 +13,27 @@ namespace Expeditionary.View.Scenes
 {
     public class SceneFactory
     {
+        private class NoCollider : ICollider3
+        {
+            public float? GetRayIntersection(Ray3 ray)
+            {
+                return null;
+            }
+        }
+
         private readonly MapViewFactory _mapViewFactory;
+        private readonly FogOfWarLayerFactory _fogOfWarLayerFactory;
         private readonly AssetLayerFactory _assetLayerFactory;
         private readonly HighlightLayerFactory _highlightLayerFactory;
 
         public SceneFactory(
             MapViewFactory mapViewFactory,
+            FogOfWarLayerFactory fogOfWarLayerFactory,
             AssetLayerFactory assetLayerFactory,
             HighlightLayerFactory highlightLayerFactory)
         {
             _mapViewFactory = mapViewFactory;
+            _fogOfWarLayerFactory = fogOfWarLayerFactory;
             _assetLayerFactory = assetLayerFactory;
             _highlightLayerFactory = highlightLayerFactory;
         }
@@ -41,6 +51,11 @@ namespace Expeditionary.View.Scenes
                     _mapViewFactory.Create(match.GetMap(), parameters, seed),
                     new Plane(new(), Vector3.UnitY),
                     mapController);
+
+            var fogOfWarController = new FogOfWarLayerController();
+            var fogOfWarLayer = 
+                new InteractiveModel(
+                    _fogOfWarLayerFactory.Create(match.GetMap(), seed + 1), new NoCollider(), fogOfWarController);
 
             var assetController = new AssetLayerController();
             var assetLayer =
@@ -60,6 +75,7 @@ namespace Expeditionary.View.Scenes
                         }),
                     camera,
                     map,
+                    fogOfWarLayer,
                     assetLayer,
                     highlightLayer);
 

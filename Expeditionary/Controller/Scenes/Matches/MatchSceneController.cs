@@ -15,6 +15,7 @@ namespace Expeditionary.Controller.Scenes.Matches
 
         private ICamera? _camera;
         private MapController? _mapController;
+        private FogOfWarLayerController? _fogOfWarLayerController;
         private AssetLayerController? _assetLayerController;
 
         private MatchScene? _scene;
@@ -33,6 +34,7 @@ namespace Expeditionary.Controller.Scenes.Matches
 
             _camera = _scene!.Camera;
             _mapController = _scene!.Map.Controller as MapController;
+            _fogOfWarLayerController = _scene!.FogOfWar.Controller as FogOfWarLayerController;
             _assetLayerController = _scene!.Assets.Controller as AssetLayerController;
 
             _match.AssetAdded += HandleAssetAdded;
@@ -65,6 +67,11 @@ namespace Expeditionary.Controller.Scenes.Matches
 
             _mapController!.HexClicked -= HandleHexClicked;
             _mapController = null;
+        }
+
+        public void SetPlayer(Player player)
+        {
+            _fogOfWarLayerController!.SetKnowledge(_match.GetMap(), _match.GetKnowledge(player).MapKnowledge);
         }
 
         private void HandleAssetAdded(object? sender, IAsset asset)

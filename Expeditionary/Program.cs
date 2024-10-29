@@ -7,6 +7,7 @@ using Cardamom.Window;
 using Expeditionary.Controller;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Spectra;
 using Expeditionary.View;
@@ -84,6 +85,7 @@ namespace Expeditionary
                         new(partitions, edges, structures),
                         resources.GetShader("shader-mask-no-tex"),
                         resources.GetShader("shader-default")),
+                    new FogOfWarLayerFactory(resources.GetShader("shader-default"), partitions),
                     new AssetLayerFactory(
                         resources.GetShader("shader-default"),
                         unitTextures),
@@ -93,10 +95,17 @@ namespace Expeditionary
             var environmentDefinition = module.Environments["environment-default"];
             var environment = environmentDefinition.GetEnvironment();
             var map = mapGenerator.Generate(environment.Parameters, new(100, 100), seed: new Random().Next());
-            var match = new Match(new SerialIdGenerator(), map);
             var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
-            var driver = new GameDriver(match, new List<Player>() { player, opponent }, new());
+            var players = new List<Player>() { player, opponent };
+            var match =
+                new Match(
+                    new SerialIdGenerator(), 
+                    map,
+                    players.ToDictionary(
+                        x => x, 
+                        x => new PlayerKnowledge(MapKnowledge.Create(new(100, 100), isDiscovered: true))));
+            var driver = new GameDriver(match, players, new());
             driver.Step();
 
             var center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50));

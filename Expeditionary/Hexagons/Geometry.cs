@@ -13,6 +13,7 @@ namespace Expeditionary.Hexagons
             new(0, 1, 0),
             new(-1, 0, 0)
         };
+        private static readonly int[] s_HexCornerIndixes = { 2, 1, 0, 2, 1, 0 };
         private static readonly Vector3i[] s_HexNeighbors =
         {
             new(0, -1, 1),
@@ -55,6 +56,11 @@ namespace Expeditionary.Hexagons
         {
             int dir = GetCornerDirection(corner);
             return s_CornerHexes.Select(x => corner + dir * x);
+        }
+
+        public static IEnumerable<(Vector3i, int)> GetCorners(Vector3i hex)
+        {
+            return Enumerable.Zip(s_HexCorners.Select(x => hex + x), s_HexCornerIndixes);
         }
 
         public static IEnumerable<Vector3i> GetCornerNeighbors(Vector3i corner)

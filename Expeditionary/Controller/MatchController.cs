@@ -40,6 +40,7 @@ namespace Expeditionary.Controller
             _sceneController = (MatchSceneController)_screen.Scene!.Controller;
             _sceneController.AssetClicked += HandleAssetClicked;
             _sceneController.HexClicked += HandleHexClicked;
+            _sceneController.SetPlayer(_player);
 
             _unitOverlayController = _screen.UnitOverlay!.ComponentController as UnitOverlayController;
             _unitOverlayController!.OrderChanged += HandleOrderChanged;

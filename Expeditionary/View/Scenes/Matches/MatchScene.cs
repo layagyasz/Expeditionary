@@ -16,6 +16,7 @@ namespace Expeditionary.View.Scenes.Matches
         public float? OverrideDepth { get; set; }
 
         public InteractiveModel Map { get; }
+        public InteractiveModel FogOfWar { get; }
         public InteractiveModel Assets { get; }
         public HighlightLayer Highlight { get; }
 
@@ -23,12 +24,14 @@ namespace Expeditionary.View.Scenes.Matches
             IElementController controller,
             ICamera camera,
             InteractiveModel map,
+            InteractiveModel fogOfWar,
             InteractiveModel assets,
             HighlightLayer highlight)
         {
             Controller = controller;
             Camera = camera;
             Map = map;
+            FogOfWar = fogOfWar;
             Assets = assets;
             Highlight = highlight;
         }
@@ -36,6 +39,7 @@ namespace Expeditionary.View.Scenes.Matches
         protected override void DisposeImpl()
         {
             Map.Dispose();
+            FogOfWar.Dispose();
             Assets.Dispose();
             Highlight.Dispose();
         }
@@ -47,6 +51,7 @@ namespace Expeditionary.View.Scenes.Matches
             context.Register(this);
             Map.Draw(target, context);
             Highlight.Draw(target, context);
+            FogOfWar.Draw(target, context);
             Assets.Draw(target, context);
             target.PopProjectionMatrix();
             target.PopViewMatrix();
@@ -60,6 +65,7 @@ namespace Expeditionary.View.Scenes.Matches
         public void Initialize()
         {
             Map.Initialize();
+            FogOfWar.Initialize();
             Assets.Initialize();
             Highlight.Initialize();
             Controller.Bind(this);
@@ -74,6 +80,7 @@ namespace Expeditionary.View.Scenes.Matches
         public void Update(long delta)
         {
             Map.Update(delta);
+            FogOfWar.Update(delta);
             Assets.Update(delta);
             Highlight.Update(delta);
         }

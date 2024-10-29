@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -14,12 +15,14 @@ namespace Expeditionary.Model
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
 
+        private readonly Dictionary<Player, PlayerKnowledge> _playerKnowledge;
         private readonly List<IAsset> _assets = new();
 
-        public Match(IIdGenerator idGenerator, Map map)
+        public Match(IIdGenerator idGenerator, Map map, Dictionary<Player, PlayerKnowledge> playerKnowledge)
         {
             _idGenerator = idGenerator;
             _map = map;
+            _playerKnowledge = playerKnowledge;
         }
 
         public void Add(UnitType unitType, Player player, Vector3i position)
@@ -27,6 +30,11 @@ namespace Expeditionary.Model
             var asset = new Unit(_idGenerator.Next(), player, unitType) {  Position = position };
             _assets.Add(asset);
             AssetAdded?.Invoke(this, asset);
+        }
+
+        public PlayerKnowledge GetKnowledge(Player player)
+        {
+            return _playerKnowledge[player];
         }
 
         public Map GetMap()

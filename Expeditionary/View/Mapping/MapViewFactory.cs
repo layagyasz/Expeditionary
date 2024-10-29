@@ -170,21 +170,15 @@ namespace Expeditionary.View.Mapping
             // TODO: this should be rendered with special tiles
             if (layer == 2)
             {
-                switch (tile.Structure.Type)
+                return tile.Structure.Type switch
                 {
-                    case StructureType.Agricultural:
-                        return new(0f, 1f, 0f, 1f);
-                    case StructureType.Mining:
-                        return new(1f, 1f, 0f, 1f);
-                    case StructureType.Residential:
-                        return new(0f, 1f, 1f, 1f);
-                    case StructureType.Commercial:
-                        return new(0f, 0f, 1f, 1f);
-                    case StructureType.Industrial:
-                        return new(1f, 0f, 0f, 1f);
-                    default:
-                        return new();
-                }
+                    StructureType.Agricultural => new(0f, 1f, 0f, 1f),
+                    StructureType.Mining => new(1f, 1f, 0f, 1f),
+                    StructureType.Residential => new(0f, 1f, 1f, 1f),
+                    StructureType.Commercial => new(0f, 0f, 1f, 1f),
+                    StructureType.Industrial => new(1f, 0f, 0f, 1f),
+                    _ => new(),
+                };
             }
 
             // Foliage
