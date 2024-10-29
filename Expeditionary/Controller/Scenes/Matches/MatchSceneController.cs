@@ -2,6 +2,7 @@
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.View.Scenes.Matches;
 
 namespace Expeditionary.Controller.Scenes.Matches
@@ -18,6 +19,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         private FogOfWarLayerController? _fogOfWarLayerController;
         private AssetLayerController? _assetLayerController;
 
+        private Player? _player;
         private MatchScene? _scene;
 
         public MatchSceneController(
@@ -40,6 +42,7 @@ namespace Expeditionary.Controller.Scenes.Matches
             _match.AssetAdded += HandleAssetAdded;
             _match.AssetRemoved += HandleAssetRemoved;
             _match.AssetMoved += HandleAssetMoved;
+            _match.MapKnowledgeChanged += HandleMapKnowledgeChanged;
 
             foreach (var asset in _match.GetAssets())
             {
@@ -58,6 +61,8 @@ namespace Expeditionary.Controller.Scenes.Matches
 
             _match.AssetAdded -= HandleAssetAdded;
             _match.AssetRemoved -= HandleAssetRemoved;
+            _match.AssetMoved -= HandleAssetMoved;
+            _match.MapKnowledgeChanged -= HandleMapKnowledgeChanged;
 
             _camera!.Changed -= HandleCameraChanged;
             _camera = null;
@@ -71,7 +76,8 @@ namespace Expeditionary.Controller.Scenes.Matches
 
         public void SetPlayer(Player player)
         {
-            _fogOfWarLayerController!.SetKnowledge(_match.GetMap(), _match.GetKnowledge(player).MapKnowledge);
+            _player = player;
+            _fogOfWarLayerController!.SetKnowledge(_match.GetKnowledge(player).MapKnowledge);
         }
 
         private void HandleAssetAdded(object? sender, IAsset asset)
@@ -102,6 +108,14 @@ namespace Expeditionary.Controller.Scenes.Matches
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
             HexClicked?.Invoke(this, e);
+        }
+
+        private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)
+        {
+            if (e.Player == _player)
+            {
+                _fogOfWarLayerController!.UpdateKnowledge(_match.GetKnowledge(_player).MapKnowledge, e.Delta);
+            }
         }
     }
 }

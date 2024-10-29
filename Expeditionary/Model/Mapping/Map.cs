@@ -5,6 +5,7 @@ namespace Expeditionary.Model.Mapping
 {
     public class Map
     {
+        public Vector2i Size => new(Width, Height);
         public int Width => _tiles.GetLength(0);
         public int Height => _tiles.GetLength(1);
 
@@ -29,17 +30,6 @@ namespace Expeditionary.Model.Mapping
                 for (int j=0; j< _edges.GetLength(1); ++j)
                 {
                     _edges[i, j] = new();
-                }
-            }
-        }
-
-        public IEnumerable<Vector3i> GetCorners()
-        {
-            for (int i=0; i< Width + 2; ++i)
-            {
-                for (int j=0; j < 2 * Height +2; ++j)
-                {
-                    yield return Cubic.TriangularOffset.Instance.Wrap(new(i, j));
                 }
             }
         }

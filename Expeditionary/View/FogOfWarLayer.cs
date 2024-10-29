@@ -3,7 +3,9 @@ using Cardamom.Ui;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
+using Expeditionary.View.Textures;
 using OpenTK.Mathematics;
+using System.Drawing;
 
 namespace Expeditionary.View
 {
@@ -13,40 +15,82 @@ namespace Expeditionary.View
         private static readonly Color4 s_Hidden = new(0, 0, 0, 0.5f);
         private static readonly Color4 s_Visible = new(0, 0, 0, 0);
 
+        private readonly Vector2i _size;
         private VertexBuffer<Vertex3>? _buffer;
-        private readonly Vertex3[] _vertices;
         private readonly RenderShader _shader;
-        private readonly Texture _texture;
+        private readonly PartitionLibrary _partitions;
 
         internal FogOfWarLayer(
-            VertexBuffer<Vertex3> buffer, Vertex3[] vertices, RenderShader shader, Texture texture)
+            Vector2i size, VertexBuffer<Vertex3> buffer, RenderShader shader, PartitionLibrary partitions)
         {
+            _size = size;
             _buffer = buffer;
-            _vertices = vertices;
             _shader = shader;
-            _texture = texture;
+            _partitions = partitions;
         }
 
-        public void SetAll(Map map, MapKnowledge knowledge)
+        public void Set(MapKnowledge knowledge, IEnumerable<Vector3i> delta)
         {
-            foreach (var hex in map.GetTiles())
+            var options = _partitions.Query().ToArray();
+            var vertices = new Vertex3[3];
+            foreach (var hex in delta)
             {
-                var tile = map.GetTile(hex);
-                foreach ((var corner, var index) in Geometry.GetCorners(hex))
+                var color = GetColor(knowledge.Get(hex));
+                foreach ((var corner, var backIndex) in Geometry.GetCorners(hex))
                 {
-                    var triangle = 3 * index + 9 * GetIndex(corner, map.Height);
-                    var color = GetColor(knowledge.Get(hex));
-                    _vertices[triangle].Color = color;
-                    _vertices[triangle + 1].Color = color;
-                    _vertices[triangle + 2].Color = color;
+                    var index = GetIndex(corner, _size.Y);
+                    var selected = options[index % options.Length];
+
+                    var centerHex = Geometry.GetCornerHex(corner, 0);
+                    var leftHex = Geometry.GetCornerHex(corner, 1);
+                    var rightHex = Geometry.GetCornerHex(corner, 2);
+
+                    var centerPos = ToVector3(Axial.Cartesian.Instance.Project(centerHex.Xy));
+                    var leftPos = ToVector3(Axial.Cartesian.Instance.Project(leftHex.Xy));
+                    var rightPos = ToVector3(Axial.Cartesian.Instance.Project(rightHex.Xy));
+
+                    vertices[0] = new(centerPos, color, selected.TexCoords[backIndex][0]);
+                    vertices[1] = new(leftPos, color, selected.TexCoords[backIndex][1]);
+                    vertices[2] = new(rightPos, color, selected.TexCoords[backIndex][2]);
+
+                    var i = 9 * index + 3 * backIndex;
+                    _buffer!.Sub(vertices, i, 3);
                 }
             }
-            _buffer!.Buffer(_vertices);
+        }
+
+        public void SetAll(MapKnowledge knowledge)
+        {
+            var options = _partitions.Query().ToArray();
+            int triangles = 3 * ((_size.X + 2) * (2 * _size.Y + 1) + 1);
+            var vertices = new Vertex3[3 * triangles];
+            foreach (var corner in Geometry.GetAllCorners(_size))
+            {
+                var centerHex = Geometry.GetCornerHex(corner, 0);
+                var leftHex = Geometry.GetCornerHex(corner, 1);
+                var rightHex = Geometry.GetCornerHex(corner, 2);
+
+                var centerPos = ToVector3(Axial.Cartesian.Instance.Project(centerHex.Xy));
+                var leftPos = ToVector3(Axial.Cartesian.Instance.Project(leftHex.Xy));
+                var rightPos = ToVector3(Axial.Cartesian.Instance.Project(rightHex.Xy));
+
+                var index = GetIndex(corner, _size.Y);
+                var selected = options[index % options.Length];
+                for (int hex = 0; hex < 3; ++hex)
+                {
+                    var color = GetColor(knowledge.Get(Geometry.GetCornerHex(corner, hex)));
+                    var i = 9 * index + 3 * hex;
+                    vertices[i] = new(centerPos, color, selected.TexCoords[hex][0]);
+                    vertices[i + 1] = new(leftPos, color, selected.TexCoords[hex][1]);
+                    vertices[i + 2] = new(rightPos, color, selected.TexCoords[hex][2]);
+                }
+            }
+            _buffer!.Buffer(vertices);
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
         {
-            target.Draw(_buffer!, 0, _buffer!.Length, new(BlendMode.Alpha, _shader, _texture));
+            target.Draw(_buffer!, 0, _buffer!.Length, new(BlendMode.Alpha, _shader, _partitions.GetTexture()));
         }
 
         public void Initialize() { }
@@ -78,6 +122,11 @@ namespace Expeditionary.View
         {
             var coord = Cubic.TriangularOffset.Instance.Project(tri);
             return coord.Y + coord.X * (2 * height + 1);
+        }
+
+        private static Vector3 ToVector3(Vector2 x)
+        {
+            return new(x.X, 0, x.Y);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Expeditionary.View.Mapping
                     .AddLayer(18 * map.Width * map.Height);
 
             int triangle = 0;
-            foreach (var corner in map.GetCorners())
+            foreach (var corner in Geometry.GetAllCorners(map.Size))
             {
                 var centerHex = Geometry.GetCornerHex(corner, 0);
                 var center = map.GetTile(centerHex);

@@ -55,7 +55,7 @@ namespace Expeditionary.View.Scenes
             var fogOfWarController = new FogOfWarLayerController();
             var fogOfWarLayer = 
                 new InteractiveModel(
-                    _fogOfWarLayerFactory.Create(match.GetMap(), seed + 1), new NoCollider(), fogOfWarController);
+                    _fogOfWarLayerFactory.Create(match.GetMap()), new NoCollider(), fogOfWarController);
 
             var assetController = new AssetLayerController();
             var assetLayer =

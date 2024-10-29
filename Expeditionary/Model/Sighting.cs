@@ -1,4 +1,6 @@
 ﻿using Expeditionary.Hexagons;
+using Expeditionary.Model.Combat;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -10,6 +12,15 @@ namespace Expeditionary.Model
         private static readonly float s_StructureHeight = 0.4f;
 
         public record class LineOfSight(Vector3i Target, int Distance);
+
+        public static IEnumerable<LineOfSight> GetSightField(Map map, IAsset asset, Vector3i position)
+        {
+            if (asset is Unit unit)
+            {
+                return GetSightField(map, position, (int) unit.Type.Attacks.First().Range.GetValue());
+            }
+            return Enumerable.Empty<LineOfSight>();
+        }
 
         public static IEnumerable<LineOfSight> GetSightField(Map map, Vector3i position, int range)
         {

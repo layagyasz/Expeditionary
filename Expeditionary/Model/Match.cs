@@ -11,6 +11,7 @@ namespace Expeditionary.Model
         public EventHandler<IAsset>? AssetAdded { get; set; }
         public EventHandler<AssetMovedEventArgs>? AssetMoved { get; set; }
         public EventHandler<IAsset>? AssetRemoved { get; set; }
+        public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
@@ -30,6 +31,12 @@ namespace Expeditionary.Model
             var asset = new Unit(_idGenerator.Next(), player, unitType) {  Position = position };
             _assets.Add(asset);
             AssetAdded?.Invoke(this, asset);
+
+            var knowledgeDelta = _playerKnowledge[player].MapKnowledge.Place(_map, asset, position);
+            if (knowledgeDelta.Count > 0)
+            {
+                MapKnowledgeChanged?.Invoke(this, new(player, knowledgeDelta));
+            }
         }
 
         public PlayerKnowledge GetKnowledge(Player player)
@@ -51,12 +58,30 @@ namespace Expeditionary.Model
         {
             asset.Position = path.Destination;
             AssetMoved?.Invoke(this, new(asset, path.Origin, path.Destination, path));
+
+            if (asset is Unit unit)
+            {
+                var knowledgeDelta = _playerKnowledge[unit.Player].MapKnowledge.Move(_map, asset, path);
+                if (knowledgeDelta.Count > 0)
+                {
+                    MapKnowledgeChanged?.Invoke(this, new(unit.Player, knowledgeDelta));
+                }
+            }
         }
 
         public void Remove(IAsset asset)
         {
             _assets.Remove(asset);
             AssetRemoved?.Invoke(this, asset);
+
+            if (asset is Unit unit)
+            {
+                var knowledgeDelta = _playerKnowledge[unit.Player].MapKnowledge.Remove(_map, asset);
+                if (knowledgeDelta.Count > 0)
+                {
+                    MapKnowledgeChanged?.Invoke(this, new(unit.Player, knowledgeDelta));
+                }
+            }
         }
 
         public void Reset()

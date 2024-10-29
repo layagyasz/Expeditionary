@@ -36,6 +36,17 @@ namespace Expeditionary.Hexagons
             new(-1, 0, -1)
         };
 
+        public static IEnumerable<Vector3i> GetAllCorners(Vector2i size)
+        {
+            for (int i = 0; i < size.X + 2; ++i)
+            {
+                for (int j = 0; j < 2 * size.Y + 2; ++j)
+                {
+                    yield return Cubic.TriangularOffset.Instance.Wrap(new(i, j));
+                }
+            }
+        }
+
         public static Vector3i GetCorner(Vector3i hex, int index)
         {
             return hex + s_HexCorners[index];

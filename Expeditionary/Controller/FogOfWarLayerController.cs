@@ -5,6 +5,7 @@ using Cardamom.Window;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.View;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 namespace Expeditionary.Controller
@@ -32,9 +33,14 @@ namespace Expeditionary.Controller
             _layer = null;
         }
 
-        public void SetKnowledge(Map map, MapKnowledge knowledge)
+        public void SetKnowledge(MapKnowledge knowledge)
         {
-            _layer!.SetAll(map, knowledge);
+            _layer!.SetAll(knowledge);
+        }
+
+        public void UpdateKnowledge(MapKnowledge knowledge, IEnumerable<Vector3i> delta)
+        {
+            _layer!.Set(knowledge, delta);
         }
 
         public bool HandleKeyDown(KeyDownEventArgs e)

@@ -82,7 +82,7 @@ namespace Expeditionary.Controller
         {
             var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
             var coord = e.Position.Xz - Cubic.Cartesian.Instance.Project(hex);
-            if (s_Bounds.ContainsInclusive(coord) && _positionMap.TryGetValue(hex, out var assets))
+            if (s_Bounds.ContainsInclusive(coord) && _positionMap.TryGetValue(hex, out var assets) && assets.Any())
             {
                 AssetClicked?.Invoke(this, new(assets.ToList(), e));
                 return true;
