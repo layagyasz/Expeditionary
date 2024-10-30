@@ -88,7 +88,9 @@ namespace Expeditionary.Controller
                 && _selectedUnit != null
                 && e.Assets.First() is Unit defender)
             {
-                _driver.DoOrder(new AttackOrder(_selectedUnit, _selectedUnit.Type.Attacks.First(), defender));
+                var weapon = _selectedUnit.Type.Weapons.First();
+                var mode = weapon.Weapon!.Modes.First();
+                _driver.DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
             }
         }
 
@@ -148,7 +150,9 @@ namespace Expeditionary.Controller
             {
                 if (_selectedOrder == ButtonId.Attack)
                 {
-                    var range = (int)_selectedUnit.Type.Attacks.First().Range.GetValue();
+                    var range = 
+                        (int)_selectedUnit.Type.Weapons
+                            .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.GetValue()).Max();
                     _highlightLayer!.SetHighlight(
                         Sighting.GetSightField(_driver.GetMatch().GetMap(), _selectedUnit.Position, range)
                             .Select(x => new HighlightLayer.HexHighlight(

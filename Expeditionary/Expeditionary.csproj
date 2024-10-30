@@ -80,7 +80,19 @@
     <None Update="Resources\config\default\units\definitions\example.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\traits\infantry.json">
+    <None Update="Resources\config\default\units\traits\infantry\base.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\infantry\equipment.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\infantry\training.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\infantry\weapons.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\weapons\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\fonts.json">
@@ -345,6 +357,7 @@
 
   <ItemGroup>
     <Folder Include="Resources\config\default\generation\environments\" />
+    <Folder Include="Resources\config\default\units\weapons\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>
 

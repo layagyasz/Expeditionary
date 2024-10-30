@@ -7,5 +7,6 @@ namespace Expeditionary.Model.Combat.Units
         Modifier Accuracy,
         Modifier Lethality,
         EnumMap<UnitDetectionBand, Modifier> Detection,
+        EnumMap<UnitDetectionBand, Modifier> Range,
         EnumMap<UnitDetectionBand, UnitBoundedValue> Concealment);
 }

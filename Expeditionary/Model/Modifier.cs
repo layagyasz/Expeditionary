@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Expeditionary.Model
 {
     [JsonConverter(typeof(ModifierJsonConverter))]
-    public struct Modifier
+    public record struct Modifier
     {
         public static readonly Modifier None = new(1, 0);
 

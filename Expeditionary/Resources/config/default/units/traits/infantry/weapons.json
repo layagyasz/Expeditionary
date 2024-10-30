@@ -1,0 +1,43 @@
+[
+  {
+    "$id": "trait-infantry-rifle",
+    "Name": "Rifle",
+    "Cost": 0,
+    "Modifiers": {
+      "volume": "+1x1",
+      "range": "+1x1",
+      "accuracy": "+6x1",
+      "tracking": "+5x1",
+      "penetration": "+1x1",
+      "lethality": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-mg",
+    "Name": "MG",
+    "Cost": 4,
+    "Tags": [ "MG" ],
+    "Modifiers": {
+      "volume": "+4x1",
+      "range": "+2x1",
+      "accuracy": "+3x1",
+      "tracking": "+4x1",
+      "penetration": "+2x1",
+      "lethality": "+2x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-sniper",
+    "Name": "Sniper",
+    "Cost": 4,
+    "Tags": [ "Sniper" ],
+    "Modifiers": {
+      "volume": "+0.25x1",
+      "range": "+4x1",
+      "accuracy": "+24x1",
+      "tracking": "+1x1",
+      "penetration": "+2x1",
+      "lethality": "+1x1"
+    }
+  }
+]

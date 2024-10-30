@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace Expeditionary.Model.Combat.Units
 {
     [JsonConverter(typeof(BuilderJsonConverter))]
-    [BuilderClass(typeof(UnitDefinition))]
+    [BuilderClass(typeof(UnitTypeDefinition))]
     public class UnitType : IKeyed
     {
         public string Key
@@ -17,8 +17,8 @@ namespace Expeditionary.Model.Combat.Units
         }
         public string Name => Definition.Name;
         public string? Symbol => Definition.Symbol;
-        public UnitDefinition Definition { get; }
-        public ImmutableList<UnitAttack> Attacks { get; }
+        public UnitTypeDefinition Definition { get; }
+        public ImmutableList<UnitWeaponDistribution> Weapons { get; }
         public UnitDefense Defense { get; }
         public Movement Movement { get; }
         public UnitCapabilities Capabilities { get; }
@@ -26,15 +26,15 @@ namespace Expeditionary.Model.Combat.Units
         public float Speed { get; }
 
         public UnitType(
-            UnitDefinition definition,
-            IEnumerable<UnitAttack> attacks,
+            UnitTypeDefinition definition,
+            IEnumerable<UnitWeaponDistribution> weapons,
             UnitDefense defense,
             Movement movement,
             UnitCapabilities capabilities,
             UnitIntrinsics intrinsics)
         {
             Definition = definition;
-            Attacks = ImmutableList.CreateRange(attacks);
+            Weapons = ImmutableList.CreateRange(weapons);
             Defense = defense;
             Movement = movement;
             Capabilities = capabilities;

@@ -17,7 +17,10 @@ namespace Expeditionary.Model
         {
             if (asset is Unit unit)
             {
-                return GetSightField(map, position, (int) unit.Type.Attacks.First().Range.GetValue());
+                return GetSightField(
+                    map, 
+                    position,
+                    (int)unit.Type.Capabilities.GetRange(CombatCondition.None, UnitDetectionBand.Visual).GetValue());
             }
             return Enumerable.Empty<LineOfSight>();
         }

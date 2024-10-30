@@ -8,13 +8,15 @@ namespace Expeditionary.Model.Orders
     public class AttackOrder : IOrder
     {
         public Unit Unit { get; }
-        public UnitAttack Attack { get; }
+        public UnitWeaponDistribution Weapon { get; }
+        public UnitWeapon.Mode Mode { get; }
         public Unit Defender { get; }
 
-        public AttackOrder(Unit attacker, UnitAttack attack, Unit defender)
+        public AttackOrder(Unit attacker, UnitWeaponDistribution weapon, UnitWeapon.Mode mode, Unit defender)
         {
             Unit = attacker;
-            Attack = attack;
+            Weapon = weapon;
+            Mode = mode;
             Defender = defender;
         }
 
@@ -28,7 +30,7 @@ namespace Expeditionary.Model.Orders
             {
                 return false;
             }
-            if (Geometry.GetCubicDistance(Unit.Position, Defender.Position) > Attack.Range.GetValue())
+            if (Geometry.GetCubicDistance(Unit.Position, Defender.Position) > Mode.Range.GetValue())
             {
                 return false;
             }
@@ -42,7 +44,7 @@ namespace Expeditionary.Model.Orders
         public void Execute(Match match, Random random)
         {
             Unit.Attacked = true;
-            var preview = CombatCalculator.GetPreview(Unit, Attack, Defender, match.GetMap());
+            var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Defender, match.GetMap());
             int kills = (int)preview.Result + Bernoulli.Sample(random, preview.Result % 1);
             Defender.Damage(kills, random);
             Console.WriteLine(preview);

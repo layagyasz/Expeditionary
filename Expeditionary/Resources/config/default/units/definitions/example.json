@@ -1,15 +1,12 @@
 [
   {
-    "$id": "def-infantry-example",
+    "$id": "~def-infantry-example",
     "Name": "Example Infantry",
-    "Attacks": [
+    "Weapons": [
       {
         "IsDistributed": true,
-        "Number": 10,
-        "Condition": "Ranged",
-        "Traits": [
-          "trait-infantry-rifle"
-        ]
+        "Number": 8,
+        "Weapon": "weapon-infantry-rifle"
       }
     ],
     "Traits": [
@@ -19,16 +16,13 @@
     ]
   },
   {
-    "$id": "def-mountain-example",
+    "$id": "~def-mountain-example",
     "Name": "Example Mountain",
-    "Attacks": [
+    "Weapons": [
       {
         "IsDistributed": true,
-        "Number": 10,
-        "Condition": "Ranged",
-        "Traits": [
-          "trait-infantry-rifle"
-        ]
+        "Number": 8,
+        "Weapon": "weapon-infantry-rifle"
       }
     ],
     "Traits": [
@@ -38,22 +32,16 @@
     ]
   },
   {
-    "$id": "def-mg-example",
+    "$id": "~def-mg-example",
     "Name": "Example MG",
-    "Attacks": [
+    "Weapons": [
       {
         "Number": 4,
-        "Condition": "Ranged",
-        "Traits": [
-          "trait-infantry-mg"
-        ]
+        "Weapon": "weapon-infantry-mg"
       },
       {
-        "Number": 6,
-        "Condition": "Ranged",
-        "Traits": [
-          "trait-infantry-rifle"
-        ]
+        "Number": 4,
+        "Weapon": "weapon-infantry-rifle"
       }
     ],
     "Traits": [

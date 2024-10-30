@@ -21,6 +21,11 @@ namespace Expeditionary.Model.Combat.Units
             return GetModifiers(condition).Select(x => x.Lethality).Aggregate(Modifier.None, Modifier.Add);
         }
 
+        public Modifier GetRange(CombatCondition condition, UnitDetectionBand band)
+        {
+            return GetModifiers(condition).Select(x => x.Range[band]).Aggregate(Modifier.None, Modifier.Add);
+        }
+
         public Modifier GetVolume(CombatCondition condition)
         {
             return GetModifiers(condition).Select(x => x.Volume).Aggregate(Modifier.None, Modifier.Add);

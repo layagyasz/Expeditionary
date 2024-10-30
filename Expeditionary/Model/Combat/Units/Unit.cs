@@ -22,7 +22,7 @@ namespace Expeditionary.Model.Combat.Units
             Player = player;
             Type = type;
 
-            _attackNumbers = type.Attacks.Select(x => x.Number).ToArray();
+            _attackNumbers = type.Weapons.Select(x => x.Number).ToArray();
 
             Number = (int)type.Intrinsics.Number.GetValue();
             Reset();
@@ -34,9 +34,9 @@ namespace Expeditionary.Model.Combat.Units
             var indices = new int[_attackNumbers.Length];
             var total = 0;
             int a = 0;
-            for (int i=0; i<Type.Attacks.Count; ++i)
+            for (int i=0; i<Type.Weapons.Count; ++i)
             {
-                var attack = Type.Attacks[i];
+                var attack = Type.Weapons[i];
                 var count = _attackNumbers[i];
                 if (attack.IsDistributed)
                 {
@@ -61,9 +61,9 @@ namespace Expeditionary.Model.Combat.Units
             Number -= kills;
         }
 
-        public int GetAttackNumber(UnitAttack attack)
+        public int GetAttackNumber(UnitWeaponDistribution attack)
         {
-            return _attackNumbers[Type.Attacks.IndexOf(attack)];
+            return _attackNumbers[Type.Weapons.IndexOf(attack)];
         }
 
         public void Reset()

@@ -1,0 +1,32 @@
+[
+  {
+    "$id": "trait-infantry",
+    "Name": "Infantry",
+    "Tags": [ "Infantry" ],
+    "Cost": 8,
+    "Modifiers": {
+      "capability.detection[audio]": "+12x1",
+      "capability.range[audio]": "+1x1",
+      "capability.detection[visual]": "+12x1",
+      "capability.range[visual]": "+4x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality": "+2x1",
+      "defense.vitality/min": "+0.2x1",
+      "intrinsic.mass": "+1x1",
+      "intrinsic.power": "+1x1",
+      "intrinsic.profile": "+12x1",
+      "intrinsic.number": "+8x1",
+      "intrinsic.morale": "+8x1",
+      "intrinsic.stamina": "+1x1",
+      "movement.roughness/min": "+0x1",
+      "movement.roughness/max": "+0x1",
+      "movement.roughness/cap": "+4x1",
+      "movement.softness/min": "+0x1",
+      "movement.softness/max": "+0x1",
+      "movement.softness/cap": "+5x1",
+      "movement.waterdepth/min": "+0x1",
+      "movement.waterdepth/max": "+0x1",
+      "movement.waterdepth/cap": "+3x1"
+    }
+  }
+]

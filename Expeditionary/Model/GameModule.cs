@@ -20,6 +20,9 @@ namespace Expeditionary.Model
         public Library<UnitTrait> UnitTraits { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
+        public Library<UnitWeapon> UnitWeapons { get; set; } = new();
+
+        [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<UnitType> UnitTypes { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]

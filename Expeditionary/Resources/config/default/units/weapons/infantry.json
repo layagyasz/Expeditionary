@@ -1,0 +1,32 @@
+[
+  {
+    "$id": "~weapon-infantry-rifle",
+    "Name": "Rifle",
+    "Traits": [ "trait-infantry-rifle" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "~weapon-infantry-mg",
+    "Name": "MG",
+    "Traits": [ "trait-infantry-mg" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "~weapon-infantry-sniper",
+    "Name": "Sniper",
+    "Traits": [ "trait-infantry-sniper" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  }
+]

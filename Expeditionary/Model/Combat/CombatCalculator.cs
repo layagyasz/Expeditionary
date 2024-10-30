@@ -6,53 +6,54 @@ namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
-        public static CombatPreview GetPreview(Unit attacker, UnitAttack attack, Unit defender, Map map)
+        public static CombatPreview GetPreview(
+            Unit attacker, UnitWeaponDistribution attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
             float range = Geometry.GetCubicDistance(attacker.Position, defender.Position);
-            if (range > attack.Range.GetValue())
+            if (range > mode.Range.GetValue())
             {
                 return new();
             }
             return GetPreview(
-                attacker.Type, 
-                attack, 
+                attacker.Type,
+                mode,
                 defender.Type,
-                GetConditions(attack, range, map.GetTile(attacker.Position)!, map.GetTile(defender.Position)!),
+                GetConditions(mode, range, map.GetTile(attacker.Position)!, map.GetTile(defender.Position)!),
                 range,
                 attacker.GetAttackNumber(attack));
         }
 
         private static CombatPreview GetPreview(
             UnitType attacker, 
-            UnitAttack attack, 
+            UnitWeapon.Mode mode,
             UnitType defender, 
             CombatCondition condition,
             float range,
             float number)
         {
-            var volume = number * (attack.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
+            var volume = number * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
             var target =
                 GetPreviewLayer(
-                    (attack.Accuracy + attacker.Capabilities.GetAccuracy(condition)).GetValue() 
-                        * (1f - range / (attack.Range.GetValue() + 1)), 
+                    (mode.Accuracy + attacker.Capabilities.GetAccuracy(condition)).GetValue() 
+                        * (1f - range / (mode.Range.GetValue() + 1)), 
                     defender.Intrinsics.Profile.GetValue(),
                     defenseMin: 0,
                     scale: 1);
             var hit =
                 GetPreviewLayer(
-                    attack.Tracking.GetValue(),
+                    mode.Tracking.GetValue(),
                     defender.Defense.Maneuver.Value.GetValue(),
                     defender.Defense.Maneuver.Minimum.GetValue(),
                     scale: 2);
             var pen =
                 GetPreviewLayer(
-                    attack.Penetration.GetValue(),
+                    mode.Penetration.GetValue(),
                     defender.Defense.Armor.Value.GetValue(),
                     defender.Defense.Armor.Minimum.GetValue(),
                     scale: 2);
             var kill =
                 GetPreviewLayer(
-                    (attack.Lethality + attacker.Capabilities.GetLethality(condition)).GetValue(),
+                    (mode.Lethality + attacker.Capabilities.GetLethality(condition)).GetValue(),
                     defender.Defense.Vitality.Value.GetValue(),
                     defender.Defense.Vitality.Minimum.GetValue(),
                     scale: 1);
@@ -66,9 +67,9 @@ namespace Expeditionary.Model.Combat
                 volume * target.Probability * hit.Probability * pen.Probability * kill.Probability);
         }
 
-        private static CombatCondition GetConditions(UnitAttack attack, float range, Tile attacker, Tile defender)
+        private static CombatCondition GetConditions(UnitWeapon.Mode mode, float range, Tile attacker, Tile defender)
         {
-            CombatCondition condition = attack.Condition;
+            CombatCondition condition = mode.Condition;
             if (range < 1)
             {
                 condition |= CombatCondition.Close;

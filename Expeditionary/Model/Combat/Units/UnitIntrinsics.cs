@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.Model.Combat.Units
 {
-    public class UnitIntrinsics
+    public record class UnitIntrinsics
     {
         public Modifier Mass { get; set; }
         public Modifier Morale { get; set; }

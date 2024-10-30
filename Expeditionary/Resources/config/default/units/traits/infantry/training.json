@@ -1,0 +1,163 @@
+[
+  {
+    "$id": "trait-infantry-recruitment-n1",
+    "Name": "Conscript",
+    "Family": "trait-infantry-recruitment",
+    "Cost": -2,
+    "Level": -1,
+    "Modifiers": {
+      "intrinsic.morale": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-recruitment-1",
+    "Name": "Volunteer",
+    "Family": "trait-infantry-recruitment",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "intrinsic.morale": "+0x1.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-recruitment-2",
+    "Name": "Fanatic",
+    "Family": "trait-infantry-recruitment",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "intrinsic.morale": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-endurance-1",
+    "Name": "Basic Endurance Training",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.25"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-endurance-2",
+    "Name": "Endurance Training 2",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-endurance-3",
+    "Name": "Endurance Training 3",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.75"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-endurance-4",
+    "Name": "Elite Endurance Training",
+    "Family": "trait-infantry-training-endurance",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "intrinsic.stamina": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-1",
+    "Name": "Basic Marksman Training",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capabilities.accuracy": "+0x1.25",
+      "capabilities.lethality": "+0x1.25"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-2",
+    "Name": "Marksman Training 2",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capabilities.accuracy": "+0x1.5",
+      "capabilities.lethality": "+0x1.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-3",
+    "Name": "Marksman Training 3",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capabilities.accuracy": "+0x1.75",
+      "capabilities.lethality": "+0x1.75"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-marksman-4",
+    "Name": "Elite Marksman Training",
+    "Family": "trait-infantry-training-marksman",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capabilities.accuracy": "+0x2",
+      "capabilities.lethality": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-1",
+    "Name": "Basic Mountain Training",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 1,
+    "Level": 1,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "movement.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-2",
+    "Name": "Mountain Training 2",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 2,
+    "Level": 2,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.25",
+      "movement.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-3",
+    "Name": "Mountain Training 3",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 3,
+    "Level": 3,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.5",
+      "movement.roughness/cap": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-mountain-4",
+    "Name": "Elite Mountain Training",
+    "Family": "trait-infantry-training-mountain",
+    "Cost": 4,
+    "Level": 4,
+    "Tags": [ "Mountain" ],
+    "Modifiers": {
+      "intrinsic.stamina": "+0x1.75",
+      "movement.roughness/cap": "+1x1"
+    }
+  }
+]
