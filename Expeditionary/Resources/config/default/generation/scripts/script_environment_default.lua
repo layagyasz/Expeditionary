@@ -8,7 +8,6 @@ EdgeType=luanet.import_type('Expeditionary.Model.Mapping.EdgeType')
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
 NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampler')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
-SolarOutputOffsetColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+SolarOutputOffsetColoring')
 StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
@@ -35,17 +34,6 @@ function Default:Apply(environment)
 	appearance.Soil.B = StaticColoring(Color4(0.77, 0.64, 0.32, 1))
 	-- Silt
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
-
-	-- Brush
-	appearance.Brush.HotDry = SolarOutputOffsetColoring(Color4(-0.33, 0.25, 0.9, 1))
-	appearance.Brush.HotWet = SolarOutputOffsetColoring(Color4(-0.13, 0.67, 0.4, 1))
-	appearance.Brush.ColdDry = SolarOutputOffsetColoring(Color4(-0.34, 0.32, 0.7, 1))
-	appearance.Brush.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.2, 0.7, 1))
-	-- Foliage
-	appearance.Foliage.HotDry = SolarOutputOffsetColoring(Color4(-0.32, 0.45, 0.5, 1))
-	appearance.Foliage.HotWet = SolarOutputOffsetColoring(Color4(-0.02, 0.45, 0.17, 1))
-	appearance.Foliage.ColdDry = SolarOutputOffsetColoring(Color4(-0.08, 0.64, 0.5, 1))
-	appearance.Foliage.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.8, 0.3, 1))
 
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain

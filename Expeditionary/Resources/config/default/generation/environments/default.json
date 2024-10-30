@@ -4,10 +4,12 @@
     "Name": "Default",
     "Modifiers": [
       "environment-modifier-default",
-      "environment-modifier-star-class-m",
+      "environment-modifier-star-sol",
       "environment-modifier-liquid-level-coast",
       "environment-modifier-erosion-old",
-      "environment-modifier-flora-habitable"
+      "environment-modifier-habitability-habitable",
+      "environment-modifier-biome-forest",
+      "environment-modifier-flora-exotic"
     ]
   }
 ]

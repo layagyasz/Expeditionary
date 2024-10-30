@@ -1,87 +1,96 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
+luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
+Color4=luanet.import_type('OpenTK.Mathematics.Color4')
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+SolarOutputOffsetColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+SolarOutputOffsetColoring')
+StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 
-Dead = MapEnvironmentModifier()
-Dead.Key = "environment-modifier-flora-dead"
-Dead.Name = "Dead"
-function Dead:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0
-	terrain.FoliageCover = 0
-	terrain.RiverDensity = 0
-	terrain.SoilA.Weight = 1
-	terrain.SoilB.Weight = 0
-	terrain.SoilC.Weight = 0
+Native = MapEnvironmentModifier()
+Native.Key = "environment-modifier-flora-native"
+Native.Name = "Native"
+function Native:Apply(environment)
+	local appearance = environment.Appearance;
+
+	appearance.Brush.HotDry = SolarOutputOffsetColoring(Color4(-0.33, 0.25, 0.9, 1))
+	appearance.Brush.HotWet = SolarOutputOffsetColoring(Color4(-0.13, 0.67, 0.4, 1))
+	appearance.Brush.ColdDry = SolarOutputOffsetColoring(Color4(-0.34, 0.32, 0.7, 1))
+	appearance.Brush.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.2, 0.7, 1))
+
+	appearance.Foliage.HotDry = SolarOutputOffsetColoring(Color4(-0.32, 0.45, 0.5, 1))
+	appearance.Foliage.HotWet = SolarOutputOffsetColoring(Color4(-0.02, 0.45, 0.17, 1))
+	appearance.Foliage.ColdDry = SolarOutputOffsetColoring(Color4(-0.08, 0.64, 0.5, 1))
+	appearance.Foliage.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.8, 0.3, 1))
 end
 
-Desert = MapEnvironmentModifier()
-Desert.Key = "environment-modifier-flora-desert"
-Desert.Name = "Desert"
-function Desert:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0.1
-	terrain.FoliageCover = 0
-	terrain.RiverDensity = 0
-	terrain.SoilA.Weight = 1
-	terrain.SoilB.Weight = 0
-	terrain.SoilC.Weight = 0
+Terran = MapEnvironmentModifier()
+Terran.Key = "environment-modifier-flora-terran"
+Terran.Name = "Terran"
+function Terran:Apply(environment)
+	local appearance = environment.Appearance;
+
+	appearance.Brush.HotDry = StaticColoring(Color4(0.68, 0.64, 0.58, 1))
+	appearance.Brush.HotWet = StaticColoring(Color4(0.21, 0.3, 0.19, 1))
+	appearance.Brush.ColdDry = StaticColoring(Color4(0.53, 0.48, 0.43, 1))
+	appearance.Brush.ColdWet = StaticColoring(Color4(0.47, 0.53, 0.51, 1))
+	
+	appearance.Foliage.HotDry = StaticColoring(Color4(0.38, 0.35, 0.28, 1))
+	appearance.Foliage.HotWet = StaticColoring(Color4(0.09, 0.13, 0.11, 1))
+	appearance.Foliage.ColdDry = StaticColoring(Color4(0.24, 0.38, 0.25, 1))
+	appearance.Foliage.ColdWet = StaticColoring(Color4(0.13, 0.22, 0.2, 1))
 end
 
-Nominal = MapEnvironmentModifier()
-Nominal.Key = "environment-modifier-flora-nominal"
-Nominal.Name = "Nominal"
-function Nominal:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0.2
-	terrain.FoliageCover = 0
-	terrain.RiverDensity = 0
-	terrain.SoilA.Weight = 1
-	terrain.SoilB.Weight = 1
-	terrain.SoilC.Weight = 0.5
+Exotic = MapEnvironmentModifier()
+Exotic.Key = "environment-modifier-flora-exotic"
+Exotic.Name = "Exotic"
+function Exotic:Apply(environment)
+	local appearance = environment.Appearance;
+
+	appearance.Brush.HotDry = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	appearance.Brush.HotWet = StaticColoring(Color4(0.55, 0.55, 0.55, 1))
+	appearance.Brush.ColdDry = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	appearance.Brush.ColdWet = StaticColoring(Color4(0.55, 0.55, 0.55, 1))
+	
+	appearance.Foliage.HotDry = StaticColoring(Color4(0.51, 0.42, 0.6, 1))
+	appearance.Foliage.HotWet = StaticColoring(Color4(0.22, 0.15, 0.3, 1))
+	appearance.Foliage.ColdDry = StaticColoring(Color4(0.56, 0.51, 0.6, 1))
+	appearance.Foliage.ColdWet = StaticColoring(Color4(0.25, 0.21, 0.3, 1))
 end
 
-Marginal = MapEnvironmentModifier()
-Marginal.Key = "environment-modifier-flora-marginal"
-Marginal.Name = "Marginal"
-function Marginal:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0
-	terrain.FoliageCover = 0
-	terrain.RiverDensity = 0
-	terrain.SoilA.Weight = 2
-	terrain.SoilB.Weight = 1
-	terrain.SoilC.Weight = 0.2
+Fungal = MapEnvironmentModifier()
+Fungal.Key = "environment-modifier-flora-fungal"
+Fungal.Name = "Fungal"
+function Fungal:Apply(environment)
+	local appearance = environment.Appearance;
+
+	appearance.Brush.HotDry = SolarOutputOffsetColoring(Color4(-0.33, 0.25, 0.9, 1))
+	appearance.Brush.HotWet = SolarOutputOffsetColoring(Color4(-0.13, 0.67, 0.4, 1))
+	appearance.Brush.ColdDry = SolarOutputOffsetColoring(Color4(-0.34, 0.32, 0.7, 1))
+	appearance.Brush.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.2, 0.7, 1))
+	
+	appearance.Foliage.HotDry = StaticColoring(Color4(0.5, 0.36, 0.3, 1))
+	appearance.Foliage.HotWet = StaticColoring(Color4(0.27, 0.22, 0.18, 1))
+	appearance.Foliage.ColdDry = StaticColoring(Color4(0.95, 0.9, 0.86, 1))
+	appearance.Foliage.ColdWet = StaticColoring(Color4(0.7, 0.14, 0.14, 1))
 end
 
-Habitable = MapEnvironmentModifier()
-Habitable.Key = "environment-modifier-flora-habitable"
-Habitable.Name = "Habitable"
-function Habitable:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0.9
-	terrain.FoliageCover = 0.7
-	terrain.RiverDensity = 0.01
-	terrain.SoilA.Weight = 1
-	terrain.SoilB.Weight = 1
-	terrain.SoilC.Weight = 1
+Crystalline = MapEnvironmentModifier()
+Crystalline.Key = "environment-modifier-flora-crystalline"
+Crystalline.Name = "Fungal"
+function Crystalline:Apply(environment)
+	local appearance = environment.Appearance;
+
+	appearance.Brush.HotDry = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	appearance.Brush.HotWet = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	appearance.Brush.ColdDry = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	appearance.Brush.ColdWet = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
+	
+	appearance.Foliage.HotDry = StaticColoring(Color4(0.95, 0.95, 0.95, 1))
+	appearance.Foliage.HotWet = StaticColoring(Color4(0.95, 0.95, 0.95, 1))
+	appearance.Foliage.ColdDry = StaticColoring(Color4(0.95, 0.95, 0.95, 1))
+	appearance.Foliage.ColdWet = StaticColoring(Color4(0.95, 0.95, 0.95, 1))
 end
-
-
-Lush = MapEnvironmentModifier()
-Lush.Key = "environment-modifier-flora-lush"
-Lush.Name = "Lush"
-function Lush:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 1
-	terrain.FoliageCover = 0.8
-	terrain.RiverDensity = 0.015
-	terrain.SoilA.Weight = 0.5
-	terrain.SoilB.Weight = 1
-	terrain.SoilC.Weight = 2
-end
-
 
 function Load()
-	return { Dead, Desert, Nominal, Marginal, Habitable, Lush  }
+	return { Native, Terran, Exotic, Fungal, Crystalline }
 end
