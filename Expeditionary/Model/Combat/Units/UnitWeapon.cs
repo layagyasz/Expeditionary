@@ -1,13 +1,9 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
-using Cardamom.Json;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Combat.Units
 {
-    [JsonConverter(typeof(BuilderJsonConverter))]
-    [BuilderClass(typeof(UnitWeaponDefinition))]
     public record class UnitWeapon : IKeyed
     {
         public record class Mode

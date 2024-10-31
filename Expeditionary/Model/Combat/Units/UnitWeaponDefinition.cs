@@ -21,12 +21,12 @@ namespace Expeditionary.Model.Combat.Units
         public List<UnitTrait> Traits { get; set; } = new();
         public List<Mode> Modes { get; set; } = new();
 
-        public UnitWeapon Build()
+        public UnitWeapon Build(IEnumerable<UnitTrait> extraTraits)
         {
-            return new(Key, Name, this, Modes.Select(x => BuildMode(x, Traits)));
+            return new(Key, Name, this, Modes.Select(x => BuildMode(x, Enumerable.Concat(extraTraits, Traits))));
         }
 
-        private static UnitWeapon.Mode BuildMode(Mode definition, List<UnitTrait> baseTraits)
+        private static UnitWeapon.Mode BuildMode(Mode definition, IEnumerable<UnitTrait> baseTraits)
         {
             var attributes = UnitTrait.Combine(Enumerable.Concat(definition.Traits, baseTraits));
             return new()

@@ -7,7 +7,7 @@ namespace Expeditionary.Model.Combat
     public static class CombatCalculator
     {
         public static CombatPreview GetPreview(
-            Unit attacker, UnitWeaponDistribution attack, UnitWeapon.Mode mode, Unit defender, Map map)
+            Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
             float range = Geometry.GetCubicDistance(attacker.Position, defender.Position);
             if (range > mode.Range.GetValue())

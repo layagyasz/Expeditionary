@@ -8,11 +8,11 @@ namespace Expeditionary.Model.Orders
     public class AttackOrder : IOrder
     {
         public Unit Unit { get; }
-        public UnitWeaponDistribution Weapon { get; }
+        public UnitWeaponUsage Weapon { get; }
         public UnitWeapon.Mode Mode { get; }
         public Unit Defender { get; }
 
-        public AttackOrder(Unit attacker, UnitWeaponDistribution weapon, UnitWeapon.Mode mode, Unit defender)
+        public AttackOrder(Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit defender)
         {
             Unit = attacker;
             Weapon = weapon;

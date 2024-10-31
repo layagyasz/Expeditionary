@@ -11,7 +11,7 @@ namespace Expeditionary.Model.Combat.Units
         public string Name { get; set; } = string.Empty;
         public string? Symbol { get; set; }
 
-        public List<UnitWeaponDistribution> Weapons { get; set; } = new();
+        public List<UnitWeaponUsage> Weapons { get; set; } = new();
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<UnitTrait> Traits { get; set; } = new();

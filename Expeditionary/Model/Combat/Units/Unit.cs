@@ -61,7 +61,7 @@ namespace Expeditionary.Model.Combat.Units
             Number -= kills;
         }
 
-        public int GetAttackNumber(UnitWeaponDistribution attack)
+        public int GetAttackNumber(UnitWeaponUsage attack)
         {
             return _attackNumbers[Type.Weapons.IndexOf(attack)];
         }

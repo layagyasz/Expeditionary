@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Combat.Units
         public string Name => Definition.Name;
         public string? Symbol => Definition.Symbol;
         public UnitTypeDefinition Definition { get; }
-        public ImmutableList<UnitWeaponDistribution> Weapons { get; }
+        public ImmutableList<UnitWeaponUsage> Weapons { get; }
         public UnitDefense Defense { get; }
         public Movement Movement { get; }
         public UnitCapabilities Capabilities { get; }
@@ -27,7 +27,7 @@ namespace Expeditionary.Model.Combat.Units
 
         public UnitType(
             UnitTypeDefinition definition,
-            IEnumerable<UnitWeaponDistribution> weapons,
+            IEnumerable<UnitWeaponUsage> weapons,
             UnitDefense defense,
             Movement movement,
             UnitCapabilities capabilities,
