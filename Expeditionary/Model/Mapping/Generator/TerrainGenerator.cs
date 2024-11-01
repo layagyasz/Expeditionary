@@ -2,6 +2,7 @@
 using Cardamom.ImageProcessing;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
+using Cardamom.Mathematics;
 using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
@@ -25,6 +26,8 @@ namespace Expeditionary.Model.Mapping.Generator
             public float FoliageCover { get; set; }
             public float LiquidMoistureBonus { get; set; }
             public float RiverDensity { get; set; }
+            public Interval MoistureRange { get; set; }
+            public Interval TemperatureRange { get; set; }
         }
 
         public class SoilParameters
@@ -58,24 +61,10 @@ namespace Expeditionary.Model.Mapping.Generator
             new(1, 1)
         };
 
-        private readonly ICanvasProvider _canvasProvider =
-            new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
-
-        private readonly Pipeline _pipeline;
-        private readonly ConstantSupplier<int> _elevationSeed = new();
-        private readonly ConstantSupplier<int> _stoneASeed = new();
-        private readonly ConstantSupplier<int> _stoneBSeed = new();
-        private readonly ConstantSupplier<int> _soilASeed = new();
-        private readonly ConstantSupplier<int> _soilBSeed = new();
-        private readonly ConstantSupplier<int> _soilCoverSeed = new();
-        private readonly ConstantSupplier<int> _temperatureSeed = new();
-        private readonly ConstantSupplier<int> _moistureSeed = new();
-        private readonly ConstantSupplier<int> _brushCoverSeed = new();
-        private readonly ConstantSupplier<int> _foliageCoverSeed = new();
-
-        public TerrainGenerator()
+        public static void Generate(Parameters parameters, Map map, Random random)
         {
-            _pipeline =
+            using var canvasProvider = new CachingCanvasProvider(new(s_Resolution, s_Resolution), Color4.Black);
+            var pipeline =
                 new Pipeline.Builder()
                     .AddNode(new InputNode.Builder().SetKey("position").SetIndex(0))
                     .AddNode(
@@ -86,7 +75,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _elevationSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
@@ -97,7 +86,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _stoneASeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
@@ -109,7 +98,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _stoneBSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
@@ -120,7 +109,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _soilASeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
@@ -132,7 +121,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _soilBSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
@@ -144,10 +133,10 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _soilCoverSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
-                                        .AddNode(
+                    .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("temperature")
                             .SetInput("input", "position")
@@ -155,7 +144,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _temperatureSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
@@ -167,7 +156,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _moistureSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
                                 }))
                     .AddNode(
@@ -179,7 +168,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _brushCoverSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                     .AddNode(
@@ -191,7 +180,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(
                                 new()
                                 {
-                                    Seed = _foliageCoverSeed,
+                                    Seed = new FuncSupplier<int>(random.Next),
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                     .AddNode(
@@ -266,14 +255,26 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Bias =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0.5f)
-                                        },
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                0.5f * (parameters.TemperatureRange.Maximum
+                                                    + parameters.TemperatureRange.Minimum),
+                                                0.5f * (parameters.MoistureRange.Maximum
+                                                    + parameters.MoistureRange.Minimum),
+                                                0.5f,
+                                                0.5f)),
                                     Gradient =
-                                        new Matrix4DiagonalUniformSupplier()
+                                        new Matrix4DiagonalVectorSupplier()
                                         {
-                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                            Diagonal =
+                                                new ConstantSupplier<Vector4>(
+                                                    new(
+                                                        0.5f * (parameters.TemperatureRange.Maximum
+                                                            - parameters.TemperatureRange.Minimum),
+                                                        0.5f * (parameters.MoistureRange.Maximum
+                                                            - parameters.MoistureRange.Minimum),
+                                                        0.5f,
+                                                        0.5f))
                                         }
                                 }))
                     .AddOutput("elevation-adjust")
@@ -281,20 +282,6 @@ namespace Expeditionary.Model.Mapping.Generator
                     .AddOutput("soil-adjust")
                     .AddOutput("plant-adjust")
                     .Build();
-        }
-
-        public void Generate(Parameters parameters, Map map, Random random)
-        {
-            _elevationSeed.Value = random.Next();
-            _stoneASeed.Value = random.Next();
-            _stoneBSeed.Value = random.Next();
-            _soilASeed.Value = random.Next();
-            _soilBSeed.Value = random.Next();
-            _soilCoverSeed.Value = random.Next();
-            _temperatureSeed.Value = random.Next();
-            _moistureSeed.Value = random.Next();
-            _brushCoverSeed.Value = random.Next();
-            _foliageCoverSeed.Value = random.Next();
 
             var centers = new Color4[s_Resolution, s_Resolution];
             for (int i = 0; i < map.Width; ++i)
@@ -305,19 +292,19 @@ namespace Expeditionary.Model.Mapping.Generator
                     centers[i, j] = new(coord.X, coord.Y, 0, 1);
                 }
             }
-            var input = _canvasProvider.Get();
+            var input = canvasProvider.Get();
             input.GetTexture().Update(new(), centers);
-            var output = _pipeline.Run(_canvasProvider, input);
+            var output = pipeline.Run(canvasProvider, input);
 
             var corners = new float[map.Width + 2, 2 * map.Height + 2];
             var elevation = output[0].GetTexture().GetData();
             var stone = output[1].GetTexture().GetData();
             var soil = output[2].GetTexture().GetData();
             var plants = output[3].GetTexture().GetData();
-            _canvasProvider.Return(input);
+            canvasProvider.Return(input);
             foreach (var canvas in output)
             {
-                _canvasProvider.Return(canvas);
+                canvasProvider.Return(canvas);
             }
 
             Elevation(map, corners, parameters, elevation);
@@ -462,7 +449,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.B - 0.5f + tile.Elevation < parameters.SoilCover)
+                    if (tileData.B - 0.5f + 0.5f * tile.Elevation < parameters.SoilCover)
                     {
                         var modifiers = 
                             new Vector3(

@@ -74,7 +74,6 @@ namespace Expeditionary
                 new StructureTextureGenerator(resources.GetShader("shader-default-no-tex"));
             var structures = structureTextureGenerator.Generate();
 
-            var mapGenerator = new MapGenerator();
             var sceneFactory =
                 new SceneFactory(
                     new MapViewFactory(
@@ -94,7 +93,7 @@ namespace Expeditionary
 
             var environmentDefinition = module.Environments["environment-default"];
             var environment = environmentDefinition.GetEnvironment();
-            var map = mapGenerator.Generate(environment.Parameters, new(100, 100), seed: new Random().Next());
+            var map = MapGenerator.Generate(environment.Parameters, new(100, 100), seed: new Random().Next());
             var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
             var players = new List<Player>() { player, opponent };

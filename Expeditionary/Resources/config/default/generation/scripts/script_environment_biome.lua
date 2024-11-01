@@ -2,19 +2,6 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
 
-Desert = MapEnvironmentModifier()
-Desert.Key = "environment-modifier-biome-desert"
-Desert.Name = "Desert"
-function Desert:Apply(environment)
-	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = terrain.BrushCover * 0.1
-	terrain.FoliageCover = 0
-	terrain.RiverDensity = 0
-	terrain.SoilA.Weight = 1
-	terrain.SoilB.Weight = 0
-	terrain.SoilC.Weight = 0
-end
-
 Forest = MapEnvironmentModifier()
 Forest.Key = "environment-modifier-biome-forest"
 Forest.Name = "Forest"
