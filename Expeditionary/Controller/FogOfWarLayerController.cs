@@ -33,12 +33,12 @@ namespace Expeditionary.Controller
             _layer = null;
         }
 
-        public void SetKnowledge(MapKnowledge knowledge)
+        public void SetKnowledge(PlayerKnowledge knowledge)
         {
             _layer!.SetAll(knowledge);
         }
 
-        public void UpdateKnowledge(MapKnowledge knowledge, IEnumerable<Vector3i> delta)
+        public void UpdateKnowledge(PlayerKnowledge knowledge, IEnumerable<Vector3i> delta)
         {
             _layer!.Set(knowledge, delta);
         }

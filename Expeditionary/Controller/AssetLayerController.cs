@@ -4,6 +4,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Hexagons;
+using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.View;
 using OpenTK.Mathematics;
@@ -22,12 +23,15 @@ namespace Expeditionary.Controller
         public EventHandler<MouseButtonDragEventArgs>? MouseDragged { get; set; }
         public EventHandler<EventArgs>? MouseEntered { get; set; }
         public EventHandler<EventArgs>? MouseLeft { get; set; }
-
         public EventHandler<AssetClickedEventArgs>? AssetClicked { get; set; }
 
+        private readonly Match _match;
         private AssetLayer? _assetLayer;
 
-        private readonly MultiMap<Vector3i, IAsset> _positionMap = new();
+        public AssetLayerController(Match match)
+        {
+            _match = match;
+        }
 
         public void Bind(object @object)
         {
@@ -41,20 +45,16 @@ namespace Expeditionary.Controller
 
         public void AddAsset(IAsset asset, Vector3i position)
         {
-            _positionMap.Add(position, asset);
             _assetLayer!.Add(asset, position);
         }
 
         public void RemoveAsset(IAsset asset)
         {
-            _positionMap.Remove(asset.Position, asset);
             _assetLayer!.Remove(asset);
         }
 
         public void MoveAsset(IAsset asset, Vector3i origin, Vector3i destination)
         {
-            _positionMap.Remove(origin, asset);
-            _positionMap.Add(destination, asset);
             _assetLayer!.Move(asset, destination);
         }
 
@@ -82,9 +82,10 @@ namespace Expeditionary.Controller
         {
             var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
             var coord = e.Position.Xz - Cubic.Cartesian.Instance.Project(hex);
-            if (s_Bounds.ContainsInclusive(coord) && _positionMap.TryGetValue(hex, out var assets) && assets.Any())
+            var assets = _match.GetAssetsAt(hex).ToList();
+            if (s_Bounds.ContainsInclusive(coord) && assets.Any())
             {
-                AssetClicked?.Invoke(this, new(assets.ToList(), e));
+                AssetClicked?.Invoke(this, new(assets, e));
                 return true;
             }
             return false;

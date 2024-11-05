@@ -1,4 +1,5 @@
-﻿using Expeditionary.Hexagons;
+﻿using Cardamom.Collections;
+using Expeditionary.Hexagons;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
@@ -8,16 +9,35 @@ namespace Expeditionary.Model.Knowledge
 {
     public static class SpottingCalculator
     {
-        public static bool IsSpotted(Map map, Unit spotter, Unit target, Vector3i hex)
+        public static bool IsSpotted(Map map, Unit spotter, IAsset target, Vector3i hex)
         {
-            var targetTile = map.GetTile(hex)!;
-            var condition = targetTile.GetConditions();
+            var condition = map.GetTile(hex)!.GetConditions();
+            if (target is not Unit targetUnit)
+            {
+                return Enum.GetValues<UnitDetectionBand>().Any(x => GetDetection(spotter, x, condition, hex) > 0);
+            }
             return Enum.GetValues<UnitDetectionBand>()
                 .Any(x => 
                     IsSpotted(
                         GetDetection(spotter, x, condition, hex), 
-                        GetSignature(target, x, condition),
-                        GetConcealment(target, x, condition)));
+                        GetSignature(targetUnit, x, condition),
+                        GetConcealment(targetUnit, x, condition)));
+        }
+
+        public static bool IsSpotted(
+            EnumMap<UnitDetectionBand, float> detection, 
+            CombatCondition condition,
+            IAsset target)
+        {
+            if (target is not Unit targetUnit)
+            {
+                return detection.Any(x => x.Value > 0);
+            }
+            return detection.Keys.Any(
+                x => IsSpotted(
+                    detection[x], 
+                    GetSignature(targetUnit, x, condition), 
+                    GetConcealment(targetUnit, x, condition)));
         }
 
         public static bool IsSpotted(float detection, float signature, float concealment)

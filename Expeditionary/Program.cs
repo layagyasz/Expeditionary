@@ -105,7 +105,7 @@ namespace Expeditionary
                     map,
                     players.ToDictionary(
                         x => x, 
-                        x => new PlayerKnowledge(new AssetKnowledge(), new(mapSize, new KnownMapDiscovery()))));
+                        x => new PlayerKnowledge(x, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
             var driver = new GameDriver(match, players, new());
             driver.Step();
 
@@ -115,6 +115,7 @@ namespace Expeditionary
             {
                 match.Add(module.UnitTypes.First().Value, opponent, surround);
             }
+            match.Initialize();
 
             var terrainParameters = environment.Appearance.Materialize(sensitivity);
             RecordPalette(terrainParameters);

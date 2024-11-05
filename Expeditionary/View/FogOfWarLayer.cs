@@ -29,13 +29,13 @@ namespace Expeditionary.View
             _partitions = partitions;
         }
 
-        public void Set(MapKnowledge knowledge, IEnumerable<Vector3i> delta)
+        public void Set(PlayerKnowledge knowledge, IEnumerable<Vector3i> delta)
         {
             var options = _partitions.Query().ToArray();
             var vertices = new Vertex3[3];
             foreach (var hex in delta)
             {
-                var color = GetColor(knowledge.Get(hex));
+                var color = GetColor(knowledge.GetTile(hex));
                 foreach ((var corner, var backIndex) in Geometry.GetCorners(hex))
                 {
                     var index = GetIndex(corner, _size.Y);
@@ -59,7 +59,7 @@ namespace Expeditionary.View
             }
         }
 
-        public void SetAll(MapKnowledge knowledge)
+        public void SetAll(PlayerKnowledge knowledge)
         {
             var options = _partitions.Query().ToArray();
             int triangles = 3 * ((_size.X + 2) * (2 * _size.Y + 1) + 1);
@@ -78,7 +78,7 @@ namespace Expeditionary.View
                 var selected = options[index % options.Length];
                 for (int hex = 0; hex < 3; ++hex)
                 {
-                    var color = GetColor(knowledge.Get(Geometry.GetCornerHex(corner, hex)));
+                    var color = GetColor(knowledge.GetTile(Geometry.GetCornerHex(corner, hex)));
                     var i = 9 * index + 3 * hex;
                     vertices[i] = new(centerPos, color, selected.TexCoords[hex][0]);
                     vertices[i + 1] = new(leftPos, color, selected.TexCoords[hex][1]);

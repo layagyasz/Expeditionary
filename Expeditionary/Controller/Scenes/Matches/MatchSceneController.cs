@@ -77,7 +77,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         public void SetPlayer(Player player)
         {
             _player = player;
-            _fogOfWarLayerController!.SetKnowledge(_match.GetKnowledge(player).MapKnowledge);
+            _fogOfWarLayerController!.SetKnowledge(_match.GetKnowledge(player));
         }
 
         private void HandleAssetAdded(object? sender, IAsset asset)
@@ -114,7 +114,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         {
             if (e.Player == _player)
             {
-                _fogOfWarLayerController!.UpdateKnowledge(_match.GetKnowledge(_player).MapKnowledge, e.Delta);
+                _fogOfWarLayerController!.UpdateKnowledge(_match.GetKnowledge(_player), e.Delta);
             }
         }
     }

@@ -9,49 +9,74 @@ namespace Expeditionary.Model.Knowledge
 {
     public class MapKnowledge
     {
-        private readonly Vector2i _size;
+        private readonly Map _map;
         private readonly IMapDiscovery _discovery;
-        private readonly MultiMap<Vector3i, Unit> _sighters = new();
+        private readonly MultiMap<Vector3i, Unit> _spotters = new();
 
-        public MapKnowledge(Vector2i size, IMapDiscovery discovery) 
+        public MapKnowledge(Map map, IMapDiscovery discovery) 
         {
-            _size = size;
+            _map = map;
             _discovery = discovery;
         }
 
         public SingleTileKnowledge Get(Vector3i hex)
         {
             var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            if (coord.X < 0 || coord.X >= _size.X || coord.Y < 0 || coord.Y >= _size.Y)
+            if (coord.X < 0 || coord.X >= _map.Size.X || coord.Y < 0 || coord.Y >= _map.Size.Y)
             {
                 return new(IsDiscovered: false, IsVisible: false);
             }
-            return new(_discovery.IsDiscovered(coord), _sighters.ContainsKey(hex));
+            return new(_discovery.IsDiscovered(coord), _spotters.ContainsKey(hex));
         }
 
+        public EnumMap<UnitDetectionBand, float>? GetDetection(Vector3i hex)
+        {
+            var condition = _map.GetTile(hex)!.GetConditions();
+            var spotters = _spotters[hex].ToList();
+            if (!spotters.Any())
+            {
+                return null;
+            }
 
-        public List<Vector3i> Move(Map map, IAsset asset, Pathing.Path path)
+            var result = new EnumMap<UnitDetectionBand, float>();
+            foreach (var spotter in _spotters[hex])
+            {
+                foreach (var band in Enum.GetValues<UnitDetectionBand>())
+                {
+                    result[band] = 
+                        Math.Max(result[band], SpottingCalculator.GetDetection(spotter, band, condition, hex));
+                }
+            }
+            return result;
+        }
+
+        public Map GetMap()
+        {
+            return _map;
+        }
+
+        public List<Vector3i> Move(IAsset asset, Pathing.Path path)
         {
             if (asset is not Unit unit)
             {
                 return new();
             }
 
-            var initialSightField = Sighting.GetSightField(map, unit, path.Origin).Select(x => x.Target).ToHashSet();
+            var initialSightField = Sighting.GetSightField(_map, unit, path.Origin).Select(x => x.Target).ToHashSet();
             var stepSightFields =
                 path.Steps.Take(path.Steps.Count - 1)
-                    .SelectMany(x => Sighting.GetSightField(map, unit, x))
+                    .SelectMany(x => Sighting.GetSightField(_map, unit, x))
                     .Select(x => x.Target)
                     .ToHashSet();
             var finalSightField =
-                Sighting.GetSightField(map, unit, path.Destination).Select(x => x.Target).ToHashSet();
+                Sighting.GetSightField(_map, unit, path.Destination).Select(x => x.Target).ToHashSet();
             stepSightFields.ExceptWith(initialSightField);
             stepSightFields.ExceptWith(finalSightField);
 
             var result = new List<Vector3i>();
             foreach (var hex in initialSightField)
             {
-                if (_sighters.Remove(hex, unit))
+                if (_spotters.Remove(hex, unit))
                 {
                     result.Add(hex);
                 }
@@ -66,13 +91,13 @@ namespace Expeditionary.Model.Knowledge
             foreach (var hex in finalSightField)
             {
                 _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(hex));
-                _sighters.Add(hex, unit);
+                _spotters.Add(hex, unit);
                 result.Add(hex);
             }
             return result;
         }
 
-        public List<Vector3i> Place(Map map, IAsset asset, Vector3i position)
+        public List<Vector3i> Place(IAsset asset, Vector3i position)
         {
             if (asset is not Unit unit)
             {
@@ -80,21 +105,21 @@ namespace Expeditionary.Model.Knowledge
             }
 
             var result = new List<Vector3i>();
-            foreach (var los in Sighting.GetSightField(map, unit, position))
+            foreach (var los in Sighting.GetSightField(_map, unit, position))
             {
                 _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
-                _sighters.Add(los.Target, unit);
+                _spotters.Add(los.Target, unit);
                 result.Add(los.Target);
             }
             return result;
         }
 
-        public List<Vector3i> Remove(Map map, IAsset asset)
+        public List<Vector3i> Remove(IAsset asset)
         {
             var result = new List<Vector3i>();
-            foreach (var los in Sighting.GetSightField(map, asset, asset.Position))
+            foreach (var los in Sighting.GetSightField(_map, asset, asset.Position))
             {
-                if (_sighters.Remove(los.Target))
+                if (_spotters.Remove(los.Target))
                 {
                     result.Add(los.Target);
                 }
