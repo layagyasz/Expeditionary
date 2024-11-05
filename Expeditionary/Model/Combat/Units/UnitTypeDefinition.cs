@@ -52,8 +52,10 @@ namespace Expeditionary.Model.Combat.Units
                     prefix + ".detection", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None)),
                 UnitTrait.GetMap<UnitDetectionBand, Modifier>(
                     prefix + ".range", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None)),
-                UnitTrait.GetMap<UnitDetectionBand, UnitBoundedValue>(
-                    prefix + ".concealment", x => BuildBounded(attributes, x)));
+                UnitTrait.GetMap<UnitDetectionBand, Modifier>(
+                    prefix + ".concealment", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None)),
+                UnitTrait.GetMap<UnitDetectionBand, Modifier>(
+                    prefix + ".signature", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None)));
         }
 
         private static UnitDefense BuildDefenseEnvelope(IDictionary<string, Modifier> attributes)

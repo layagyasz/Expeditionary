@@ -105,7 +105,7 @@ namespace Expeditionary.View
             _buffer = null;
         }
 
-        private static Color4 GetColor(TileKnowledge knowledge)
+        private static Color4 GetColor(SingleTileKnowledge knowledge)
         {
             if (!knowledge.IsDiscovered)
             {

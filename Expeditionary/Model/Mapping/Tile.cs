@@ -1,6 +1,8 @@
-﻿namespace Expeditionary.Model.Mapping
+﻿using Expeditionary.Model.Combat;
+
+namespace Expeditionary.Model.Mapping
 {
-    public class Tile
+    public record class Tile
     {
         public float Elevation { get; set; }
         public float Slope { get; set; }
@@ -9,5 +11,15 @@
         public Terrain Terrain { get; set; } = new();
         public Movement.Hindrance Hindrance { get; set; }
         public Structure Structure { get; set; }
+
+        public CombatCondition GetConditions()
+        {
+            return IsUrban() ? CombatCondition.Urban : CombatCondition.None;
+        }
+
+        public bool IsUrban()
+        {
+            return Structure.Type != StructureType.None && Structure.Type != StructureType.Agricultural;
+        }
     }
 }

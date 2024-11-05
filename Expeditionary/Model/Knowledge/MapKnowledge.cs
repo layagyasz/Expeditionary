@@ -1,5 +1,7 @@
-﻿using Expeditionary.Hexagons;
+﻿using Cardamom.Collections;
+using Expeditionary.Hexagons;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -7,83 +9,82 @@ namespace Expeditionary.Model.Knowledge
 {
     public class MapKnowledge
     {
-        private readonly TileKnowledge[,] _tiles;
+        private readonly Vector2i _size;
+        private readonly IMapDiscovery _discovery;
+        private readonly MultiMap<Vector3i, Unit> _sighters = new();
 
-        public MapKnowledge(TileKnowledge[,] tiles) 
+        public MapKnowledge(Vector2i size, IMapDiscovery discovery) 
         {
-            _tiles = tiles;
+            _size = size;
+            _discovery = discovery;
         }
 
-        public static MapKnowledge Create(Vector2i size, bool isDiscovered)
-        {
-            var tiles = new TileKnowledge[size.X, size.Y];
-            for (int i=0; i<size.X; ++i)
-            {
-                for (int j=0; j<size.Y; ++j)
-                {
-                    tiles[i, j] = new(isDiscovered, VisibilityCounter: 0);
-                }
-            }
-            return new MapKnowledge(tiles);
-        }
-
-        public TileKnowledge Get(Vector3i hex)
+        public SingleTileKnowledge Get(Vector3i hex)
         {
             var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            if (coord.X < 0 || coord.X >= _tiles.GetLength(0) || coord.Y < 0 || coord.Y >= _tiles.GetLength(1))
+            if (coord.X < 0 || coord.X >= _size.X || coord.Y < 0 || coord.Y >= _size.Y)
             {
-                return new(IsDiscovered: false, VisibilityCounter: 0);
+                return new(IsDiscovered: false, IsVisible: false);
             }
-            return _tiles[coord.X, coord.Y];
+            return new(_discovery.IsDiscovered(coord), _sighters.ContainsKey(hex));
         }
+
 
         public List<Vector3i> Move(Map map, IAsset asset, Pathing.Path path)
         {
-            var initialSightField = Sighting.GetSightField(map, asset, path.Origin).Select(x => x.Target).ToHashSet();
+            if (asset is not Unit unit)
+            {
+                return new();
+            }
+
+            var initialSightField = Sighting.GetSightField(map, unit, path.Origin).Select(x => x.Target).ToHashSet();
             var stepSightFields =
                 path.Steps.Take(path.Steps.Count - 1)
-                    .SelectMany(x => Sighting.GetSightField(map, asset, x))
+                    .SelectMany(x => Sighting.GetSightField(map, unit, x))
                     .Select(x => x.Target)
                     .ToHashSet();
             var finalSightField =
-                Sighting.GetSightField(map, asset, path.Destination).Select(x => x.Target).ToHashSet();
+                Sighting.GetSightField(map, unit, path.Destination).Select(x => x.Target).ToHashSet();
             stepSightFields.ExceptWith(initialSightField);
             stepSightFields.ExceptWith(finalSightField);
 
             var result = new List<Vector3i>();
             foreach (var hex in initialSightField)
             {
-                if (Decrement(hex))
+                if (_sighters.Remove(hex, unit))
                 {
                     result.Add(hex);
                 }
             }
             foreach (var hex in stepSightFields)
             {
-                if (Discover(hex))
+                if (_discovery.Discover(Cubic.HexagonalOffset.Instance.Project(hex)))
                 {
                     result.Add(hex);
                 }
             }
             foreach (var hex in finalSightField)
             {
-                if (Increment(hex))
-                {
-                    result.Add(hex);
-                }
+                _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(hex));
+                _sighters.Add(hex, unit);
+                result.Add(hex);
             }
             return result;
         }
 
         public List<Vector3i> Place(Map map, IAsset asset, Vector3i position)
         {
-            var result = new List<Vector3i>();
-            foreach (var los in Sighting.GetSightField(map, asset, position))
+            if (asset is not Unit unit)
             {
-                if (Increment(los.Target))
-                {
-                    result.Add(los.Target);
-                }
+                return new();
+            }
+
+            var result = new List<Vector3i>();
+            foreach (var los in Sighting.GetSightField(map, unit, position))
+            {
+                _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
+                _sighters.Add(los.Target, unit);
+                result.Add(los.Target);
             }
             return result;
         }
@@ -93,33 +94,12 @@ namespace Expeditionary.Model.Knowledge
             var result = new List<Vector3i>();
             foreach (var los in Sighting.GetSightField(map, asset, asset.Position))
             {
-                if (Decrement(los.Target))
+                if (_sighters.Remove(los.Target))
                 {
                     result.Add(los.Target);
                 }
             }
             return result;
-        }
-
-        private bool Discover(Vector3i hex)
-        {
-            var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            var current = _tiles[coord.X, coord.Y].IsDiscovered;
-            _tiles[coord.X, coord.Y].IsDiscovered = true;
-            return !current;
-        }
-
-        private bool Decrement(Vector3i hex)
-        {
-            var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            return --_tiles[coord.X, coord.Y].VisibilityCounter == 0;
-        }
-
-        private bool Increment(Vector3i hex)
-        {
-            var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            _tiles[coord.X, coord.Y].IsDiscovered = true;
-            return ++_tiles[coord.X, coord.Y].VisibilityCounter > 0;
         }
     }
 }

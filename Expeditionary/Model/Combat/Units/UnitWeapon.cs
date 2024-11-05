@@ -15,6 +15,7 @@ namespace Expeditionary.Model.Combat.Units
             public Modifier Tracking { get; init; }
             public Modifier Penetration { get; init; }
             public Modifier Lethality { get; init; }
+            public EnumMap<UnitDetectionBand, Modifier> Signature { get; init; } = new();
         }
 
         public string Key { get; set; }

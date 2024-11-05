@@ -38,6 +38,8 @@ namespace Expeditionary.Model.Combat.Units
                 Tracking = UnitTrait.GetOrDefault(attributes, "tracking", Modifier.None),
                 Penetration = UnitTrait.GetOrDefault(attributes, "penetration", Modifier.None),
                 Lethality = UnitTrait.GetOrDefault(attributes, "lethality", Modifier.None),
+                Signature = UnitTrait.GetMap<UnitDetectionBand, Modifier>(
+                    "signature", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None))
             };
         }
     }

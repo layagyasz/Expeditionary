@@ -16,6 +16,7 @@ using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -93,7 +94,8 @@ namespace Expeditionary
 
             var environmentDefinition = module.Environments["environment-default"];
             var environment = environmentDefinition.GetEnvironment();
-            var map = MapGenerator.Generate(environment.Parameters, new(100, 100), seed: new Random().Next());
+            var mapSize = new Vector2i(100, 100);
+            var map = MapGenerator.Generate(environment.Parameters, mapSize, seed: new Random().Next());
             var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
             var players = new List<Player>() { player, opponent };
@@ -103,7 +105,7 @@ namespace Expeditionary
                     map,
                     players.ToDictionary(
                         x => x, 
-                        x => new PlayerKnowledge(MapKnowledge.Create(new(100, 100), isDiscovered: true))));
+                        x => new PlayerKnowledge(new AssetKnowledge(), new(mapSize, new KnownMapDiscovery()))));
             var driver = new GameDriver(match, players, new());
             driver.Step();
 

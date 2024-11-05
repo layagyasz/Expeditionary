@@ -2,10 +2,12 @@
 {
     public record class PlayerKnowledge
     {
+        public AssetKnowledge AssetKnowledge { get; init; }
         public MapKnowledge MapKnowledge { get; init; }
 
-        public PlayerKnowledge(MapKnowledge mapKnowledge)
+        public PlayerKnowledge(AssetKnowledge assetKnowledge, MapKnowledge mapKnowledge)
         {
+            AssetKnowledge = assetKnowledge;
             MapKnowledge = mapKnowledge;
         }
     }
