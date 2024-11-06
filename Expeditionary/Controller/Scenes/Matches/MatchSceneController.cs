@@ -39,15 +39,8 @@ namespace Expeditionary.Controller.Scenes.Matches
             _fogOfWarLayerController = _scene!.FogOfWar.Controller as FogOfWarLayerController;
             _assetLayerController = _scene!.Assets.Controller as AssetLayerController;
 
-            _match.AssetAdded += HandleAssetAdded;
-            _match.AssetRemoved += HandleAssetRemoved;
-            _match.AssetMoved += HandleAssetMoved;
+            _match.AssetKnowledgeChanged += HandleAssetKnowledgeChanged;
             _match.MapKnowledgeChanged += HandleMapKnowledgeChanged;
-
-            foreach (var asset in _match.GetAssets())
-            {
-                _assetLayerController!.AddAsset(asset, asset.Position);
-            }
 
             _camera.Changed += HandleCameraChanged;
 
@@ -59,9 +52,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         {
             _scene = null;
 
-            _match.AssetAdded -= HandleAssetAdded;
-            _match.AssetRemoved -= HandleAssetRemoved;
-            _match.AssetMoved -= HandleAssetMoved;
+            _match.AssetKnowledgeChanged -= HandleAssetKnowledgeChanged;
             _match.MapKnowledgeChanged -= HandleMapKnowledgeChanged;
 
             _camera!.Changed -= HandleCameraChanged;
@@ -77,22 +68,8 @@ namespace Expeditionary.Controller.Scenes.Matches
         public void SetPlayer(Player player)
         {
             _player = player;
+            _assetLayerController!.SetKnowledge(_match.GetKnowledge(player));
             _fogOfWarLayerController!.SetKnowledge(_match.GetKnowledge(player));
-        }
-
-        private void HandleAssetAdded(object? sender, IAsset asset)
-        {
-            _assetLayerController!.AddAsset(asset, asset.Position);
-        }
-
-        private void HandleAssetMoved(object? sender, AssetMovedEventArgs e)
-        {
-            _assetLayerController!.MoveAsset(e.Asset, e.Origin, e.Destination);
-        }
-
-        private void HandleAssetRemoved(object? sender, IAsset asset)
-        {
-            _assetLayerController!.RemoveAsset(asset);
         }
 
         private void HandleCameraChanged(object? sender, EventArgs e)
@@ -108,6 +85,14 @@ namespace Expeditionary.Controller.Scenes.Matches
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
             HexClicked?.Invoke(this, e);
+        }
+
+        private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
+        {
+            if (e.Player == _player)
+            {
+                _assetLayerController!.UpdateKnowledge(_match.GetKnowledge(_player), e.Delta);
+            }
         }
 
         private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)

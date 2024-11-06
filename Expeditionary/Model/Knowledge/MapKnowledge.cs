@@ -26,7 +26,12 @@ namespace Expeditionary.Model.Knowledge
             {
                 return new(IsDiscovered: false, IsVisible: false);
             }
-            return new(_discovery.IsDiscovered(coord), _spotters.ContainsKey(hex));
+            var condition = _map.GetTile(hex)!.GetConditions();
+            return new(
+                _discovery.IsDiscovered(coord), 
+                _spotters[hex]
+                    .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
+                        >= Geometry.GetCubicDistance(x.Position, hex)));
         }
 
         public EnumMap<UnitDetectionBand, float>? GetDetection(Vector3i hex)

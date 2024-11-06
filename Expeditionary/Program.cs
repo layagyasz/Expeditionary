@@ -111,7 +111,7 @@ namespace Expeditionary
 
             var center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50));
             match.Add(module.UnitTypes["def-mg-example"], player, center);
-            foreach (var surround in Geometry.GetNeighbors(center))
+            foreach (var surround in Geometry.GetNeighbors(center).Take(3))
             {
                 match.Add(module.UnitTypes.First().Value, opponent, surround);
             }

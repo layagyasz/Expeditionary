@@ -45,8 +45,6 @@ namespace Expeditionary.Controller
             _unitOverlayController = _screen.UnitOverlay!.ComponentController as UnitOverlayController;
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
 
-            _driver.GetMatch().AssetMoved += HandleAssetMoved;
-
             _screen.UnitOverlay.Visible = false;
         }
 
@@ -58,8 +56,6 @@ namespace Expeditionary.Controller
 
             _unitOverlayController!.OrderChanged -= HandleOrderChanged;
             _unitOverlayController = null;
-
-            _driver.GetMatch().AssetMoved -= HandleAssetMoved;
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
@@ -94,14 +90,6 @@ namespace Expeditionary.Controller
             }
         }
 
-        private void HandleAssetMoved(object? sender, AssetMovedEventArgs e)
-        {
-            if (e.Asset == _selectedUnit && _selectedUnit != null)
-            {
-                UpdateOrder();
-            }
-        }
-
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
             if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
@@ -118,6 +106,7 @@ namespace Expeditionary.Controller
                                 e.Hex,
                                 _selectedUnit.Type.Movement, 
                                 _selectedUnit.Type.Speed)));
+                    UpdateOrder();
                 }
             }
         }

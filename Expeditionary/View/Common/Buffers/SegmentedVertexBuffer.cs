@@ -25,9 +25,16 @@ namespace Expeditionary.View.Common.Buffers
             _resourcesFn = resourcesFn;
         }
 
+        public void Clear()
+        {
+            _index = 0;
+            _freed.Clear();
+            Initialize();
+        }
+
         public void Clear(int block)
         {
-            _vertices!.Sub(new T[_blockSize], block, _blockSize);
+            Set(block, new T[_blockSize]);
         }
 
         public void Draw(IRenderTarget target, IUiContext context)

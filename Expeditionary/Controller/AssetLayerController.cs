@@ -6,9 +6,11 @@ using Cardamom.Window;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.View;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
+using static Expeditionary.Model.Combat.CombatPreview;
 
 namespace Expeditionary.Controller
 {
@@ -26,7 +28,7 @@ namespace Expeditionary.Controller
         public EventHandler<AssetClickedEventArgs>? AssetClicked { get; set; }
 
         private readonly Match _match;
-        private AssetLayer? _assetLayer;
+        private AssetLayer? _layer;
 
         public AssetLayerController(Match match)
         {
@@ -35,27 +37,22 @@ namespace Expeditionary.Controller
 
         public void Bind(object @object)
         {
-            _assetLayer = ((InteractiveModel)@object).GetModel() as AssetLayer;
+            _layer = ((InteractiveModel)@object).GetModel() as AssetLayer;
         }
 
         public void Unbind()
         {
-            _assetLayer = null;
+            _layer = null;
         }
 
-        public void AddAsset(IAsset asset, Vector3i position)
+        public void SetKnowledge(PlayerKnowledge knowledge)
         {
-            _assetLayer!.Add(asset, position);
+            _layer!.SetAll(_match, knowledge);
         }
 
-        public void RemoveAsset(IAsset asset)
+        public void UpdateKnowledge(PlayerKnowledge knowledge, IEnumerable<IAsset> delta)
         {
-            _assetLayer!.Remove(asset);
-        }
-
-        public void MoveAsset(IAsset asset, Vector3i origin, Vector3i destination)
-        {
-            _assetLayer!.Move(asset, destination);
+            _layer!.Set(knowledge, delta);
         }
 
         public bool HandleKeyDown(KeyDownEventArgs e)

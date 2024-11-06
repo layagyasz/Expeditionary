@@ -60,6 +60,7 @@ namespace Expeditionary.Model.Knowledge
             {
                 mapDelta.AddRange(_map.Move(asset, path));
                 assetDelta.AddRange(_assets.DoDelta(_map, positions, mapDelta));
+                assetDelta.Add(unit);
             }
             if (mapDelta.Any())
             {

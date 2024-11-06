@@ -9,9 +9,6 @@ namespace Expeditionary.Model
 {
     public class Match
     {
-        public EventHandler<IAsset>? AssetAdded { get; set; }
-        public EventHandler<AssetMovedEventArgs>? AssetMoved { get; set; }
-        public EventHandler<IAsset>? AssetRemoved { get; set; }
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
@@ -34,7 +31,6 @@ namespace Expeditionary.Model
             var asset = new Unit(_idGenerator.Next(), player, unitType) {  Position = position };
             _assets.Add(asset);
             _positions.Add(position, asset);
-            AssetAdded?.Invoke(this, asset);
 
             foreach (var knowledge in _playerKnowledge.Values)
             {
@@ -76,7 +72,6 @@ namespace Expeditionary.Model
             asset.Position = path.Destination;
             _positions.Remove(path.Origin, asset);
             _positions.Add(path.Destination, asset);
-            AssetMoved?.Invoke(this, new(asset, path.Origin, path.Destination, path));
 
             foreach (var knowledge in _playerKnowledge.Values)
             {
@@ -88,7 +83,6 @@ namespace Expeditionary.Model
         {
             _assets.Remove(asset);
             _positions.Remove(asset.Position, asset);
-            AssetRemoved?.Invoke(this, asset);
 
             foreach (var knowledge in _playerKnowledge.Values)
             {
@@ -103,10 +97,6 @@ namespace Expeditionary.Model
 
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
-            foreach (var asset in e.Delta)
-            {
-                Console.WriteLine(_playerKnowledge[e.Player].GetAsset(asset));
-            }
             AssetKnowledgeChanged?.Invoke(this, e);
         }
 
