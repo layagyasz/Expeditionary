@@ -59,6 +59,9 @@
     <None Update="Resources\config\default\generation\scripts\script_environment_climate.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_composition.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_default.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

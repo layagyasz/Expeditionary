@@ -20,7 +20,7 @@ namespace Expeditionary.Model.Orders
 
         public void Execute(Match match, Random random)
         {
-            // Unit.Movement -= Path!.Cost;
+            Unit.Movement -= Path!.Cost;
             match.Move(Unit, Path!);
         }
     }

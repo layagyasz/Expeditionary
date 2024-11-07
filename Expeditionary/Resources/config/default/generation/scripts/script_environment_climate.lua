@@ -59,6 +59,15 @@ function Wet:Apply(environment)
 	terrain.MoistureRange = Interval(0.8, 1.0)
 end
 
+Aquifer = MapEnvironmentModifier()
+Aquifer.Key = "environment-modifier-climate-aquifer"
+Aquifer.Name = "Aquifer"
+function Aquifer:Apply(environment)
+	local terrain = environment.Parameters.Terrain
+	terrain.MoistureRange = Interval(0.0, 1.0)
+end
+
+
 Cold = MapEnvironmentModifier()
 Cold.Key = "environment-modifier-climate-cold"
 Cold.Name = "Cold"
@@ -100,5 +109,5 @@ function Hot:Apply(environment)
 end
 
 function Load()
-	return { Desert, Arid, SemiArid, Average, SemiWet, Wet, Cold, Cool, Temperate, Warm, Hot }
+	return { Desert, Arid, SemiArid, Average, SemiWet, Wet, Aquifer, Cold, Cool, Temperate, Warm, Hot }
 end

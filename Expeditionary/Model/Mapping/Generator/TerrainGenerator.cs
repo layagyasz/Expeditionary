@@ -347,8 +347,9 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (tile.Elevation < 0)
+                    if (tile.Elevation <= 0)
                     {
+                        tile.Elevation = 0;
                         tile.Terrain.IsLiquid = true;
                         tile.Slope = 0;
                     }
@@ -388,13 +389,8 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     var tile = map.GetTile(i, j)!;
-                    if (tile.Terrain.IsLiquid)
-                    {
-                        tile.Elevation = (int)(parameters.ElevationLevels * parameters.LiquidLevel)
-                                / (parameters.ElevationLevels - 1f);
-                    }
-                    else
-                    {
+                    if (!tile.Terrain.IsLiquid)
+                    { 
                         tile.Elevation = (int)(parameters.ElevationLevels * tile.Elevation)
                                 / (parameters.ElevationLevels - 1f);
                     }
