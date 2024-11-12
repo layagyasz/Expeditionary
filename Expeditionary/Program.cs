@@ -105,7 +105,7 @@ namespace Expeditionary
                     map,
                     players.ToDictionary(
                         x => x, 
-                        x => new PlayerKnowledge(x, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
+                        x => new PlayerKnowledge(x, map, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
             var driver = new GameDriver(match, players, new());
             driver.Step();
 

@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
@@ -11,77 +12,78 @@ namespace Expeditionary.Model.Knowledge
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
         private readonly Player _player;
-        private readonly AssetKnowledge _assets;
-        private readonly MapKnowledge _map;
+        private readonly Map _map;
+        private readonly AssetKnowledge _assetKnowledge;
+        private readonly MapKnowledge _mapKnowledge;
 
-        public PlayerKnowledge(Player player, AssetKnowledge assetKnowledge, MapKnowledge mapKnowledge)
+        public PlayerKnowledge(Player player, Map map, AssetKnowledge assetKnowledge, MapKnowledge mapKnowledge)
         {
             _player = player;
-            _assets = assetKnowledge;
-            _map = mapKnowledge;
+            _map = map;
+            _assetKnowledge = assetKnowledge;
+            _mapKnowledge = mapKnowledge;
         }
-
-        public void Add(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
-        {
-            var mapDelta = new List<Vector3i>();
-            var assetDelta = new List<IAsset>();
-            if (asset is Unit unit && unit.Player == _player)
-            {
-                mapDelta.AddRange(_map.Place(asset, position));
-                assetDelta.AddRange(_assets.DoDelta(_map, positions, mapDelta));
-            }
-            assetDelta.AddRange(_assets.Add(_map, asset, position));
-            if (mapDelta.Any())
-            {
-                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
-            }
-            if (assetDelta.Any())
-            {
-                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
-            }
-        }
-
+        
         public SingleAssetKnowledge GetAsset(IAsset asset)
         {
-            return _assets.Get(asset);
+            return _assetKnowledge.Get(asset);
         }
 
         public SingleTileKnowledge GetTile(Vector3i hex)
         {
-            return _map.Get(hex);
+            return _mapKnowledge.Get(hex);
+        }
+
+        public void Add(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        {
+            if (asset is Unit unit && unit.Player == _player)
+            {
+                AddSelf(unit, position, positions);
+            }
+            else
+            {
+                AddOther(asset, position);
+            }
         }
 
         public void Move(IAsset asset, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
         {
-            // TODO -- Implement asset knowledge delta for enemy moves
-            var mapDelta = new List<Vector3i>();
-            var assetDelta = new List<IAsset>();
             if (asset is Unit unit && unit.Player == _player)
             {
-                mapDelta.AddRange(_map.Move(asset, path));
-                assetDelta.AddRange(_assets.DoDelta(_map, positions, mapDelta));
-                assetDelta.Add(unit);
+                MoveSelf(unit, path, positions);
             }
-            if (mapDelta.Any())
+            else
             {
-                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
-            }
-            if (assetDelta.Any())
-            {
-                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+                MoveOther(asset, path);
             }
         }
 
         public void Remove(IAsset asset, MultiMap<Vector3i, IAsset> positions)
         {
-            var mapDelta = new List<Vector3i>();
-            var assetDelta = new List<IAsset>();
             if (asset is Unit unit && unit.Player == _player)
             {
-                mapDelta.AddRange(_map.Remove(asset));
-                assetDelta.AddRange(_assets.DoDelta(_map, positions, mapDelta));
+                RemoveSelf(unit, positions);
             }
-            assetDelta.AddRange(_assets.Remove(asset));
+            else
+            {
+                RemoveOther(asset);
+            }
+        }
+
+        private void AddOther(IAsset asset, Vector3i position)
+        {
+            var assetDelta = _assetKnowledge.AddOther(_mapKnowledge, asset, position);
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void AddSelf(Unit unit, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        {
+            var delta = Sighting.GetSightField(_map, position, GetMaxRange(unit)).ToList();
+            var mapDelta = _mapKnowledge.Place(unit, delta);
+            var assetDelta = _assetKnowledge.AddSelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())
             {
                 MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
@@ -90,6 +92,63 @@ namespace Expeditionary.Model.Knowledge
             {
                 AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
             }
+        }
+
+        private void MoveOther(IAsset asset, Pathing.Path path)
+        {
+            // TODO -- Implement asset knowledge delta for enemy moves
+        }
+
+        private void MoveSelf(Unit unit, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
+        {
+            var maxRange = GetMaxRange(unit);
+            var initial = Sighting.GetSightField(_map, path.Origin, maxRange).ToHashSet();
+            var medial =
+                path.Steps.Take(path.Steps.Count - 1)
+                    .SelectMany(x => Sighting.GetSightField(_map, x, maxRange))
+                    .ToHashSet();
+            var final = Sighting.GetSightField(_map, path.Destination, maxRange).ToHashSet();
+
+            var mapDelta = _mapKnowledge.Move(unit, initial, medial, final);
+            var assetDelta = _assetKnowledge.MoveSelf(_mapKnowledge, unit, initial, medial, final, positions);
+            if (mapDelta.Any())
+            {
+                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
+            }
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void RemoveOther(IAsset asset)
+        {
+            var assetDelta = _assetKnowledge.RemoveOther(asset);
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void RemoveSelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
+        {
+            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
+            var mapDelta = _mapKnowledge.Remove(unit, delta);
+            var assetDelta = _assetKnowledge.RemoveSelf(_mapKnowledge, unit, delta, positions);
+            if (mapDelta.Any())
+            {
+                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
+            }
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private static int GetMaxRange(Unit unit)
+        {
+            return (int)Enum.GetValues<UnitDetectionBand>()
+                .Select(x => unit.Type.Capabilities.GetRange(CombatCondition.None, x).GetValue()).Max();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
@@ -24,13 +25,16 @@ namespace Expeditionary.Model.Knowledge
             return _assets.TryGetValue(asset, out var value) ? value : new();
         }
 
-        public List<IAsset> Add(MapKnowledge mapKnowledge, IAsset asset, Vector3i position)
+        public List<IAsset> AddSelf(
+            MapKnowledge mapKnowledge, Unit unit, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
         {
-            if (IsPlayer(asset))
-            {
-                return new() { asset };
-            }
+            var result = new List<IAsset>() { unit };
+            result.AddRange(AddLos(mapKnowledge, unit, delta, positions, isPermanent: true));
+            return result;
+        }
 
+        public List<IAsset> AddOther(MapKnowledge mapKnowledge, IAsset asset, Vector3i position)
+        {
             var current = new SingleAssetKnowledge();
             _assets.Add(asset, current);
 
@@ -46,12 +50,76 @@ namespace Expeditionary.Model.Knowledge
             return new();
         }
 
-        public List<IAsset> DoDelta(
-            MapKnowledge mapKnowledge, MultiMap<Vector3i, IAsset> positions, IEnumerable<Vector3i> delta)
+        public List<IAsset> RemoveSelf(
+            MapKnowledge mapKnowledge, Unit unit, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+        {
+            var result = new List<IAsset>() { unit };
+            result.AddRange(RemoveLos(mapKnowledge, delta, positions));
+            return result;
+        }
+
+        public List<IAsset> RemoveOther(IAsset asset)
         {
             var result = new List<IAsset>();
-            foreach (var hex in delta)
+            var current = _assets[asset];
+            if (current.IsVisible)
             {
+                result.Add(asset);
+            }
+            _assets.Remove(asset);
+            return result;
+        }
+
+        public List<IAsset> MoveSelf(
+            MapKnowledge mapKnowledge,
+            Unit unit,
+            IEnumerable<LineOfSight> initial,
+            IEnumerable<LineOfSight> medial,
+            IEnumerable<LineOfSight> final, 
+            MultiMap<Vector3i, IAsset> positions)
+        {
+            var result = new List<IAsset>() { unit };
+            result.AddRange(RemoveLos(mapKnowledge, initial, positions));
+            result.AddRange(AddLos(mapKnowledge, unit, medial, positions, isPermanent: false));
+            result.AddRange(AddLos(mapKnowledge, unit, final, positions, isPermanent: true));
+            return result.Distinct().ToList();
+        }
+
+        private List<IAsset> AddLos(
+            MapKnowledge mapKnowledge, 
+            Unit unit,
+            IEnumerable<LineOfSight> delta, 
+            MultiMap<Vector3i, IAsset> positions,
+            bool isPermanent)
+        {
+            var result = new List<IAsset>();
+            foreach (var los in delta)
+            {
+                var hex = los.Target;
+                var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
+                var detection = SpottingCalculator.GetDetection(unit, los, condition);
+                foreach (var asset in positions[hex].Where(x => !IsPlayer(x)))
+                {
+                    var current = _assets[asset];
+                    var spotted = SpottingCalculator.IsSpotted(detection, condition, asset);
+                    if (!current.IsVisible && spotted)
+                    {
+                        current.IsVisible = isPermanent;
+                        current.LastSeen = hex;
+                        result.Add(asset);
+                    }
+                }
+            }
+            return result;
+        }
+
+        private List<IAsset> RemoveLos(
+            MapKnowledge mapKnowledge, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+        {
+            var result = new List<IAsset>();
+            foreach (var los in delta)
+            {
+                var hex = los.Target;
                 var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
                 var detection = mapKnowledge.GetDetection(hex);
                 foreach (var asset in positions[hex].Where(x => !IsPlayer(x)))
@@ -64,31 +132,8 @@ namespace Expeditionary.Model.Knowledge
                         current.LastSeen = hex;
                         result.Add(asset);
                     }
-                    else if (!current.IsVisible && spotted)
-                    {
-                        current.IsVisible = true;
-                        current.LastSeen = hex;
-                        result.Add(asset);
-                    }
                 }
             }
-            return result;
-        }
-
-        public List<IAsset> Remove(IAsset asset)
-        {
-            if (IsPlayer(asset))
-            {
-                return new() { asset };
-            }
-
-            var result = new List<IAsset>();
-            var current = _assets[asset];
-            if (current.IsVisible)
-            {
-                result.Add(asset);
-            }
-            _assets.Remove(asset);
             return result;
         }
 

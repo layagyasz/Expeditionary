@@ -1,5 +1,4 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Hexagons;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
@@ -16,7 +15,7 @@ namespace Expeditionary.Model.Knowledge
             return Enum.GetValues<UnitDetectionBand>()
                 .Any(x => 
                     IsSpotted(
-                        GetDetection(spotter, x, los, condition, hex), 
+                        GetDetection(spotter, x, los, condition), 
                         GetSignature(target, x, condition),
                         GetConcealment(target, x, condition)));
         }
@@ -51,8 +50,15 @@ namespace Expeditionary.Model.Knowledge
             return unit.Type.Capabilities.GetConcealment(conditions, band).GetValue();
         }
 
+        public static EnumMap<UnitDetectionBand, float> GetDetection(
+            Unit detector, LineOfSight los, CombatCondition condition)
+        {
+            return Enum.GetValues<UnitDetectionBand>()
+                .ToEnumMap(x => x, x => GetDetection(detector, x, los, condition));
+        }
+
         public static float GetDetection(
-            Unit detector, UnitDetectionBand band, LineOfSight los, CombatCondition condition, Vector3i hex)
+            Unit detector, UnitDetectionBand band, LineOfSight los, CombatCondition condition)
         {
             if (los.IsBlocked && (band == UnitDetectionBand.Visual || band == UnitDetectionBand.Thermal))
             {
@@ -61,7 +67,7 @@ namespace Expeditionary.Model.Knowledge
             return SkillCalculator.RangeAttenuate(
                 detector.Type.Capabilities.GetDetection(condition, band).GetValue(),
                 detector.Type.Capabilities.GetRange(condition, band).GetValue(),
-                Geometry.GetCubicDistance(detector.Position, hex));
+                los.Distance);
         }
 
         public static float GetSignature(IAsset asset, UnitDetectionBand band, CombatCondition condition)

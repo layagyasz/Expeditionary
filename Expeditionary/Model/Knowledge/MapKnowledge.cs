@@ -51,7 +51,7 @@ namespace Expeditionary.Model.Knowledge
                 foreach (var band in Enum.GetValues<UnitDetectionBand>())
                 {
                     result[band] = 
-                        Math.Max(result[band], SpottingCalculator.GetDetection(spotter, band, los, condition, hex));
+                        Math.Max(result[band], SpottingCalculator.GetDetection(spotter, band, los, condition));
                 }
             }
             return result;
@@ -62,60 +62,49 @@ namespace Expeditionary.Model.Knowledge
             return _map;
         }
 
-        public List<Vector3i> Move(IAsset asset, Pathing.Path path)
+        public List<Vector3i> Move(
+            Unit unit,
+            IEnumerable<LineOfSight> initial,
+            IEnumerable<LineOfSight> medial,
+            IEnumerable<LineOfSight> final)
         {
-            if (asset is not Unit unit)
-            {
-                return new();
-            }
-
-            var maxRange = GetMaxRange(unit);
             var visualRange = GetVisualRange(unit);
-
-            var initialLos = Sighting.GetSightField(_map, path.Origin, maxRange).ToHashSet();
-            var stepLos =
-                path.Steps.Take(path.Steps.Count - 1)
-                    .SelectMany(x => Sighting.GetSightField(_map, x, maxRange))
-                    .ToHashSet();
-            var finalLos = Sighting.GetSightField(_map, path.Destination, maxRange).ToHashSet();
-            var result = 
-                Enumerable.Concat(Enumerable.Concat(initialLos, finalLos), stepLos)
-                    .Select(x => x.Target)
-                    .Distinct()
-                    .ToList();
-
-            foreach (var los in initialLos)
+            var result = new List<Vector3i>();
+            foreach (var los in initial)
             {
+                if (!los.IsBlocked && los.Distance <= visualRange)
+                {
+                    result.Add(los.Target);
+                }
                 _spotters.Remove(los.Target, unit);
             }
-            foreach (var los in stepLos)
+            foreach (var los in medial)
             {
-                if (!los.IsBlocked && los.Distance <= visualRange)
+                if (!los.IsBlocked
+                    && los.Distance <= visualRange 
+                    && _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target)))
                 {
-                    _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
+                    result.Add(los.Target);
                 }
             }
-            foreach (var los in finalLos)
+            foreach (var los in final)
             {
-                if (!los.IsBlocked && los.Distance <= visualRange)
+                if (!los.IsBlocked 
+                    && los.Distance <= visualRange 
+                    && _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target)))
                 {
-                    _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
+                    result.Add(los.Target);
                 }
                 _spotters.Add(los.Target, unit);
             }
             return result;
         }
 
-        public List<Vector3i> Place(IAsset asset, Vector3i position)
+        public List<Vector3i> Place(Unit unit, IEnumerable<LineOfSight> delta)
         {
-            if (asset is not Unit unit)
-            {
-                return new();
-            }
-
             var result = new List<Vector3i>();
             var visualRange = GetVisualRange(unit);
-            foreach (var los in Sighting.GetSightField(_map, position, GetMaxRange(unit)))
+            foreach (var los in delta)
             {
                 if (!los.IsBlocked && los.Distance <= visualRange)
                 {
@@ -127,15 +116,10 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
-        public List<Vector3i> Remove(IAsset asset)
+        public List<Vector3i> Remove(Unit unit, IEnumerable<LineOfSight> delta)
         {
-            if (asset is not Unit unit)
-            {
-                return new();
-            }
-
             var result = new List<Vector3i>();
-            foreach (var los in Sighting.GetSightField(_map, asset.Position, GetMaxRange(unit)))
+            foreach (var los in delta)
             {
                 if (_spotters.Remove(los.Target))
                 {
@@ -143,12 +127,6 @@ namespace Expeditionary.Model.Knowledge
                 }
             }
             return result;
-        }
-
-        private static int GetMaxRange(Unit unit)
-        {
-            return (int)Enum.GetValues<UnitDetectionBand>()
-                .Select(x => unit.Type.Capabilities.GetRange(CombatCondition.None, x).GetValue()).Max();
         }
 
         private static int GetVisualRange(Unit unit)
