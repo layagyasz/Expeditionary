@@ -41,8 +41,8 @@ function Cupric:Apply(environment)
 	
 	appearance.Stone.A = StaticColoring(Color4(0.2, 0.35, 0.2, 1))
 
-	appearance.Soil.A = StaticColoring(Color4(0.65, 0.45, 0.31, 1))
-	appearance.Soil.B = StaticColoring(Color4(0.31, 0.43, 0.31, 1))
+	appearance.Soil.A = StaticColoring(Color4(0.31, 0.43, 0.31, 1))
+	appearance.Soil.B = StaticColoring(Color4(0.25, 0.45, 0.25, 1))
 	appearance.Soil.C = StaticColoring(Color4(0.18, 0.23, 0.18, 1))
 end
 

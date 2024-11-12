@@ -5,14 +5,14 @@
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-sol",
-      "environment-modifier-composition-carbide",
-      "environment-modifier-liquid-level-inland",
-      "environment-modifier-erosion-ancient",
-      "environment-modifier-habitability-nominal",
+      "environment-modifier-composition-ferrous",
+      "environment-modifier-liquid-level-coast",
+      "environment-modifier-erosion-young",
+      "environment-modifier-habitability-habitable",
       "environment-modifier-climate-cold",
-      "environment-modifier-climate-aquifer",
-      "environment-modifier-biome-field",
-      "environment-modifier-flora-crystalline"
+      "environment-modifier-climate-wet",
+      "environment-modifier-biome-forest",
+      "environment-modifier-flora-native"
     ]
   }
 ]

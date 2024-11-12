@@ -1,6 +1,4 @@
 ﻿using Expeditionary.Hexagons;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -11,33 +9,25 @@ namespace Expeditionary.Model
         private static readonly float s_FoliageHeight = 0.4f;
         private static readonly float s_StructureHeight = 0.4f;
 
-        public record class LineOfSight(Vector3i Target, int Distance);
-
-        public static IEnumerable<LineOfSight> GetSightField(Map map, IAsset asset, Vector3i position)
+        public static LineOfSight GetLineOfSight(Map map, Vector3i position, Vector3i target)
         {
-            if (asset is Unit unit)
-            {
-                return GetSightField(
-                    map, 
-                    position,
-                    (int)unit.Type.Capabilities.GetRange(CombatCondition.None, UnitDetectionBand.Visual).GetValue());
-            }
-            return Enumerable.Empty<LineOfSight>();
+            return new(
+                target, 
+                Geometry.GetCubicDistance(target, position), 
+                !IsValidLineOfSightInternal(map, position, target));
         }
 
         public static IEnumerable<LineOfSight> GetSightField(Map map, Vector3i position, int range)
         {
-            for (int q=-range; q<=range; ++q)
+            foreach (var target in Geometry.GetRange(position, range))
             {
-                for (int r=Math.Max(-range, -q-range); r<=Math.Min(range, -q+range); ++r)
-                {
-                    var target = position + new Vector3i(q, r, -q - r);
-                    if (IsValidLineOfSightInternal(map, position, target))
-                    {
-                        yield return new(target, Geometry.GetCubicDistance(target, position));
-                    }
-                }
+                yield return GetLineOfSight(map, position, target);
             }
+        }
+
+        public static IEnumerable<LineOfSight> GetUnblockedSightField(Map map, Vector3i position, int range)
+        {
+            return GetSightField(map, position, range).Where(x => !x.IsBlocked);
         }
 
         public static bool IsValidLineOfSight(Map map, Vector3i position, Vector3i target)

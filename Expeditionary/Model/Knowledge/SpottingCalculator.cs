@@ -12,20 +12,17 @@ namespace Expeditionary.Model.Knowledge
         public static bool IsSpotted(Map map, Unit spotter, IAsset target, Vector3i hex)
         {
             var condition = map.GetTile(hex)!.GetConditions();
-            if (target is not Unit targetUnit)
-            {
-                return Enum.GetValues<UnitDetectionBand>().Any(x => GetDetection(spotter, x, condition, hex) > 0);
-            }
+            var los = Sighting.GetLineOfSight(map, spotter.Position, hex);
             return Enum.GetValues<UnitDetectionBand>()
                 .Any(x => 
                     IsSpotted(
-                        GetDetection(spotter, x, condition, hex), 
-                        GetSignature(targetUnit, x, condition),
-                        GetConcealment(targetUnit, x, condition)));
+                        GetDetection(spotter, x, los, condition, hex), 
+                        GetSignature(target, x, condition),
+                        GetConcealment(target, x, condition)));
         }
 
         public static bool IsSpotted(
-            EnumMap<UnitDetectionBand, float> detection, 
+            EnumMap<UnitDetectionBand, float> detection,
             CombatCondition condition,
             IAsset target)
         {
@@ -45,22 +42,34 @@ namespace Expeditionary.Model.Knowledge
             return SkillCalculator.SignatureAttenuate(detection, signature) >= concealment;
         }
 
-        public static float GetConcealment(Unit unit, UnitDetectionBand band, CombatCondition conditions)
+        public static float GetConcealment(IAsset asset, UnitDetectionBand band, CombatCondition conditions)
         {
+            if (asset is not Unit unit)
+            {
+                return 0;
+            }
             return unit.Type.Capabilities.GetConcealment(conditions, band).GetValue();
         }
 
         public static float GetDetection(
-            Unit detector, UnitDetectionBand band, CombatCondition condition, Vector3i hex)
+            Unit detector, UnitDetectionBand band, LineOfSight los, CombatCondition condition, Vector3i hex)
         {
+            if (los.IsBlocked && (band == UnitDetectionBand.Visual || band == UnitDetectionBand.Thermal))
+            {
+                return 0;
+            }
             return SkillCalculator.RangeAttenuate(
                 detector.Type.Capabilities.GetDetection(condition, band).GetValue(),
                 detector.Type.Capabilities.GetRange(condition, band).GetValue(),
                 Geometry.GetCubicDistance(detector.Position, hex));
         }
 
-        public static float GetSignature(Unit unit, UnitDetectionBand band, CombatCondition condition)
+        public static float GetSignature(IAsset asset, UnitDetectionBand band, CombatCondition condition)
         {
+            if (asset is not Unit unit)
+            {
+                return 0;
+            }
             return unit.Type.Capabilities.GetSignature(condition, band).GetValue();
         }
     }

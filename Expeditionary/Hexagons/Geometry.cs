@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Expeditionary.Model.Mapping;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Hexagons
 {
@@ -118,6 +119,17 @@ namespace Expeditionary.Hexagons
         public static Vector3i GetNeighbor(Vector3i hex, int neighbor)
         {
             return hex + s_HexNeighbors[neighbor];
+        }
+
+        public static IEnumerable<Vector3i> GetRange(Vector3i hex, int range)
+        {
+            for (int q = -range; q <= range; ++q)
+            {
+                for (int r = Math.Max(-range, -q - range); r <= Math.Min(range, -q + range); ++r)
+                {
+                    yield return hex + new Vector3i(q, r, -q - r);
+                }
+            }
         }
 
         public static Vector3i SnapToHex(Vector3 hex)
