@@ -100,15 +100,12 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 return;
             }
-            while (path.Steps.TryPop(out var step))
+            for (int i=0; i<path.Steps.Count - 1; ++i)
             {
-                if (path.Steps.TryPeek(out var next))
+                var e = map.GetEdge(Geometry.GetEdge(path.Steps[i], path.Steps[i + 1]));
+                if (e != null)
                 {
-                    var e = map.GetEdge(Geometry.GetEdge(step, next));
-                    if (e != null)
-                    {
-                        e.Levels[parameters.Type] = parameters.Level;
-                    }
+                    e.Levels[parameters.Type] = parameters.Level;
                 }
             }
         }

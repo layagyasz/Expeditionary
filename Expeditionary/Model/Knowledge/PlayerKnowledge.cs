@@ -96,7 +96,11 @@ namespace Expeditionary.Model.Knowledge
 
         private void MoveOther(IAsset asset, Pathing.Path path)
         {
-            // TODO -- Implement asset knowledge delta for enemy moves
+            var assetDelta = _assetKnowledge.MoveOther(_mapKnowledge, asset, path);
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
         }
 
         private void MoveSelf(Unit unit, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)

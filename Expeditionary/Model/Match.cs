@@ -97,6 +97,7 @@ namespace Expeditionary.Model
 
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
+            Console.WriteLine($"{e.Player}: {string.Join(",", e.Delta)}");
             AssetKnowledgeChanged?.Invoke(this, e);
         }
 

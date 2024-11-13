@@ -75,7 +75,6 @@ namespace Expeditionary.View
             foreach (var asset in delta)
             {
                 var k = knowledge.GetAsset(asset);
-                Console.WriteLine($"{asset.Id} {k}");
                 if (k.IsVisible || k.LastSeen != null)
                 {
                     if (!_addressMap.ContainsKey(asset.Id))

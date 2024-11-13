@@ -1,25 +1,11 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
-using Expeditionary.Model.Mapping;
-using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
 {
     public static class SpottingCalculator
     {
-        public static bool IsSpotted(Map map, Unit spotter, IAsset target, Vector3i hex)
-        {
-            var condition = map.GetTile(hex)!.GetConditions();
-            var los = Sighting.GetLineOfSight(map, spotter.Position, hex);
-            return Enum.GetValues<UnitDetectionBand>()
-                .Any(x => 
-                    IsSpotted(
-                        GetDetection(spotter, x, los, condition), 
-                        GetSignature(target, x, condition),
-                        GetConcealment(target, x, condition)));
-        }
-
         public static bool IsSpotted(
             EnumMap<UnitDetectionBand, float> detection,
             CombatCondition condition,
@@ -51,14 +37,14 @@ namespace Expeditionary.Model.Knowledge
         }
 
         public static EnumMap<UnitDetectionBand, float> GetDetection(
-            Unit detector, LineOfSight los, CombatCondition condition)
+            Unit detector, Sighting.LineOfSight los, CombatCondition condition)
         {
             return Enum.GetValues<UnitDetectionBand>()
                 .ToEnumMap(x => x, x => GetDetection(detector, x, los, condition));
         }
 
         public static float GetDetection(
-            Unit detector, UnitDetectionBand band, LineOfSight los, CombatCondition condition)
+            Unit detector, UnitDetectionBand band, Sighting.LineOfSight los, CombatCondition condition)
         {
             if (los.IsBlocked && (band == UnitDetectionBand.Visual || band == UnitDetectionBand.Thermal))
             {

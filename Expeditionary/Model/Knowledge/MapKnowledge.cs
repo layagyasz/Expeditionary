@@ -64,9 +64,9 @@ namespace Expeditionary.Model.Knowledge
 
         public List<Vector3i> Move(
             Unit unit,
-            IEnumerable<LineOfSight> initial,
-            IEnumerable<LineOfSight> medial,
-            IEnumerable<LineOfSight> final)
+            IEnumerable<Sighting.LineOfSight> initial,
+            IEnumerable<Sighting.LineOfSight> medial,
+            IEnumerable<Sighting.LineOfSight> final)
         {
             var visualRange = GetVisualRange(unit);
             var result = new List<Vector3i>();
@@ -89,10 +89,9 @@ namespace Expeditionary.Model.Knowledge
             }
             foreach (var los in final)
             {
-                if (!los.IsBlocked 
-                    && los.Distance <= visualRange 
-                    && _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target)))
+                if (!los.IsBlocked && los.Distance <= visualRange)
                 {
+                    _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
                     result.Add(los.Target);
                 }
                 _spotters.Add(los.Target, unit);
@@ -100,7 +99,7 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
-        public List<Vector3i> Place(Unit unit, IEnumerable<LineOfSight> delta)
+        public List<Vector3i> Place(Unit unit, IEnumerable<Sighting.LineOfSight> delta)
         {
             var result = new List<Vector3i>();
             var visualRange = GetVisualRange(unit);
@@ -116,12 +115,12 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
-        public List<Vector3i> Remove(Unit unit, IEnumerable<LineOfSight> delta)
+        public List<Vector3i> Remove(Unit unit, IEnumerable<Sighting.LineOfSight> delta)
         {
             var result = new List<Vector3i>();
             foreach (var los in delta)
             {
-                if (_spotters.Remove(los.Target))
+                if (_spotters.Remove(los.Target, unit))
                 {
                     result.Add(los.Target);
                 }

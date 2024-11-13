@@ -1,7 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Combat.Units;
-using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
@@ -26,7 +25,10 @@ namespace Expeditionary.Model.Knowledge
         }
 
         public List<IAsset> AddSelf(
-            MapKnowledge mapKnowledge, Unit unit, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+            MapKnowledge mapKnowledge,
+            Unit unit, 
+            IEnumerable<Sighting.LineOfSight> delta,
+            MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
             result.AddRange(AddLos(mapKnowledge, unit, delta, positions, isPermanent: true));
@@ -51,7 +53,10 @@ namespace Expeditionary.Model.Knowledge
         }
 
         public List<IAsset> RemoveSelf(
-            MapKnowledge mapKnowledge, Unit unit, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+            MapKnowledge mapKnowledge, 
+            Unit unit, 
+            IEnumerable<Sighting.LineOfSight> delta,
+            MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
             result.AddRange(RemoveLos(mapKnowledge, delta, positions));
@@ -70,12 +75,42 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
+        public List<IAsset> MoveOther(MapKnowledge mapKnowledge, IAsset asset, Pathing.Path path)
+        {
+            var current = _assets[asset];
+            for (int i=path.Steps.Count - 1; i>=0; --i)
+            {
+                var hex = path.Steps[i];
+                var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
+                var detection = mapKnowledge.GetDetection(hex);
+                var spotted = detection != null && SpottingCalculator.IsSpotted(detection, condition, asset);
+                if (spotted)
+                {
+                    if (i == path.Steps.Count - 1)
+                    {
+                        current.IsVisible = true;
+                        current.LastSeen = hex;
+                        return new() { asset };
+                    }
+                    else
+                    {
+                        current.IsVisible = false;
+                        current.LastSeen = path.Steps[i + 1];
+                        return new() { asset };
+                    }
+                }
+            }
+            current.IsVisible = false;
+            current.LastSeen = null;
+            return new();
+        }
+
         public List<IAsset> MoveSelf(
             MapKnowledge mapKnowledge,
             Unit unit,
-            IEnumerable<LineOfSight> initial,
-            IEnumerable<LineOfSight> medial,
-            IEnumerable<LineOfSight> final, 
+            IEnumerable<Sighting.LineOfSight> initial,
+            IEnumerable<Sighting.LineOfSight> medial,
+            IEnumerable<Sighting.LineOfSight> final, 
             MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
@@ -88,7 +123,7 @@ namespace Expeditionary.Model.Knowledge
         private List<IAsset> AddLos(
             MapKnowledge mapKnowledge, 
             Unit unit,
-            IEnumerable<LineOfSight> delta, 
+            IEnumerable<Sighting.LineOfSight> delta, 
             MultiMap<Vector3i, IAsset> positions,
             bool isPermanent)
         {
@@ -114,7 +149,7 @@ namespace Expeditionary.Model.Knowledge
         }
 
         private List<IAsset> RemoveLos(
-            MapKnowledge mapKnowledge, IEnumerable<LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+            MapKnowledge mapKnowledge, IEnumerable<Sighting.LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>();
             foreach (var los in delta)

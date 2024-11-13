@@ -6,6 +6,8 @@ namespace Expeditionary.Model
 {
     public static class Sighting
     {
+        public record class LineOfSight(Vector3i Target, int Distance, bool IsBlocked);
+
         private static readonly float s_FoliageHeight = 0.4f;
         private static readonly float s_StructureHeight = 0.4f;
 

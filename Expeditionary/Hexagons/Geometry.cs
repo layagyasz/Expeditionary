@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Mapping;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Expeditionary.Hexagons
 {

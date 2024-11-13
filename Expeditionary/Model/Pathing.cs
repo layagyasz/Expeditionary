@@ -7,7 +7,7 @@ namespace Expeditionary.Model
 {
     public static class Pathing
     {
-        public record class Path(Vector3i Origin, Vector3i Destination, Stack<Vector3i> Steps, float Cost);
+        public record class Path(Vector3i Origin, Vector3i Destination, List<Vector3i> Steps, float Cost);
         public record class PathOption(Vector3i Destination, float Cost);
 
         private class Node
@@ -195,12 +195,11 @@ namespace Expeditionary.Model
         private static Path BuildPath(Node destination)
         {
             var current = destination;
-            var steps = new Stack<Vector3i>();
-            steps.Push(destination.Hex);
+            var steps = new List<Vector3i>() { destination.Hex };
             while (current.Parent != null)
             {
                 current = current.Parent;
-                steps.Push(current.Hex);
+                steps.Insert(0, current.Hex);
             }
             return new(current.Hex, destination.Hex, steps, destination.Cost);
         }
