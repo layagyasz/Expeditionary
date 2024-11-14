@@ -15,9 +15,6 @@ function Carbide:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 0, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.13, 0.13, 0.13, 1))
 
@@ -35,9 +32,6 @@ function Cupric:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 0, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.2, 0.35, 0.2, 1))
 
@@ -55,9 +49,6 @@ function Ferrous:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 1, 1)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.65, 0.42, 0.33, 1))
 	appearance.Stone.B = StaticColoring(Color4(0.13, 0.13, 0.13, 1))
@@ -77,9 +68,6 @@ function SilicousFerrous:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 0, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.65, 0.42, 0.33, 1))
 
@@ -97,9 +85,6 @@ function SilicousMixed:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 1, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.48, 0.48, 0.48, 1))
 	appearance.Stone.B = StaticColoring(Color4(0.65, 0.42, 0.33, 1))
@@ -118,9 +103,6 @@ function SilicousTelluric:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 0, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.48, 0.48, 0.48, 1))
 
@@ -138,9 +120,6 @@ function SilicousTerran:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 1, 1)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.48, 0.35, 0.19, 1))
 	appearance.Stone.B = StaticColoring(Color4(0.78, 0.78, 0.78, 1))
@@ -160,9 +139,6 @@ function Sulfurous:Apply(environment)
 	local terrain = parameters.Terrain
 
 	terrain.Stone = Vector3(1, 0, 0)
-	terrain.LiquidMoistureBonus = 0.2
-
-	appearance.Liquid = StaticColoring(Color4(0.1, 0.22, 0.33, 1))
 	
 	appearance.Stone.A = StaticColoring(Color4(0.68, 0.49, 0.25, 1))
 

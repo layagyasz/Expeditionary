@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\config\default\generation\scripts\script_environment_liquid.lua~RFa306004.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="NLua" Version="1.7.3" />
   </ItemGroup>
@@ -72,6 +76,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_habitability.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_liquid.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_liquid_levels.lua">

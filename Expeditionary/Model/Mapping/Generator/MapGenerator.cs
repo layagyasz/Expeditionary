@@ -7,7 +7,7 @@ namespace Expeditionary.Model.Mapping.Generator
         public class Parameters
         {
             public TerrainGenerator.Parameters Terrain { get; set; } = new();
-            public List<CityGenerator.Parameters> Cities { get; set; } = new();
+            public CityGenerator.Parameters Cities { get; set; } = new();
             public List<TransportGenerator.Parameters> Transport { get; set; } = new();
         }
 

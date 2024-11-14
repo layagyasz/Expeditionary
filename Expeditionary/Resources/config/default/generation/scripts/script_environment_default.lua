@@ -2,7 +2,7 @@ luanet.load_assembly('Cardamom', 'Cardamom.Utils.Generators.Samplers')
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
-CityGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.CityGenerator+Parameters')
+CityGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.CityGenerator+LayerParameters')
 Color4=luanet.import_type('OpenTK.Mathematics.Color4')
 EdgeType=luanet.import_type('Expeditionary.Model.Mapping.EdgeType')
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
@@ -39,7 +39,7 @@ function Default:Apply(environment)
 	mining.CoastPenalty = Quadratic()
 	mining.SlopePenalty = Quadratic(0, -1, 1)
 	mining.ElevationPenalty = Quadratic(0, -1, 1)
-	parameters.Cities:Add(mining)
+	parameters.Cities.Layers:Add(mining)
 	-- Farming
 	local farming = CityGenerator_Parameters()
 	farming.Cores = 40
@@ -50,21 +50,21 @@ function Default:Apply(environment)
 	farming.CoastPenalty = Quadratic()
 	farming.SiltPenalty = Quadratic(0, -2, 2)
 	farming.MoisturePenalty = Quadratic(0, -1, 1)
-	parameters.Cities:Add(farming)
+	parameters.Cities.Layers:Add(farming)
 	-- Commercial
 	local commercial = CityGenerator_Parameters()
 	commercial.Cores = 10
 	commercial.Candidates = 200
 	commercial.Type = StructureType.Commercial
 	commercial.Size = NormalSampler(10, 5)
-	parameters.Cities:Add(commercial)
+	parameters.Cities.Layers:Add(commercial)
 	-- Residential
 	local residential = CityGenerator_Parameters()
 	residential.Cores = 40
 	residential.Candidates = 200
 	residential.Type = StructureType.Residential
 	residential.Size = NormalSampler(20, 8)
-	parameters.Cities:Add(residential)
+	parameters.Cities.Layers:Add(residential)
 	-- Industrial
 	local industrial = CityGenerator_Parameters()
 	industrial.Cores = 10
@@ -72,7 +72,7 @@ function Default:Apply(environment)
 	industrial.Type = StructureType.Industrial
 	industrial.Size = NormalSampler(3, 1)
 	industrial.RiverPenalty = Quadratic()
-	parameters.Cities:Add(industrial)
+	parameters.Cities.Layers:Add(industrial)
 
 	-- Roads
 	local roads = TransportGenerator_Parameters()

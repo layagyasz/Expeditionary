@@ -9,6 +9,12 @@ namespace Expeditionary.Model.Mapping.Generator
     {
         public class Parameters
         {
+            public float LiquidAffinity { get; set; }
+            public List<LayerParameters> Layers { get; set; } = new();
+        }
+
+        public class LayerParameters
+        {
             public int Cores { get; set; }
             public int Candidates { get; set; }
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
@@ -30,11 +36,11 @@ namespace Expeditionary.Model.Mapping.Generator
 
         private class Core
         {
-            public Parameters Parameters { get; }
+            public LayerParameters Parameters { get; }
             public int Max { get; }
             public int Count { get; set; }
 
-            internal Core(Parameters parameters, int max) 
+            internal Core(LayerParameters parameters, int max) 
             { 
                 Parameters = parameters;
                 Max = max;
@@ -58,17 +64,19 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        public static List<Vector3i> Generate(IEnumerable<Parameters> parameters, Map map, Random random)
+        public static List<Vector3i> Generate(Parameters parameters, Map map, Random random)
         {
             var closed = new HashSet<Vector3i>();
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
             var cores = new List<Vector3i>();
 
-            foreach (var param in parameters)
+            foreach (var param in parameters.Layers)
             {
                 var costDict = 
-                    map.GetTiles().Where(x => !closed.Contains(x)).ToDictionary(x => x, x => GetCost(x, map, param));
+                    map.GetTiles()
+                        .Where(x => !closed.Contains(x))
+                        .ToDictionary(x => x, x => GetCost(x, map, param, parameters.LiquidAffinity));
                 var candidates = costDict.OrderBy(x => x.Value).Take(param.Candidates).ToList();
                 candidates.Shuffle(random);
 
@@ -121,7 +129,8 @@ namespace Expeditionary.Model.Mapping.Generator
                     }
 
                     var distance = current.Distance + 1;
-                    var cost = p.SprawlPenalty.Evaluate(distance) + GetCost(neighbor, map, p);
+                    var cost = 
+                        p.SprawlPenalty.Evaluate(distance) + GetCost(neighbor, map, p, parameters.LiquidAffinity);
                     if (cost == float.MaxValue)
                     {
                         continue;
@@ -161,7 +170,7 @@ namespace Expeditionary.Model.Mapping.Generator
             return cores;
         }
 
-        private static float GetCost(Vector3i hex, Map map, Parameters parameters)
+        private static float GetCost(Vector3i hex, Map map, LayerParameters parameters, float liquidAffinity)
         {
             var tile = map.GetTile(hex);
             if (tile == null || tile.Terrain.IsLiquid)
@@ -176,8 +185,8 @@ namespace Expeditionary.Model.Mapping.Generator
             return parameters.DistancePenalty.Evaluate(Geometry.GetCubicDistance(hex, parameters.Center))
                 + parameters.SlopePenalty.Evaluate(tile.Slope)
                 + parameters.ElevationPenalty.Evaluate(tile.Elevation)
-                + parameters.CoastPenalty.Evaluate(neighborsWater ? 1 : 0)
-                + parameters.RiverPenalty.Evaluate(neighborsRiver ? 1 : 0)
+                + liquidAffinity * parameters.CoastPenalty.Evaluate(neighborsWater ? 1 : 0)
+                + liquidAffinity * parameters.RiverPenalty.Evaluate(neighborsRiver ? 1 : 0)
                 + parameters.SandPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.X : 0)
                 + parameters.ClayPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Y : 0)
                 + parameters.SiltPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Z : 0)

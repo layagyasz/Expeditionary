@@ -5,9 +5,10 @@
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-sol",
-      "environment-modifier-composition-ferrous",
+      "environment-modifier-composition-sulfurous",
+      "environment-modifier-liquid-sulfurous",
       "environment-modifier-liquid-level-coast",
-      "environment-modifier-erosion-young",
+      "environment-modifier-erosion-none",
       "environment-modifier-habitability-habitable",
       "environment-modifier-climate-cold",
       "environment-modifier-climate-wet",

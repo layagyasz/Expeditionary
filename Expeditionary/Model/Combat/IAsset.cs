@@ -9,7 +9,7 @@ namespace Expeditionary.Model.Combat
         public Vector3i Position { get; set; }
         public void Reset();
 
-        public string ToString()
+        public string? ToString()
         {
             return $"[Asset: Id={Id}, TypeKey={TypeKey}]";
         }

@@ -76,7 +76,7 @@ end
 
 Crystalline = MapEnvironmentModifier()
 Crystalline.Key = "environment-modifier-flora-crystalline"
-Crystalline.Name = "Fungal"
+Crystalline.Name = "Crystalline"
 function Crystalline:Apply(environment)
 	local appearance = environment.Appearance;
 
