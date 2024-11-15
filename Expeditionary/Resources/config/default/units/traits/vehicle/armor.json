@@ -1,0 +1,105 @@
+[
+  {
+    "$id": "trait-vehicle-armor-light",
+    "Name": "Light Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 4,
+    "Level": 1,
+    "Tags": [ "Light" ],
+    "Modifiers": {
+      "defense.armor": "+6x1",
+      "defense.armor/min": "+2x1",
+      "intrinsic.mass.armor.density": "+0.5x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-medium",
+    "Name": "Medium Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 8,
+    "Level": 2,
+    "Tags": [ "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+12x1",
+      "defense.armor/min": "+4x1",
+      "intrinsic.mass.armor.density": "+1x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-heavy",
+    "Name": "Heavy Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 12,
+    "Level": 3,
+    "Tags": [ "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+18x1",
+      "defense.armor/min": "+6x1",
+      "intrinsic.mass.armor.density": "+1.5x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-spacing-i",
+    "Name": "Basic Spaced Armor",
+    "Family": "trait-vehicle-armor-spacing",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "defense.armor": "+0x1.25"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-spacing-ii",
+    "Name": "Advanced Spaced Armor",
+    "Family": "trait-vehicle-armor-spacing",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "defense.armor": "+0x1.5"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-era-i",
+    "Name": "Basic Explosive Reactive Armor",
+    "Family": "trait-vehicle-armor-era",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "defense.armor": "+1.5x1",
+      "defense.armor/min": "+1.5x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-era-ii",
+    "Name": "Explosive Reactive Armor 2",
+    "Family": "trait-vehicle-armor-era",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "defense.armor": "+3x1",
+      "defense.armor/min": "+3x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-era-iii",
+    "Name": "Explosive Reactive Armor 3",
+    "Family": "trait-vehicle-armor-era",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "defense.armor": "+4.5x1",
+      "defense.armor/min": "+4.5x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-era-iv",
+    "Name": "Advanced Explosive Reactive Armor",
+    "Family": "trait-vehicle-armor-era",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "defense.armor": "+6x1",
+      "defense.armor/min": "+6x1"
+    }
+  }
+]

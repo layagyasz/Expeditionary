@@ -1,0 +1,97 @@
+[
+  {
+    "$id": "trait-vehicle-chassis-truck",
+    "Name": "Logistics",
+    "Cost": 10,
+    "Modifiers": {
+      "capability.detection[audio]": "+3x1",
+      "capability.range[audio]": "+1x1",
+      "capability.detection[visual]": "+6x1",
+      "capability.range[visual]": "+4x1",
+      "capability.signature[visual]": "+12x1",
+      "defense.maneuver": "+1x1",
+      "intrinsic.mass.armor.amount": "+12x1",
+      "intrinsic.mass.armor.density": "+0x1",
+      "intrinsic.mass.body.amount": "+12x1",
+      "intrinsic.mass.body.density": "+0x1",
+      "intrinsic.profile": "+3x1",
+      "intrinsic.space": "+24x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-chassis-super-light",
+    "Name": "Super Light",
+    "Cost": 5,
+    "Modifiers": {
+      "capability.detection[audio]": "+0x1",
+      "capability.range[audio]": "+0x1",
+      "capability.detection[visual]": "+6x1",
+      "capability.range[visual]": "+2x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality/min": "+2x1",
+      "intrinsic.mass.armor.amount": "+12x1",
+      "intrinsic.mass.armor.density": "+0x1",
+      "intrinsic.mass.body.amount": "+12x1",
+      "intrinsic.mass.body.density": "+0x1",
+      "intrinsic.profile": "+6x1",
+      "intrinsic.space": "+12x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-chassis-light",
+    "Name": "Light",
+    "Cost": 10,
+    "Modifiers": {
+      "capability.detection[audio]": "+0x1",
+      "capability.range[audio]": "+0x1",
+      "capability.detection[visual]": "+6x1",
+      "capability.range[visual]": "+2x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality/min": "+2x1",
+      "intrinsic.mass.armor.amount": "+18x1",
+      "intrinsic.mass.armor.density": "+0x1",
+      "intrinsic.mass.body.amount": "+18x1",
+      "intrinsic.mass.body.density": "+0x1",
+      "intrinsic.profile": "+4x1",
+      "intrinsic.space": "+18x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-chassis-medium",
+    "Name": "Medium",
+    "Cost": 15,
+    "Modifiers": {
+      "capability.detection[audio]": "+0x1",
+      "capability.range[audio]": "+0x1",
+      "capability.detection[visual]": "+6x1",
+      "capability.range[visual]": "+2x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality/min": "+2x1",
+      "intrinsic.mass.armor.amount": "+24x1",
+      "intrinsic.mass.armor.density": "+0x1",
+      "intrinsic.mass.body.amount": "+24x1",
+      "intrinsic.mass.body.density": "+0x1",
+      "intrinsic.profile": "+3x1",
+      "intrinsic.space": "+24x1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-chassis-heavy",
+    "Name": "Heavy",
+    "Cost": 20,
+    "Modifiers": {
+      "capability.detection[audio]": "+0x1",
+      "capability.range[audio]": "+0x1",
+      "capability.detection[visual]": "+6x1",
+      "capability.range[visual]": "+2x1",
+      "defense.maneuver": "+1x1",
+      "defense.vitality/min": "+2x1",
+      "intrinsic.mass.armor.amount": "+30x1",
+      "intrinsic.mass.armor.density": "+0x1",
+      "intrinsic.mass.body.amount": "+30x1",
+      "intrinsic.mass.body.density": "+0x1",
+      "intrinsic.profile": "+2x1",
+      "intrinsic.space": "+30x1"
+    }
+  }
+]

@@ -46,5 +46,10 @@ namespace Expeditionary.Model.Combat.Units
         {
             return Definition.GetTags();
         }
+
+        public bool Validate()
+        {
+            return Speed >= 1 && Intrinsics.Space.Available.GetValue() >= Intrinsics.Space.Used.GetValue();
+        }
     }
 }

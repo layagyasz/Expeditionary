@@ -92,12 +92,33 @@ namespace Expeditionary.Model.Combat.Units
         {
             return new()
             {
-                Number = UnitTrait.GetOrDefault(attributes, "intrinsic.number", Modifier.None),
-                Mass = UnitTrait.GetOrDefault(attributes, "intrinsic.mass", Modifier.None),
+                Manpower = UnitTrait.GetOrDefault(attributes, "intrinsic.manpower", Modifier.None),
+                Mass = BuildMass("intrinsic.mass", attributes),
                 Morale = UnitTrait.GetOrDefault(attributes, "intrinsic.morale", Modifier.None),
+                Number = UnitTrait.GetOrDefault(attributes, "intrinsic.number", Modifier.None),
                 Power = UnitTrait.GetOrDefault(attributes, "intrinsic.power", Modifier.None),
                 Profile = UnitTrait.GetOrDefault(attributes, "intrinsic.profile", Modifier.None),
+                Space = BuildSpace("intrinsic.space", attributes),
                 Stamina = UnitTrait.GetOrDefault(attributes, "intrinsic.stamina", Modifier.None)
+            };
+        }
+
+        private static UnitMass BuildMass(string prefix, IDictionary<string, Modifier> attributes)
+        {
+            return new()
+            {
+                Armor = BuildMassComponent(prefix + ".armor", attributes),
+                Body = BuildMassComponent(prefix + ".body", attributes),
+                Equipment = BuildMassComponent(prefix + ".equipment", attributes)
+            };
+        }
+
+        private static UnitMassComponent BuildMassComponent(string prefix, IDictionary<string, Modifier> attributes)
+        {
+            return new()
+            {
+                Density = UnitTrait.GetOrDefault(attributes, prefix + "/density", Modifier.None),
+                Amount = UnitTrait.GetOrDefault(attributes, prefix + "/amount", Modifier.None)
             };
         }
 
@@ -108,6 +129,15 @@ namespace Expeditionary.Model.Combat.Units
                 Roughness = BuildHindrance(attributes, "movement.roughness"),
                 Softness = BuildHindrance(attributes, "movement.softness"),
                 WaterDepth = BuildHindrance(attributes, "movement.waterdepth")
+            };
+        }
+
+        private static UnitSpace BuildSpace(string prefix, IDictionary<string, Modifier> attributes)
+        {
+            return new()
+            {
+                Available = UnitTrait.GetOrDefault(attributes, prefix, Modifier.None),
+                Used = UnitTrait.GetOrDefault(attributes, prefix + "/used", Modifier.None)
             };
         }
     }

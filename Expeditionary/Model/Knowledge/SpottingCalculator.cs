@@ -11,20 +11,16 @@ namespace Expeditionary.Model.Knowledge
             CombatCondition condition,
             IAsset target)
         {
-            if (target is not Unit targetUnit)
-            {
-                return detection.Any(x => x.Value > 0);
-            }
             return detection.Keys.Any(
                 x => IsSpotted(
                     detection[x], 
-                    GetSignature(targetUnit, x, condition), 
-                    GetConcealment(targetUnit, x, condition)));
+                    GetSignature(target, x, condition), 
+                    GetConcealment(target, x, condition)));
         }
 
         public static bool IsSpotted(float detection, float signature, float concealment)
         {
-            return SkillCalculator.SignatureAttenuate(detection, signature) >= concealment;
+            return SkillCalculator.SignatureAttenuate(detection, signature) > concealment;
         }
 
         public static float GetConcealment(IAsset asset, UnitDetectionBand band, CombatCondition conditions)
@@ -48,7 +44,7 @@ namespace Expeditionary.Model.Knowledge
         {
             if (los.IsBlocked && (band == UnitDetectionBand.Visual || band == UnitDetectionBand.Thermal))
             {
-                return 0;
+                return 0f;
             }
             return SkillCalculator.RangeAttenuate(
                 detector.Type.Capabilities.GetDetection(condition, band).GetValue(),
