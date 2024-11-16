@@ -1,0 +1,53 @@
+[
+  {
+    "$id": "trait-vehicle-suspension-wheeled",
+    "Name": "Wheeled",
+    "Cost": 0,
+    "Tags": [ "Wheeled" ],
+    "Modifiers": {
+      "movement.roughness/min": "+0x0",
+      "movement.roughness/max": "+3x0",
+      "movement.roughness/cap": "+3x0",
+      "movement.softness/min": "+0x0",
+      "movement.softness/max": "+3x0",
+      "movement.softness/cap": "+3x0",
+      "movement.waterdepth/min": "+0x0",
+      "movement.waterdepth/max": "+4x0",
+      "movement.waterdepth/cap": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-suspension-tracked",
+    "Name": "Tracked",
+    "Cost": 0,
+    "Tags": [ "Tracked" ],
+    "Modifiers": {
+      "movement.roughness/min": "+1x0",
+      "movement.roughness/max": "+2x0",
+      "movement.roughness/cap": "+4x0",
+      "movement.softness/min": "+0x0",
+      "movement.softness/max": "+2x0",
+      "movement.softness/cap": "+4x0",
+      "movement.waterdepth/min": "+0x0",
+      "movement.waterdepth/max": "+2x0",
+      "movement.waterdepth/cap": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-suspension-hover",
+    "Name": "Hover",
+    "Cost": 8,
+    "Tags": [ "Hover" ],
+    "Modifiers": {
+      "movement.roughness/min": "+1x0",
+      "movement.roughness/max": "+1x0",
+      "movement.roughness/cap": "+3x0",
+      "movement.softness/min": "+0x0",
+      "movement.softness/max": "+0x0",
+      "movement.softness/cap": "+0x0",
+      "movement.waterdepth/min": "+0x0",
+      "movement.waterdepth/max": "+0x0",
+      "movement.waterdepth/cap": "+5x0"
+    }
+  }
+]

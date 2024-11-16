@@ -6,9 +6,9 @@ namespace Expeditionary.Model
     [JsonConverter(typeof(ModifierJsonConverter))]
     public record struct Modifier
     {
-        public static readonly Modifier None = new(1, 0);
+        public static readonly Modifier None = new();
 
-        public float Multiplier { get; set; } = 1f;
+        public float Multiplier { get; set; } = 0f;
         public float Bonus { get; set; } = 0f;
 
         public Modifier() { }
@@ -21,7 +21,7 @@ namespace Expeditionary.Model
 
         public float GetValue()
         {
-            return Bonus * Multiplier;
+            return Bonus * (1 + Multiplier);
         }
 
         public static Modifier Add(Modifier left, Modifier right)
@@ -31,7 +31,7 @@ namespace Expeditionary.Model
 
         public static Modifier operator +(Modifier left, Modifier right)
         {
-            return new(left.Multiplier * right.Multiplier, left.Bonus + right.Bonus);
+            return new(left.Multiplier + right.Multiplier, left.Bonus + right.Bonus);
         }
     }
 }

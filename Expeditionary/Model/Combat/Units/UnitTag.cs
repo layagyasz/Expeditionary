@@ -25,6 +25,7 @@ namespace Expeditionary.Model.Combat.Units
         Food,
         Fuel,
         Heavy,
+        Hover,
         HQ,
         Infantry,
         Jamming,

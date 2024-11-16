@@ -1,0 +1,120 @@
+[
+  {
+    "$id": "trait-vehicle-sensor-visual-1",
+    "Name": "Basic Visual Sensor Package",
+    "Cost": 1,
+    "Modifiers": {
+      "capability.detection[visual]": "+3x0",
+      "capability.range[visual]": "+2x0",
+      "intrinsic.mass.equipment/amount": "+0.25x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-visual-2",
+    "Name": "Visual Sensor Package 1",
+    "Cost": 2,
+    "Modifiers": {
+      "capability.detection[visual]": "+6x0",
+      "capability.range[visual]": "+3x0",
+      "intrinsic.mass.equipment/amount": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-visual-3",
+    "Name": "Visual Sensor Package 2",
+    "Cost": 3,
+    "Modifiers": {
+      "capability.detection[visual]": "+9x0",
+      "capability.range[visual]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-visual-4",
+    "Name": "Advanced Visual Sensor Package",
+    "Cost": 4,
+    "Modifiers": {
+      "capability.detection[visual]": "+12x0",
+      "capability.range[visual]": "+5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-thermal-1",
+    "Name": "Basic Thermal Sensor Package",
+    "Cost": 1,
+    "Modifiers": {
+      "capability.detection[thermal]": "+3x0",
+      "capability.range[thermal]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-thermal-2",
+    "Name": "Thermal Sensor Package 2",
+    "Cost": 2,
+    "Modifiers": {
+      "capability.detection[thermal]": "+6x0",
+      "capability.range[thermal]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-thermal-3",
+    "Name": "Thermal Sensor Package 3",
+    "Cost": 3,
+    "Modifiers": {
+      "capability.detection[thermal]": "+9x0",
+      "capability.range[thermal]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-thermal-4",
+    "Name": "Advanced Thermal Sensor Package",
+    "Cost": 4,
+    "Modifiers": {
+      "capability.detection[thermal]": "+12x0",
+      "capability.range[thermal]": "+5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-electronic-1",
+    "Name": "Basic Electronic Sensor Package",
+    "Cost": 4,
+    "Modifiers": {
+      "capability.detection[electronic]": "+6x0",
+      "capability.range[electronic]": "+8x0",
+      "intrinsic.mass.equipment/amount": "+3x0",
+      "intrinsic.size/used": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-electronic-2",
+    "Name": "Electronic Sensor Package 2",
+    "Cost": 8,
+    "Modifiers": {
+      "capability.detection[electronic]": "+8x0",
+      "capability.range[electronic]": "+16x0",
+      "intrinsic.mass.equipment/amount": "+6x0",
+      "intrinsic.size/used": "+6x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-electronic-3",
+    "Name": "Electronic Sensor Package 3",
+    "Cost": 12,
+    "Modifiers": {
+      "capability.detection[electronic]": "+10x0",
+      "capability.range[electronic]": "+24x0",
+      "intrinsic.mass.equipment/amount": "+9x0",
+      "intrinsic.size/used": "+9x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-sensor-electronic-4",
+    "Name": "Advanced Electronic Sensor Package",
+    "Cost": 16,
+    "Modifiers": {
+      "capability.detection[electronic]": "+12x0",
+      "capability.range[electronic]": "+32x0",
+      "intrinsic.mass.equipment/amount": "+12x0",
+      "intrinsic.size/used": "+12x0"
+    }
+  }
+]

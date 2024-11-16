@@ -17,7 +17,7 @@ namespace Expeditionary.Model.Combat.Units
         {
             return traits.SelectMany(x => x.Modifiers)
                 .GroupBy(x => x.Key, x => x.Value)
-                .ToDictionary(x => x.Key, x => x.Aggregate((x, y) => x + y));
+                .ToDictionary(x => x.Key, x => x.Aggregate(Modifier.None, (x, y) => x + y));
         }
 
         public static EnumMap<TKey, TValue> GetMap<TKey, TValue>(

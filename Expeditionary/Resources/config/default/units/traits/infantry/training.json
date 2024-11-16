@@ -6,7 +6,7 @@
     "Cost": -2,
     "Level": -1,
     "Modifiers": {
-      "intrinsic.morale": "+0x0.5"
+      "intrinsic.morale": "+0x-0.5"
     }
   },
   {
@@ -16,7 +16,7 @@
     "Cost": 2,
     "Level": 1,
     "Modifiers": {
-      "intrinsic.morale": "+0x1.5"
+      "intrinsic.morale": "+0x0.5"
     }
   },
   {
@@ -26,7 +26,7 @@
     "Cost": 4,
     "Level": 2,
     "Modifiers": {
-      "intrinsic.morale": "+0x2"
+      "intrinsic.morale": "+0x1"
     }
   },
   {
@@ -36,7 +36,7 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.25"
+      "intrinsic.stamina": "+0x0.25"
     }
   },
   {
@@ -46,7 +46,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.5"
+      "intrinsic.stamina": "+0x0.5"
     }
   },
   {
@@ -56,7 +56,7 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.75"
+      "intrinsic.stamina": "+0x0.75"
     }
   },
   {
@@ -66,7 +66,7 @@
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
-      "intrinsic.stamina": "+0x2"
+      "intrinsic.stamina": "+0x1"
     }
   },
   {
@@ -76,8 +76,8 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "capabilities.accuracy": "+0x1.25",
-      "capabilities.lethality": "+0x1.25"
+      "capability.accuracy": "+0x0.25",
+      "capability.lethality": "+0x0.25"
     }
   },
   {
@@ -87,8 +87,8 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "capabilities.accuracy": "+0x1.5",
-      "capabilities.lethality": "+0x1.5"
+      "capability.accuracy": "+0x0.5",
+      "capability.lethality": "+0x0.5"
     }
   },
   {
@@ -98,8 +98,8 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "capabilities.accuracy": "+0x1.75",
-      "capabilities.lethality": "+0x1.75"
+      "capability.accuracy": "+0x0.75",
+      "capability.lethality": "+0x0.75"
     }
   },
   {
@@ -109,8 +109,8 @@
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
-      "capabilities.accuracy": "+0x2",
-      "capabilities.lethality": "+0x2"
+      "capability.accuracy": "+0x1",
+      "capability.lethality": "+0x1"
     }
   },
   {
@@ -121,7 +121,7 @@
     "Level": 1,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "movement.roughness/cap": "+1x1"
+      "movement.roughness/cap": "+1x0"
     }
   },
   {
@@ -132,8 +132,8 @@
     "Level": 2,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.25",
-      "movement.roughness/cap": "+1x1"
+      "intrinsic.stamina": "+0x0.25",
+      "movement.roughness/cap": "+1x0"
     }
   },
   {
@@ -144,8 +144,8 @@
     "Level": 3,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.5",
-      "movement.roughness/cap": "+1x1"
+      "intrinsic.stamina": "+0x0.5",
+      "movement.roughness/cap": "+1x0"
     }
   },
   {
@@ -156,8 +156,8 @@
     "Level": 4,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "intrinsic.stamina": "+0x1.75",
-      "movement.roughness/cap": "+1x1"
+      "intrinsic.stamina": "+0x0.75",
+      "movement.roughness/cap": "+1x0"
     }
   }
 ]

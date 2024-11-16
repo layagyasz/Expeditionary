@@ -6,8 +6,8 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "defense.armor": "+0.25x1",
-      "defense.armor/min": "+0.05x1"
+      "defense.armor": "+0.5x0",
+      "defense.armor/min": "+0.1x0"
     }
   },
   {
@@ -17,8 +17,8 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "defense.armor": "+0.5x1",
-      "defense.armor/min": "+0.1x1"
+      "defense.armor": "+1x0",
+      "defense.armor/min": "+0.2x0"
     }
   },
   {
@@ -28,8 +28,8 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "defense.armor": "+0.5x1",
-      "defense.armor/min": "+0.2x1"
+      "defense.armor": "+1x0",
+      "defense.armor/min": "+0.4x0"
     }
   },
   {
@@ -40,8 +40,8 @@
     "Level": 4,
     "Tags": [ "Heavy" ],
     "Modifiers": {
-      "defense.armor": "+0.75x1",
-      "defense.armor/min": "+0.3x1"
+      "defense.armor": "+1.5x0",
+      "defense.armor/min": "+0.6x0"
     }
   },
   {
@@ -51,7 +51,7 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "capability.concealment[visual]": "+6x1"
+      "capability.concealment[visual]": "+1x0"
     }
   },
   {
@@ -61,7 +61,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "capability.concealment[visual]": "+12x1"
+      "capability.concealment[visual]": "+2x0"
     }
   },
   {
@@ -71,7 +71,7 @@
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
-      "capability.concealment[visual]": "+18x1"
+      "capability.concealment[visual]": "+3x0"
     }
   },
   {
@@ -81,7 +81,7 @@
     "Cost": 4,
     "Level": 4,
     "Modifiers": {
-      "capability.concealment[visual]": "+24x1"
+      "capability.concealment[visual]": "+4x0"
     }
   },
   {
@@ -91,7 +91,7 @@
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
-      "capability[urban].concealment[visual]": "+12x1"
+      "capability[urban].concealment[visual]": "+2x0"
     }
   },
   {
@@ -101,7 +101,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "capability[urban].concealment[visual]": "+24x1"
+      "capability[urban].concealment[visual]": "+4x0"
     }
   }
 ]

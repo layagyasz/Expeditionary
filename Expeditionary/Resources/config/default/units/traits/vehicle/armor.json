@@ -1,105 +1,105 @@
 [
   {
-    "$id": "trait-vehicle-armor-light",
-    "Name": "Light Armor",
+    "$id": "trait-vehicle-armor-alloy-light",
+    "Name": "Light Alloy Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 4,
+    "Cost": 3,
     "Level": 1,
     "Tags": [ "Light" ],
     "Modifiers": {
-      "defense.armor": "+6x1",
-      "defense.armor/min": "+2x1",
-      "intrinsic.mass.armor.density": "+0.5x1"
+      "defense.armor": "+3x0",
+      "defense.armor/min": "+1x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-medium",
-    "Name": "Medium Armor",
+    "$id": "trait-vehicle-armor-alloy-medium",
+    "Name": "Alloy Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 8,
+    "Cost": 9,
     "Level": 2,
     "Tags": [ "Medium" ],
     "Modifiers": {
-      "defense.armor": "+12x1",
-      "defense.armor/min": "+4x1",
-      "intrinsic.mass.armor.density": "+1x1"
+      "defense.armor": "+9x0",
+      "defense.armor/min": "+3x0",
+      "intrinsic.mass.armor.density": "+1x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-heavy",
-    "Name": "Heavy Armor",
+    "$id": "trait-vehicle-armor-alloy-heavy",
+    "Name": "Heavy Alloy Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 12,
+    "Cost": 27,
     "Level": 3,
     "Tags": [ "Heavy" ],
     "Modifiers": {
-      "defense.armor": "+18x1",
-      "defense.armor/min": "+6x1",
-      "intrinsic.mass.armor.density": "+1.5x1"
+      "defense.armor": "+27x0",
+      "defense.armor/min": "+9x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-spacing-i",
+    "$id": "trait-vehicle-armor-spacing-1",
     "Name": "Basic Spaced Armor",
     "Family": "trait-vehicle-armor-spacing",
-    "Cost": 2,
+    "Cost": 13,
     "Level": 1,
     "Modifiers": {
-      "defense.armor": "+0x1.25"
+      "defense.armor": "+0x0.25"
     }
   },
   {
-    "$id": "trait-vehicle-armor-spacing-ii",
+    "$id": "trait-vehicle-armor-spacing-2",
     "Name": "Advanced Spaced Armor",
     "Family": "trait-vehicle-armor-spacing",
-    "Cost": 4,
+    "Cost": 27,
     "Level": 2,
     "Modifiers": {
-      "defense.armor": "+0x1.5"
+      "defense.armor": "+0x0.5"
     }
   },
   {
-    "$id": "trait-vehicle-armor-era-i",
+    "$id": "trait-vehicle-armor-era-1",
     "Name": "Basic Explosive Reactive Armor",
     "Family": "trait-vehicle-armor-era",
-    "Cost": 1,
+    "Cost": 20,
     "Level": 1,
     "Modifiers": {
-      "defense.armor": "+1.5x1",
-      "defense.armor/min": "+1.5x1"
+      "defense.armor": "+20x0",
+      "intrinsic.mass.armor.density": "+1x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-era-ii",
+    "$id": "trait-vehicle-armor-era-2",
     "Name": "Explosive Reactive Armor 2",
     "Family": "trait-vehicle-armor-era",
-    "Cost": 2,
+    "Cost": 30,
     "Level": 2,
     "Modifiers": {
-      "defense.armor": "+3x1",
-      "defense.armor/min": "+3x1"
+      "defense.armor": "+30x0",
+      "intrinsic.mass.armor.density": "+1x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-era-iii",
+    "$id": "trait-vehicle-armor-era-3",
     "Name": "Explosive Reactive Armor 3",
     "Family": "trait-vehicle-armor-era",
-    "Cost": 3,
+    "Cost": 40,
     "Level": 3,
     "Modifiers": {
-      "defense.armor": "+4.5x1",
-      "defense.armor/min": "+4.5x1"
+      "defense.armor": "+40x0",
+      "intrinsic.mass.armor.density": "+1x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-era-iv",
+    "$id": "trait-vehicle-armor-era-4",
     "Name": "Advanced Explosive Reactive Armor",
     "Family": "trait-vehicle-armor-era",
-    "Cost": 4,
+    "Cost": 50,
     "Level": 4,
     "Modifiers": {
-      "defense.armor": "+6x1",
-      "defense.armor/min": "+6x1"
+      "defense.armor": "+50x0",
+      "intrinsic.mass.armor.density": "+1x0"
     }
   }
 ]
