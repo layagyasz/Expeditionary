@@ -296,29 +296,38 @@ namespace Expeditionary.Model.Mapping.Generator
             input.GetTexture().Update(new(), centers);
             var output = pipeline.Run(canvasProvider, input);
 
-            var corners = new float[map.Width + 2, 2 * map.Height + 2];
-            var elevation = output[0].GetTexture().GetData();
-            var stone = output[1].GetTexture().GetData();
-            var soil = output[2].GetTexture().GetData();
-            var plants = output[3].GetTexture().GetData();
+            var elevationData = output[0].GetTexture().GetData();
+            var stoneData = output[1].GetTexture().GetData();
+            var soilData = output[2].GetTexture().GetData();
+            var plantData = output[3].GetTexture().GetData();
             canvasProvider.Return(input);
             foreach (var canvas in output)
             {
                 canvasProvider.Return(canvas);
             }
 
-            Elevation(map, corners, parameters, elevation);
+            var elevation = new float[map.Width, map.Height];
+            var slope = new float[map.Width, map.Height];
+            var corners = new float[map.Width + 2, 2 * map.Height + 2];
+
+            Elevation(map, elevation, slope, corners, parameters, elevationData);
             var numRivers = (int)(parameters.RiverDensity * map.Height * map.Width * (1 - parameters.LiquidLevel));
             RiverGenerator.Generate(numRivers, map, corners, random);
-            AdjustMoisture(map, parameters, plants);
-            Stone(map, parameters, stone);
-            Soil(map, parameters, soil);
-            Brush(map, parameters, plants);
-            Foliage(map, parameters, plants);
+            AdjustMoisture(map, parameters, plantData);
+            Stone(map, parameters, stoneData);
+            Soil(map, parameters, soilData, elevation, slope);
+            Brush(map, parameters, plantData);
+            Foliage(map, parameters, plantData);
             Hindrance(map);
         }
 
-        private static void Elevation(Map map, float[,] corners, Parameters parameters, Color4[,] elevationData)
+        private static void Elevation(
+            Map map,
+            float[,] elevation,
+            float[,] slope, 
+            float[,] corners,
+            Parameters parameters,
+            Color4[,] elevationData)
         {
             float[] elevations = new float[map.Width * map.Height];
             for (int i = 0; i < map.Width; ++i)
@@ -327,8 +336,8 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = elevationData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    tile.Elevation = tileData.R;
-                    elevations[i * map.Height + j] = tile.Elevation;
+                    elevation[i, j] = tileData.R;
+                    elevations[i * map.Height + j] = tileData.R;
                 }
             }
             Array.Sort(elevations);
@@ -337,8 +346,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = map.GetTile(i, j)!;
-                    tile.Elevation = (tile.Elevation - liquidLevel) / (1f - liquidLevel);
+                    elevation[i, j] = (elevation[i, j] - liquidLevel) / (1f - liquidLevel);
                 }
             }
             for (int i = 0; i < map.Width; ++i)
@@ -347,22 +355,22 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     var tile = map.GetTile(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (tile.Elevation <= 0)
+                    if (elevation[i, j] <= 0)
                     {
-                        tile.Elevation = 0;
+                        elevation[i, j] = 0;
                         tile.Terrain.IsLiquid = true;
-                        tile.Slope = 0;
+                        slope[i, j] = 0;
                     }
                     else
                     {
-                        tile.Slope =
-                            Enumerable.Range(0, 3)
-                                .Select(
-                                    x =>
-                                        Math.Abs(
-                                            (map.GetTile(Geometry.GetNeighbor(coord, x)) ?? tile)!.Elevation -
-                                            (map.GetTile(Geometry.GetNeighbor(coord, x + 3)) ?? tile)!.Elevation))
-                                .Max();
+                        for (int k = 0; k < 3; ++k)
+                        {
+                            var left = Cubic.HexagonalOffset.Instance.Project(Geometry.GetNeighbor(coord, k));
+                            var right = Cubic.HexagonalOffset.Instance.Project(Geometry.GetNeighbor(coord, k + 3));
+                            left = map.ContainsTile(left) ? left : new(i, j);
+                            right = map.ContainsTile(right) ? right : new(i, j);
+                            slope[i, j] = Math.Abs(elevation[left.X, left.Y] - elevation[right.X, right.Y]);
+                        }
                     }
                 }
             }
@@ -389,11 +397,15 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     var tile = map.GetTile(i, j)!;
-                    if (!tile.Terrain.IsLiquid)
-                    { 
-                        tile.Elevation = (int)(parameters.ElevationLevels * tile.Elevation)
-                                / (parameters.ElevationLevels - 1f);
-                    }
+                    tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
+                }
+            }
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
+                    tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
                 }
             }
         }
@@ -437,7 +449,8 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        private static void Soil(Map map, Parameters parameters, Color4[,] soilData)
+        private static void Soil(
+            Map map, Parameters parameters, Color4[,] soilData, float[,] elevation, float[,] slope)
         {
             for (int i = 0; i < map.Width; ++i)
             {
@@ -445,13 +458,15 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = soilData[i, j];
                     var tile = map.GetTile(i, j)!;
-                    if (tileData.B - 0.25f * (tile.Elevation - 0.5f) < parameters.SoilCover)
+                    var e = elevation[i, j];
+                    var s = slope[i, j];
+                    if (tileData.B - 0.25f * (e - 0.5f) < parameters.SoilCover)
                     {
                         var modifiers = 
                             new Vector3(
-                                EvaluateSoil(parameters.SoilA, tile.Elevation, tile.Slope),
-                                EvaluateSoil(parameters.SoilB, tile.Elevation, tile.Slope), 
-                                EvaluateSoil(parameters.SoilC, tile.Elevation, tile.Slope));
+                                EvaluateSoil(parameters.SoilA, e, s),
+                                EvaluateSoil(parameters.SoilB, e, s), 
+                                EvaluateSoil(parameters.SoilC, e, s));
                         var weights = 
                             new Vector3(parameters.SoilA.Weight, parameters.SoilB.Weight, parameters.SoilC.Weight);
                         var soil =
@@ -511,6 +526,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     if (tile.Terrain.Foliage != null)
                     {
                         hindrance.Roughness = 2;
+                        hindrance.Restriction = 3;
                     } 
                     else if (tile.Terrain.Soil != null)
                     {

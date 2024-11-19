@@ -1,24 +1,28 @@
 ﻿namespace Expeditionary.Model
 {
-    public class Movement
+    public record class Movement
     {
-        public struct Hindrance
+        public record struct Hindrance
         {
+            public int Restriction { get; set; }
             public int Roughness { get; set; }
+            public int Slope { get; set; }
             public int Softness { get; set; }
             public int WaterDepth { get; set; }
 
             public Hindrance() { }
 
-            public Hindrance(int roughness, int softness, int waterDepth)
+            public Hindrance(int restriction, int roughness, int slope, int softness, int waterDepth)
             {
                 Roughness = roughness;
                 Softness = softness;
+                Restriction = restriction;
+                Slope = slope;
                 WaterDepth = waterDepth;
             }
         }
 
-        public struct CostFunction
+        public record struct CostFunction
         {
             public Modifier Minimum { get; set; } = Modifier.None;
             public Modifier Maximum { get; set; } = Modifier.None;
@@ -43,22 +47,32 @@
             }
         }
 
+        public CostFunction Restriction { get; set; } = new();
         public CostFunction Roughness { get; set; } = new();
+        public CostFunction Slope { get; set; } = new();
         public CostFunction Softness { get; set; } = new();
         public CostFunction WaterDepth { get; set; } = new();
 
         public Movement() { }
 
-        public Movement(CostFunction roughness, CostFunction softness, CostFunction waterDepth)
+        public Movement(
+            CostFunction restriction,
+            CostFunction roughness,
+            CostFunction slope,
+            CostFunction softness,
+            CostFunction waterDepth)
         {
+            Restriction = restriction;
             Roughness = roughness;
+            Slope = slope;
             Softness = softness;
             WaterDepth = waterDepth;
         }
 
         public float GetCost(Hindrance hindrance)
         {
-            return 1 + Roughness.GetCost(hindrance.Roughness) + Softness.GetCost(hindrance.Softness) 
+           return 1 + Restriction.GetCost(hindrance.Restriction) + Roughness.GetCost(hindrance.Roughness) 
+                + Slope.GetCost(hindrance.Slope) + Softness.GetCost(hindrance.Softness)
                 + WaterDepth.GetCost(hindrance.WaterDepth);
         }
     }

@@ -126,8 +126,10 @@ namespace Expeditionary.Model.Combat.Units
         {
             return new()
             {
+                Restriction = BuildHindrance(attributes, "movement.restriction"),
                 Roughness = BuildHindrance(attributes, "movement.roughness"),
                 Softness = BuildHindrance(attributes, "movement.softness"),
+                Slope = BuildHindrance(attributes, "movement.slope"),
                 WaterDepth = BuildHindrance(attributes, "movement.waterdepth")
             };
         }

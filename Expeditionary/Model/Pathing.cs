@@ -174,20 +174,20 @@ namespace Expeditionary.Model
         {
             if (edge.Levels.ContainsKey(EdgeType.Road))
             {
-                return new(roughness: 0, softness: 0, waterDepth: 0);
+                return new(restriction: 0, roughness: 0, slope: 0, softness: 0, waterDepth: 0);
             }
             if (destination.Terrain.IsLiquid)
             {
-                return new(roughness: 0, softness: 0, waterDepth: 5);
+                return new(restriction: 0, roughness: 0, slope: 0, softness: 0, waterDepth: 5);
             }
             Movement.Hindrance h = destination.Hindrance;
             if (edge.Levels.ContainsKey(EdgeType.River))
             {
                 h.WaterDepth = Math.Min(h.WaterDepth + 2, 5);
             }
-            if (Math.Abs(origin.Elevation - destination.Elevation) > float.Epsilon)
+            if (origin.Elevation != destination.Elevation)
             {
-                h.Roughness = Math.Min(h.Roughness + 2, 5);
+                h.Slope = Math.Abs(origin.Elevation - destination.Elevation);
             }
             return h;
         }

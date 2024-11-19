@@ -9,7 +9,10 @@
       "intrinsic.manpower": "+1x0",
       "intrinsic.morale": "+8x0",
       "intrinsic.number": "+4x0",
-      "intrinsic.stamina": "+Infinityx0"
+      "intrinsic.stamina": "+Infinityx0",
+      "movement.restriction/min": "+0x0",
+      "movement.restriction/max": "+0x0",
+      "movement.restriction/cap": "+2x0"
     }
   }
 ]

@@ -34,6 +34,16 @@ namespace Expeditionary.Model.Mapping
             }
         }
 
+        public bool ContainsTile(int x, int y)
+        {
+            return !(x < 0 || y < 0 || x >= Width || y >= Height);
+        }
+
+        public bool ContainsTile(Vector2i offset)
+        {
+            return ContainsTile(offset.X, offset.Y);
+        }
+
         public IEnumerable<Vector3i> GetTiles()
         {
             for (int i = 0; i < Width; ++i)
@@ -57,12 +67,9 @@ namespace Expeditionary.Model.Mapping
 
         public Tile? GetTile(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= Width || y >= Height)
-            {
-                return null;
-            }
-            return _tiles[x, y];
+            return ContainsTile(x, y) ? _tiles[x, y] : null;
         }
+
         public Tile? GetTile(Vector2i offset)
         {
             return GetTile(offset.X, offset.Y);
