@@ -107,7 +107,16 @@
     <None Update="Resources\config\default\units\traits\infantry\training.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\traits\infantry\weapons.json">
+    <None Update="Resources\config\default\units\traits\weapons\cannon.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\weapons\howitzer.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\weapons\mortar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\weapons\small.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\vehicle\design.json">
@@ -119,7 +128,7 @@
     <None Update="Resources\config\default\units\traits\vehicle\suspension.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\weapons\infantry.json">
+    <None Update="Resources\config\default\units\weapons\small.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\fonts.json">
@@ -384,7 +393,6 @@
 
   <ItemGroup>
     <Folder Include="Resources\config\default\generation\environments\" />
-    <Folder Include="Resources\config\default\units\weapons\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@
   {
     "$id": "trait-vehicle-sensor-visual-1",
     "Name": "Basic Visual Sensor Package",
+    "Family": "trait-vehicle-sensor-visual",
     "Cost": 1,
     "Modifiers": {
       "capability.detection[visual]": "+3x0",
@@ -11,7 +12,8 @@
   },
   {
     "$id": "trait-vehicle-sensor-visual-2",
-    "Name": "Visual Sensor Package 1",
+    "Name": "Visual Sensor Package 2",
+    "Family": "trait-vehicle-sensor-visual",
     "Cost": 2,
     "Modifiers": {
       "capability.detection[visual]": "+6x0",
@@ -21,7 +23,8 @@
   },
   {
     "$id": "trait-vehicle-sensor-visual-3",
-    "Name": "Visual Sensor Package 2",
+    "Name": "Visual Sensor Package 3",
+    "Family": "trait-vehicle-sensor-visual",
     "Cost": 3,
     "Modifiers": {
       "capability.detection[visual]": "+9x0",
@@ -31,6 +34,7 @@
   {
     "$id": "trait-vehicle-sensor-visual-4",
     "Name": "Advanced Visual Sensor Package",
+    "Family": "trait-vehicle-sensor-visual",
     "Cost": 4,
     "Modifiers": {
       "capability.detection[visual]": "+12x0",
@@ -40,6 +44,7 @@
   {
     "$id": "trait-vehicle-sensor-thermal-1",
     "Name": "Basic Thermal Sensor Package",
+    "Family": "trait-vehicle-sensor-thermal",
     "Cost": 1,
     "Modifiers": {
       "capability.detection[thermal]": "+3x0",
@@ -49,6 +54,7 @@
   {
     "$id": "trait-vehicle-sensor-thermal-2",
     "Name": "Thermal Sensor Package 2",
+    "Family": "trait-vehicle-sensor-thermal",
     "Cost": 2,
     "Modifiers": {
       "capability.detection[thermal]": "+6x0",
@@ -58,6 +64,7 @@
   {
     "$id": "trait-vehicle-sensor-thermal-3",
     "Name": "Thermal Sensor Package 3",
+    "Family": "trait-vehicle-sensor-thermal",
     "Cost": 3,
     "Modifiers": {
       "capability.detection[thermal]": "+9x0",
@@ -67,6 +74,7 @@
   {
     "$id": "trait-vehicle-sensor-thermal-4",
     "Name": "Advanced Thermal Sensor Package",
+    "Family": "trait-vehicle-sensor-thermal",
     "Cost": 4,
     "Modifiers": {
       "capability.detection[thermal]": "+12x0",
@@ -76,6 +84,7 @@
   {
     "$id": "trait-vehicle-sensor-electronic-1",
     "Name": "Basic Electronic Sensor Package",
+    "Family": "trait-vehicle-sensor-electronic",
     "Cost": 4,
     "Modifiers": {
       "capability.detection[electronic]": "+6x0",
@@ -87,6 +96,7 @@
   {
     "$id": "trait-vehicle-sensor-electronic-2",
     "Name": "Electronic Sensor Package 2",
+    "Family": "trait-vehicle-sensor-electronic",
     "Cost": 8,
     "Modifiers": {
       "capability.detection[electronic]": "+8x0",
@@ -98,6 +108,7 @@
   {
     "$id": "trait-vehicle-sensor-electronic-3",
     "Name": "Electronic Sensor Package 3",
+    "Family": "trait-vehicle-sensor-electronic",
     "Cost": 12,
     "Modifiers": {
       "capability.detection[electronic]": "+10x0",
@@ -109,6 +120,7 @@
   {
     "$id": "trait-vehicle-sensor-electronic-4",
     "Name": "Advanced Electronic Sensor Package",
+    "Family": "trait-vehicle-sensor-electronic",
     "Cost": 16,
     "Modifiers": {
       "capability.detection[electronic]": "+12x0",

@@ -6,7 +6,7 @@
       {
         "IsDistributed": true,
         "Number": 8,
-        "Weapon": "weapon-infantry-rifle"
+        "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [
@@ -22,7 +22,7 @@
       {
         "IsDistributed": true,
         "Number": 8,
-        "Weapon": "weapon-infantry-rifle"
+        "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [
@@ -37,11 +37,11 @@
     "Weapons": [
       {
         "Number": 4,
-        "Weapon": "weapon-infantry-mg"
+        "Weapon": "weapon-small-mg"
       },
       {
         "Number": 4,
-        "Weapon": "weapon-infantry-rifle"
+        "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [

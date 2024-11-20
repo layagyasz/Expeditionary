@@ -121,7 +121,8 @@
     "Level": 1,
     "Tags": [ "Mountain" ],
     "Modifiers": {
-      "movement.roughness/cap": "+1x0"
+      "movement.roughness/cap": "+1x0",
+      "movement.slope/cap": "+1x0"
     }
   },
   {
@@ -133,7 +134,8 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x0.25",
-      "movement.roughness/cap": "+1x0"
+      "movement.roughness/cap": "+1x0",
+      "movement.slope/cap": "+1x0"
     }
   },
   {
@@ -145,7 +147,8 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x0.5",
-      "movement.roughness/cap": "+1x0"
+      "movement.roughness/cap": "+1x0",
+      "movement.slope/cap": "+1x0"
     }
   },
   {
@@ -157,7 +160,8 @@
     "Tags": [ "Mountain" ],
     "Modifiers": {
       "intrinsic.stamina": "+0x0.75",
-      "movement.roughness/cap": "+1x0"
+      "movement.roughness/cap": "+1x0",
+      "movement.slope/cap": "+1x0"
     }
   }
 ]

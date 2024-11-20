@@ -1,0 +1,44 @@
+[
+  {
+    "$id": "trait-howitzer-75mm",
+    "Name": "75mm Howitzer",
+    "Family": "trait-vehicle-howitzer-caliber",
+    "Cost": 8,
+    "Modifiers": {
+      "volume": "+0.1x0",
+      "range": "+12x0",
+      "accuracy": "+4x0",
+      "tracking": "+4x0",
+      "penetration": "+15x0",
+      "lethality": "+12x0"
+    }
+  },
+  {
+    "$id": "trait-howitzer-120mm",
+    "Name": "120mm Howitzer",
+    "Family": "trait-vehicle-howitzer-caliber",
+    "Cost": 18,
+    "Modifiers": {
+      "volume": "+0.05x0",
+      "range": "+60x0",
+      "accuracy": "+4x0",
+      "tracking": "+3x0",
+      "penetration": "+40x0",
+      "lethality": "32x0"
+    }
+  },
+  {
+    "$id": "trait-howitzer-155mm",
+    "Name": "155mm Howitzer",
+    "Family": "trait-vehicle-howitzer-caliber",
+    "Cost": 24,
+    "Modifiers": {
+      "volume": "+0.025x0",
+      "range": "+120x0",
+      "accuracy": "+4x0",
+      "tracking": "+2x0",
+      "penetration": "+54x0",
+      "lethality": "+48x0"
+    }
+  }
+]

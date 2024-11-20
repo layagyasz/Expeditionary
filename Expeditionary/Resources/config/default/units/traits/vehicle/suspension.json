@@ -2,6 +2,7 @@
   {
     "$id": "trait-vehicle-suspension-wheeled",
     "Name": "Wheeled",
+    "Family": "trait-vehicle-sensor-suspension",
     "Cost": 0,
     "Tags": [ "Wheeled" ],
     "Modifiers": {
@@ -22,6 +23,7 @@
   {
     "$id": "trait-vehicle-suspension-tracked",
     "Name": "Tracked",
+    "Family": "trait-vehicle-sensor-suspension",
     "Cost": 0,
     "Tags": [ "Tracked" ],
     "Modifiers": {
@@ -42,6 +44,7 @@
   {
     "$id": "trait-vehicle-suspension-hover",
     "Name": "Hover",
+    "Family": "trait-vehicle-sensor-suspension",
     "Cost": 8,
     "Tags": [ "Hover" ],
     "Modifiers": {
