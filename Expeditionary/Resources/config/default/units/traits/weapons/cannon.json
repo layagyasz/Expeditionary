@@ -11,7 +11,9 @@
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+15x0",
-      "lethality": "+6x0"
+      "lethality": "+6x0",
+      "mass": "+0.5x0",
+      "size": "+2x0"
     }
   },
   {
@@ -26,7 +28,9 @@
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+20x0",
-      "lethality": "+8x0"
+      "lethality": "+8x0",
+      "mass": "+1x0",
+      "size": "+4x0"
     }
   },
   {
@@ -41,7 +45,9 @@
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+30x0",
-      "lethality": "+12x0"
+      "lethality": "+12x0",
+      "mass": "+1.5x0",
+      "size": "+6x0"
     }
   },
   {
@@ -56,7 +62,9 @@
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+40x0",
-      "lethality": "+16x0"
+      "lethality": "+16x0",
+      "mass": "+2x0",
+      "size": "+8x0"
     }
   },
 

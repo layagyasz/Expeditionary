@@ -39,7 +39,8 @@ namespace Expeditionary.Model.Combat.Units
             Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
-            Speed = intrinsics.Power.GetValue() / intrinsics.Mass.GetValue();
+            Speed = intrinsics.Power.GetValue() 
+                / (intrinsics.Mass.GetValue() + weapons.Sum(x => x.Weapon.Mass.GetValue()));
         }
 
         public EnumSet<UnitTag> GetTags()
@@ -49,7 +50,9 @@ namespace Expeditionary.Model.Combat.Units
 
         public bool Validate()
         {
-            return Speed >= 1 && Intrinsics.Space.Available.GetValue() >= Intrinsics.Space.Used.GetValue();
+            return Speed >= 1 
+                && Intrinsics.Space.Available.GetValue() 
+                    >= (Intrinsics.Space.Used.GetValue() + Weapons.Sum(x => x.Weapon.Size.GetValue()));
         }
     }
 }

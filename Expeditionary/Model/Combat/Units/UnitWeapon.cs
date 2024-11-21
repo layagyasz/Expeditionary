@@ -22,8 +22,16 @@ namespace Expeditionary.Model.Combat.Units
         public string Name { get; }
         public UnitWeaponDefinition Definition { get; }
         public ImmutableList<Mode> Modes { get; }
+        public Modifier Size { get; }
+        public Modifier Mass { get; }
 
-        public UnitWeapon(string key, string name, UnitWeaponDefinition definition, IEnumerable<Mode> modes)
+        public UnitWeapon(
+            string key, 
+            string name,
+            UnitWeaponDefinition definition,
+            IEnumerable<Mode> modes, 
+            Modifier Size, 
+            Modifier Mass)
         {
             Key = key;
             Name = name;

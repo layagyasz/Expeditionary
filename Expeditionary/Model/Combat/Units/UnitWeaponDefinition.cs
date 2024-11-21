@@ -23,7 +23,14 @@ namespace Expeditionary.Model.Combat.Units
 
         public UnitWeapon Build(IEnumerable<UnitTrait> extraTraits)
         {
-            return new(Key, Name, this, Modes.Select(x => BuildMode(x, Enumerable.Concat(extraTraits, Traits))));
+            var baseAttributes = UnitTrait.Combine(Enumerable.Concat(extraTraits, Traits));
+            return new(
+                Key,
+                Name,
+                this,
+                Modes.Select(x => BuildMode(x, Enumerable.Concat(extraTraits, Traits))),
+                UnitTrait.GetOrDefault(baseAttributes, "mass", Modifier.None), 
+                UnitTrait.GetOrDefault(baseAttributes, "size", Modifier.None));
         }
 
         private static UnitWeapon.Mode BuildMode(Mode definition, IEnumerable<UnitTrait> baseTraits)
