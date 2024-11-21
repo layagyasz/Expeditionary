@@ -4,6 +4,7 @@
     "Name": "Light Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 4,
+    "Tags": [ "Mortar", "Light" ],
     "Modifiers": {
       "volume": "+0.1x0",
       "range": "+14x0",
@@ -21,6 +22,7 @@
     "Name": "Medium Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 8,
+    "Tags": [ "Mortar", "Medium" ],
     "Modifiers": {
       "volume": "+0.075x0",
       "range": "+20x0",
@@ -38,6 +40,7 @@
     "Name": "Heavy Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 12,
+    "Tags": [ "Mortar", "Heavy" ],
     "Modifiers": {
       "volume": "+0.05x0",
       "range": "+28x0",

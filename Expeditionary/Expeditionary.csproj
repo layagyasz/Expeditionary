@@ -116,6 +116,9 @@
     <None Update="Resources\config\default\units\traits\weapons\mortar.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\units\traits\weapons\rocket.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\units\traits\weapons\small.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

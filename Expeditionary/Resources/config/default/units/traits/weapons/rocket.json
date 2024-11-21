@@ -1,0 +1,106 @@
+[
+  {
+    "$id": "trait-rocket-caliber-light",
+    "Name": "Light Rocket",
+    "Family": "trait-rocket-caliber",
+    "Cost": 6,
+    "Tags": [ "Artillery", "Light", "Rocket" ],
+    "Modifiers": {
+      "volume": "+12x0",
+      "range": "+50x0",
+      "range/cap": "+50x0",
+      "accuracy": "+4x0",
+      "tracking": "+8x0",
+      "penetration": "+12.5x0",
+      "lethality": "+6x0",
+      "mass": "+4x0",
+      "size": "+12x0"
+    }
+  },
+  {
+    "$id": "trait-rocket-caliber-heavy",
+    "Name": "Heavy Rocket",
+    "Family": "trait-rocket-caliber",
+    "Cost": 12,
+    "Tags": [ "Artillery", "Heavy", "Rocket" ],
+    "Modifiers": {
+      "volume": "+12x0",
+      "range": "+50x0",
+      "range/cap": "+50x0",
+      "accuracy": "+4x0",
+      "tracking": "+8x0",
+      "penetration": "+30x0",
+      "lethality": "+15x0",
+      "mass": "+6x0",
+      "size": "+16x0"
+    }
+  },
+
+  {
+    "$id": "trait-rocket-rack-small",
+    "Name": "Small Rack",
+    "Family": "trait-rocket-rack",
+    "Cost": 0,
+    "Modifiers": {}
+  },
+  {
+    "$id": "trait-rocket-rack-large",
+    "Name": "Large Rack",
+    "Family": "trait-rocket-rack",
+    "Cost": 4,
+    "Modifiers": {
+      "mass": "+0x1.25",
+      "size": "+0x1.25"
+    }
+  },
+
+  {
+    "$id": "trait-rocket-warhead-light",
+    "Name": "Light Warhead",
+    "Family": "trait-rocket-warhead",
+    "Cost": -2,
+    "Modifiers": {
+      "penetration": "+0x-0.5",
+      "lethality": "+0x-0.5"
+    }
+  },
+  {
+    "$id": "trait-rocket-warhead-heavy",
+    "Name": "Heavy Warhead",
+    "Family": "trait-rocket-warhead",
+    "Cost": 18,
+    "Modifiers": {
+      "penetration": "+0x5",
+      "lethality": "+0x5"
+    }
+  },
+
+  {
+    "$id": "trait-rocket-range-short",
+    "Name": "Short Range",
+    "Family": "trait-rocket-range",
+    "Cost": -2,
+    "Tags": [ "RangeShort" ],
+    "Modifiers": {
+      "range/cap": "+0x-0.75"
+    }
+  },
+  {
+    "$id": "trait-rocket-range-medium",
+    "Name": "Medium Range",
+    "Family": "trait-rocket-range",
+    "Cost": 6,
+    "Tags": [ "RangeMedium" ],
+    "Modifiers": {}
+  },
+  {
+    "$id": "trait-rocket-range-long",
+    "Name": "Short Range",
+    "Family": "trait-rocket-range",
+    "Cost": 12,
+    "Tags": [ "RangeLong" ],
+    "Modifiers": {
+      "range/cap": "+0x1.5"
+    }
+  }
+]

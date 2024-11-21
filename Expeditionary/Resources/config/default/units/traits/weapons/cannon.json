@@ -4,6 +4,7 @@
     "Name": "Superlight Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 6,
+    "Tags": [ "Light" ],
     "Modifiers": {
       "volume": "+0.1x0",
       "range": "+4x0",
@@ -20,6 +21,7 @@
     "$id": "trait-cannon-caliber-light",
     "Name": "Light Cannon",
     "Family": "trait-cannon-caliber",
+    "Tags": [ "Light" ],
     "Cost": 8,
     "Modifiers": {
       "volume": "+0.09x0",
@@ -38,6 +40,7 @@
     "Name": "Medium Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 12,
+    "Tags": [ "Medium" ],
     "Modifiers": {
       "volume": "+0.075x0",
       "range": "+4x0",
@@ -55,6 +58,7 @@
     "Name": "Heavy Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 20,
+    "Tags": [ "Heavy" ],
     "Modifiers": {
       "volume": "+0.05x0",
       "range": "+4x0",
@@ -73,6 +77,7 @@
     "Name": "Basic Penetrator",
     "Family": "trait-cannon-ammo",
     "Cost": 6,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.1",
       "penetration": "+0x0.75",
@@ -84,6 +89,7 @@
     "Name": "Penetrator 2",
     "Family": "trait-cannon-ammo",
     "Cost": 8,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.2",
       "penetration": "+0x1",
@@ -95,6 +101,7 @@
     "Name": "Penetrator 3",
     "Family": "trait-cannon-ammo",
     "Cost": 10,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.3",
       "penetration": "+0x1.25",
@@ -106,6 +113,7 @@
     "Name": "Advanced Penetrator",
     "Family": "trait-cannon-ammo",
     "Cost": 12,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.4",
       "penetration": "+0x1.5",
@@ -118,6 +126,7 @@
     "Name": "Basic HEAT",
     "Family": "trait-cannon-ammo",
     "Cost": 2,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+5x0",
@@ -129,6 +138,7 @@
     "Name": "HEAT 2",
     "Family": "trait-cannon-ammo",
     "Cost": 4,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+10x0",
@@ -140,6 +150,7 @@
     "Name": "HEAT 3",
     "Family": "trait-cannon-ammo",
     "Cost": 6,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+15x0",
@@ -151,6 +162,7 @@
     "Name": "Advanced HEAT",
     "Family": "trait-cannon-ammo",
     "Cost": 8,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+20x0",
@@ -163,6 +175,7 @@
     "Name": "High Explosive",
     "Family": "trait-cannon-ammo",
     "Cost": 0,
+    "Tags": [ "Assault" ],
     "Modifiers": {
       "lethality": "+0x1"
     }
@@ -173,6 +186,7 @@
     "Name": "Basic Laser",
     "Family": "trait-cannon-ammo",
     "Cost": 6,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.25",
       "penetration": "+0x0.125",
@@ -185,6 +199,7 @@
     "Name": "Laser 2",
     "Family": "trait-cannon-ammo",
     "Cost": 8,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.5",
       "penetration": "+0x0.25",
@@ -197,6 +212,7 @@
     "Name": "Laser 3",
     "Family": "trait-cannon-ammo",
     "Cost": 10,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x0.75",
       "penetration": "+0x0.375",
@@ -209,6 +225,7 @@
     "Name": "Advanced Laser",
     "Family": "trait-cannon-ammo",
     "Cost": 12,
+    "Tags": [ "AntiTank" ],
     "Modifiers": {
       "accuracy": "+0x1",
       "penetration": "+0x0.5",

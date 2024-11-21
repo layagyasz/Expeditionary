@@ -4,6 +4,7 @@
     "Name": "Medium Howitzer",
     "Family": "trait-vehicle-howitzer-caliber",
     "Cost": 18,
+    "Tags": [ "Artillery", "Medium" ],
     "Modifiers": {
       "volume": "+0.05x0",
       "range": "+60x0",
@@ -21,6 +22,7 @@
     "Name": "Heavy Howitzer",
     "Family": "trait-vehicle-howitzer-caliber",
     "Cost": 24,
+    "Tags": [ "Artillery", "Heavy" ],
     "Modifiers": {
       "volume": "+0.025x0",
       "range": "+80x0",
