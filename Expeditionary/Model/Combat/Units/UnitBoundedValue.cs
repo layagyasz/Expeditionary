@@ -1,14 +1,11 @@
 ﻿namespace Expeditionary.Model.Combat.Units
 {
-    public struct UnitBoundedValue
+    public readonly record struct UnitBoundedValue
     {
         public static readonly UnitBoundedValue None = new();
 
-        public Modifier Minimum { get; set; }
-        public Modifier Value { get; set; }
-
-
-        public UnitBoundedValue() { }
+        public Modifier Minimum { get; }
+        public Modifier Value { get; }
 
         public UnitBoundedValue(Modifier minimum, Modifier value)
         {

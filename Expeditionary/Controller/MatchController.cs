@@ -141,7 +141,7 @@ namespace Expeditionary.Controller
                 {
                     var range = 
                         (int)_selectedUnit.Type.Weapons
-                            .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.GetValue()).Max();
+                            .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.Get()).Max();
                     _highlightLayer!.SetHighlight(
                         Sighting.GetUnblockedSightField(_driver.GetMatch().GetMap(), _selectedUnit.Position, range)
                             .Select(x => new HighlightLayer.HexHighlight(

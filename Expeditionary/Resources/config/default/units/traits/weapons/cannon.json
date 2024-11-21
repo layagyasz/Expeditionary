@@ -1,12 +1,13 @@
 [
   {
-    "$id": "trait-cannon-75mm",
-    "Name": "75mm Cannon",
+    "$id": "trait-cannon-caliber-super-light",
+    "Name": "Superlight Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 6,
     "Modifiers": {
       "volume": "+0.1x0",
       "range": "+4x0",
+      "range/cap": "+4x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+15x0",
@@ -14,13 +15,14 @@
     }
   },
   {
-    "$id": "trait-cannon-90mm",
-    "Name": "90mm Cannon",
+    "$id": "trait-cannon-caliber-light",
+    "Name": "Light Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 8,
     "Modifiers": {
       "volume": "+0.09x0",
-      "range": "+6x0",
+      "range": "+4x0",
+      "range/cap": "+8x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+20x0",
@@ -28,13 +30,14 @@
     }
   },
   {
-    "$id": "trait-cannon-105mm",
-    "Name": "105mm Cannon",
+    "$id": "trait-cannon-caliber-medium",
+    "Name": "Medium Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 12,
     "Modifiers": {
       "volume": "+0.075x0",
-      "range": "+8x0",
+      "range": "+4x0",
+      "range/cap": "+12x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+30x0",
@@ -42,61 +45,62 @@
     }
   },
   {
-    "$id": "trait-cannon-120mm",
-    "Name": "120mm Cannon",
+    "$id": "trait-cannon-caliber-heavy",
+    "Name": "Heavy Cannon",
     "Family": "trait-cannon-caliber",
     "Cost": 20,
     "Modifiers": {
       "volume": "+0.05x0",
-      "range": "+10x0",
+      "range": "+4x0",
+      "range/cap": "+16x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
-      "penetration": "+48x0",
-      "lethality": "+24x0"
+      "penetration": "+40x0",
+      "lethality": "+16x0"
     }
   },
 
   {
-    "$id": "trait-cannon-apfsds-1",
-    "Name": "Basic APFSDS",
-    "Family": "trait-cannon-ammo",
-    "Cost": 2,
-    "Modifiers": {
-      "accuracy": "+0x0.1",
-      "penetration": "+0x0.25",
-      "lethality": "+0x-0.25"
-    }
-  },
-  {
-    "$id": "trait-cannon-apfsds-2",
-    "Name": "APFSDS 2",
-    "Family": "trait-cannon-ammo",
-    "Cost": 4,
-    "Modifiers": {
-      "accuracy": "+0x0.2",
-      "penetration": "+0x0.5",
-      "lethality": "+0x-0.25"
-    }
-  },
-  {
-    "$id": "trait-cannon-apfsds-3",
-    "Name": "APFSDS 3",
+    "$id": "trait-cannon-penetrator-1",
+    "Name": "Basic Penetrator",
     "Family": "trait-cannon-ammo",
     "Cost": 6,
     "Modifiers": {
-      "accuracy": "+0x0.3",
+      "accuracy": "+0x0.1",
       "penetration": "+0x0.75",
       "lethality": "+0x-0.25"
     }
   },
   {
-    "$id": "trait-cannon-apfsds-4",
-    "Name": "Advanced APFSDS",
+    "$id": "trait-cannon-penetrator-2",
+    "Name": "Penetrator 2",
     "Family": "trait-cannon-ammo",
     "Cost": 8,
     "Modifiers": {
-      "accuracy": "+0x0.4",
+      "accuracy": "+0x0.2",
       "penetration": "+0x1",
+      "lethality": "+0x-0.25"
+    }
+  },
+  {
+    "$id": "trait-cannon-penetrator-3",
+    "Name": "Penetrator 3",
+    "Family": "trait-cannon-ammo",
+    "Cost": 10,
+    "Modifiers": {
+      "accuracy": "+0x0.3",
+      "penetration": "+0x1.25",
+      "lethality": "+0x-0.25"
+    }
+  },
+  {
+    "$id": "trait-cannon-penetrator-4",
+    "Name": "Advanced Penetrator",
+    "Family": "trait-cannon-ammo",
+    "Cost": 12,
+    "Modifiers": {
+      "accuracy": "+0x0.4",
+      "penetration": "+0x1.5",
       "lethality": "+0x-0.25"
     }
   },
@@ -107,9 +111,9 @@
     "Family": "trait-cannon-ammo",
     "Cost": 2,
     "Modifiers": {
-      "range": "+0x-0.25",
+      "range/cap": "+0x-0.25",
       "penetration": "+5x0",
-      "lethality": "0x0.1"
+      "lethality": "+0x0.1"
     }
   },
   {
@@ -118,9 +122,9 @@
     "Family": "trait-cannon-ammo",
     "Cost": 4,
     "Modifiers": {
-      "range": "+0x-0.25",
+      "range/cap": "+0x-0.25",
       "penetration": "+10x0",
-      "lethality": "0x0.2"
+      "lethality": "+0x0.2"
     }
   },
   {
@@ -129,9 +133,9 @@
     "Family": "trait-cannon-ammo",
     "Cost": 6,
     "Modifiers": {
-      "range": "+0x-0.25",
+      "range/cap": "+0x-0.25",
       "penetration": "+15x0",
-      "lethality": "0x0.3"
+      "lethality": "+0x0.3"
     }
   },
   {
@@ -140,9 +144,9 @@
     "Family": "trait-cannon-ammo",
     "Cost": 8,
     "Modifiers": {
-      "range": "+0x-0.25",
+      "range/cap": "+0x-0.25",
       "penetration": "+20x0",
-      "lethality": "0x0.4"
+      "lethality": "+0x0.4"
     }
   },
 
@@ -152,8 +156,7 @@
     "Family": "trait-cannon-ammo",
     "Cost": 0,
     "Modifiers": {
-      "penetration": "+0x-0.5",
-      "lethality": "0x0.5"
+      "lethality": "+0x1"
     }
   },
 
@@ -161,10 +164,11 @@
     "$id": "trait-cannon-laser-1",
     "Name": "Basic Laser",
     "Family": "trait-cannon-ammo",
-    "Cost": 4,
+    "Cost": 6,
     "Modifiers": {
       "accuracy": "+0x0.25",
-      "range": "+0x0.125",
+      "penetration": "+0x0.125",
+      "range/cap": "+0x0.0625",
       "lethality": "+0x-0.25"
     }
   },
@@ -172,10 +176,11 @@
     "$id": "trait-cannon-laser-2",
     "Name": "Laser 2",
     "Family": "trait-cannon-ammo",
-    "Cost": 6,
+    "Cost": 8,
     "Modifiers": {
       "accuracy": "+0x0.5",
-      "range": "+0x0.25",
+      "penetration": "+0x0.25",
+      "range/cap": "+0x0.125",
       "lethality": "+0x-0.25"
     }
   },
@@ -183,10 +188,11 @@
     "$id": "trait-cannon-laser-3",
     "Name": "Laser 3",
     "Family": "trait-cannon-ammo",
-    "Cost": 8,
+    "Cost": 10,
     "Modifiers": {
       "accuracy": "+0x0.75",
-      "range": "+0x0.375",
+      "penetration": "+0x0.375",
+      "range/cap": "+0x0.1875",
       "lethality": "+0x-0.25"
     }
   },
@@ -194,10 +200,11 @@
     "$id": "trait-cannon-laser-4",
     "Name": "Advanced Laser",
     "Family": "trait-cannon-ammo",
-    "Cost": 10,
+    "Cost": 12,
     "Modifiers": {
       "accuracy": "+0x1",
-      "range": "+0x0.5",
+      "penetration": "+0x0.5",
+      "range/cap": "+0x0.25",
       "lethality": "+0x-0.25"
     }
   },
@@ -206,40 +213,73 @@
     "$id": "trait-cannon-optic-1",
     "Name": "Basic Optics",
     "Family": "trait-cannon-optic",
-    "Cost": 1,
+    "Cost": 2,
     "Modifiers": {
-      "range": "+1x0",
-      "accuracy": "0x0.25"
+      "range": "+4x0"
     }
   },
   {
     "$id": "trait-cannon-optic-2",
     "Name": "Optics 2",
     "Family": "trait-cannon-optic",
-    "Cost": 2,
+    "Cost": 4,
     "Modifiers": {
-      "range": "+2x0",
-      "accuracy": "0x0.5"
+      "range": "+8x0"
     }
   },
   {
     "$id": "trait-cannon-optic-3",
     "Name": "Optics 3",
     "Family": "trait-cannon-optic",
-    "Cost": 3,
+    "Cost": 6,
     "Modifiers": {
-      "range": "+3x0",
-      "accuracy": "0x0.75"
+      "range": "+12x0"
     }
   },
   {
     "$id": "trait-cannon-optic-4",
     "Name": "Advanced Optics",
     "Family": "trait-cannon-optic",
+    "Cost": 8,
+    "Modifiers": {
+      "range": "+16x0"
+    }
+  },
+
+  {
+    "$id": "trait-cannon-rangefinder-1",
+    "Name": "Basic Rangefinder",
+    "Family": "trait-cannon-rangefinder",
+    "Cost": 2,
+    "Modifiers": {
+      "accuracy": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-cannon-rangefinder-2",
+    "Name": "Rangefinder 2",
+    "Family": "trait-cannon-rangefinder",
     "Cost": 4,
     "Modifiers": {
-      "range": "+4x0",
-      "accuracy": "0x1"
+      "accuracy": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-cannon-rangefinder-3",
+    "Name": "Rangefinder 3",
+    "Family": "trait-cannon-rangefinder",
+    "Cost": 6,
+    "Modifiers": {
+      "accuracy": "+0x0.75"
+    }
+  },
+  {
+    "$id": "trait-cannon-rangefinder-4",
+    "Name": "Advanced Rangefinder",
+    "Family": "trait-cannon-rangefinder",
+    "Cost": 8,
+    "Modifiers": {
+      "accuracy": "+0x1"
     }
   }
 ]

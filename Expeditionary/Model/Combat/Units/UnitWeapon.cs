@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Combat.Units
         {
             public CombatCondition Condition { get; init; }
             public Modifier Volume { get; init; }
-            public Modifier Range { get; init; }
+            public UnitWeaponRange Range { get; init; }
             public Modifier Accuracy { get; init; }
             public Modifier Tracking { get; init; }
             public Modifier Penetration { get; init; }

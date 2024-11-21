@@ -6,6 +6,7 @@
     "Modifiers": {
       "volume": "+1x0",
       "range": "+1x0",
+      "range/cap": "+1x0",
       "accuracy": "+6x0",
       "tracking": "+50x0",
       "penetration": "+1x0",
@@ -20,6 +21,7 @@
     "Modifiers": {
       "volume": "+4x0",
       "range": "+2x0",
+      "range/cap": "+2x0",
       "accuracy": "+3x0",
       "tracking": "+40x0",
       "penetration": "+2x0",
@@ -34,6 +36,7 @@
     "Modifiers": {
       "volume": "+0.25x0",
       "range": "+4x0",
+      "range/cap": "+4x0",
       "accuracy": "+24x0",
       "tracking": "+10x0",
       "penetration": "+2x0",

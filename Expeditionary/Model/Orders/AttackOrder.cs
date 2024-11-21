@@ -30,7 +30,7 @@ namespace Expeditionary.Model.Orders
             {
                 return false;
             }
-            if (Geometry.GetCubicDistance(Unit.Position, Defender.Position) > Mode.Range.GetValue())
+            if (Geometry.GetCubicDistance(Unit.Position, Defender.Position) > Mode.Range.Get())
             {
                 return false;
             }

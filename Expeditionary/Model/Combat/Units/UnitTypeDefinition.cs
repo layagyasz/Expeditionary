@@ -70,11 +70,9 @@ namespace Expeditionary.Model.Combat.Units
 
         private static UnitBoundedValue BuildBounded(IDictionary<string, Modifier> attributes, string attribute)
         {
-            return new()
-            {
-                Minimum = UnitTrait.GetOrDefault(attributes, attribute + "/min", Modifier.None),
-                Value = UnitTrait.GetOrDefault(attributes, attribute, Modifier.None)
-            };
+            return new(
+                UnitTrait.GetOrDefault(attributes, attribute + "/min", Modifier.None),
+                UnitTrait.GetOrDefault(attributes, attribute, Modifier.None));
         }
 
         private static Movement.CostFunction BuildHindrance(

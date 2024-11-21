@@ -1,54 +1,47 @@
 [
   {
-    "$id": "trait-mortar-60mm",
-    "Name": "60mm Mortar",
+    "$id": "trait-mortar-caliber-light",
+    "Name": "Light Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 4,
     "Modifiers": {
       "volume": "+0.1x0",
-      "range": "+8x0",
+      "range": "+14x0",
+      "range/cap": "+14x0",
       "accuracy": "+4x0",
-      "tracking": "+0.5x0",
+      "tracking": "+5x0",
       "penetration": "+12x0",
       "lethality": "+10x0"
     }
   },
   {
-    "$id": "trait-mortar-81mm",
-    "Name": "81mm Mortar",
+    "$id": "trait-mortar-caliber-medium",
+    "Name": "Medium Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 8,
     "Modifiers": {
       "volume": "+0.075x0",
-      "range": "+16x0",
+      "range": "+20x0",
+      "range/cap": "+20x0",
       "accuracy": "+4x0",
-      "tracking": "+0.4x0",
+      "tracking": "+4x0",
       "penetration": "+20x0",
       "lethality": "+16x0"
     }
   },
   {
-    "$id": "trait-mortar-120mm",
-    "Name": "120mm Mortar",
+    "$id": "trait-mortar-caliber-heavy",
+    "Name": "Heavy Mortar",
     "Family": "trait-vehicle-mortar-caliber",
     "Cost": 12,
     "Modifiers": {
       "volume": "+0.05x0",
       "range": "+28x0",
+      "range/cap": "+28x0",
       "accuracy": "+4x0",
       "tracking": "+3x0",
       "penetration": "+40x0",
       "lethality": "+32x0"
-    }
-  },
-
-  {
-    "$id": "trait-mortar-length-long",
-    "Name": "Long Barrel",
-    "Family": "trait-vehicle-mortar-length",
-    "Cost": 2,
-    "Modifiers": {
-      "range": "+8x0",
     }
   }
 ]

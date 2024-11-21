@@ -1,10 +1,7 @@
 ﻿namespace Expeditionary.Model.Combat.Units
 {
-    public record struct UnitMassComponent
+    public record struct UnitMassComponent(Modifier Density, Modifier Amount)
     {
-        public Modifier Density { get; set; }
-        public Modifier Amount { get; set; }
-
         public float GetValue()
         {
             return Density.GetValue() * Amount.GetValue();

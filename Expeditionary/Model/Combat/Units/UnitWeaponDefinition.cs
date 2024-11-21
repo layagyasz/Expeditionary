@@ -33,7 +33,7 @@ namespace Expeditionary.Model.Combat.Units
             {
                 Condition = definition.Condition,
                 Volume = UnitTrait.GetOrDefault(attributes, "volume", Modifier.None),
-                Range = UnitTrait.GetOrDefault(attributes, "range", Modifier.None),
+                Range = BuildRange("range", attributes),
                 Accuracy = UnitTrait.GetOrDefault(attributes, "accuracy", Modifier.None),
                 Tracking = UnitTrait.GetOrDefault(attributes, "tracking", Modifier.None),
                 Penetration = UnitTrait.GetOrDefault(attributes, "penetration", Modifier.None),
@@ -41,6 +41,13 @@ namespace Expeditionary.Model.Combat.Units
                 Signature = UnitTrait.GetMap<UnitDetectionBand, Modifier>(
                     "signature", x => UnitTrait.GetOrDefault(attributes, x, Modifier.None))
             };
+        }
+
+        private static UnitWeaponRange BuildRange(string prefix, IDictionary<string, Modifier> attributes)
+        {
+            return new(
+                UnitTrait.GetOrDefault(attributes, prefix, Modifier.None), 
+                UnitTrait.GetOrDefault(attributes, prefix + "/cap", Modifier.None));
         }
     }
 }

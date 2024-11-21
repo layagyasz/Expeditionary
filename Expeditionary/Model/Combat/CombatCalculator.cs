@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Combat
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
             float range = Geometry.GetCubicDistance(attacker.Position, defender.Position);
-            if (range > mode.Range.GetValue())
+            if (range > mode.Range.Get())
             {
                 return new();
             }
@@ -36,7 +36,7 @@ namespace Expeditionary.Model.Combat
                 GetPreviewLayer(
                     SkillCalculator.RangeAttenuate(
                         (mode.Accuracy + attacker.Capabilities.GetAccuracy(condition)).GetValue(),
-                        mode.Range.GetValue(), 
+                        mode.Range.Targeting.GetValue(), 
                         range),
                     defender.Intrinsics.Profile.GetValue(),
                     defenseMin: 0,
