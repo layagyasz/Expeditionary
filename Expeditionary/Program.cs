@@ -84,6 +84,7 @@ namespace Expeditionary
                             ElevationGradient = new(0.75f, 2f),
                         },
                         new(partitions, edges, structures),
+                        resources.GetShader("shader-filter-no-tex"),
                         resources.GetShader("shader-mask-no-tex"),
                         resources.GetShader("shader-default")),
                     new FogOfWarLayerFactory(resources.GetShader("shader-default"), partitions),

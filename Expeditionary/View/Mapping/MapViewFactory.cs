@@ -27,17 +27,20 @@ namespace Expeditionary.View.Mapping
 
         private readonly MapViewParameters _parameters;
         private readonly TextureLibrary _textureLibrary;
+        private readonly RenderShader _filterShader;
         private readonly RenderShader _maskShader;
         private readonly RenderShader _texShader;
 
         public MapViewFactory(
             MapViewParameters parameters,
             TextureLibrary textureLibrary,
+            RenderShader filterShader,
             RenderShader maskShader,
             RenderShader texShader)
         {
             _parameters = parameters;
             _textureLibrary = textureLibrary;
+            _filterShader = filterShader;
             _maskShader = maskShader;
             _texShader = texShader;
         }
@@ -132,7 +135,7 @@ namespace Expeditionary.View.Mapping
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
-                _maskShader);
+                _filterShader);
 
         }
 

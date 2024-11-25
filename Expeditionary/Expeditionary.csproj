@@ -152,6 +152,9 @@
     <None Update="Resources\view\shaders.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\shaders\filter_no_tex.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\shaders\mask_no_tex.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -9,7 +9,9 @@ namespace Expeditionary.View.Mapping
     {
         private VertexBuffer<Vertex3>? _grid;
         private LayeredVertexBuffer? _terrain;
-        private readonly RenderShader _maskShader;
+
+        private readonly RenderShader _gridShader;
+        private Color4 _gridFilter = Color4.White;
 
         private RenderTexture? _maskTexture;
 
@@ -20,7 +22,7 @@ namespace Expeditionary.View.Mapping
         {
             _grid = grid;
             _terrain = terrain;
-            _maskShader = maskShader;
+            _gridShader = maskShader;
         }
 
         protected override void DisposeImpl()
@@ -35,11 +37,13 @@ namespace Expeditionary.View.Mapping
         public void Draw(IRenderTarget target, IUiContext context)
         {
             _terrain!.Draw(target, context);
+
+            _gridShader.SetColor("filter_color", _gridFilter);
             target.Draw(
                 _grid!,
                 0,
                 _grid!.Length,
-                new RenderResources(BlendMode.Alpha, _maskShader, _maskTexture!.GetTexture()));
+                new RenderResources(BlendMode.Alpha, _gridShader, _maskTexture!.GetTexture()));
         }
 
         public void Initialize() { }
@@ -52,7 +56,7 @@ namespace Expeditionary.View.Mapping
 
         public void SetGridAlpha(float alpha)
         {
-            _maskTexture?.Clear(new(1, 1, 1, alpha));
+            _gridFilter.A = alpha;
         }
 
         public void Update(long delta) { }

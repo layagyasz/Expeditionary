@@ -14,6 +14,13 @@
     }
   },
   {
+    "$id": "shader-filter-no-tex",
+    "Element": {
+      "Vertex": "Resources/view/shaders/default.vert",
+      "Fragment": "Resources/view/shaders/filter_no_tex.frag"
+    }
+  },
+  {
     "$id": "shader-mask",
     "Element": {
       "Vertex": "Resources/view/textures/generation/default.vert",
