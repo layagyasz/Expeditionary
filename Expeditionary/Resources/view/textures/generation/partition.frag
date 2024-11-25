@@ -5,7 +5,7 @@ out vec4 out_color;
 in vec4 vert_color;
 in vec2 vert_tex_coord;
 
-uniform float attenuation;
+uniform float magnitude;
 uniform float edge_delta;
 uniform vec4 mask;
 
@@ -16,7 +16,7 @@ void main()
     vec3 tex_color = texture(texture0, vert_tex_coord).rgb;
     float edge_dist = min(vert_color.r, min(vert_color.g, vert_color.b));
     vec3 blended = vert_color.rgb +
-        3 * attenuation * max(0, edge_dist + edge_delta) * vec3(tex_color.r, tex_color.g, -tex_color.r - tex_color.g);
+        3 * magnitude * max(0, edge_dist + edge_delta) * vec3(tex_color.r, tex_color.g, -tex_color.r - tex_color.g);
     blended = normalize(blended);
     blended *= blended;
     vec4 p;

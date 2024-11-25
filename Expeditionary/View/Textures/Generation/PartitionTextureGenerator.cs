@@ -85,7 +85,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public PartitionLibrary Generate(Interval frequencyRange, Interval attenuationRange, int seed, int count)
+        public PartitionLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
         {
             var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
@@ -123,9 +123,9 @@ namespace Expeditionary.View.Textures.Generation
                     + frequencyRange.Minimum;
                 _frequency.Value = new(freq, freq, freq);
                 _partitionShader.SetFloat(
-                    "attenuation",
-                    (float)(attenuationRange.Minimum
-                        + random.NextDouble() * (attenuationRange.Maximum - attenuationRange.Minimum)));
+                    "magnitude",
+                    (float)(magnitudeRange.Minimum
+                        + random.NextDouble() * (magnitudeRange.Maximum - magnitudeRange.Minimum)));
 
                 var result = _pipeline.Run(canvasProvider)[0];
                 var texture = result.GetTexture();

@@ -4,7 +4,7 @@
     "Name": "Rifle",
     "Cost": 0,
     "Modifiers": {
-      "volume": "+750x0",
+      "volume": "+900x0",
       "range": "+1x0",
       "range/cap": "+1x0",
       "accuracy": "+0.005x0",

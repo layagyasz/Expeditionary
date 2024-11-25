@@ -62,14 +62,15 @@ namespace Expeditionary
             var partitionTextureGenerator = new PartitionTextureGenerator(resources.GetShader("shader-partition"));
             var partitions = 
                 partitionTextureGenerator.Generate(
-                    frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 4f), seed: 0, count: 60);
+                    frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 4f), seed: 0, count: 60);
 
             var maskTextureGenerator = new MaskTextureGenerator(resources.GetShader("shader-mask"));
-            maskTextureGenerator.Generate(frequencyRange: new(4f, 8f), seed: 0, count: 16);
+            maskTextureGenerator.Generate(
+                frequencyRange: new(4f, 8f), magnitudeRange: new(0f, 1f), seed: 0, count: 16);
 
             var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-river"));
             var edges = riverTextureGenerator.Generate(
-                frequencyRange: new(0.5f, 4f), attenuationRange: new(0.5f, 2f), seed: 0, count: 10);
+                frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 2f), seed: 0, count: 10);
 
             var structureTextureGenerator = 
                 new StructureTextureGenerator(resources.GetShader("shader-default-no-tex"));

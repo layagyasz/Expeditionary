@@ -13,19 +13,20 @@ namespace Expeditionary.View.Textures.Generation
     public class MaskTextureGenerator
     {
         private static readonly float s_Sqrt3 = MathF.Sqrt(3);
-        private static readonly Color4[] s_Masks =
+        private static readonly Vector4[] s_Masks =
         {
             new(1f, 1f, 1f, 1f),
             new(1f, 1f, 0f, 1f),
             new(1f, 0f, 0f, 1f),
 
-            new(1f, 0.55f, 0.55f, 1f),
-            new(1f, 0.55f, 0f, 1f),
+            new(1f, 0.5f, 0.5f, 1f),
+            new(1f, 0.5f, 0f, 1f),
 
-            new(0.55f, 0.55f, 0.55f, 1f),
-            new(0.55f, 0.55f, 0f, 1f),
-            new(0.55f, 0f, 0f, 1f)
+            new(0.5f, 0.5f, 0.5f, 1f),
+            new(0.5f, 0.5f, 0f, 1f),
+            new(0.5f, 0f, 0f, 1f)
         };
+        private static readonly Vector4 s_Offset = new(-0.05f, -0.05f, -0.05f, 0f);
 
         private readonly RenderShader _maskShader;
         private readonly Pipeline _pipeline;
@@ -80,7 +81,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public void Generate(Interval frequencyRange, int seed, int count)
+        public void Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
         {
             var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
@@ -122,7 +123,11 @@ namespace Expeditionary.View.Textures.Generation
                     var texture = result.GetTexture();
                     canvasProvider.Return(result);
 
-                    _maskShader.SetColor("mask", s_Masks[i]);
+                    _maskShader.SetFloat(
+                        "magnitude",
+                        (float)(magnitudeRange.Minimum
+                            + random.NextDouble() * (magnitudeRange.Maximum - magnitudeRange.Minimum)));
+                    _maskShader.SetVector4("mask", s_Masks[i] + s_Offset);
                     renderTexture.Clear();
                     renderTexture.Draw(
                         verts,

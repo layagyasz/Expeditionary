@@ -80,7 +80,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public EdgeLibrary Generate(Interval frequencyRange, Interval attenuationRange, int seed, int count)
+        public EdgeLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
         {  
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
 
@@ -122,9 +122,9 @@ namespace Expeditionary.View.Textures.Generation
                 var texture = result.GetTexture();
                 canvasProvider.Return(result);
                 _riverShader.SetFloat(
-                    "attenuation",
-                    (float)(attenuationRange.Minimum
-                        + random.NextDouble() * (attenuationRange.Maximum - attenuationRange.Minimum)));
+                    "magnitude",
+                    (float)(magnitudeRange.Minimum
+                        + random.NextDouble() * (magnitudeRange.Maximum - magnitudeRange.Minimum)));
                 for (int j = 0; j < s_Masks.Length; ++j)
                 {
                     _riverShader.SetInt32("mask", s_Masks[j]);
