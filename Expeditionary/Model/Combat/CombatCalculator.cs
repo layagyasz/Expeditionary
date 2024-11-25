@@ -20,7 +20,7 @@ namespace Expeditionary.Model.Combat
                 defender.Type,
                 GetConditions(mode, range, map.GetTile(defender.Position)!),
                 range,
-                attacker.GetAttackNumber(attack));
+                attacker.Number * attack.Number);
         }
 
         private static CombatPreview GetPreview(

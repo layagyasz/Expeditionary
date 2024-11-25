@@ -6,7 +6,6 @@ namespace Expeditionary.Model.Combat.Units
 {
     public class UnitWeaponUsageDefinition
     {
-        public bool IsDistributed { get; set; }
         public int Number { get; set; }
 
         [JsonConverter(typeof(ReferenceJsonConverter))]
@@ -17,7 +16,7 @@ namespace Expeditionary.Model.Combat.Units
 
         public UnitWeaponUsage Build()
         {
-            return new(IsDistributed, Number, Weapon!.Build(ExtraTraits));
+            return new(Number, Weapon!.Build(ExtraTraits));
         }
     }
 }

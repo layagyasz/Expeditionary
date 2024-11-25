@@ -84,10 +84,13 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
         {
             var vertices = new ArrayList<Vertex3>();
             AddSegment(vertices, _settings.Images!.Get(_settings.BorderImage), Color4.White, new());
-            AddSegment(vertices, _settings.Images!.Get(_settings.SizeImage), Color4.White, s_SizeOffset);
             foreach (var tag in unit.GetTags())
             {
-                AddSegment(vertices, _settings.Images!.Get(_settings.TagImages[tag]), Color4.White, new());
+                AddSegment(
+                    vertices, 
+                    _settings.Images!.Get(_settings.TagImages[tag]), 
+                    Color4.White, 
+                    IsSize(tag) ? s_SizeOffset : Vector3.Zero);
             }
             target.Clear();
             target.Draw(
@@ -122,6 +125,11 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
             vertices.Add(
                 new(offset + s_Vertices[4], color, new(segment.TextureView.Max.X, segment.TextureView.Min.Y)));
             vertices.Add(new(offset + s_Vertices[5], color, segment.TextureView.Max));
+        }
+
+        private static bool IsSize(UnitTag tag)
+        {
+            return tag == UnitTag.Platoon || tag == UnitTag.Section;
         }
     }
 }

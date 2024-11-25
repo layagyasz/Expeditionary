@@ -6,7 +6,7 @@
     "Cost": 6,
     "Tags": [ "Light" ],
     "Modifiers": {
-      "volume": "+0.1x0",
+      "volume": "+72x0",
       "range": "+4x0",
       "range/cap": "+4x0",
       "accuracy": "+4x0",
@@ -24,7 +24,7 @@
     "Tags": [ "Light" ],
     "Cost": 8,
     "Modifiers": {
-      "volume": "+0.09x0",
+      "volume": "+54x0",
       "range": "+4x0",
       "range/cap": "+8x0",
       "accuracy": "+4x0",
@@ -42,7 +42,7 @@
     "Cost": 12,
     "Tags": [ "Medium" ],
     "Modifiers": {
-      "volume": "+0.075x0",
+      "volume": "+36x0",
       "range": "+4x0",
       "range/cap": "+12x0",
       "accuracy": "+4x0",
@@ -60,7 +60,7 @@
     "Cost": 20,
     "Tags": [ "Heavy" ],
     "Modifiers": {
-      "volume": "+0.05x0",
+      "volume": "+18x0",
       "range": "+4x0",
       "range/cap": "+16x0",
       "accuracy": "+4x0",

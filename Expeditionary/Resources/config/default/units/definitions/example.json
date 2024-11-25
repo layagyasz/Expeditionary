@@ -4,13 +4,13 @@
     "Name": "Example Infantry",
     "Weapons": [
       {
-        "IsDistributed": true,
-        "Number": 8,
+        "Number": 1,
         "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [
       "trait-infantry",
+      "trait-infantry-platoon",
       "trait-infantry-camo-urban-2",
       "trait-infantry-recruitment-n1"
     ]
@@ -20,13 +20,13 @@
     "Name": "Example Mountain",
     "Weapons": [
       {
-        "IsDistributed": true,
-        "Number": 8,
+        "Number": 1,
         "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [
       "trait-infantry",
+      "trait-infantry-platoon",
       "trait-infantry-camo-2",
       "trait-infantry-training-mountain-2"
     ]
@@ -36,16 +36,13 @@
     "Name": "Example MG",
     "Weapons": [
       {
-        "Number": 4,
+        "Number": 1,
         "Weapon": "weapon-small-mg"
-      },
-      {
-        "Number": 4,
-        "Weapon": "weapon-small-rifle"
       }
     ],
     "Traits": [
       "trait-infantry",
+      "trait-infantry-section",
       "trait-infantry-armor-2",
       "trait-infantry-recruitment-n1"
     ]

@@ -65,6 +65,13 @@
     }
   },
   {
+    "$id": "trait-rocket-warhead-medium",
+    "Name": "Medium Warhead",
+    "Family": "trait-rocket-warhead",
+    "Cost": 9,
+    "Modifiers": {}
+  },
+  {
     "$id": "trait-rocket-warhead-heavy",
     "Name": "Heavy Warhead",
     "Family": "trait-rocket-warhead",
@@ -95,7 +102,7 @@
   },
   {
     "$id": "trait-rocket-range-long",
-    "Name": "Short Range",
+    "Name": "Long Range",
     "Family": "trait-rocket-range",
     "Cost": 12,
     "Tags": [ "RangeLong" ],

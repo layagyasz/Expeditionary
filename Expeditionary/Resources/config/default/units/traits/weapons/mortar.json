@@ -6,7 +6,7 @@
     "Cost": 4,
     "Tags": [ "Mortar", "Light" ],
     "Modifiers": {
-      "volume": "+0.1x0",
+      "volume": "+120x0",
       "range": "+14x0",
       "range/cap": "+14x0",
       "accuracy": "+4x0",
@@ -24,7 +24,7 @@
     "Cost": 8,
     "Tags": [ "Mortar", "Medium" ],
     "Modifiers": {
-      "volume": "+0.075x0",
+      "volume": "+72x0",
       "range": "+20x0",
       "range/cap": "+20x0",
       "accuracy": "+4x0",
@@ -42,7 +42,7 @@
     "Cost": 12,
     "Tags": [ "Mortar", "Heavy" ],
     "Modifiers": {
-      "volume": "+0.05x0",
+      "volume": "+24x0",
       "range": "+28x0",
       "range/cap": "+28x0",
       "accuracy": "+4x0",

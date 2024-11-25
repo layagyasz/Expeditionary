@@ -18,7 +18,6 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
         public Font? Font { get; set; }
         public string BackgroundImage { get; set; } = string.Empty;
         public string BorderImage { get; set; } = string.Empty;
-        public string SizeImage { get; set; } = string.Empty;
         public EnumMap<UnitTag, string> TagImages { get; set; } = new();
     }
 }

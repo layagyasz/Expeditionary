@@ -3,7 +3,7 @@
     "$id": "trait-infantry",
     "Name": "Infantry",
     "Tags": [ "Infantry" ],
-    "Cost": 8,
+    "Cost": 4,
     "Modifiers": {
       "capability.detection[audio]": "+12x0",
       "capability.range[audio]": "+1x0",
@@ -14,11 +14,8 @@
       "defense.maneuver": "+10x0",
       "defense.vitality": "+2x0",
       "defense.vitality/min": "+0.2x0",
-      "intrinsic.manpower": "+1x0",
       "intrinsic.mass.body/amount": "+1x0",
       "intrinsic.mass.body/density": "+1x0",
-      "intrinsic.morale": "+8x0",
-      "intrinsic.number": "+8x0",
       "intrinsic.power": "+1x0",
       "intrinsic.profile": "+12x0",
       "intrinsic.stamina": "+1x0",
@@ -37,6 +34,28 @@
       "movement.waterdepth/min": "+0x0",
       "movement.waterdepth/max": "+0x0",
       "movement.waterdepth/cap": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-section",
+    "Name": "Section",
+    "Tags": [ "Section" ],
+    "Cost": 0,
+    "Modifiers": {
+      "intrinsic.manpower": "+2x0",
+      "intrinsic.morale": "+4x0",
+      "intrinsic.number": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-platoon",
+    "Name": "Platoon",
+    "Tags": [ "Platoon" ],
+    "Cost": 8,
+    "Modifiers": {
+      "intrinsic.manpower": "+5x0",
+      "intrinsic.morale": "+8x0",
+      "intrinsic.number": "+8x0"
     }
   }
 ]

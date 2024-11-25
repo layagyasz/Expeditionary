@@ -6,7 +6,7 @@
     "Cost": 18,
     "Tags": [ "Artillery", "Medium" ],
     "Modifiers": {
-      "volume": "+0.05x0",
+      "volume": "+32x0",
       "range": "+60x0",
       "range/cap": "+60x0",
       "accuracy": "+4x0",
@@ -24,7 +24,7 @@
     "Cost": 24,
     "Tags": [ "Artillery", "Heavy" ],
     "Modifiers": {
-      "volume": "+0.025x0",
+      "volume": "+18x0",
       "range": "+80x0",
       "range/cap": "+80x0",
       "accuracy": "+4x0",
