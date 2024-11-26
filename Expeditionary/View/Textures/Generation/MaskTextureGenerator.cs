@@ -12,21 +12,24 @@ namespace Expeditionary.View.Textures.Generation
 {
     public class MaskTextureGenerator
     {
+        private record class Distribution(Vector4 Mask, Vector3i Levels);
+
         private static readonly float s_Sqrt3 = MathF.Sqrt(3);
-        private static readonly Vector4[] s_Masks =
+        private static readonly Distribution[] s_Distributions =
         {
-            new(1f, 1f, 1f, 1f),
-            new(1f, 1f, 0f, 1f),
-            new(1f, 0f, 0f, 1f),
+            new(new(1f, 1f, 1f, 1f), new(2, 2, 2)),
+            new(new(1f, 1f, 0f, 1f), new(2, 2, 0)),
+            new(new(1f, 0f, 0f, 1f), new(2, 0, 0)),
 
-            new(1f, 0.5f, 0.5f, 1f),
-            new(1f, 0.5f, 0f, 1f),
+            new(new(1f, 0.5f, 0.5f, 1f), new(2, 1, 1)),
+            new(new(1f, 0.5f, 0f, 1f), new(2, 1, 0)),
 
-            new(0.5f, 0.5f, 0.5f, 1f),
-            new(0.5f, 0.5f, 0f, 1f),
-            new(0.5f, 0f, 0f, 1f)
+            new(new(0.5f, 0.5f, 0.5f, 1f), new(1, 1, 1)),
+            new(new(0.5f, 0.5f, 0f, 1f), new(1, 1, 0)),
+            new(new(0.5f, 0f, 0f, 1f), new(1, 0, 0)),
+            new(new(0f, 0f, 0f, 1f), new(0, 0, 0))
         };
-        private static readonly Vector4 s_Offset = new(-0.05f, -0.05f, -0.05f, 0f);
+        private static readonly Vector4 s_Offset = new(-0.1f, -0.1f, -0.1f, 0f);
 
         private readonly RenderShader _maskShader;
         private readonly Pipeline _pipeline;
@@ -81,7 +84,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public void Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
+        public MaskLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
         {
             var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
@@ -98,6 +101,7 @@ namespace Expeditionary.View.Textures.Generation
             renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(0, 1, 0, 1, -10, 10)));
             renderTexture.PushViewMatrix(Matrix4.Identity);
             renderTexture.PushModelMatrix(Matrix4.Identity);
+            var options = new MaskLibrary.Option[count * s_Distributions.Length];
             var sheet =
                 new DynamicStaticSizeTexturePage(
                     new(1024, 1024),
@@ -109,8 +113,10 @@ namespace Expeditionary.View.Textures.Generation
                         MinFilter = TextureMinFilter.Nearest,
                         MagFilter = TextureMagFilter.Nearest
                     });
-            for (int i = 0; i < s_Masks.Length; ++i)
+            int option = 0;
+            for (int i = 0; i < s_Distributions.Length; ++i)
             {
+                _maskShader.SetVector4("mask", s_Distributions[i].Mask + s_Offset);
                 for (int j = 0; j < count; ++j)
                 {
                     _aSeed.Value = random.Next();
@@ -127,7 +133,6 @@ namespace Expeditionary.View.Textures.Generation
                         "magnitude",
                         (float)(magnitudeRange.Minimum
                             + random.NextDouble() * (magnitudeRange.Maximum - magnitudeRange.Minimum)));
-                    _maskShader.SetVector4("mask", s_Masks[i] + s_Offset);
                     renderTexture.Clear();
                     renderTexture.Draw(
                         verts,
@@ -137,12 +142,13 @@ namespace Expeditionary.View.Textures.Generation
                         new(BlendMode.None, _maskShader, texture));
                     renderTexture.Display();
                     sheet.Add(renderTexture.GetTexture(), out var segment);
-                    var texCoords = GetTexCoords(segment);
+                    options[option++] = new(GetTexCoords(segment), s_Distributions[i].Levels);
                 }
             }
             sheet.GetTexture().CopyToImage().SaveToFile("mask.png");
             canvasProvider.Dispose();
             renderTexture.Dispose();
+            return MaskLibrary.Create(sheet, options);
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)

@@ -65,7 +65,7 @@ namespace Expeditionary
                     frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 4f), seed: 0, count: 60);
 
             var maskTextureGenerator = new MaskTextureGenerator(resources.GetShader("shader-mask"));
-            maskTextureGenerator.Generate(
+            var masks = maskTextureGenerator.Generate(
                 frequencyRange: new(4f, 8f), magnitudeRange: new(0f, 1f), seed: 0, count: 16);
 
             var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-river"));
@@ -83,7 +83,7 @@ namespace Expeditionary
                         {
                             ElevationGradient = new(0.75f, 2f),
                         },
-                        new(partitions, edges, structures),
+                        new(edges, masks, partitions, structures),
                         resources.GetShader("shader-filter-no-tex"),
                         resources.GetShader("shader-mask-no-tex"),
                         resources.GetShader("shader-default")),

@@ -3,13 +3,16 @@
     public class TextureLibrary
     {
         public EdgeLibrary Edges { get; }
+        public MaskLibrary Masks { get; }
         public PartitionLibrary Partitions { get; }
         public StructureLibrary Structures { get; }
 
-        public TextureLibrary(PartitionLibrary partitions, EdgeLibrary edges, StructureLibrary structures)
+        public TextureLibrary(
+            EdgeLibrary edges, MaskLibrary masks, PartitionLibrary partitions, StructureLibrary structures)
         {
-            Partitions = partitions;
             Edges = edges;
+            Masks = masks;
+            Partitions = partitions;
             Structures = structures;
         }
     }

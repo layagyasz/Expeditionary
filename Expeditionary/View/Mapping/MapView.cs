@@ -9,6 +9,7 @@ namespace Expeditionary.View.Mapping
     {
         private VertexBuffer<Vertex3>? _grid;
         private LayeredVertexBuffer? _terrain;
+        private LayeredVertexBuffer? _mask;
 
         private readonly RenderShader _gridShader;
         private Color4 _gridFilter = Color4.White;
@@ -18,10 +19,12 @@ namespace Expeditionary.View.Mapping
         internal MapView(
             VertexBuffer<Vertex3>? grid,
             LayeredVertexBuffer? terrain,
+            LayeredVertexBuffer? mask,
             RenderShader maskShader)
         {
             _grid = grid;
             _terrain = terrain;
+            _mask = mask;
             _gridShader = maskShader;
         }
 
@@ -32,10 +35,21 @@ namespace Expeditionary.View.Mapping
 
             _terrain?.Dispose();
             _terrain = null;
+
+            _mask?.Dispose();
+            _mask = null;
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
         {
+            _maskTexture!.PushModelMatrix(target.GetModelMatrix());
+            _maskTexture.PushViewMatrix(target.GetViewMatrix());
+            _maskTexture.PushProjection(target.GetProjection());
+            _mask!.Draw(_maskTexture, context);
+            _maskTexture.PopProjectionMatrix();
+            _maskTexture.PopViewMatrix();
+            _maskTexture.PopModelMatrix();
+
             _terrain!.Draw(target, context);
 
             _gridShader.SetColor("filter_color", _gridFilter);

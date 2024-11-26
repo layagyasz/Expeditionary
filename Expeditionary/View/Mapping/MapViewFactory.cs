@@ -58,6 +58,8 @@ namespace Expeditionary.View.Mapping
                     .AddLayer(3 * triangles)
                     .AddLayer(triangles)
                     .AddLayer(18 * map.Width * map.Height);
+            var maskBufferBuilder =
+                new LayeredVertexBuffer.Builder().SetRenderResources(GetMaskRenderResources).AddLayer(3 * triangles);
 
             int triangle = 0;
             foreach (var corner in Geometry.GetAllCorners(map.Size))
@@ -96,9 +98,9 @@ namespace Expeditionary.View.Mapping
                 bool[] query =
                     new bool[]
                     {
-                            edgeA.Levels.ContainsKey(EdgeType.River),
-                            edgeB.Levels.ContainsKey(EdgeType.River),
-                            edgeC.Levels.ContainsKey(EdgeType.River)
+                        edgeA.Levels.ContainsKey(EdgeType.River),
+                        edgeB.Levels.ContainsKey(EdgeType.River),
+                        edgeC.Levels.ContainsKey(EdgeType.River)
                     };
                 if (query.Any(x => x))
                 {
@@ -110,6 +112,23 @@ namespace Expeditionary.View.Mapping
                         layer: 3, 3 * triangle + 1, new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
                     bufferBuilder.SetVertex(
                         layer: 3, 3 * triangle + 2, new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
+                }
+
+                Vector3i foliageQuery = 
+                    2 * new Vector3i(
+                        Convert.ToInt32(center.Terrain.Foliage.HasValue),
+                        Convert.ToInt32(left.Terrain.Foliage.HasValue),
+                        Convert.ToInt32(right.Terrain.Foliage.HasValue));
+                if (foliageQuery.ManhattanLength > 0)
+                {
+                    var maskOptions = _textureLibrary.Masks.Query(foliageQuery).ToArray();
+                    var selectedMask = maskOptions[random.Next(maskOptions.Length)];
+                    maskBufferBuilder.SetVertex(
+                        layer: 0, 3 * triangle, new(centerPos, Color4.White, selectedMask.TexCoords[0]));
+                    maskBufferBuilder.SetVertex(
+                        layer: 0, 3 * triangle + 1, new(leftPos, Color4.White, selectedMask.TexCoords[1]));
+                    maskBufferBuilder.SetVertex(
+                        layer: 0, 3 * triangle + 2, new(rightPos, Color4.White, selectedMask.TexCoords[2]));
                 }
 
                 ++triangle;
@@ -135,6 +154,7 @@ namespace Expeditionary.View.Mapping
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
+                maskBufferBuilder.Build(),
                 _filterShader);
 
         }
@@ -165,6 +185,11 @@ namespace Expeditionary.View.Mapping
                 return new(BlendMode.Alpha, _texShader, _textureLibrary.Edges.GetTexture());
             }
             return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.GetTexture());
+        }
+
+        private RenderResources GetMaskRenderResources(int layer)
+        {
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Masks.GetTexture());
         }
 
         private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)

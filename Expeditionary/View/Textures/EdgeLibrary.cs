@@ -26,7 +26,7 @@ namespace Expeditionary.View.Textures
             new int[] { 0, 2, 1 }
         };
 
-        public record class Option(Vector2[] TexCoords, bool[] Connected) { }
+        public record class Option(Vector2[] TexCoords, bool[] Connected);
 
         private readonly ITexturePage _texture;
         private readonly Option[] _options;
