@@ -1,27 +1,17 @@
 ﻿using Cardamom.Graphics;
-using Cardamom.Ui;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Common.Buffers
 {
-    public class LayeredVertexBuffer : GraphicsResource, IRenderable
+    public class LayeredVertexBuffer : GraphicsResource
     {
         public class Builder
         {
             private readonly List<Vertex3[]> _layers = new();
 
-            private Func<int, RenderResources>? _resourcesFn;
-
             public Builder AddLayer(int size)
             {
                 _layers.Add(new Vertex3[size]);
-                return this;
-            }
-
-            public Builder SetRenderResources(Func<int, RenderResources> resourcesFn)
-            {
-                _resourcesFn = resourcesFn;
                 return this;
             }
 
@@ -35,23 +25,18 @@ namespace Expeditionary.View.Common.Buffers
                 var layers = new Layer[_layers.Count];
                 for (int i = 0; i < layers.Length; ++i)
                 {
-                    layers[i] = new(i, _resourcesFn!, new(_layers[i], PrimitiveType.Triangles));
+                    layers[i] = new(new(_layers[i], PrimitiveType.Triangles));
                 }
                 return new(layers);
             }
         }
 
-        private class Layer : GraphicsResource, IRenderable
+        public class Layer : GraphicsResource
         {
-            private readonly int _id;
-            private readonly Func<int, RenderResources> _resourcesFn;
-
             private VertexBuffer<Vertex3>? _vertices;
 
-            internal Layer(int id, Func<int, RenderResources> resourcesFn, VertexBuffer<Vertex3> vertices)
+            internal Layer(VertexBuffer<Vertex3> vertices)
             {
-                _id = id;
-                _resourcesFn = resourcesFn;
                 _vertices = vertices;
             }
 
@@ -61,16 +46,10 @@ namespace Expeditionary.View.Common.Buffers
                 _vertices = null;
             }
 
-            public void Draw(IRenderTarget target, IUiContext context)
+            public void Draw(IRenderTarget target, RenderResources resources)
             {
-                target.Draw(_vertices!, 0, _vertices!.Length, _resourcesFn(_id));
+                target.Draw(_vertices!, 0, _vertices!.Length, resources);
             }
-
-            public void Initialize() { }
-
-            public void ResizeContext(Vector3 size) { }
-
-            public void Update(long delta) { }
         }
 
         private readonly Layer?[] _layers;
@@ -89,29 +68,14 @@ namespace Expeditionary.View.Common.Buffers
             }
         }
 
-        public void Draw(IRenderTarget target, IUiContext context)
+        public IEnumerable<Layer> GetLayers()
         {
-            foreach (var layer in _layers)
-            {
-                layer!.Draw(target, context);
-            }
+            return _layers!;
         }
 
-        public void Draw(int layer, IRenderTarget target, IUiContext context)
+        public Layer GetLayer(int id)
         {
-            _layers[layer]!.Draw(target, context);
-        }
-
-        public void Initialize() { }
-
-        public void ResizeContext(Vector3 size) { }
-
-        public void Update(long delta)
-        {
-            foreach (var layer in _layers)
-            {
-                layer!.Update(delta);
-            }
+            return _layers[id]!;
         }
     }
 }

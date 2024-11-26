@@ -4,16 +4,16 @@
     "Name": "Default",
     "Modifiers": [
       "environment-modifier-default",
-      "environment-modifier-star-sol",
-      "environment-modifier-composition-sulfurous",
-      "environment-modifier-liquid-sulfurous",
-      "environment-modifier-liquid-level-coast",
-      "environment-modifier-erosion-old",
-      "environment-modifier-habitability-habitable",
-      "environment-modifier-climate-cold",
-      "environment-modifier-climate-wet",
+      "environment-modifier-star-class-a",
+      "environment-modifier-composition-carbide",
+      "environment-modifier-liquid-carbide",
+      "environment-modifier-liquid-level-islands",
+      "environment-modifier-erosion-young",
+      "environment-modifier-habitability-fertile",
+      "environment-modifier-climate-warm",
+      "environment-modifier-climate-aquifer",
       "environment-modifier-biome-forest",
-      "environment-modifier-flora-native"
+      "environment-modifier-flora-fungal"
     ]
   }
 ]

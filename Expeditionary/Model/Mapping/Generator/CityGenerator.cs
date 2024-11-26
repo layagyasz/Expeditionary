@@ -158,12 +158,14 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 if (node.Closed && node.Core != null)
                 {
-                    map.GetTile(node.Hex)!.Structure =
+                    var tile = map.GetTile(node.Hex)!;
+                    tile.Structure =
                         new()
                         {
                             Type = node.Core.Parameters.Type,
                             Level = node.Core.Parameters.Level
                         };
+                    tile.Terrain.Foliage = null;
                 }
             }
 

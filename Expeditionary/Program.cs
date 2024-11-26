@@ -59,16 +59,17 @@ namespace Expeditionary
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
                     File.ReadAllText("resources/view/human_eye_sensitivity.json"))!;
 
-            var partitionTextureGenerator = new PartitionTextureGenerator(resources.GetShader("shader-partition"));
+            var partitionTextureGenerator = 
+                new PartitionTextureGenerator(resources.GetShader("shader-generate-partition"));
             var partitions = 
                 partitionTextureGenerator.Generate(
                     frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 4f), seed: 0, count: 60);
 
-            var maskTextureGenerator = new MaskTextureGenerator(resources.GetShader("shader-mask"));
+            var maskTextureGenerator = new MaskTextureGenerator(resources.GetShader("shader-generate-mask"));
             var masks = maskTextureGenerator.Generate(
                 frequencyRange: new(4f, 8f), magnitudeRange: new(0f, 1f), seed: 0, count: 16);
 
-            var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-river"));
+            var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-generate-river"));
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 2f), seed: 0, count: 10);
 
@@ -85,7 +86,7 @@ namespace Expeditionary
                         },
                         new(edges, masks, partitions, structures),
                         resources.GetShader("shader-filter-no-tex"),
-                        resources.GetShader("shader-mask-no-tex"),
+                        resources.GetShader("shader-mask"),
                         resources.GetShader("shader-default")),
                     new FogOfWarLayerFactory(resources.GetShader("shader-default"), partitions),
                     new AssetLayerFactory(

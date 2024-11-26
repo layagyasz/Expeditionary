@@ -52,14 +52,12 @@ namespace Expeditionary.View.Mapping
             int triangles = 6 * (map.Width - 1) * (map.Height - 1);
             var bufferBuilder =
                 new LayeredVertexBuffer.Builder()
-                    .SetRenderResources(GetRenderResources)
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(triangles)
                     .AddLayer(18 * map.Width * map.Height);
-            var maskBufferBuilder =
-                new LayeredVertexBuffer.Builder().SetRenderResources(GetMaskRenderResources).AddLayer(3 * triangles);
+            var maskBufferBuilder = new LayeredVertexBuffer.Builder().AddLayer(3 * triangles);
 
             int triangle = 0;
             foreach (var corner in Geometry.GetAllCorners(map.Size))
@@ -155,7 +153,10 @@ namespace Expeditionary.View.Mapping
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
                 maskBufferBuilder.Build(),
-                _filterShader);
+                _texShader,
+                _maskShader,
+                _filterShader,
+                _textureLibrary);
 
         }
 
@@ -170,26 +171,6 @@ namespace Expeditionary.View.Mapping
                 color.B = MathHelper.Clamp(color.B * adj, 0, 1);
             }
             return Color4.FromHsv((Vector4)color);
-        }
-
-        private RenderResources GetRenderResources(int layer)
-        {
-            // Structures
-            if (layer == 4)
-            {
-                return new(BlendMode.Alpha, _texShader, _textureLibrary.Structures.GetTexture());
-            }
-            // Rivers
-            if (layer == 3)
-            {
-                return new(BlendMode.Alpha, _texShader, _textureLibrary.Edges.GetTexture());
-            }
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.GetTexture());
-        }
-
-        private RenderResources GetMaskRenderResources(int layer)
-        {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Masks.GetTexture());
         }
 
         private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)
