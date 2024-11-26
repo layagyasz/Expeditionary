@@ -20,12 +20,12 @@ namespace Expeditionary.View.Mapping
             VertexBuffer<Vertex3>? grid,
             LayeredVertexBuffer? terrain,
             LayeredVertexBuffer? mask,
-            RenderShader maskShader)
+            RenderShader gridShader)
         {
             _grid = grid;
             _terrain = terrain;
             _mask = mask;
-            _gridShader = maskShader;
+            _gridShader = gridShader;
         }
 
         protected override void DisposeImpl()

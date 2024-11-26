@@ -6,16 +6,18 @@ namespace Expeditionary.Model.Mapping
     public class Map
     {
         public Vector2i Size => new(Width, Height);
+        public int ElevationLevels { get; }
         public int Width => _tiles.GetLength(0);
         public int Height => _tiles.GetLength(1);
 
         private readonly Tile[,] _tiles;
         private readonly Edge[,] _edges;
 
-        public Map(Vector2i size)
+        public Map(Vector2i size, int elevationLevels)
         {
             _tiles = new Tile[size.X, size.Y];
             _edges = new Edge[2 * size.X + 1, 2 * size.Y + 1];
+            ElevationLevels = elevationLevels;
 
 
             for (int i = 0; i < Width; ++i)

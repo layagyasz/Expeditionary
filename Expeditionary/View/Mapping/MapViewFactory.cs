@@ -84,7 +84,7 @@ namespace Expeditionary.View.Mapping
                     for (int hex = 0; hex < 3; ++hex)
                     {
                         var tile = map.GetTile(Geometry.GetCornerHex(corner, hex))!;
-                        var color = GetTileColor(tile, layer, parameters);
+                        var color = GetTileColor(tile, layer, parameters, map.ElevationLevels);
                         var index = 9 * triangle + 3 * hex;
                         bufferBuilder.SetVertex(layer, index, new(centerPos, color, selected.TexCoords[hex][0]));
                         bufferBuilder.SetVertex(layer, index + 1, new(leftPos, color, selected.TexCoords[hex][1]));
@@ -159,12 +159,12 @@ namespace Expeditionary.View.Mapping
 
         }
 
-        private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters)
+        private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters, int elevationLevels)
         {
             var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, layer, parameters));
             if (!tile.Terrain.IsLiquid)
             {
-                var adj = _parameters.ElevationGradient.Minimum + tile.Elevation *
+                var adj = _parameters.ElevationGradient.Minimum + (1f * tile.Elevation / elevationLevels) *
                     (_parameters.ElevationGradient.Maximum -
                         _parameters.ElevationGradient.Minimum);
                 color.B = MathHelper.Clamp(color.B * adj, 0, 1);

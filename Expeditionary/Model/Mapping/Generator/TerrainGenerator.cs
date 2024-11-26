@@ -184,11 +184,77 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
                                 }))
                     .AddNode(
-                        new DenormalizeNode.Builder().SetKey("elevation-denormalize").SetInput("input", "elevation"))
-                    .AddNode(new DenormalizeNode.Builder().SetKey("stone-denormalize").SetInput("input", "stone-b"))
-                    .AddNode(new DenormalizeNode.Builder().SetKey("soil-denormalize").SetInput("input", "soil-cover"))
+                        new DenormalizeNode.Builder()
+                            .SetKey("elevation-denormalize")
+                            .SetInput("input", "elevation")
+                            .SetParameters(
+                                new DenormalizeNode.Parameters()
+                                {
+                                    Mean =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                        },
+                                    StandardDeviation =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                        },
+                                }))
                     .AddNode(
-                        new DenormalizeNode.Builder().SetKey("plant-denormalize").SetInput("input", "foliage-cover"))
+                        new DenormalizeNode.Builder()
+                            .SetKey("stone-denormalize")
+                            .SetInput("input", "stone-b")
+                            .SetParameters(
+                                new DenormalizeNode.Parameters()
+                                {
+                                    Mean =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                        },
+                                    StandardDeviation =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                        },
+                                }))
+                    .AddNode(
+                        new DenormalizeNode.Builder()
+                            .SetKey("soil-denormalize")
+                            .SetInput("input", "soil-cover")
+                            .SetParameters(
+                                new DenormalizeNode.Parameters()
+                                {
+                                    Mean =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                        },
+                                    StandardDeviation =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                        },
+                                }))
+                    .AddNode(
+                        new DenormalizeNode.Builder()
+                            .SetKey("plant-denormalize")
+                            .SetInput("input", "foliage-cover")
+                            .SetParameters(
+                                new DenormalizeNode.Parameters()
+                                {
+                                    Mean =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                        },
+                                    StandardDeviation =
+                                        new Vector4UniformSupplier()
+                                        {
+                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                        },
+                                }))
                     .AddNode(
                         new AdjustNode.Builder()
                             .SetKey("elevation-adjust")
@@ -374,38 +440,24 @@ namespace Expeditionary.Model.Mapping.Generator
                     }
                 }
             }
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
+                    tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
+                }
+            }
             for (int i = 0; i < corners.GetLength(0); ++i)
             {
                 for (int j = 0; j < corners.GetLength(1); ++j)
                 {
                     var corner = Cubic.TriangularOffset.Instance.Wrap(new(i, j));
-                    int n = 0;
-                    float total = 0;
-                    foreach (var option in Geometry.GetCornerHexes(corner)
-                            .Select(map.GetTile)
-                            .Where(x => x != null)
-                            .Select(x => x!.Elevation))
-                    {
-                        n++;
-                        total += option;
-                    }
-                    corners[i, j] = total / n;
-                }
-            }
-            for (int i = 0; i < map.Width; ++i)
-            {
-                for (int j = 0; j < map.Height; ++j)
-                {
-                    var tile = map.GetTile(i, j)!;
-                    tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
-                }
-            }
-            for (int i = 0; i < map.Width; ++i)
-            {
-                for (int j = 0; j < map.Height; ++j)
-                {
-                    var tile = map.GetTile(i, j)!;
-                    tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
+                    corners[i, j] =
+                        Geometry.GetCornerHexes(corner)
+                            .Select(Cubic.HexagonalOffset.Instance.Project)
+                            .Where(map.ContainsTile)
+                            .Sum(x => elevation[x.X, x.Y]);
                 }
             }
         }

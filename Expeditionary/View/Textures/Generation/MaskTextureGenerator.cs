@@ -27,7 +27,6 @@ namespace Expeditionary.View.Textures.Generation
             new(new(0.5f, 0.5f, 0.5f, 1f), new(1, 1, 1)),
             new(new(0.5f, 0.5f, 0f, 1f), new(1, 1, 0)),
             new(new(0.5f, 0f, 0f, 1f), new(1, 0, 0)),
-            new(new(0f, 0f, 0f, 1f), new(0, 0, 0))
         };
         private static readonly Vector4 s_Offset = new(-0.1f, -0.1f, -0.1f, 0f);
 

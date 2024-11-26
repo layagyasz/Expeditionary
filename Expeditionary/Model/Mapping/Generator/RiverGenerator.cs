@@ -57,10 +57,11 @@ namespace Expeditionary.Model.Mapping.Generator
                 var nextIndex = Cubic.TriangularOffset.Instance.Project(next);
                 if (corners[nextIndex.X, nextIndex.Y] >= elevation)
                 {
-                    var tile = Geometry.GetCornerHexes(next)
-                        .Select(map.GetTile)
-                        .Where(x => x != null)
-                        .ArgMin(x => x!.Elevation);
+                    var tile = 
+                        Geometry.GetCornerHexes(next)
+                            .Select(map.GetTile)
+                            .Where(x => x != null)
+                            .ArgMin(x => x!.Elevation);
                     tile!.Terrain.IsLiquid = true;
                     break;
                 }
@@ -94,10 +95,11 @@ namespace Expeditionary.Model.Mapping.Generator
                     }
                 }
             }
-            var normalNext = Geometry.GetCornerNeighbors(pos)
-                .Select(Cubic.TriangularOffset.Instance.Project)
-                .Where(x => x.X >= 0 && x.Y >= 0 && x.X < corners.GetLength(0) && x.Y < corners.GetLength(1))
-                .ArgMin(x => corners[x.X, x.Y]);
+            var normalNext = 
+                Geometry.GetCornerNeighbors(pos)
+                    .Select(Cubic.TriangularOffset.Instance.Project)
+                    .Where(x => x.X >= 0 && x.Y >= 0 && x.X < corners.GetLength(0) && x.Y < corners.GetLength(1))
+                    .ArgMin(x => corners[x.X, x.Y]);
             return Cubic.TriangularOffset.Instance.Wrap(normalNext);
         }
     }
