@@ -1,0 +1,115 @@
+[
+  {
+    "$id": "trait-powerplant-size-large",
+    "Name": "Large Powerplant",
+    "Family": "trait-powerplant-size",
+    "Cost": 8,
+    "Modifiers": {
+      "intrinsic.power": "+900x0",
+      "intrinsic.mass.equipment/amount": "+1x0",
+      "intrinsic.space/used": "+8x0"
+    }
+  },
+  {
+    "$id": "trait-powerplant-size-medium",
+    "Name": "Medium Powerplant",
+    "Family": "trait-powerplant-size",
+    "Cost": 6,
+    "Modifiers": {
+      "intrinsic.power": "+600x0",
+      "intrinsic.mass.equipment/amount": "+1x0",
+      "intrinsic.space/used": "+6x0"
+    }
+  },
+  {
+    "$id": "trait-powerplant-size-small",
+    "Name": "Small Powerplant",
+    "Family": "trait-powerplant-size",
+    "Cost": 4,
+    "Modifiers": {
+      "intrinsic.power": "+300x0",
+      "intrinsic.mass.equipment/amount": "+1x0",
+      "intrinsic.space/used": "+4x0"
+    }
+  },
+
+  {
+    "$id": "trait-powerplant-type-piston-1",
+    "Name": "Basic Piston",
+    "Family": "trait-powerplant-type",
+    "Cost": 0,
+    "Modifiers": {}
+  },
+  {
+    "$id": "trait-powerplant-type-piston-2",
+    "Name": "Piston 2",
+    "Family": "trait-powerplant-type",
+    "Cost": 1,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.15"
+    }
+  },
+  {
+    "$id": "trait-powerplant-type-piston-3",
+    "Name": "Piston 3",
+    "Family": "trait-powerplant-type",
+    "Cost": 2,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.3"
+    }
+  },
+  {
+    "$id": "trait-powerplant-type-piston-4",
+    "Name": "Advanced Piston",
+    "Family": "trait-powerplant-type",
+    "Cost": 3,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.45"
+    }
+  },
+
+  {
+    "$id": "trait-powerplant-type-motor-1",
+    "Name": "Basic Motor",
+    "Family": "trait-powerplant-type",
+    "Cost": 6,
+    "Modifiers": {
+      "intrinsic.power": "+0x0",
+      "intrinsic.mass.equipment/amount": "+0x-0.9",
+      "intrinsic.space/used": "+0x-0.5"
+    }
+  },
+  {
+    "$id": "trait-powerplant-type-motor-2",
+    "Name": "Motor 2",
+    "Family": "trait-powerplant-type",
+    "Cost": 7,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.15",
+      "intrinsic.mass.equipment/amount": "+0x-0.9",
+      "intrinsic.space/used": "+0x-0.5"
+    }
+  },
+  {
+    "$id": "trait-powerplant-type-motor-3",
+    "Name": "Motor 3",
+    "Family": "trait-powerplant-type",
+    "Cost": 8,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.3",
+      "intrinsic.mass.equipment/amount": "+0x-0.9",
+      "intrinsic.space/used": "+0x-0.5"
+    }
+  },
+  {
+    "$id": "trait-powerplant-type-motor-4",
+    "Name": "Advanced Motor",
+    "Family": "trait-powerplant-type",
+    "Cost": 9,
+    "Modifiers": {
+      "intrinsic.power": "+0x0.45",
+      "intrinsic.mass.equipment/amount": "+0x-0.9",
+      "intrinsic.space/used": "+0x-0.5"
+    }
+  }
+]

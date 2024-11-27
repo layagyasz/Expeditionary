@@ -8,8 +8,8 @@ namespace Expeditionary.Model
     {
         public record class LineOfSight(Vector3i Target, int Distance, bool IsBlocked);
 
-        private static readonly float s_FoliageHeight = 0.4f;
-        private static readonly float s_StructureHeight = 0.4f;
+        private static readonly float s_FoliageHeight = 1f;
+        private static readonly float s_StructureHeight = 1f;
 
         public static LineOfSight GetLineOfSight(Map map, Vector3i position, Vector3i target)
         {

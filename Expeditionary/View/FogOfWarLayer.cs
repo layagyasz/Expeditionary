@@ -2,17 +2,15 @@
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping;
 using Expeditionary.View.Textures;
 using OpenTK.Mathematics;
-using System.Drawing;
 
 namespace Expeditionary.View
 {
     public class FogOfWarLayer : GraphicsResource, IRenderable
     {
         private static readonly Color4 s_Undiscovered = new(0, 0, 0, 1f);
-        private static readonly Color4 s_Hidden = new(0, 0, 0, 0.5f);
+        private static readonly Color4 s_Hidden = new(0, 0, 0, 0.75f);
         private static readonly Color4 s_Visible = new(0, 0, 0, 0);
 
         private readonly Vector2i _size;

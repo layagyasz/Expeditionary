@@ -110,7 +110,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -122,7 +122,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -145,7 +145,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -157,7 +157,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
                                 }))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
@@ -181,7 +181,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
+                                    Frequency = new ConstantSupplier<Vector3>(new(.2f, .2f, .2f))
                                 }))
                     .AddNode(
                         new DenormalizeNode.Builder()

@@ -14,7 +14,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public EdgeType Type { get; set; }
             public int Level { get; set; }
             public EnumMap<StructureType, int> SupportedStructures { get; set; } = new();
-            public float MaximumCost { get; set; } = 250f;
+            public float MaximumCost { get; set; } = 1000f;
             public float Density { get; set; } = 1f;
             public float Dropoff { get; set; } = 2f;
         }
@@ -45,9 +45,9 @@ namespace Expeditionary.Model.Mapping.Generator
         private static readonly Movement s_Movement =
             new(
                 restriction: new(new(1, 0), new(1, 5), new(1, 5)),
-                roughness: new(new(1, 0), new(1, 5), new(1, 5)),
+                roughness: new(new(1, 0), new(1, 25), new(1, 5)),
                 slope: new(new(1, 0), new(1, 5), new(1, 5)),
-                softness: new(new(1, 0), new(1, 10), new(1, 5)),
+                softness: new(new(1, 0), new(1, 25), new(1, 5)),
                 waterDepth: new(new(1, 0), new(1, 50), new(1, 5)));
 
         public static void Generate(IEnumerable<Parameters> parameters, List<Vector3i> nodes, Map map, Random random)

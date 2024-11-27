@@ -23,8 +23,8 @@ namespace Expeditionary.Model.Mapping.Generator
             public Vector3i Center { get; set; }
             public Quadratic DistancePenalty { get; set; }
             public Quadratic SprawlPenalty { get; set; } = new(0f, 0.5f, 0f);
-            public Quadratic SlopePenalty { get; set; } = new(0f, 5f, 0f);
-            public Quadratic ElevationPenalty { get; set; } = new(0f, 1f, 0f);
+            public Quadratic SlopePenalty { get; set; } = new(0f, 1f, 0f);
+            public Quadratic ElevationPenalty { get; set; } = new(0f, 0.2f, 0f);
             public Quadratic CoastPenalty { get; set; } = new(0f, -2f, 2);
             public Quadratic RiverPenalty { get; set; } = new(0f, -1f, 1);
             public Quadratic SandPenalty { get; set; } = new(0f, 1f, 0f);
@@ -76,7 +76,9 @@ namespace Expeditionary.Model.Mapping.Generator
                 var costDict = 
                     map.GetTiles()
                         .Where(x => !closed.Contains(x))
-                        .ToDictionary(x => x, x => GetCost(x, map, param, parameters.LiquidAffinity));
+                        .ToDictionary(
+                            x => x,
+                            x => GetCost(x, map, param, parameters.LiquidAffinity) + 0.2f * random.NextSingle());
                 var candidates = costDict.OrderBy(x => x.Value).Take(param.Candidates).ToList();
                 candidates.Shuffle(random);
 
