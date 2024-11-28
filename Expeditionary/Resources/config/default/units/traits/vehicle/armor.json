@@ -5,7 +5,7 @@
     "Family": "trait-vehicle-armor",
     "Cost": 3,
     "Level": 1,
-    "Tags": [ "Light" ],
+    "Tags": [ "Armor", "Light" ],
     "Modifiers": {
       "defense.armor": "+3x0",
       "defense.armor/min": "+1x0",
@@ -18,7 +18,7 @@
     "Family": "trait-vehicle-armor",
     "Cost": 9,
     "Level": 2,
-    "Tags": [ "Medium" ],
+    "Tags": [ "Armor", "Medium" ],
     "Modifiers": {
       "defense.armor": "+9x0",
       "defense.armor/min": "+3x0",
@@ -31,7 +31,7 @@
     "Family": "trait-vehicle-armor",
     "Cost": 27,
     "Level": 3,
-    "Tags": [ "Heavy" ],
+    "Tags": [ "Armor", "Heavy" ],
     "Modifiers": {
       "defense.armor": "+27x0",
       "defense.armor/min": "+9x0",

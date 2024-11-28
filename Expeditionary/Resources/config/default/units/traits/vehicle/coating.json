@@ -1,0 +1,102 @@
+[
+  {
+    "$id": "trait-vehicle-camo-1",
+    "Name": "Basic Camouflage",
+    "Family": "trait-vehicle-camo",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability.concealment[visual]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-camo-2",
+    "Name": "Camouflage 2",
+    "Family": "trait-vehicle-camo",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability.concealment[visual]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-camo-3",
+    "Name": "Camouflage 3",
+    "Family": "trait-vehicle-camo",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "capability.concealment[visual]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-camo-4",
+    "Name": "Elite Camouflage",
+    "Family": "trait-vehicle-camo",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "capability.concealment[visual]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-camo-urban-1",
+    "Name": "Basic Urban Camouflage",
+    "Family": "trait-vehicle-camo",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-camo-urban-2",
+    "Name": "Urban Camouflage 2",
+    "Family": "trait-vehicle-camo-urban",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability[urban].concealment[visual]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-coating-thermal-1",
+    "Name": "Basic Thermal Coating",
+    "Family": "trait-vehicle-coating",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-coating-thermal-2",
+    "Name": "Thermal Coating 2",
+    "Family": "trait-vehicle-coating",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-coating-thermal-3",
+    "Name": "Thermal Coating 3",
+    "Family": "trait-vehicle-coating",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-coating-thermal-4",
+    "Name": "Advanced Thermal Coating",
+    "Family": "trait-vehicle-coating",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+4x0"
+    }
+  }
+]

@@ -4,6 +4,7 @@
     "Name": "Basic Visual Sensor Package",
     "Family": "trait-vehicle-sensor-visual",
     "Cost": 1,
+    "Level": 1,
     "Modifiers": {
       "capability.detection[visual]": "+3x0",
       "capability.range[visual]": "+2x0",
@@ -15,6 +16,7 @@
     "Name": "Visual Sensor Package 2",
     "Family": "trait-vehicle-sensor-visual",
     "Cost": 2,
+    "Level": 2,
     "Modifiers": {
       "capability.detection[visual]": "+6x0",
       "capability.range[visual]": "+3x0",
@@ -26,6 +28,7 @@
     "Name": "Visual Sensor Package 3",
     "Family": "trait-vehicle-sensor-visual",
     "Cost": 3,
+    "Level": 3,
     "Modifiers": {
       "capability.detection[visual]": "+9x0",
       "capability.range[visual]": "+4x0"
@@ -36,6 +39,7 @@
     "Name": "Advanced Visual Sensor Package",
     "Family": "trait-vehicle-sensor-visual",
     "Cost": 4,
+    "Level": 4,
     "Modifiers": {
       "capability.detection[visual]": "+12x0",
       "capability.range[visual]": "+5x0"
@@ -46,6 +50,7 @@
     "Name": "Basic Thermal Sensor Package",
     "Family": "trait-vehicle-sensor-thermal",
     "Cost": 1,
+    "Level": 1,
     "Modifiers": {
       "capability.detection[thermal]": "+3x0",
       "capability.range[thermal]": "+2x0"
@@ -56,6 +61,7 @@
     "Name": "Thermal Sensor Package 2",
     "Family": "trait-vehicle-sensor-thermal",
     "Cost": 2,
+    "Level": 2,
     "Modifiers": {
       "capability.detection[thermal]": "+6x0",
       "capability.range[thermal]": "+3x0"
@@ -66,6 +72,7 @@
     "Name": "Thermal Sensor Package 3",
     "Family": "trait-vehicle-sensor-thermal",
     "Cost": 3,
+    "Level": 3,
     "Modifiers": {
       "capability.detection[thermal]": "+9x0",
       "capability.range[thermal]": "+4x0"
@@ -76,6 +83,7 @@
     "Name": "Advanced Thermal Sensor Package",
     "Family": "trait-vehicle-sensor-thermal",
     "Cost": 4,
+    "Level": 4,
     "Modifiers": {
       "capability.detection[thermal]": "+12x0",
       "capability.range[thermal]": "+5x0"
@@ -86,6 +94,7 @@
     "Name": "Basic Electronic Sensor Package",
     "Family": "trait-vehicle-sensor-electronic",
     "Cost": 4,
+    "Level": 1,
     "Modifiers": {
       "capability.detection[electronic]": "+6x0",
       "capability.range[electronic]": "+8x0",
@@ -98,6 +107,7 @@
     "Name": "Electronic Sensor Package 2",
     "Family": "trait-vehicle-sensor-electronic",
     "Cost": 8,
+    "Level": 2,
     "Modifiers": {
       "capability.detection[electronic]": "+8x0",
       "capability.range[electronic]": "+16x0",
@@ -110,6 +120,7 @@
     "Name": "Electronic Sensor Package 3",
     "Family": "trait-vehicle-sensor-electronic",
     "Cost": 12,
+    "Level": 3,
     "Modifiers": {
       "capability.detection[electronic]": "+10x0",
       "capability.range[electronic]": "+24x0",
@@ -122,6 +133,7 @@
     "Name": "Advanced Electronic Sensor Package",
     "Family": "trait-vehicle-sensor-electronic",
     "Cost": 16,
+    "Level": 4,
     "Modifiers": {
       "capability.detection[electronic]": "+12x0",
       "capability.range[electronic]": "+32x0",

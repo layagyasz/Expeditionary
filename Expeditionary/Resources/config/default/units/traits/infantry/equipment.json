@@ -87,7 +87,7 @@
   {
     "$id": "trait-infantry-camo-urban-1",
     "Name": "Basic Urban Camouflage",
-    "Family": "trait-infantry-camo-urban",
+    "Family": "trait-infantry-camo",
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
@@ -97,11 +97,51 @@
   {
     "$id": "trait-infantry-camo-urban-2",
     "Name": "Urban Camouflage 2",
-    "Family": "trait-infantry-camo-urban",
+    "Family": "trait-infantry-camo",
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
       "capability[urban].concealment[visual]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-weave-thermal-1",
+    "Name": "Basic Thermal Weave",
+    "Family": "trait-infantry-weave",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-weave-thermal-2",
+    "Name": "Thermal Weave 2",
+    "Family": "trait-infantry-weave",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-weave-thermal-3",
+    "Name": "Thermal Weave 3",
+    "Family": "trait-infantry-weave",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-weave-thermal-4",
+    "Name": "Advanced Thermal Weave",
+    "Family": "trait-infantry-weave",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capability[urban].concealment[thermal]": "+4x0"
     }
   }
 ]

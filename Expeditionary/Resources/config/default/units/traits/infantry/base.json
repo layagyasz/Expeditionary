@@ -8,6 +8,7 @@
       "capability.detection[audio]": "+12x0",
       "capability.range[audio]": "+1x0",
       "capability.signature[audio]": "+3x0",
+      "capability.signature[thermal]": "+3x0",
       "capability.detection[visual]": "+12x0",
       "capability.range[visual]": "+4x0",
       "capability.signature[visual]": "+3x0",
