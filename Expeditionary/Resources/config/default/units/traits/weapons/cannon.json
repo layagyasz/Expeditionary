@@ -1,5 +1,59 @@
 [
   {
+    "$id": "trait-cannon-caliber-light-auto",
+    "Name": "Light Autocannon",
+    "Family": "trait-cannon-caliber",
+    "Cost": 4,
+    "Tags": [ "Light" ],
+    "Modifiers": {
+      "volume": "+1500x0",
+      "range": "+4x0",
+      "range/cap": "+8x0",
+      "accuracy": "+4x0",
+      "tracking": "+4x0",
+      "penetration": "+3x0",
+      "lethality": "+3x0",
+      "mass": "+0.05x0",
+      "size": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-cannon-caliber-medium-auto",
+    "Name": "Medium Autocannon",
+    "Family": "trait-cannon-caliber",
+    "Cost": 5,
+    "Tags": [ "Medium" ],
+    "Modifiers": {
+      "volume": "+1200x0",
+      "range": "+8x0",
+      "range/cap": "+8x0",
+      "accuracy": "+4x0",
+      "tracking": "+4x0",
+      "penetration": "+4.5x0",
+      "lethality": "+4x0",
+      "mass": "+0.1x0",
+      "size": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-cannon-caliber-heavy-auto",
+    "Name": "Heavy Autocannon",
+    "Family": "trait-cannon-caliber",
+    "Cost": 6,
+    "Tags": [ "Heavy" ],
+    "Modifiers": {
+      "volume": "+720x0",
+      "range": "+12x0",
+      "range/cap": "+8x0",
+      "accuracy": "+4x0",
+      "tracking": "+4x0",
+      "penetration": "+6x0",
+      "lethality": "+5x0",
+      "mass": "+0.5x0",
+      "size": "+2x0"
+    }
+  },
+  {
     "$id": "trait-cannon-caliber-super-light",
     "Name": "Superlight Cannon",
     "Family": "trait-cannon-caliber",
@@ -135,7 +189,7 @@
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+5x0",
-      "lethality": "+0x0.1"
+      "lethality": "+0x0.125"
     }
   },
   {
@@ -148,7 +202,7 @@
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+10x0",
-      "lethality": "+0x0.2"
+      "lethality": "+0x0.25"
     }
   },
   {
@@ -161,7 +215,7 @@
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+15x0",
-      "lethality": "+0x0.3"
+      "lethality": "+0x0.375"
     }
   },
   {
@@ -174,7 +228,7 @@
     "Modifiers": {
       "range/cap": "+0x-0.25",
       "penetration": "+20x0",
-      "lethality": "+0x0.4"
+      "lethality": "+0x0.5"
     }
   },
 

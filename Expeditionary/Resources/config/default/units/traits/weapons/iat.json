@@ -1,0 +1,99 @@
+[
+  {
+    "$id": "trait-iat",
+    "Name": "Infantry Anti-tank",
+    "Cost": 6,
+    "Tags": [ "AntiTank" ],
+    "Modifiers": {
+      "volume": "+30x0",
+      "accuracy": "+4x0",
+      "tracking": "+24x0"
+    }
+  },
+
+  {
+    "$id": "trait-iat-warhead-1",
+    "Name": "Basic Warhead",
+    "Family": "trait-iat-warhead",
+    "Cost": 0,
+    "Level": 1,
+    "Modifiers": {
+      "penetration": "+24x0",
+      "lethality": "+12x0"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-2",
+    "Name": "Warhead 2",
+    "Family": "trait-iat-warhead",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "penetration": "+40x0",
+      "lethality": "+13x0"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-3",
+    "Name": "Warhead 3",
+    "Family": "trait-iat-warhead",
+    "Cost": 4,
+    "Level": 3,
+    "Modifiers": {
+      "penetration": "+56x0",
+      "lethality": "+14x0"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-4",
+    "Name": "Advanced Warhead",
+    "Family": "trait-iat-warhead",
+    "Cost": 6,
+    "Level": 4,
+    "Modifiers": {
+      "penetration": "+72x0",
+      "lethality": "+15x0"
+    }
+  },
+
+  {
+    "$id": "trait-iat-rocket-1",
+    "Name": "Basic Rocket",
+    "Family": "trait-iat-rocket",
+    "Cost": 0,
+    "Modifiers": {
+      "range": "+1x0",
+      "range/cap": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-iat-rocket-2",
+    "Name": "Rocket 2",
+    "Family": "trait-iat-rocket",
+    "Cost": 2,
+    "Modifiers": {
+      "range": "+2x0",
+      "range/cap": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-iat-rocket-3",
+    "Name": "Rocket 3",
+    "Family": "trait-iat-rocket",
+    "Cost": 4,
+    "Modifiers": {
+      "range": "+3x0",
+      "range/cap": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-iat-rocket-4",
+    "Name": "Advanced Rocket",
+    "Family": "trait-iat-rocket",
+    "Cost": 6,
+    "Modifiers": {
+      "range": "+4x0",
+      "range/cap": "+4x0"
+    }
+  }
+]
