@@ -20,8 +20,8 @@
     "Tags": [ "MG" ],
     "Modifiers": {
       "volume": "+3000x0",
-      "range": "+2x0",
-      "range/cap": "+2x0",
+      "range": "+1x0",
+      "range/cap": "+4x0",
       "accuracy": "+0.0025x0",
       "tracking": "+40x0",
       "penetration": "+2x0",
@@ -34,8 +34,8 @@
     "Cost": 4,
     "Tags": [ "Sniper" ],
     "Modifiers": {
-      "volume": "+8x0",
-      "range": "+4x0",
+      "volume": "+12x0",
+      "range": "+1x0",
       "range/cap": "+4x0",
       "accuracy": "+12x0",
       "tracking": "+10x0",

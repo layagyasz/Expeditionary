@@ -1,0 +1,124 @@
+[
+  {
+    "$id": "trait-weapon-optic-1",
+    "Name": "Basic Optics",
+    "Family": "trait-weapon-optic",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "range": "+0x1"
+    }
+  },
+  {
+    "$id": "trait-weapon-optic-2",
+    "Name": "Optics 2",
+    "Family": "trait-weapon-optic",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "range": "+0x2"
+    }
+  },
+  {
+    "$id": "trait-weapon-optic-3",
+    "Name": "Optics 3",
+    "Family": "trait-weapon-optic",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "range": "+0x3"
+    }
+  },
+  {
+    "$id": "trait-weapon-optic-4",
+    "Name": "Advanced Optics",
+    "Family": "trait-weapon-optic",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "range": "+0x4"
+    }
+  },
+
+  {
+    "$id": "trait-weapon-rangefinder-1",
+    "Name": "Basic Rangefinder",
+    "Family": "trait-weapon-rangefinder",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "accuracy": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-weapon-rangefinder-2",
+    "Name": "Rangefinder 2",
+    "Family": "trait-weapon-rangefinder",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "accuracy": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-weapon-rangefinder-3",
+    "Name": "Rangefinder 3",
+    "Family": "trait-weapon-rangefinder",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "accuracy": "+0x0.75"
+    }
+  },
+  {
+    "$id": "trait-weapon-rangefinder-4",
+    "Name": "Advanced Rangefinder",
+    "Family": "trait-weapon-rangefinder",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "accuracy": "+0x1"
+    }
+  },
+
+  {
+    "$id": "trait-weapon-fire-control-1",
+    "Name": "Basic Fire Control",
+    "Family": "trait-vehicle-weapon-fire-control",
+    "Cost": 0,
+    "Level": 1,
+    "Modifiers": {
+      "range": "+0x0.125"
+    }
+  },
+  {
+    "$id": "trait-weapon-fire-control-2",
+    "Name": "Fire Control 2",
+    "Family": "trait-vehicle-weapon-fire-control",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "range": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-weapon-fire-control-3",
+    "Name": "Fire Control 3",
+    "Family": "trait-vehicle-weapon-fire-control",
+    "Cost": 4,
+    "Level": 3,
+    "Modifiers": {
+      "range": "+0x0.375"
+    }
+  },
+  {
+    "$id": "trait-weapon-fire-control-4",
+    "Name": "Advanced Fire Control",
+    "Family": "trait-vehicle-weapon-fire-control",
+    "Cost": 6,
+    "Level": 4,
+    "Modifiers": {
+      "range": "+0x0.5"
+    }
+  }
+]

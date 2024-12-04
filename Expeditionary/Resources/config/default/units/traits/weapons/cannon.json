@@ -134,7 +134,7 @@
     "Level": 1,
     "Tags": [ "AntiTank" ],
     "Modifiers": {
-      "accuracy": "+0x0.1",
+      "accuracy": "+0x0.125",
       "penetration": "+0x0.75",
       "lethality": "+0x-0.25"
     }
@@ -147,7 +147,7 @@
     "Level": 2,
     "Tags": [ "AntiTank" ],
     "Modifiers": {
-      "accuracy": "+0x0.2",
+      "accuracy": "+0x0.25",
       "penetration": "+0x1",
       "lethality": "+0x-0.25"
     }
@@ -160,7 +160,7 @@
     "Level": 3,
     "Tags": [ "AntiTank" ],
     "Modifiers": {
-      "accuracy": "+0x0.3",
+      "accuracy": "+0x0.375",
       "penetration": "+0x1.25",
       "lethality": "+0x-0.25"
     }
@@ -173,7 +173,7 @@
     "Level": 4,
     "Tags": [ "AntiTank" ],
     "Modifiers": {
-      "accuracy": "+0x0.4",
+      "accuracy": "+0x0.5",
       "penetration": "+0x1.5",
       "lethality": "+0x-0.25"
     }
@@ -298,88 +298,6 @@
       "penetration": "+0x0.5",
       "range/cap": "+0x0.25",
       "lethality": "+0x-0.25"
-    }
-  },
-
-  {
-    "$id": "trait-cannon-optic-1",
-    "Name": "Basic Optics",
-    "Family": "trait-cannon-optic",
-    "Cost": 2,
-    "Level": 1,
-    "Modifiers": {
-      "range": "+4x0"
-    }
-  },
-  {
-    "$id": "trait-cannon-optic-2",
-    "Name": "Optics 2",
-    "Family": "trait-cannon-optic",
-    "Cost": 4,
-    "Level": 2,
-    "Modifiers": {
-      "range": "+8x0"
-    }
-  },
-  {
-    "$id": "trait-cannon-optic-3",
-    "Name": "Optics 3",
-    "Family": "trait-cannon-optic",
-    "Cost": 6,
-    "Level": 3,
-    "Modifiers": {
-      "range": "+12x0"
-    }
-  },
-  {
-    "$id": "trait-cannon-optic-4",
-    "Name": "Advanced Optics",
-    "Family": "trait-cannon-optic",
-    "Cost": 8,
-    "Level": 4,
-    "Modifiers": {
-      "range": "+16x0"
-    }
-  },
-
-  {
-    "$id": "trait-cannon-rangefinder-1",
-    "Name": "Basic Rangefinder",
-    "Family": "trait-cannon-rangefinder",
-    "Cost": 2,
-    "Level": 1,
-    "Modifiers": {
-      "accuracy": "+0x0.25"
-    }
-  },
-  {
-    "$id": "trait-cannon-rangefinder-2",
-    "Name": "Rangefinder 2",
-    "Family": "trait-cannon-rangefinder",
-    "Cost": 4,
-    "Level": 2,
-    "Modifiers": {
-      "accuracy": "+0x0.5"
-    }
-  },
-  {
-    "$id": "trait-cannon-rangefinder-3",
-    "Name": "Rangefinder 3",
-    "Family": "trait-cannon-rangefinder",
-    "Cost": 6,
-    "Level": 3,
-    "Modifiers": {
-      "accuracy": "+0x0.75"
-    }
-  },
-  {
-    "$id": "trait-cannon-rangefinder-4",
-    "Name": "Advanced Rangefinder",
-    "Family": "trait-cannon-rangefinder",
-    "Cost": 8,
-    "Level": 4,
-    "Modifiers": {
-      "accuracy": "+0x1"
     }
   }
 ]

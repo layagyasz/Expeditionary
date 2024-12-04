@@ -1,0 +1,81 @@
+[
+  {
+    "$id": "trait-atgm",
+    "Name": "ATGM",
+    "Cost": 12,
+    "Tags": [ "AntiTank", "Missile" ],
+    "Modifiers": {
+      "volume": "+36x0",
+      "accuracy": "+4x0",
+      "tracking": "+24x0",
+      "range": "+2x3",
+      "range/cap": "+16x0",
+      "penetration": "+36x0",
+      "lethality": "+12x0"
+    }
+  },
+  {
+    "$id": "trait-iat",
+    "Name": "Infantry Anti-tank",
+    "Cost": 6,
+    "Tags": [ "AntiTank" ],
+    "Modifiers": {
+      "volume": "+36x0",
+      "accuracy": "+4x0",
+      "tracking": "+24x0",
+      "range": "+1x0",
+      "range/cap": "+4x0",
+      "penetration": "+24x0",
+      "lethality": "+8x0"
+    }
+  },
+
+  {
+    "$id": "trait-iat-warhead-1",
+    "Name": "Basic Warhead",
+    "Family": "trait-iat-warhead",
+    "Cost": 0,
+    "Level": 1,
+    "Tags": [ "Light" ],
+    "Modifiers": {
+      "penetration": "+0x0.5",
+      "lethality": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-2",
+    "Name": "Warhead 2",
+    "Family": "trait-iat-warhead",
+    "Cost": 2,
+    "Level": 2,
+    "Tags": [ "Medium" ],
+    "Modifiers": {
+      "penetration": "+0x1",
+      "lethality": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-3",
+    "Name": "Warhead 3",
+    "Family": "trait-iat-warhead",
+    "Cost": 4,
+    "Level": 3,
+    "Tags": [ "Medium" ],
+    "Modifiers": {
+      "penetration": "+0x1.5",
+      "lethality": "+0x0.75"
+    }
+  },
+  {
+    "$id": "trait-iat-warhead-4",
+    "Name": "Advanced Warhead",
+    "Family": "trait-iat-warhead",
+    "Cost": 6,
+    "Level": 4,
+    "Tags": [ "Heavy" ],
+    "Modifiers": {
+      "penetration": "+0x2",
+      "lethality": "+0x1"
+    }
+  }
+]
