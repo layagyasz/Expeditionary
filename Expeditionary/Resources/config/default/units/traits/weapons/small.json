@@ -14,18 +14,48 @@
     }
   },
   {
-    "$id": "trait-infantry-mg",
-    "Name": "MG",
-    "Cost": 4,
-    "Tags": [ "MG" ],
+    "$id": "trait-infantry-lmg",
+    "Name": "LMG",
+    "Cost": 3,
+    "Tags": [ "Light", "MG" ],
     "Modifiers": {
       "volume": "+3000x0",
       "range": "+1x0",
-      "range/cap": "+4x0",
+      "range/cap": "+6x0",
       "accuracy": "+0.0025x0",
       "tracking": "+40x0",
       "penetration": "+2x0",
+      "lethality": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-mg",
+    "Name": "MG",
+    "Cost": 4,
+    "Tags": [ "Medium", "MG" ],
+    "Modifiers": {
+      "volume": "+3000x0",
+      "range": "+1x0",
+      "range/cap": "+6x0",
+      "accuracy": "+0.0025x0",
+      "tracking": "+40x0",
+      "penetration": "+3x0",
       "lethality": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-hmg",
+    "Name": "HMG",
+    "Cost": 4,
+    "Tags": [ "Heavy", "MG" ],
+    "Modifiers": {
+      "volume": "+3000x0",
+      "range": "+1x0",
+      "range/cap": "+6x0",
+      "accuracy": "+0.0025x0",
+      "tracking": "+40x0",
+      "penetration": "+4x0",
+      "lethality": "+2.5x0"
     }
   },
   {
@@ -40,7 +70,7 @@
       "accuracy": "+12x0",
       "tracking": "+10x0",
       "penetration": "+2x0",
-      "lethality": "+2x0"
+      "lethality": "+1.5x0"
     }
   }
 ]

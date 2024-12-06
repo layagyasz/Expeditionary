@@ -7,7 +7,7 @@
     "Tags": [ "Light" ],
     "Modifiers": {
       "volume": "+1500x0",
-      "range": "+4x0",
+      "range": "+1x3",
       "range/cap": "+8x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
@@ -25,7 +25,7 @@
     "Tags": [ "Medium" ],
     "Modifiers": {
       "volume": "+1200x0",
-      "range": "+8x0",
+      "range": "+1x3",
       "range/cap": "+8x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
@@ -43,7 +43,7 @@
     "Tags": [ "Heavy" ],
     "Modifiers": {
       "volume": "+720x0",
-      "range": "+12x0",
+      "range": "+1x3",
       "range/cap": "+8x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
