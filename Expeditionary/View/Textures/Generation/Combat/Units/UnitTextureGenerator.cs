@@ -86,11 +86,14 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
             AddSegment(vertices, _settings.Images!.Get(_settings.BorderImage), Color4.White, new());
             foreach (var tag in unit.GetTags())
             {
-                AddSegment(
-                    vertices, 
-                    _settings.Images!.Get(_settings.TagImages[tag]), 
-                    Color4.White, 
-                    IsSize(tag) ? s_SizeOffset : Vector3.Zero);
+                if (_settings.TagImages.TryGetValue(tag, out var textureId))
+                {
+                    AddSegment(
+                        vertices,
+                        _settings.Images!.Get(textureId),
+                        Color4.White,
+                        IsSize(tag) ? s_SizeOffset : Vector3.Zero);
+                }
             }
             target.Clear();
             target.Draw(

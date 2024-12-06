@@ -74,6 +74,9 @@
     <None Update="Resources\config\default\generation\scripts\script_environment_habitability.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_landform.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_liquid.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

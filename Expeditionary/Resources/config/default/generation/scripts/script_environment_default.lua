@@ -11,6 +11,7 @@ Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
+Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
 Default = MapEnvironmentModifier()
 Default.Key = "environment-modifier-default"
@@ -20,6 +21,14 @@ function Default:Apply(environment)
 	local terrain = parameters.Terrain
 
 	-- Basic
+	terrain.ElevationNoise.Frequency = Vector3(0.01, 0.01, 0.01)
+	terrain.StoneNoise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.SoilNoise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.SoilCoverNoise.Frequency = Vector3(0.05, 0.05, 0.05)
+	terrain.TemperatureNoise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.MoistureNoise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.BrushNoise.Frequency = Vector3(0.05, 0.05, 0.05)
+	terrain.FoliageNoise.Frequency = Vector3(0.2, 0.2, 0.2)
 	terrain.ElevationLevels = 5
 
 	-- Soil

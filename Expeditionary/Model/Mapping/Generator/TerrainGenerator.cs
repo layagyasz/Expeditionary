@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Cardamom.ImageProcessing;
+using Cardamom.ImageProcessing.Filters;
 using Cardamom.ImageProcessing.Pipelines;
 using Cardamom.ImageProcessing.Pipelines.Nodes;
 using Cardamom.Mathematics;
@@ -15,6 +16,14 @@ namespace Expeditionary.Model.Mapping.Generator
     {
         public class Parameters
         {
+            public LatticeNoise.Settings ElevationNoise { get; set; } = new();
+            public LatticeNoise.Settings StoneNoise { get; set; } = new();
+            public LatticeNoise.Settings SoilNoise { get; set; } = new();
+            public LatticeNoise.Settings SoilCoverNoise { get; set; } = new();
+            public LatticeNoise.Settings TemperatureNoise { get; set; } = new();
+            public LatticeNoise.Settings MoistureNoise { get; set; } = new();
+            public LatticeNoise.Settings BrushNoise { get; set; } = new();
+            public LatticeNoise.Settings FoliageNoise { get; set; } = new();
             public int ElevationLevels { get; set; }
             public float LiquidLevel { get; set; }
             public Vector3 Stone { get; set; }
@@ -72,117 +81,67 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetKey("elevation")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.005f, .005f, .005f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.ElevationNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("stone-a")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.StoneNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("stone-b")
                             .SetInput("input", "position")
                             .SetOutput("stone-a")
                             .SetChannel(Channel.Green)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.StoneNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-a")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.SoilNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-b")
                             .SetInput("input", "position")
                             .SetOutput("soil-a")
                             .SetChannel(Channel.Green)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.SoilNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-cover")
                             .SetInput("input", "position")
                             .SetOutput("soil-b")
                             .SetChannel(Channel.Blue)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.SoilCoverNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("temperature")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.TemperatureNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("moisture")
                             .SetInput("input", "position")
                             .SetOutput("temperature")
                             .SetChannel(Channel.Green)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.02f, .02f, .02f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.MoistureNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("brush-cover")
                             .SetInput("input", "position")
                             .SetOutput("moisture")
                             .SetChannel(Channel.Blue)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.05f, .05f, .05f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.BrushNoise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("foliage-cover")
                             .SetInput("input", "position")
                             .SetOutput("brush-cover")
                             .SetChannel(Channel.Alpha)
-                            .SetParameters(
-                                new()
-                                {
-                                    Seed = new FuncSupplier<int>(random.Next),
-                                    Frequency = new ConstantSupplier<Vector3>(new(.2f, .2f, .2f))
-                                }))
+                            .SetParameters(ToNoiseParameters(parameters.FoliageNoise, random)))
                     .AddNode(
                         new DenormalizeNode.Builder()
                             .SetKey("elevation-denormalize")
@@ -385,6 +344,23 @@ namespace Expeditionary.Model.Mapping.Generator
             Brush(map, parameters, plantData);
             Foliage(map, parameters, plantData);
             Hindrance(map);
+        }
+
+        private static LatticeNoiseNode.Parameters ToNoiseParameters(LatticeNoise.Settings settings, Random random)
+        {
+            return new()
+            {
+                Seed = new ConstantSupplier<int>(random.Next()),
+                Frequency = new ConstantSupplier<Vector3>(settings.Frequency),
+                Lacunarity = new ConstantSupplier<Vector3>(settings.Lacunarity),
+                Octaves = new ConstantSupplier<int>(settings.Octaves),
+                Persistence = new ConstantSupplier<float>(settings.Persistence),
+                Amplitude = new ConstantSupplier<float>(settings.Amplitude),
+                Evaluator = new ConstantSupplier<LatticeNoise.Evaluator>(settings.Evaluator),
+                Interpolator = new ConstantSupplier<LatticeNoise.Interpolator>(settings.Interpolator),
+                PreTreatment = new ConstantSupplier<LatticeNoise.Treatment>(settings.PreTreatment),
+                PostTreatment = new ConstantSupplier<LatticeNoise.Treatment>(settings.PostTreatment)
+            };
         }
 
         private static void Elevation(
