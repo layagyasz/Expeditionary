@@ -21,14 +21,36 @@ function Default:Apply(environment)
 	local terrain = parameters.Terrain
 
 	-- Basic
-	terrain.ElevationNoise.Frequency = Vector3(0.01, 0.01, 0.01)
-	terrain.StoneNoise.Frequency = Vector3(0.02, 0.02, 0.02)
-	terrain.SoilNoise.Frequency = Vector3(0.02, 0.02, 0.02)
-	terrain.SoilCoverNoise.Frequency = Vector3(0.05, 0.05, 0.05)
-	terrain.TemperatureNoise.Frequency = Vector3(0.02, 0.02, 0.02)
-	terrain.MoistureNoise.Frequency = Vector3(0.02, 0.02, 0.02)
-	terrain.BrushNoise.Frequency = Vector3(0.05, 0.05, 0.05)
-	terrain.FoliageNoise.Frequency = Vector3(0.2, 0.2, 0.2)
+	terrain.ElevationLayer.Noise.Frequency = Vector3(0.01, 0.01, 0.01)
+
+	terrain.StoneLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.StoneLayer.StandardDeviation = 0.2
+	terrain.StoneLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.SoilLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.SoilLayer.StandardDeviation = 0.2
+	terrain.SoilLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.SoilCoverLayer.Noise.Frequency = Vector3(0.05, 0.05, 0.05)
+	terrain.SoilCoverLayer.StandardDeviation = 0.2
+	terrain.SoilCoverLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.TemperatureLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.TemperatureLayer.StandardDeviation = 0.2
+	terrain.TemperatureLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.MoistureLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
+	terrain.MoistureLayer.StandardDeviation = 0.2
+	terrain.MoistureLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.BrushLayer.Noise.Frequency = Vector3(0.05, 0.05, 0.05)
+	terrain.BrushLayer.StandardDeviation = 0.2
+	terrain.BrushLayer.Transform = Quadratic(0, 0.5, 0.5)
+
+	terrain.FoliageLayer.Noise.Frequency = Vector3(0.2, 0.2, 0.2)
+	terrain.FoliageLayer.StandardDeviation = 0.2
+	terrain.FoliageLayer.Transform = Quadratic(0, 0.5, 0.5)
+
 	terrain.ElevationLevels = 5
 
 	-- Soil

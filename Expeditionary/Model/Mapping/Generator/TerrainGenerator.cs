@@ -8,22 +8,23 @@ using Cardamom.Utils.Suppliers;
 using Cardamom.Utils.Suppliers.Matrix;
 using Cardamom.Utils.Suppliers.Vector;
 using Expeditionary.Hexagons;
+using MathNet.Numerics.Statistics;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping.Generator
 {
     public class TerrainGenerator
     {
-        public class Parameters
+        public record class Parameters
         {
-            public LatticeNoise.Settings ElevationNoise { get; set; } = new();
-            public LatticeNoise.Settings StoneNoise { get; set; } = new();
-            public LatticeNoise.Settings SoilNoise { get; set; } = new();
-            public LatticeNoise.Settings SoilCoverNoise { get; set; } = new();
-            public LatticeNoise.Settings TemperatureNoise { get; set; } = new();
-            public LatticeNoise.Settings MoistureNoise { get; set; } = new();
-            public LatticeNoise.Settings BrushNoise { get; set; } = new();
-            public LatticeNoise.Settings FoliageNoise { get; set; } = new();
+            public LayerParameters ElevationLayer { get; set; } = new();
+            public LayerParameters StoneLayer { get; set; } = new();
+            public LayerParameters SoilLayer { get; set; } = new();
+            public LayerParameters SoilCoverLayer { get; set; } = new();
+            public LayerParameters TemperatureLayer { get; set; } = new();
+            public LayerParameters MoistureLayer { get; set; } = new();
+            public LayerParameters BrushLayer { get; set; } = new();
+            public LayerParameters FoliageLayer { get; set; } = new();
             public int ElevationLevels { get; set; }
             public float LiquidLevel { get; set; }
             public Vector3 Stone { get; set; }
@@ -39,7 +40,15 @@ namespace Expeditionary.Model.Mapping.Generator
             public Interval TemperatureRange { get; set; }
         }
 
-        public class SoilParameters
+        public record class LayerParameters 
+        {
+            public LatticeNoise.Settings Noise { get; set; } = new();
+            public Quadratic Transform { get; set; } = new();
+            public float Mean { get; set; }
+            public float StandardDeviation { get; set; }
+        }
+
+        public record class SoilParameters
         {
             public float Weight { get; set; }
             public Quadratic ElevationWeight { get; set; }
@@ -81,67 +90,67 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetKey("elevation")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(ToNoiseParameters(parameters.ElevationNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.ElevationLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("stone-a")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(ToNoiseParameters(parameters.StoneNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.StoneLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("stone-b")
                             .SetInput("input", "position")
                             .SetOutput("stone-a")
                             .SetChannel(Channel.Green)
-                            .SetParameters(ToNoiseParameters(parameters.StoneNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.StoneLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-a")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(ToNoiseParameters(parameters.SoilNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.SoilLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-b")
                             .SetInput("input", "position")
                             .SetOutput("soil-a")
                             .SetChannel(Channel.Green)
-                            .SetParameters(ToNoiseParameters(parameters.SoilNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.SoilLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("soil-cover")
                             .SetInput("input", "position")
                             .SetOutput("soil-b")
                             .SetChannel(Channel.Blue)
-                            .SetParameters(ToNoiseParameters(parameters.SoilCoverNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.SoilCoverLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("temperature")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
-                            .SetParameters(ToNoiseParameters(parameters.TemperatureNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.TemperatureLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("moisture")
                             .SetInput("input", "position")
                             .SetOutput("temperature")
                             .SetChannel(Channel.Green)
-                            .SetParameters(ToNoiseParameters(parameters.MoistureNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.MoistureLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("brush-cover")
                             .SetInput("input", "position")
                             .SetOutput("moisture")
                             .SetChannel(Channel.Blue)
-                            .SetParameters(ToNoiseParameters(parameters.BrushNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.BrushLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
                             .SetKey("foliage-cover")
                             .SetInput("input", "position")
                             .SetOutput("brush-cover")
                             .SetChannel(Channel.Alpha)
-                            .SetParameters(ToNoiseParameters(parameters.FoliageNoise, random)))
+                            .SetParameters(ToNoiseParameters(parameters.FoliageLayer.Noise, random)))
                     .AddNode(
                         new DenormalizeNode.Builder()
                             .SetKey("elevation-denormalize")
@@ -152,12 +161,15 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Mean =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                            ComponentValue = 
+                                                new ConstantSupplier<float>(parameters.ElevationLayer.Mean)
                                         },
                                     StandardDeviation =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                            ComponentValue = 
+                                                new ConstantSupplier<float>(
+                                                    parameters.ElevationLayer.StandardDeviation)
                                         },
                                 }))
                     .AddNode(
@@ -170,12 +182,13 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Mean =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0f)
+                                            ComponentValue = new ConstantSupplier<float>(parameters.StoneLayer.Mean)
                                         },
                                     StandardDeviation =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0.2f)
+                                            ComponentValue = 
+                                                new ConstantSupplier<float>(parameters.StoneLayer.StandardDeviation)
                                         },
                                 }))
                     .AddNode(
@@ -186,15 +199,19 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new DenormalizeNode.Parameters()
                                 {
                                     Mean =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0f)
-                                        },
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                parameters.SoilLayer.Mean,
+                                                parameters.SoilLayer.Mean,
+                                                parameters.SoilCoverLayer.Mean,
+                                                0f)),
                                     StandardDeviation =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0.2f)
-                                        },
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                parameters.SoilLayer.StandardDeviation,
+                                                parameters.SoilLayer.StandardDeviation,
+                                                parameters.SoilCoverLayer.StandardDeviation, 
+                                                1f)),
                                 }))
                     .AddNode(
                         new DenormalizeNode.Builder()
@@ -204,15 +221,19 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new DenormalizeNode.Parameters()
                                 {
                                     Mean =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0f)
-                                        },
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                parameters.TemperatureLayer.Mean,
+                                                parameters.MoistureLayer.Mean,
+                                                parameters.BrushLayer.Mean,
+                                                parameters.FoliageLayer.Mean)),
                                     StandardDeviation =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0.2f)
-                                        },
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                parameters.TemperatureLayer.StandardDeviation,
+                                                parameters.MoistureLayer.StandardDeviation,
+                                                parameters.BrushLayer.StandardDeviation,
+                                                parameters.FoliageLayer.StandardDeviation)),
                                 }))
                     .AddNode(
                         new AdjustNode.Builder()
@@ -225,12 +246,14 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Bias =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0.5f)
+                                            ComponentValue = 
+                                                new ConstantSupplier<float>(parameters.ElevationLayer.Transform.C)
                                         },
                                     Gradient =
                                         new Matrix4DiagonalUniformSupplier()
                                         {
-                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                            Diagonal = 
+                                                new ConstantSupplier<float>(parameters.ElevationLayer.Transform.B)
                                         }
                                 }))
                     .AddNode(
@@ -244,12 +267,13 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Bias =
                                         new Vector4UniformSupplier()
                                         {
-                                            ComponentValue = new ConstantSupplier<float>(0.5f)
+                                            ComponentValue = 
+                                                new ConstantSupplier<float>(parameters.StoneLayer.Transform.C)
                                         },
                                     Gradient =
                                         new Matrix4DiagonalUniformSupplier()
                                         {
-                                            Diagonal = new ConstantSupplier<float>(0.5f)
+                                            Diagonal = new ConstantSupplier<float>(parameters.StoneLayer.Transform.B)
                                         }
                                 }))
                     .AddNode(
@@ -261,15 +285,22 @@ namespace Expeditionary.Model.Mapping.Generator
                                 new()
                                 {
                                     Bias =
-                                        new Vector4UniformSupplier()
-                                        {
-                                            ComponentValue = new ConstantSupplier<float>(0.5f)
-                                        },
-                                    Gradient =
-                                        new Matrix4DiagonalUniformSupplier()
-                                        {
-                                            Diagonal = new ConstantSupplier<float>(0.5f)
-                                        }
+                                        new ConstantSupplier<Vector4>(
+                                            new(
+                                                parameters.SoilLayer.Transform.C,
+                                                parameters.SoilLayer.Transform.C,
+                                                parameters.SoilCoverLayer.Transform.C,
+                                                0f)),
+                                    Gradient = new Matrix4DiagonalVectorSupplier()
+                                    {
+                                        Diagonal = 
+                                            new ConstantSupplier<Vector4>(
+                                                new(
+                                                    parameters.SoilLayer.Transform.B,
+                                                    parameters.SoilLayer.Transform.B,
+                                                    parameters.SoilCoverLayer.Transform.B,
+                                                    0f))
+                                    },
                                 }))
                     .AddNode(
                         new AdjustNode.Builder()
@@ -282,25 +313,28 @@ namespace Expeditionary.Model.Mapping.Generator
                                     Bias =
                                         new ConstantSupplier<Vector4>(
                                             new(
-                                                0.5f * (parameters.TemperatureRange.Maximum
-                                                    + parameters.TemperatureRange.Minimum),
-                                                0.5f * (parameters.MoistureRange.Maximum
-                                                    + parameters.MoistureRange.Minimum),
-                                                0.5f,
-                                                0.5f)),
-                                    Gradient =
-                                        new Matrix4DiagonalVectorSupplier()
-                                        {
-                                            Diagonal =
-                                                new ConstantSupplier<Vector4>(
-                                                    new(
-                                                        0.5f * (parameters.TemperatureRange.Maximum
+                                                parameters.TemperatureLayer.Transform.C 
+                                                    * (parameters.TemperatureRange.Maximum 
+                                                        + parameters.TemperatureRange.Minimum),
+                                                parameters.MoistureLayer.Transform.C 
+                                                    * (parameters.MoistureRange.Maximum
+                                                        + parameters.MoistureRange.Minimum),
+                                                parameters.BrushLayer.Transform.C,
+                                                parameters.FoliageLayer.Transform.C)),
+                                    Gradient = new Matrix4DiagonalVectorSupplier()
+                                    {
+                                        Diagonal =
+                                            new ConstantSupplier<Vector4>(
+                                                new(
+                                                    parameters.TemperatureLayer.Transform.B 
+                                                        * (parameters.TemperatureRange.Maximum
                                                             - parameters.TemperatureRange.Minimum),
-                                                        0.5f * (parameters.MoistureRange.Maximum
+                                                    parameters.MoistureLayer.Transform.B 
+                                                        * (parameters.MoistureRange.Maximum
                                                             - parameters.MoistureRange.Minimum),
-                                                        0.5f,
-                                                        0.5f))
-                                        }
+                                                    parameters.BrushLayer.Transform.B,
+                                                    parameters.FoliageLayer.Transform.B))
+                                    }
                                 }))
                     .AddOutput("elevation-adjust")
                     .AddOutput("stone-adjust")
@@ -383,6 +417,8 @@ namespace Expeditionary.Model.Mapping.Generator
                 }
             }
             Array.Sort(elevations);
+            // DebugElevations(elevations);
+
             var liquidLevel = elevations[(int)(parameters.LiquidLevel * (elevations.Length - 1))];
             for (int i = 0; i < map.Width; ++i)
             {
@@ -613,6 +649,19 @@ namespace Expeditionary.Model.Mapping.Generator
                 return new(0, 1, 0);
             }
             return new(0, 0, 1);
+        }
+
+        private static void DebugElevations(float[] elevations)
+        {
+            int[] buckets = new int[10];
+            foreach (var e in elevations)
+            {
+                int i = 
+                    MathHelper.Clamp((int)(e * 0.5f * buckets.Length + 0.5f * buckets.Length), 0, buckets.Length - 1);
+                buckets[i]++;
+            }
+            Console.WriteLine(string.Join(",", buckets));
+            Console.WriteLine(Statistics.MeanStandardDeviation(elevations));
         }
     }
 }
