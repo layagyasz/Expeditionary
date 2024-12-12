@@ -8,6 +8,7 @@ None.Name = "No Erosion"
 function None:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.1
+	terrain.ElevationLayer.Noise.Persistence = 0.7
 end
 
 Young = MapEnvironmentModifier()
@@ -16,6 +17,7 @@ Young.Name = "Young"
 function Young:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.5
+	terrain.ElevationLayer.Noise.Persistence = 0.6
 end
 
 Old = MapEnvironmentModifier()
@@ -24,6 +26,7 @@ Old.Name = "Old"
 function Old:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.9
+	terrain.ElevationLayer.Noise.Persistence = 0.5
 end
 
 
@@ -33,6 +36,7 @@ Ancient.Name = "Ancient"
 function Ancient:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 1
+	terrain.ElevationLayer.Noise.Persistence = 0.4
 end
 
 function Load()

@@ -5,7 +5,7 @@
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-class-a",
-      "environment-modifier-landform-lithic-d",
+      "environment-modifier-landform-lithic-a",
       "environment-modifier-composition-carbide",
       "environment-modifier-liquid-carbide",
       "environment-modifier-liquid-level-coast",
@@ -13,6 +13,8 @@
       "environment-modifier-habitability-fertile",
       "environment-modifier-climate-warm",
       "environment-modifier-climate-aquifer",
+      "environment-modifier-terrain-steep-plateau",
+      "environment-modifier-terrain-very-rough",
       "environment-modifier-biome-forest",
       "environment-modifier-flora-fungal"
     ]

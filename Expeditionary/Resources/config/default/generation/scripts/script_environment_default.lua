@@ -21,8 +21,6 @@ function Default:Apply(environment)
 	local terrain = parameters.Terrain
 
 	-- Basic
-	terrain.ElevationLayer.Noise.Frequency = Vector3(0.01, 0.01, 0.01)
-
 	terrain.StoneLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
 	terrain.StoneLayer.StandardDeviation = 0.2
 	terrain.StoneLayer.Transform = Quadratic(0, 0.5, 0.5)
