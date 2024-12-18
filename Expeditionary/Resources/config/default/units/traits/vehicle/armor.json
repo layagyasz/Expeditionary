@@ -1,61 +1,327 @@
 [
   {
-    "$id": "trait-vehicle-armor-alloy-light",
-    "Name": "Light Alloy Armor",
+    "$id": "trait-vehicle-armor-laminate",
+    "Name": "Laminate Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 3,
+    "Cost": 2,
     "Level": 1,
     "Tags": [ "Armor", "Light" ],
     "Modifiers": {
       "defense.armor": "+3x0",
+      "defense.armor/min": "+0.75x0",
+      "intrinsic.mass.armor.density": "+0.25x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-1-light",
+    "Name": "Light Simple Alloy Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 2,
+    "Level": 2,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+4x0",
       "defense.armor/min": "+1x0",
       "intrinsic.mass.armor.density": "+0.5x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-alloy-medium",
-    "Name": "Alloy Armor",
+    "$id": "trait-vehicle-armor-alloy-1-medium",
+    "Name": "Simple Alloy Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 9,
+    "Cost": 6,
     "Level": 2,
     "Tags": [ "Armor", "Medium" ],
     "Modifiers": {
-      "defense.armor": "+9x0",
+      "defense.armor": "+12x0",
       "defense.armor/min": "+3x0",
       "intrinsic.mass.armor.density": "+1x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-alloy-heavy",
-    "Name": "Heavy Alloy Armor",
+    "$id": "trait-vehicle-armor-alloy-1-heavy",
+    "Name": "Heavy Simple Alloy Armor",
     "Family": "trait-vehicle-armor",
-    "Cost": 27,
-    "Level": 3,
+    "Cost": 18,
+    "Level": 2,
     "Tags": [ "Armor", "Heavy" ],
     "Modifiers": {
-      "defense.armor": "+27x0",
+      "defense.armor": "+36x0",
       "defense.armor/min": "+9x0",
       "intrinsic.mass.armor.density": "+1.5x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-spacing-1",
-    "Name": "Basic Spaced Armor",
-    "Family": "trait-vehicle-armor-spacing",
-    "Cost": 13,
+    "$id": "trait-vehicle-armor-alloy-2-light",
+    "Name": "Light Alloy Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 3,
     "Level": 1,
+    "Tags": [ "Armor", "Light" ],
     "Modifiers": {
-      "defense.armor": "+0x0.25"
+      "defense.armor": "+5x0",
+      "defense.armor/min": "+1.25x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
     }
   },
   {
-    "$id": "trait-vehicle-armor-spacing-2",
-    "Name": "Advanced Spaced Armor",
-    "Family": "trait-vehicle-armor-spacing",
-    "Cost": 27,
+    "$id": "trait-vehicle-armor-alloy-2-medium",
+    "Name": "Alloy Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 8,
     "Level": 2,
+    "Tags": [ "Armor", "Medium" ],
     "Modifiers": {
-      "defense.armor": "+0x0.5"
+      "defense.armor": "+15x0",
+      "defense.armor/min": "+3.75x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-2-heavy",
+    "Name": "Heavy Alloy Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 23,
+    "Level": 3,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+45x0",
+      "defense.armor/min": "+11.25x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-3-light",
+    "Name": "Light Alloy Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 3,
+    "Level": 4,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+6x0",
+      "defense.armor/min": "+1.5x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-3-medium",
+    "Name": "Alloy Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 9,
+    "Level": 4,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+18x0",
+      "defense.armor/min": "+4.5x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-3-heavy",
+    "Name": "Heavy Alloy Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 27,
+    "Level": 4,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+54x0",
+      "defense.armor/min": "+13.5x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-4-light",
+    "Name": "Light Advanced Alloy Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 4,
+    "Level": 5,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+7x0",
+      "defense.armor/min": "+1.75x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-4-medium",
+    "Name": "Advanced Alloy Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 11,
+    "Level": 5,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+21x0",
+      "defense.armor/min": "+5.25x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-alloy-4-heavy",
+    "Name": "Heavy Advanced Alloy Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 32,
+    "Level": 5,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+63x0",
+      "defense.armor/min": "+15.75x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-1-light",
+    "Name": "Light Simple Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 4,
+    "Level": 6,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+8x0",
+      "defense.armor/min": "+4x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-1-medium",
+    "Name": "Simple Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 12,
+    "Level": 6,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+24x0",
+      "defense.armor/min": "+6x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-1-heavy",
+    "Name": "Heavy Simple Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 36,
+    "Level": 6,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+72x0",
+      "defense.armor/min": "+18x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-2-light",
+    "Name": "Light Composite Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 5,
+    "Level": 7,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+9x0",
+      "defense.armor/min": "+2.25x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-2-medium",
+    "Name": "Composite Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 14,
+    "Level": 7,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+27x0",
+      "defense.armor/min": "+6.75x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-2-heavy",
+    "Name": "Heavy Composite Armor 2",
+    "Family": "trait-vehicle-armor",
+    "Cost": 41,
+    "Level": 7,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+81x0",
+      "defense.armor/min": "+20.25x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-3-light",
+    "Name": "Light Composite Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 5,
+    "Level": 8,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+10x0",
+      "defense.armor/min": "+2.5x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-3-medium",
+    "Name": "Composite Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 15,
+    "Level": 8,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+30x0",
+      "defense.armor/min": "+7.5x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-3-heavy",
+    "Name": "Heavy Composite Armor 3",
+    "Family": "trait-vehicle-armor",
+    "Cost": 45,
+    "Level": 8,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+90x0",
+      "defense.armor/min": "+22.5x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-4-light",
+    "Name": "Light Advanced Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 6,
+    "Level": 9,
+    "Tags": [ "Armor", "Light" ],
+    "Modifiers": {
+      "defense.armor": "+11x0",
+      "defense.armor/min": "+2.75x0",
+      "intrinsic.mass.armor.density": "+0.5x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-4-medium",
+    "Name": "Advanced Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 17,
+    "Level": 9,
+    "Tags": [ "Armor", "Medium" ],
+    "Modifiers": {
+      "defense.armor": "+33x0",
+      "defense.armor/min": "+8.25x0",
+      "intrinsic.mass.armor.density": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-armor-composite-4-heavy",
+    "Name": "Heavy Advanced Composite Armor",
+    "Family": "trait-vehicle-armor",
+    "Cost": 50,
+    "Level": 9,
+    "Tags": [ "Armor", "Heavy" ],
+    "Modifiers": {
+      "defense.armor": "+99x0",
+      "defense.armor/min": "+24.75x0",
+      "intrinsic.mass.armor.density": "+1.5x0"
     }
   },
   {
