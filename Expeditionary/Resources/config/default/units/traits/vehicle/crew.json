@@ -1,0 +1,109 @@
+[
+  {
+    "$id": "trait-vehicle-crew-loader-individual",
+    "Name": "Individual Loader",
+    "Cost": 0,
+    "Modifiers": {
+      "intrinsic.manpower": "+1x0",
+      "intrinsic.space/used": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-loader-auto-1",
+    "Name": "Basic Auto-Loader",
+    "Cost": 2,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.volume": "+0x0.05",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-loader-auto-2",
+    "Name": "Auto-Loader 2",
+    "Cost": 3,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.volume": "+0x0.1",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-loader-auto-3",
+    "Name": "Auto-Loader 3",
+    "Cost": 4,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.volume": "+0x0.15",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-loader-auto-4",
+    "Name": "Advanced Auto-Loader",
+    "Cost": 5,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.volume": "+0x0.2",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+
+  {
+    "$id": "trait-vehicle-crew-gunner-individual",
+    "Name": "Individual Gunner",
+    "Cost": 0,
+    "Modifiers": {
+      "intrinsic.manpower": "+1x0",
+      "intrinsic.space/used": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-gunner-auto-1",
+    "Name": "Basic Auto-Gunner",
+    "Cost": 2,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.accuracy": "+0x0.05",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-gunner-auto-2",
+    "Name": "Auto-Gunner 2",
+    "Cost": 3,
+    "Modifiers": {
+      "intrinsic.space/accuracy": "+2x0",
+      "capability.accuracy": "+0x0.1",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-gunner-auto-3",
+    "Name": "Auto-Gunner 3",
+    "Cost": 4,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.accuracy": "+0x0.15",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-crew-gunner-auto-4",
+    "Name": "Advanced Auto-Gunner",
+    "Cost": 5,
+    "Modifiers": {
+      "intrinsic.space/used": "+2x0",
+      "capability.accuracy": "+0x0.2",
+      "defense.vitality": "+0x-0.05",
+      "defense.vitality/min": "+0x-0.05"
+    }
+  }
+]

@@ -7,7 +7,7 @@
     "Modifiers": {
       "defense.vitality": "+24x0",
       "defense.vitality/min": "+4x0",
-      "intrinsic.manpower": "+1x0",
+      "intrinsic.manpower": "+2x0",
       "intrinsic.mass.equipment/density": "+1x0",
       "intrinsic.morale": "+8x0",
       "intrinsic.number": "+4x0",

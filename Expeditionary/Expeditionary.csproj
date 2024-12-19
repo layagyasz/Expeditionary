@@ -116,7 +116,13 @@
     <None Update="Resources\config\default\units\traits\vehicle\coating.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\units\traits\vehicle\crew.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\units\traits\vehicle\powerplant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\vehicle\training.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\weapons\antitank.json">

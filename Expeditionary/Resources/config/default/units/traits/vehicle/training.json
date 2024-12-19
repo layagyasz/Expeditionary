@@ -1,0 +1,86 @@
+[
+  {
+    "$id": "trait-vehicle-training-loader-1",
+    "Name": "Basic Loader Training",
+    "Family": "trait-vehicle-training-loader",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capability.volume": "+0x0.05"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-loader-2",
+    "Name": "Basic Loader Training",
+    "Family": "trait-vehicle-training-loader",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capability.volume": "+0x0.1"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-loader-3",
+    "Name": "Basic Loader Training",
+    "Family": "trait-vehicle-training-loader",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capability.volume": "+0x0.15"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-loader-4",
+    "Name": "Basic Loader Training",
+    "Family": "trait-vehicle-training-loader",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capability.volume": "+0x0.2"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-marksman-1",
+    "Name": "Basic Marksman Training",
+    "Family": "trait-vehicle-training-marksman",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capability.accuracy": "+0x0.125",
+      "capability.lethality": "+0x0.125"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-marksman-2",
+    "Name": "Marksman Training 2",
+    "Family": "trait-vehicle-training-marksman",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capability.accuracy": "+0x0.25",
+      "capability.lethality": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-marksman-3",
+    "Name": "Marksman Training 3",
+    "Family": "trait-vehicle-training-marksman",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capability.accuracy": "+0x0.375",
+      "capability.lethality": "+0x0.375"
+    }
+  },
+  {
+    "$id": "trait-vehicle-training-marksman-4",
+    "Name": "Elite Marksman Training",
+    "Family": "trait-vehicle-training-marksman",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capability.accuracy": "+0x0.5",
+      "capability.lethality": "+0x0.5"
+    }
+  }
+]
