@@ -3,7 +3,7 @@
     public record class UnitIntrinsics
     {
         public Modifier Manpower { get; set; }
-        public UnitMass Mass { get; set; }
+        public float Mass { get; set; }
         public Modifier Morale { get; set; }
         public Modifier Number { get; set; }
         public Modifier Power { get; set; }

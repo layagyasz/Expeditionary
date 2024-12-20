@@ -12,10 +12,10 @@
       "capability.signature[visual]": "+12x0",
       "defense.armor/min": "+0x-1",
       "defense.maneuver": "+10x0",
-      "intrinsic.mass.armor/amount": "+12x0",
-      "intrinsic.mass.armor/density": "+0x0",
-      "intrinsic.mass.body/amount": "+12x0",
-      "intrinsic.mass.body/density": "+0x0",
+      "intrinsic.mass:armor/amount": "+12x0",
+      "intrinsic.mass:armor/density": "+0x0",
+      "intrinsic.mass:body/amount": "+12x0",
+      "intrinsic.mass:body/density": "+0x0",
       "intrinsic.profile": "+3x0",
       "intrinsic.space": "+24x0"
     }
@@ -33,10 +33,10 @@
       "capability.signature[visual]": "+6x0",
       "defense.maneuver": "+10x0",
       "defense.vitality/min": "+2x0",
-      "intrinsic.mass.armor/amount": "+12x0",
-      "intrinsic.mass.armor/density": "+0x0",
-      "intrinsic.mass.body/amount": "+12x0",
-      "intrinsic.mass.body/density": "+0x0",
+      "intrinsic.mass:armor/amount": "+12x0",
+      "intrinsic.mass:armor/density": "+0x0",
+      "intrinsic.mass:body/amount": "+12x0",
+      "intrinsic.mass:body/density": "+0x0",
       "intrinsic.profile": "+6x0",
       "intrinsic.space": "+12x0"
     }
@@ -54,10 +54,10 @@
       "capability.signature[visual]": "+9x0",
       "defense.maneuver": "+10x0",
       "defense.vitality/min": "+2x0",
-      "intrinsic.mass.armor/amount": "+18x0",
-      "intrinsic.mass.armor/density": "+0x0",
-      "intrinsic.mass.body/amount": "+18x0",
-      "intrinsic.mass.body/density": "+0x0",
+      "intrinsic.mass:armor/amount": "+18x0",
+      "intrinsic.mass:armor/density": "+0x0",
+      "intrinsic.mass:body/amount": "+18x0",
+      "intrinsic.mass:body/density": "+0x0",
       "intrinsic.profile": "+4x0",
       "intrinsic.space": "+18x0"
     }
@@ -75,10 +75,10 @@
       "capability.signature[visual]": "+12x0",
       "defense.maneuver": "+10x0",
       "defense.vitality/min": "+2x0",
-      "intrinsic.mass.armor/amount": "+24x0",
-      "intrinsic.mass.armor/density": "+0x0",
-      "intrinsic.mass.body/amount": "+24x0",
-      "intrinsic.mass.body/density": "+0x0",
+      "intrinsic.mass:armor/amount": "+24x0",
+      "intrinsic.mass:armor/density": "+0x0",
+      "intrinsic.mass:body/amount": "+24x0",
+      "intrinsic.mass:body/density": "+0x0",
       "intrinsic.profile": "+3x0",
       "intrinsic.space": "+24x0"
     }
@@ -96,10 +96,10 @@
       "capability.signature[visual]": "+15x0",
       "defense.maneuver": "+10x0",
       "defense.vitality/min": "+2x0",
-      "intrinsic.mass.armor/amount": "+30x0",
-      "intrinsic.mass.armor/density": "+0x0",
-      "intrinsic.mass.body/amount": "+30x0",
-      "intrinsic.mass.body/density": "+0x0",
+      "intrinsic.mass:armor/amount": "+30x0",
+      "intrinsic.mass:armor/density": "+0x0",
+      "intrinsic.mass:body/amount": "+30x0",
+      "intrinsic.mass:body/density": "+0x0",
       "intrinsic.profile": "+2x0",
       "intrinsic.space": "+30x0"
     }

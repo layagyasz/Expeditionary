@@ -39,8 +39,7 @@ namespace Expeditionary.Model.Combat.Units
             Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
-            Speed = intrinsics.Power.GetValue() 
-                / (intrinsics.Mass.GetValue() + weapons.Sum(x => x.Weapon.Mass.GetValue()));
+            Speed = intrinsics.Power.GetValue() / (intrinsics.Mass + weapons.Sum(x => x.Weapon.Mass.GetValue()));
         }
 
         public EnumSet<UnitTag> GetTags()

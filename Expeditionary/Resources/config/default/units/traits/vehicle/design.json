@@ -6,8 +6,8 @@
     "Cost": 2,
     "Level": 1,
     "Modifiers": {
-      "intrinsic.mass.armor.amount": "+0x-0.15",
-      "intrinsic.mass.body.amount": "+0x-0.15",
+      "intrinsic.mass:armor.amount": "+0x-0.15",
+      "intrinsic.mass:body.amount": "+0x-0.15",
       "intrinsic.profile": "+0x-0.25",
       "intrinsic.space": "+0x-0.25"
     }
@@ -38,7 +38,7 @@
     "Level": 1,
     "Modifiers": {
       "defense.armor/min": "+0x-0.5",
-      "intrinsic.mass.armor.amount": "+0x-0.05",
+      "intrinsic.mass:armor.amount": "+0x-0.05",
       "intrinsic.space": "+0x1.15"
     }
   }

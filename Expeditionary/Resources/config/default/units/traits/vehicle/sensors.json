@@ -8,7 +8,7 @@
     "Modifiers": {
       "capability.detection[visual]": "+3x0",
       "capability.range[visual]": "+2x0",
-      "intrinsic.mass.equipment/amount": "+0.25x0"
+      "intrinsic.mass:equipment/amount": "+0.25x0"
     }
   },
   {
@@ -20,7 +20,7 @@
     "Modifiers": {
       "capability.detection[visual]": "+6x0",
       "capability.range[visual]": "+3x0",
-      "intrinsic.mass.equipment/amount": "+0.5x0"
+      "intrinsic.mass:equipment/amount": "+0.5x0"
     }
   },
   {
@@ -98,7 +98,7 @@
     "Modifiers": {
       "capability.detection[electronic]": "+6x0",
       "capability.range[electronic]": "+8x0",
-      "intrinsic.mass.equipment/amount": "+3x0",
+      "intrinsic.mass:equipment/amount": "+3x0",
       "intrinsic.size/used": "+3x0"
     }
   },
@@ -111,7 +111,7 @@
     "Modifiers": {
       "capability.detection[electronic]": "+8x0",
       "capability.range[electronic]": "+16x0",
-      "intrinsic.mass.equipment/amount": "+6x0",
+      "intrinsic.mass:equipment/amount": "+6x0",
       "intrinsic.size/used": "+6x0"
     }
   },
@@ -124,7 +124,7 @@
     "Modifiers": {
       "capability.detection[electronic]": "+10x0",
       "capability.range[electronic]": "+24x0",
-      "intrinsic.mass.equipment/amount": "+9x0",
+      "intrinsic.mass:equipment/amount": "+9x0",
       "intrinsic.size/used": "+9x0"
     }
   },
@@ -137,7 +137,7 @@
     "Modifiers": {
       "capability.detection[electronic]": "+12x0",
       "capability.range[electronic]": "+32x0",
-      "intrinsic.mass.equipment/amount": "+12x0",
+      "intrinsic.mass:equipment/amount": "+12x0",
       "intrinsic.size/used": "+12x0"
     }
   }

@@ -101,23 +101,32 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static UnitMass BuildMass(string prefix, IDictionary<string, Modifier> attributes)
+        private static float BuildMass(string prefix, IDictionary<string, Modifier> attributes)
         {
-            return new()
+            var amounts = new Dictionary<string, Modifier>();
+            var densities = new Dictionary<string, Modifier>();
+            foreach (var (attribute, value) in attributes)
             {
-                Armor = BuildMassComponent(prefix + ".armor", attributes),
-                Body = BuildMassComponent(prefix + ".body", attributes),
-                Equipment = BuildMassComponent(prefix + ".equipment", attributes)
-            };
-        }
+                if (attribute.StartsWith(prefix))
+                {
+                    if (attribute.EndsWith("amount"))
+                    {
+                        Combine(amounts, attribute[^7..], value);
+                    }
+                    if (attribute.EndsWith("density"))
+                    {
+                        Combine(densities, attribute[^8..], value);
+                    }
+                }
+            }
 
-        private static UnitMassComponent BuildMassComponent(string prefix, IDictionary<string, Modifier> attributes)
-        {
-            return new()
+            float total = 0f;
+            foreach (var key in amounts.Keys.Union(densities.Keys))
             {
-                Density = UnitTrait.GetOrDefault(attributes, prefix + "/density", Modifier.None),
-                Amount = UnitTrait.GetOrDefault(attributes, prefix + "/amount", Modifier.None)
-            };
+                total += amounts.GetValueOrDefault(key, Modifier.None).GetValue() 
+                    * amounts.GetValueOrDefault(key, Modifier.None).GetValue();
+            }
+            return total;
         }
 
         private static Movement BuildMovement(IDictionary<string, Modifier> attributes)
@@ -139,6 +148,18 @@ namespace Expeditionary.Model.Combat.Units
                 Available = UnitTrait.GetOrDefault(attributes, prefix, Modifier.None),
                 Used = UnitTrait.GetOrDefault(attributes, prefix + "/used", Modifier.None)
             };
+        }
+
+        private static void Combine(IDictionary<string, Modifier> attributes, string key, Modifier modifier)
+        {
+            if (attributes.TryGetValue(key, out var value)) 
+            {
+                attributes[key] = value + modifier;
+            }
+            else
+            {
+                attributes.Add(key, modifier);
+            }
         }
     }
 }
