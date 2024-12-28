@@ -20,6 +20,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public LayerParameters ElevationLayer { get; set; } = new();
             public LayerParameters StoneLayer { get; set; } = new();
             public LayerParameters SoilLayer { get; set; } = new();
+            public LayerParameters GroundCoverLayer { get; set; } = new();
             public LayerParameters SoilCoverLayer { get; set; } = new();
             public LayerParameters TemperatureLayer { get; set; } = new();
             public LayerParameters MoistureLayer { get; set; } = new();
@@ -32,6 +33,8 @@ namespace Expeditionary.Model.Mapping.Generator
             public SoilParameters SoilA { get; set; } = new();
             public SoilParameters SoilB { get; set; } = new();
             public SoilParameters SoilC { get; set; } = new();
+            public float GroundCoverCover { get; set; }
+            public SoilParameters GroundCover { get; set; } = new();
             public float BrushCover { get; set; }
             public float FoliageCover { get; set; }
             public float LiquidMoistureBonus { get; set; }
@@ -126,6 +129,13 @@ namespace Expeditionary.Model.Mapping.Generator
                             .SetParameters(ToNoiseParameters(parameters.SoilCoverLayer.Noise, random)))
                     .AddNode(
                         new LatticeNoiseNode.Builder()
+                            .SetKey("ground-cover")
+                            .SetInput("input", "position")
+                            .SetOutput("soil-cover")
+                            .SetChannel(Channel.Alpha)
+                            .SetParameters(ToNoiseParameters(parameters.GroundCoverLayer.Noise, random)))
+                    .AddNode(
+                        new LatticeNoiseNode.Builder()
                             .SetKey("temperature")
                             .SetInput("input", "position")
                             .SetChannel(Channel.Red)
@@ -194,7 +204,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     .AddNode(
                         new DenormalizeNode.Builder()
                             .SetKey("soil-denormalize")
-                            .SetInput("input", "soil-cover")
+                            .SetInput("input", "ground-cover")
                             .SetParameters(
                                 new DenormalizeNode.Parameters()
                                 {
@@ -204,14 +214,14 @@ namespace Expeditionary.Model.Mapping.Generator
                                                 parameters.SoilLayer.Mean,
                                                 parameters.SoilLayer.Mean,
                                                 parameters.SoilCoverLayer.Mean,
-                                                0f)),
+                                                parameters.GroundCoverLayer.Mean)),
                                     StandardDeviation =
                                         new ConstantSupplier<Vector4>(
                                             new(
                                                 parameters.SoilLayer.StandardDeviation,
                                                 parameters.SoilLayer.StandardDeviation,
                                                 parameters.SoilCoverLayer.StandardDeviation, 
-                                                1f)),
+                                                parameters.GroundCoverLayer.StandardDeviation)),
                                 }))
                     .AddNode(
                         new DenormalizeNode.Builder()
@@ -280,7 +290,7 @@ namespace Expeditionary.Model.Mapping.Generator
                         new AdjustNode.Builder()
                             .SetKey("soil-adjust")
                             .SetInput("input", "soil-denormalize")
-                            .SetChannel(Channel.Color)
+                            .SetChannel(Channel.All)
                             .SetParameters(
                                 new()
                                 {
@@ -290,7 +300,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                                 parameters.SoilLayer.Transform.C,
                                                 parameters.SoilLayer.Transform.C,
                                                 parameters.SoilCoverLayer.Transform.C,
-                                                0f)),
+                                                parameters.GroundCoverLayer.Transform.C)),
                                     Gradient = new Matrix4DiagonalVectorSupplier()
                                     {
                                         Diagonal = 
@@ -299,7 +309,7 @@ namespace Expeditionary.Model.Mapping.Generator
                                                     parameters.SoilLayer.Transform.B,
                                                     parameters.SoilLayer.Transform.B,
                                                     parameters.SoilCoverLayer.Transform.B,
-                                                    0f))
+                                                    parameters.GroundCoverLayer.Transform.B))
                                     },
                                 }))
                     .AddNode(
@@ -375,6 +385,7 @@ namespace Expeditionary.Model.Mapping.Generator
             AdjustMoisture(map, parameters, plantData);
             Stone(map, parameters, stoneData);
             Soil(map, parameters, soilData, elevation, slope);
+            GroundCover(map, parameters, soilData, elevation, slope);
             Brush(map, parameters, plantData);
             Foliage(map, parameters, plantData);
             Hindrance(map);
@@ -542,6 +553,30 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
+        private static void GroundCover(
+            Map map, Parameters parameters, Color4[,] soilData, float[,] elevation, float[,] slope)
+        {
+            int c = 0;
+            for (int i = 0; i < map.Width; ++i)
+            {
+                for (int j = 0; j < map.Height; ++j)
+                {
+                    var tile = map.GetTile(i, j)!;
+                    if (tile.Terrain.IsLiquid)
+                    {
+                        continue;
+                    }
+                    Color4 tileData = soilData[i, j];
+                    var e = elevation[i, j];
+                    var s = slope[i, j];
+                    tile.Terrain.HasGroundCover = 
+                        tileData.A - EvaluateSoil(parameters.GroundCover, e, s) < parameters.GroundCoverCover;
+                    if (tile.Terrain.HasGroundCover) c++;
+                }
+            }
+            Console.WriteLine(c);
+        }
+
         private static void Brush(Map map, Parameters parameters, Color4[,] plantData)
         {
             for (int i = 0; i < map.Width; ++i)
@@ -601,6 +636,11 @@ namespace Expeditionary.Model.Mapping.Generator
                         hindrance.Roughness = 3;
                     }
                     hindrance.Softness = (int)(3 * tile.Moisture);
+                    if (tile.Terrain.HasGroundCover)
+                    {
+                        hindrance.Roughness = Math.Max(0, hindrance.Roughness - 1);
+                        hindrance.Softness = 3;
+                    }
                     tile.Hindrance = hindrance;
                 }
             }

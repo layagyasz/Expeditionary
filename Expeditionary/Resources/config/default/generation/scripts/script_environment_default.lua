@@ -33,6 +33,10 @@ function Default:Apply(environment)
 	terrain.SoilCoverLayer.StandardDeviation = 0.2
 	terrain.SoilCoverLayer.Transform = Quadratic(0, 0.5, 0.5)
 
+	terrain.GroundCoverLayer.Noise.Frequency = Vector3(0.05, 0.05, 0.05)
+	terrain.GroundCoverLayer.StandardDeviation = 0.2
+	terrain.GroundCoverLayer.Transform = Quadratic(0, 0.5, 0.5)
+
 	terrain.TemperatureLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
 	terrain.TemperatureLayer.StandardDeviation = 0.2
 	terrain.TemperatureLayer.Transform = Quadratic(0, 0.5, 0.5)

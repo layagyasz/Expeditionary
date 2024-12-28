@@ -10,13 +10,13 @@
       "environment-modifier-liquid-carbide",
       "environment-modifier-liquid-level-coast",
       "environment-modifier-erosion-young",
-      "environment-modifier-habitability-fertile",
-      "environment-modifier-climate-warm",
+      "environment-modifier-habitability-habitable",
+      "environment-modifier-climate-arctic",
       "environment-modifier-climate-aquifer",
       "environment-modifier-terrain-steep-plateau",
       "environment-modifier-terrain-very-rough",
       "environment-modifier-biome-forest",
-      "environment-modifier-flora-fungal"
+      "environment-modifier-flora-native"
     ]
   }
 ]

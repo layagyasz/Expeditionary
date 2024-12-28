@@ -203,6 +203,11 @@ namespace Expeditionary.View.Mapping
             {
                 return parameters.Liquid;
             }
+            // Ground Cover
+            if (tile.Terrain.HasGroundCover)
+            {
+                return parameters.GroundCover;
+            }
             // Brush
             if (tile.Terrain.Brush.HasValue)
             {

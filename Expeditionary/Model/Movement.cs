@@ -2,25 +2,7 @@
 {
     public record class Movement
     {
-        public record struct Hindrance
-        {
-            public int Restriction { get; set; }
-            public int Roughness { get; set; }
-            public int Slope { get; set; }
-            public int Softness { get; set; }
-            public int WaterDepth { get; set; }
-
-            public Hindrance() { }
-
-            public Hindrance(int restriction, int roughness, int slope, int softness, int waterDepth)
-            {
-                Roughness = roughness;
-                Softness = softness;
-                Restriction = restriction;
-                Slope = slope;
-                WaterDepth = waterDepth;
-            }
-        }
+        public record struct Hindrance(int Restriction, int Roughness, int Slope, int Softness, int WaterDepth);
 
         public record struct CostFunction
         {
