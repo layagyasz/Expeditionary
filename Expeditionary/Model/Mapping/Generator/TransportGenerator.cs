@@ -61,6 +61,10 @@ namespace Expeditionary.Model.Mapping.Generator
                         .Select(x => Cubic.Cartesian.Instance.Project(x.Hex))
                         .Select(x => new Vertex(x.X, x.Y))
                         .ToList();
+                if (!voronoiVerts.Any())
+                {
+                    continue;
+                }
                 var voronoiTris = VoronoiGrapher.GetTriangulation(voronoiVerts);
                 var graph = VoronoiGrapher.GetNeighbors(voronoiVerts, voronoiTris);
 

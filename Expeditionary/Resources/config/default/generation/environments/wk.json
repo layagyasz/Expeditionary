@@ -1,0 +1,26 @@
+[
+  {
+    "$id": "environment-archangel",
+    "Name": "Archangel",
+    "Modifiers": [
+      "environment-modifier-default",
+      "environment-modifier-star-white-dwarf",
+      "environment-modifier-landform-lithic-a",
+      "environment-modifier-composition-silicous-telluric",
+      "environment-modifier-liquid-water",
+      "environment-modifier-liquid-level-lakes",
+      "environment-modifier-erosion-young",
+      "environment-modifier-habitability-habitable",
+      "environment-modifier-climate-arctic",
+      "environment-modifier-climate-average",
+      "environment-modifier-terrain-rough",
+      "environment-modifier-terrain-rolling",
+      "environment-modifier-biome-forest",
+      "environment-modifier-flora-terran",
+      "environment-modifier-structure-habitation-1",
+      "environment-modifier-structure-farm-1",
+      "environment-modifier-structure-mine-1",
+      "environment-modifier-structure-infrastructure-1"
+    ]
+  }
+]

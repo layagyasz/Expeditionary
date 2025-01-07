@@ -94,8 +94,9 @@ namespace Expeditionary
                         unitTextures),
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
-
-            var environmentDefinition = module.Environments["environment-default"];
+            var random = new Random();
+            var environmentDefinition = module.Environments.ToList()[random.Next(module.Environments.Count)].Value;
+            Console.WriteLine(environmentDefinition.Key);
             var environment = environmentDefinition.GetEnvironment();
             var mapSize = new Vector2i(100, 100);
             var map = MapGenerator.Generate(environment.Parameters, mapSize, seed: new Random().Next());

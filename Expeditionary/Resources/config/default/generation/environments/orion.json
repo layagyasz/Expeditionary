@@ -1,0 +1,26 @@
+[
+  {
+    "$id": "environment-beta-scopuli",
+    "Name": "Beta Scopuli",
+    "Modifiers": [
+      "environment-modifier-default",
+      "environment-modifier-star-class-a",
+      "environment-modifier-landform-lithic-a",
+      "environment-modifier-composition-silicous-telluric",
+      "environment-modifier-liquid-water",
+      "environment-modifier-liquid-level-inland",
+      "environment-modifier-erosion-none",
+      "environment-modifier-habitability-nominal",
+      "environment-modifier-climate-cold",
+      "environment-modifier-climate-arid",
+      "environment-modifier-terrain-rough",
+      "environment-modifier-terrain-rolling",
+      "environment-modifier-biome-forest",
+      "environment-modifier-flora-native",
+      "environment-modifier-structure-habitation-0",
+      "environment-modifier-structure-farm-0",
+      "environment-modifier-structure-mine-0",
+      "environment-modifier-structure-infrastructure-1"
+    ]
+  }
+]

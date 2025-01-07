@@ -30,5 +30,5 @@ function Field:Apply(environment)
 end
 
 function Load()
-	return { Desert, Forest, Lush, Field }
+	return { Forest, Lush, Field }
 end
