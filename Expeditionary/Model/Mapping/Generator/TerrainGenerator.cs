@@ -556,7 +556,6 @@ namespace Expeditionary.Model.Mapping.Generator
         private static void GroundCover(
             Map map, Parameters parameters, Color4[,] soilData, float[,] elevation, float[,] slope)
         {
-            int c = 0;
             for (int i = 0; i < map.Width; ++i)
             {
                 for (int j = 0; j < map.Height; ++j)
@@ -571,10 +570,8 @@ namespace Expeditionary.Model.Mapping.Generator
                     var s = slope[i, j];
                     tile.Terrain.HasGroundCover = 
                         tileData.A - EvaluateSoil(parameters.GroundCover, e, s) < parameters.GroundCoverCover;
-                    if (tile.Terrain.HasGroundCover) c++;
                 }
             }
-            Console.WriteLine(c);
         }
 
         private static void Brush(Map map, Parameters parameters, Color4[,] plantData)

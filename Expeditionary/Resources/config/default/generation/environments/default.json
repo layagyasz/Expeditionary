@@ -16,7 +16,11 @@
       "environment-modifier-terrain-steep-plateau",
       "environment-modifier-terrain-very-rough",
       "environment-modifier-biome-forest",
-      "environment-modifier-flora-native"
+      "environment-modifier-flora-native",
+      "environment-modifier-structure-habitation-5",
+      "environment-modifier-structure-farm-1",
+      "environment-modifier-structure-mine-0",
+      "environment-modifier-structure-infrastructure-1"
     ]
   }
 ]
