@@ -1,0 +1,41 @@
+[
+  {
+    "$id": "weapon-common-mortar-light",
+    "Name": "Light Mortar",
+    "Traits": [
+      "trait-mortar-caliber-light",
+      "trait-weapon-fire-control-2"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-mortar",
+    "Name": "Mortar",
+    "Traits": [
+      "trait-mortar-caliber-medium",
+      "trait-weapon-fire-control-2"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-mortar-heavy",
+    "Name": "Heavy Mortar",
+    "Traits": [
+      "trait-mortar-caliber-heavy",
+      "trait-weapon-fire-control-2"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  }
+]

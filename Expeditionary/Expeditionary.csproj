@@ -107,7 +107,7 @@
     <None Update="Resources\config\default\module.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\definitions\example.json">
+    <None Update="Resources\config\default\units\definitions\common\infantry.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\vehicle\armor.json">
@@ -170,7 +170,13 @@
     <None Update="Resources\config\default\units\traits\vehicle\suspension.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\weapons\small.json">
+    <None Update="Resources\config\default\units\weapons\common\antitank.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\weapons\common\mortar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\weapons\common\small.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\fonts.json">

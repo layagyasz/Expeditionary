@@ -1,6 +1,6 @@
 [
   {
-    "$id": "trait-infantry-rifle",
+    "$id": "trait-weapon-small-rifle",
     "Name": "Rifle",
     "Cost": 0,
     "Modifiers": {
@@ -14,7 +14,7 @@
     }
   },
   {
-    "$id": "trait-infantry-lmg",
+    "$id": "trait-weapon-small-lmg",
     "Name": "LMG",
     "Cost": 3,
     "Tags": [ "Light", "MG" ],
@@ -29,7 +29,7 @@
     }
   },
   {
-    "$id": "trait-infantry-mg",
+    "$id": "trait-weapon-small-mg",
     "Name": "MG",
     "Cost": 4,
     "Tags": [ "Medium", "MG" ],
@@ -44,7 +44,7 @@
     }
   },
   {
-    "$id": "trait-infantry-hmg",
+    "$id": "trait-weapon-small-hmg",
     "Name": "HMG",
     "Cost": 4,
     "Tags": [ "Heavy", "MG" ],
@@ -59,7 +59,7 @@
     }
   },
   {
-    "$id": "trait-infantry-sniper",
+    "$id": "trait-weapon-small-sniper",
     "Name": "Sniper",
     "Cost": 4,
     "Tags": [ "Sniper" ],

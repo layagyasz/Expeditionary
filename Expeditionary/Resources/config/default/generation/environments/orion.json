@@ -1,7 +1,7 @@
 [
   {
-    "$id": "environment-beta-scopuli",
-    "Name": "Beta Scopuli",
+    "$id": "environment-taurus",
+    "Name": "Taurus",
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-class-a",

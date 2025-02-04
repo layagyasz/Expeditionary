@@ -1,0 +1,30 @@
+[
+  {
+    "$id": "weapon-common-antitank-atgm",
+    "Name": "ATGM",
+    "Traits": [
+      "trait-antitank-atgm",
+      "trait-antitank-warhead-2",
+      "trait-weapon-optic-3"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-antitank-iat",
+    "Name": "Anti-Tank",
+    "Traits": [
+      "trait-antitank-iat",
+      "trait-antitank-warhead-2",
+      "trait-weapon-optic-3"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  }
+]

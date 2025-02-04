@@ -1,0 +1,170 @@
+[
+  {
+    "$id": "~def-common-infantry-rifle",
+    "Name": "Rifle",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-rifle"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-platoon",
+      "trait-infantry-armor-2",
+      "trait-infantry-camo-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-lmg",
+    "Name": "LMG",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-lmg"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mg",
+    "Name": "MG",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-mg"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-hmg",
+    "Name": "HMG",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-hmg"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-sniper",
+    "Name": "Sniper",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-sniper"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-1",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-3"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-atgm",
+    "Name": "ATGM",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-antitank-atgm"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-iat",
+    "Name": "Anti-Tank",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-antitank-iat"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mortar-light",
+    "Name": "Light Mortar",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-light"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mortar",
+    "Name": "Mortar",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mortar-heavy",
+    "Name": "Heavy Mortar",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-heavy"
+      }
+    ],
+    "Traits": [
+      "trait-infantry",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  }
+]

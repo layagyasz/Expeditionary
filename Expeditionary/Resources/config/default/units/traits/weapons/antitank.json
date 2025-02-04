@@ -1,6 +1,6 @@
 [
   {
-    "$id": "trait-atgm",
+    "$id": "trait-antitank-atgm",
     "Name": "ATGM",
     "Cost": 12,
     "Tags": [ "AntiTank", "Missile" ],
@@ -15,7 +15,7 @@
     }
   },
   {
-    "$id": "trait-iat",
+    "$id": "trait-antitank-iat",
     "Name": "Infantry Anti-tank",
     "Cost": 6,
     "Tags": [ "AntiTank" ],
@@ -31,7 +31,7 @@
   },
 
   {
-    "$id": "trait-iat-warhead-1",
+    "$id": "trait-antitank-warhead-1",
     "Name": "Basic Warhead",
     "Family": "trait-iat-warhead",
     "Cost": 0,
@@ -43,7 +43,7 @@
     }
   },
   {
-    "$id": "trait-iat-warhead-2",
+    "$id": "trait-antitank-warhead-2",
     "Name": "Warhead 2",
     "Family": "trait-iat-warhead",
     "Cost": 2,
@@ -55,7 +55,7 @@
     }
   },
   {
-    "$id": "trait-iat-warhead-3",
+    "$id": "trait-antitank-warhead-3",
     "Name": "Warhead 3",
     "Family": "trait-iat-warhead",
     "Cost": 4,
@@ -67,7 +67,7 @@
     }
   },
   {
-    "$id": "trait-iat-warhead-4",
+    "$id": "trait-antitank-warhead-4",
     "Name": "Advanced Warhead",
     "Family": "trait-iat-warhead",
     "Cost": 6,

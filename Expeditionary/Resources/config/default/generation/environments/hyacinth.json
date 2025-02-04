@@ -1,11 +1,11 @@
 [
   {
-    "$id": "environment-athena",
-    "Name": "Athena",
+    "$id": "environment-aphrodite",
+    "Name": "Aphrodite",
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-class-g",
-      "environment-modifier-landform-crystalline-b",
+      "environment-modifier-landform-crystalline-a",
       "environment-modifier-composition-sulfurous",
       "environment-modifier-liquid-sulfurous",
       "environment-modifier-liquid-level-lakes",

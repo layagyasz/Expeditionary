@@ -1,0 +1,58 @@
+[
+  {
+    "$id": "weapon-common-small-rifle",
+    "Name": "Rifle",
+    "Traits": [
+      "trait-weapon-small-rifle",
+      "trait-weapon-optic-1"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-small-lmg",
+    "Name": "LMG",
+    "Traits": [ "trait-weapon-small-lmg" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-small-mg",
+    "Name": "MG",
+    "Traits": [ "trait-weapon-small-mg" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-small-hmg",
+    "Name": "HMG",
+    "Traits": [ "trait-weapon-small-hmg" ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  },
+  {
+    "$id": "weapon-common-small-sniper",
+    "Name": "Sniper",
+    "Traits": [
+      "trait-weapon-small-sniper",
+      "trait-weapon-optic-3"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  }
+]

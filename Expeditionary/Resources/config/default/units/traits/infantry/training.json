@@ -10,6 +10,14 @@
     }
   },
   {
+    "$id": "trait-infantry-recruitment-0",
+    "Name": "Mercenary",
+    "Family": "trait-infantry-recruitment",
+    "Cost": 0,
+    "Level": 0,
+    "Modifiers": {}
+  },
+  {
     "$id": "trait-infantry-recruitment-1",
     "Name": "Volunteer",
     "Family": "trait-infantry-recruitment",
