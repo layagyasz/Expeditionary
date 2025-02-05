@@ -1,0 +1,13 @@
+[
+  {
+    "$id": "trait-artillery-platoon",
+    "Name": "Platoon",
+    "Tags": [ "Platoon" ],
+    "Cost": 4,
+    "Modifiers": {
+      "intrinsic.manpower": "+5x0",
+      "intrinsic.morale": "+4x0",
+      "intrinsic.number": "+4x0"
+    }
+  }
+]

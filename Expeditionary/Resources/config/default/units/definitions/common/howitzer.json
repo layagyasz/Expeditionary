@@ -1,0 +1,53 @@
+[
+  {
+    "$id": "~def-common-infantry-howitzer-105mm",
+    "Name": "105mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-howitzer-105mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-towed",
+      "trait-infantry-armor-1",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-howitzer-122mm",
+    "Name": "122mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-howitzer-122mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-towed",
+      "trait-infantry-armor-1",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-howitzer-155mm",
+    "Name": "155mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-howitzer-155mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-towed",
+      "trait-infantry-armor-1",
+      "trait-infantry-recruitment-0"
+    ]
+  }
+]

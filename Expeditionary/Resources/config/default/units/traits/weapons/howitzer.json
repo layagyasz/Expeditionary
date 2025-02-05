@@ -1,5 +1,23 @@
 [
   {
+    "$id": "trait-howitzer-caliber-light",
+    "Name": "Light Howitzer",
+    "Family": "trait-vehicle-howitzer-caliber",
+    "Cost": 12,
+    "Tags": [ "Artillery", "Light" ],
+    "Modifiers": {
+      "volume": "+54x0",
+      "range": "+36x0",
+      "range/cap": "+48x0",
+      "accuracy": "+4x0",
+      "tracking": "+4x0",
+      "penetration": "+26x0",
+      "lethality": "+16x0",
+      "mass": "+2x0",
+      "size": "+8x0"
+    }
+  },
+  {
     "$id": "trait-howitzer-caliber-medium",
     "Name": "Medium Howitzer",
     "Family": "trait-vehicle-howitzer-caliber",

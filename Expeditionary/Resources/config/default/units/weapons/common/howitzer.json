@@ -1,9 +1,9 @@
 [
   {
-    "$id": "weapon-common-mortar-72mm",
-    "Name": "72mm",
+    "$id": "weapon-common-howitzer-105mm",
+    "Name": "105mm",
     "Traits": [
-      "trait-mortar-caliber-light",
+      "trait-howitzer-caliber-light",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -13,10 +13,10 @@
     ]
   },
   {
-    "$id": "weapon-common-mortar-81mm",
-    "Name": "81mm",
+    "$id": "weapon-common-howitzer-122mm",
+    "Name": "122mm",
     "Traits": [
-      "trait-mortar-caliber-medium",
+      "trait-howitzer-caliber-medium",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -26,10 +26,10 @@
     ]
   },
   {
-    "$id": "weapon-common-mortar-120mm",
-    "Name": "120mm",
+    "$id": "weapon-common-howitzer-155mm",
+    "Name": "155mm",
     "Traits": [
-      "trait-mortar-caliber-heavy",
+      "trait-howitzer-caliber-heavy",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [

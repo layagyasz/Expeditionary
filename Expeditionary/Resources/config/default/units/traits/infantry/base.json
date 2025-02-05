@@ -1,46 +1,8 @@
 [
   {
-    "$id": "trait-infantry",
-    "Name": "Infantry",
-    "Tags": [ "Infantry" ],
-    "Cost": 4,
-    "Modifiers": {
-      "capability.detection[audio]": "+12x0",
-      "capability.range[audio]": "+1x0",
-      "capability.signature[audio]": "+3x0",
-      "capability.signature[thermal]": "+3x0",
-      "capability.detection[visual]": "+12x0",
-      "capability.range[visual]": "+4x0",
-      "capability.signature[visual]": "+3x0",
-      "defense.maneuver": "+10x0",
-      "defense.vitality": "+2x0",
-      "defense.vitality/min": "+0.2x0",
-      "intrinsic.mass.body/amount": "+1x0",
-      "intrinsic.mass.body/density": "+1x0",
-      "intrinsic.power": "+1x0",
-      "intrinsic.profile": "+12x0",
-      "intrinsic.stamina": "+1x0",
-      "movement.restriction/min": "+0x0",
-      "movement.restriction/max": "+0x0",
-      "movement.restriction/cap": "+5x0",
-      "movement.roughness/min": "+0x0",
-      "movement.roughness/max": "+0x0",
-      "movement.roughness/cap": "+4x0",
-      "movement.slope/min": "+0x0",
-      "movement.slope/max": "+0x0",
-      "movement.slope/cap": "+1x0",
-      "movement.softness/min": "+0x0",
-      "movement.softness/max": "+0x0",
-      "movement.softness/cap": "+5x0",
-      "movement.waterdepth/min": "+0x0",
-      "movement.waterdepth/max": "+0x0",
-      "movement.waterdepth/cap": "+3x0"
-    }
-  },
-  {
     "$id": "trait-infantry-section",
     "Name": "Section",
-    "Tags": [ "Section" ],
+    "Tags": [ "Infantry", "Section" ],
     "Cost": 0,
     "Modifiers": {
       "intrinsic.manpower": "+2x0",
@@ -51,7 +13,7 @@
   {
     "$id": "trait-infantry-platoon",
     "Name": "Platoon",
-    "Tags": [ "Platoon" ],
+    "Tags": [ "Infantry", "Platoon" ],
     "Cost": 8,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",

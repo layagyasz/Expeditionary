@@ -1,0 +1,53 @@
+[
+  {
+    "$id": "~def-common-infantry-mortar-72mm",
+    "Name": "72mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-72mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-carried",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mortar-81mm",
+    "Name": "81mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-81mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-carried",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  },
+  {
+    "$id": "~def-common-infantry-mortar-120mm",
+    "Name": "120mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-120mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-artillery-mobility-carried",
+      "trait-infantry-armor-2",
+      "trait-infantry-recruitment-0"
+    ]
+  }
+]
