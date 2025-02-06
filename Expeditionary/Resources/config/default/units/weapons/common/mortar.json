@@ -4,6 +4,7 @@
     "Name": "72mm",
     "Traits": [
       "trait-mortar-caliber-light",
+      "trait-weapon-mobility-carried",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -17,6 +18,7 @@
     "Name": "81mm",
     "Traits": [
       "trait-mortar-caliber-medium",
+      "trait-weapon-mobility-carried",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -30,6 +32,7 @@
     "Name": "120mm",
     "Traits": [
       "trait-mortar-caliber-heavy",
+      "trait-weapon-mobility-carried",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [

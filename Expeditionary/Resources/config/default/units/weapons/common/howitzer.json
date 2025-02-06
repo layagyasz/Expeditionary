@@ -4,6 +4,7 @@
     "Name": "105mm",
     "Traits": [
       "trait-howitzer-caliber-light",
+      "trait-weapon-mobility-towed",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -17,6 +18,7 @@
     "Name": "122mm",
     "Traits": [
       "trait-howitzer-caliber-medium",
+      "trait-weapon-mobility-towed",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [
@@ -30,6 +32,7 @@
     "Name": "155mm",
     "Traits": [
       "trait-howitzer-caliber-heavy",
+      "trait-weapon-mobility-towed",
       "trait-weapon-fire-control-2"
     ],
     "Modes": [

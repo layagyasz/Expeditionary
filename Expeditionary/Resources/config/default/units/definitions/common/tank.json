@@ -1,0 +1,30 @@
+[
+  {
+    "$id": "~def-common-tank-medium",
+    "Name": "Medium Tank",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-cannon-120mm"
+      }
+    ],
+    "Tags": [ "Medium" ],
+    "Traits": [
+      "trait-vehicle-base",
+      "trait-vehicle-chassis-medium",
+      "trait-vehicle-design-turret-turret",
+      "trait-vehicle-suspension-tracked",
+      "trait-vehicle-armor-composite-3-heavy",
+      "trait-vehicle-armor-era-3",
+      "trait-vehicle-camo-1",
+      "trait-vehicle-crew-loader-individual",
+      "trait-vehicle-training-loader-2",
+      "trait-vehicle-crew-gunner-individual",
+      "trait-vehicle-training-gunner-2",
+      "trait-powerplant-size-large",
+      "trait-powerplant-type-piston-3",
+      "trait-vehicle-sensor-visual-3",
+      "trait-vehicle-sensor-thermal-2"
+    ]
+  }
+]

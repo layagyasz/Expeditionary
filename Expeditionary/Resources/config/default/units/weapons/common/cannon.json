@@ -1,0 +1,18 @@
+[
+  {
+    "$id": "weapon-common-cannon-120mm",
+    "Name": "120mm",
+    "Traits": [
+      "trait-cannon-caliber-heavy",
+      "trait-cannon-penetrator-2",
+      "trait-weapon-optic-3",
+      "trait-weapon-rangefinder-2",
+      "trait-weapon-fire-control-2"
+    ],
+    "Modes": [
+      {
+        "Condition": "Ranged"
+      }
+    ]
+  }
+]

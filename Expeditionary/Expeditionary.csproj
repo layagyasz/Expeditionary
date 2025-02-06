@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\config\default\units\traits\weapons\modifiers.json~RF6736b541.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="NLua" Version="1.7.3" />
   </ItemGroup>
@@ -116,10 +120,10 @@
     <None Update="Resources\config\default\units\definitions\common\mortar.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\traits\artillery\base.json">
+    <None Update="Resources\config\default\units\definitions\common\tank.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\traits\artillery\mobility.json">
+    <None Update="Resources\config\default\units\traits\artillery\base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\common.json">
@@ -186,6 +190,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\weapons\common\antitank.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\weapons\common\cannon.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\weapons\common\howitzer.json">

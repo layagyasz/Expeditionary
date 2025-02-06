@@ -15,11 +15,14 @@ namespace Expeditionary.Model.Combat.Units
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<UnitTrait> Traits { get; set; } = new();
+        public List<UnitTag> Tags { get; set; } = new();
 
         public EnumSet<UnitTag> GetTags()
         {
             return Enumerable.Concat(
-                Weapons.SelectMany(x => x.Weapon!.GetTags()), Traits.SelectMany(x => x.Tags)).ToEnumSet();
+                Tags, 
+                Enumerable.Concat(
+                    Weapons.SelectMany(x => x.Weapon!.GetTags()), Traits.SelectMany(x => x.Tags))).ToEnumSet();
         }
 
         public UnitType Build()

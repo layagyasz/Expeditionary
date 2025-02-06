@@ -7,7 +7,7 @@
     "Tags": [ "Artillery", "Light" ],
     "Modifiers": {
       "volume": "+54x0",
-      "range": "+36x0",
+      "range": "+18x1",
       "range/cap": "+48x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
@@ -25,7 +25,7 @@
     "Tags": [ "Artillery", "Medium" ],
     "Modifiers": {
       "volume": "+36x0",
-      "range": "+48x0",
+      "range": "+24x1",
       "range/cap": "+60x0",
       "accuracy": "+4x0",
       "tracking": "+3x0",
@@ -43,7 +43,7 @@
     "Tags": [ "Artillery", "Heavy" ],
     "Modifiers": {
       "volume": "+18x0",
-      "range": "+64x0",
+      "range": "+32x1",
       "range/cap": "+80x0",
       "accuracy": "+4x0",
       "tracking": "+2x0",

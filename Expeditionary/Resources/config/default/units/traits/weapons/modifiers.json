@@ -1,5 +1,31 @@
 [
   {
+    "$id": "trait-weapon-mobility-fixed",
+    "Name": "Fixed",
+    "Tags": [ "Fixed" ],
+    "Cost": 0,
+    "Modifiers": {
+      "mass": "+0x0.25",
+      "size": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-weapon-mobility-towed",
+    "Name": "Towed",
+    "Tags": [ "Towed" ],
+    "Cost": 4,
+    "Modifiers": {
+      "mass": "+0x0.5",
+      "size": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-weapon-mobility-carried",
+    "Name": "Carried",
+    "Cost": 0,
+    "Modifiers": {}
+  },
+  {
     "$id": "trait-weapon-optic-1",
     "Name": "Basic Optics",
     "Family": "trait-weapon-optic",
@@ -88,7 +114,7 @@
     "Cost": 0,
     "Level": 1,
     "Modifiers": {
-      "range": "+0x0.125"
+      "range": "+0x0.25"
     }
   },
   {
@@ -98,7 +124,7 @@
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
-      "range": "+0x0.25"
+      "range": "+0x0.5"
     }
   },
   {
@@ -108,7 +134,7 @@
     "Cost": 4,
     "Level": 3,
     "Modifiers": {
-      "range": "+0x0.375"
+      "range": "+0x0.75"
     }
   },
   {
@@ -118,7 +144,7 @@
     "Cost": 6,
     "Level": 4,
     "Modifiers": {
-      "range": "+0x0.5"
+      "range": "+0x1"
     }
   }
 ]

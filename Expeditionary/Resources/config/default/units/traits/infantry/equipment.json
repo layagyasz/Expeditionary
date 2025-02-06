@@ -38,7 +38,6 @@
     "Family": "trait-infantry-armor",
     "Cost": 4,
     "Level": 4,
-    "Tags": [ "Heavy" ],
     "Modifiers": {
       "defense.armor": "+1.5x0",
       "defense.armor/min": "+0.6x0"

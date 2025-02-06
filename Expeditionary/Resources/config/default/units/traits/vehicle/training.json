@@ -40,9 +40,9 @@
     }
   },
   {
-    "$id": "trait-vehicle-training-marksman-1",
-    "Name": "Basic Marksman Training",
-    "Family": "trait-vehicle-training-marksman",
+    "$id": "trait-vehicle-training-gunner-1",
+    "Name": "Basic Gunner Training",
+    "Family": "trait-vehicle-training-gunner",
     "Cost": 1,
     "Level": 1,
     "Modifiers": {
@@ -51,9 +51,9 @@
     }
   },
   {
-    "$id": "trait-vehicle-training-marksman-2",
-    "Name": "Marksman Training 2",
-    "Family": "trait-vehicle-training-marksman",
+    "$id": "trait-vehicle-training-gunner-2",
+    "Name": "Gunner Training 2",
+    "Family": "trait-vehicle-training-gunner",
     "Cost": 2,
     "Level": 2,
     "Modifiers": {
@@ -62,9 +62,9 @@
     }
   },
   {
-    "$id": "trait-vehicle-training-marksman-3",
-    "Name": "Marksman Training 3",
-    "Family": "trait-vehicle-training-marksman",
+    "$id": "trait-vehicle-training-gunner-3",
+    "Name": "Gunner Training 3",
+    "Family": "trait-vehicle-training-gunner",
     "Cost": 3,
     "Level": 3,
     "Modifiers": {
@@ -73,9 +73,9 @@
     }
   },
   {
-    "$id": "trait-vehicle-training-marksman-4",
-    "Name": "Elite Marksman Training",
-    "Family": "trait-vehicle-training-marksman",
+    "$id": "trait-vehicle-training-gunner-4",
+    "Name": "Elite Gunner Training",
+    "Family": "trait-vehicle-training-gunner",
     "Cost": 4,
     "Level": 4,
     "Modifiers": {

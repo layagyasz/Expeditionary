@@ -7,8 +7,10 @@ using Cardamom.Window;
 using Expeditionary.Controller;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
+using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping.Generator;
+using Expeditionary.Recorders;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Mapping;
@@ -55,13 +57,13 @@ namespace Expeditionary
             var unitTextures = unitTextureGenerator.Generate(module.UnitTypes.Values);
             unitTextures.GetTextures().First().CopyToImage().SaveToFile("units.png");
 
-            var sensitivity = 
+            var sensitivity =
                 JsonSerializer.Deserialize<SpectrumSensitivity>(
                     File.ReadAllText("resources/view/human_eye_sensitivity.json"))!;
 
-            var partitionTextureGenerator = 
+            var partitionTextureGenerator =
                 new PartitionTextureGenerator(resources.GetShader("shader-generate-partition"));
-            var partitions = 
+            var partitions =
                 partitionTextureGenerator.Generate(
                     frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 4f), seed: 0, count: 60);
 
@@ -73,7 +75,7 @@ namespace Expeditionary
             var edges = riverTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 2f), seed: 0, count: 10);
 
-            var structureTextureGenerator = 
+            var structureTextureGenerator =
                 new StructureTextureGenerator(resources.GetShader("shader-default-no-tex"));
             var structures = structureTextureGenerator.Generate();
 
@@ -105,10 +107,10 @@ namespace Expeditionary
             var players = new List<Player>() { player, opponent };
             var match =
                 new Match(
-                    new SerialIdGenerator(), 
+                    new SerialIdGenerator(),
                     map,
                     players.ToDictionary(
-                        x => x, 
+                        x => x,
                         x => new PlayerKnowledge(x, map, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
             var driver = new GameDriver(match, players, new());
             driver.Step();
@@ -123,13 +125,24 @@ namespace Expeditionary
 
             var terrainParameters = environment.Appearance.Materialize(sensitivity);
             RecordPalette(terrainParameters);
+            RecordUnitTypes(module.UnitTypes.Values);
 
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(driver, player), 
-                    sceneFactory.Create(match, terrainParameters, seed: 0), 
+                    new MatchController(driver, player),
+                    sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             ui.Start();
+        }
+
+        private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
+        {
+            var context = new RecorderContext();
+            using var stream = new StreamWriter("units.txt");
+            foreach (var unitType in unitTypes)
+            {
+                Recorder.Record(stream, context, unitType);
+            }
         }
 
         private static void RecordPalette(TerrainViewParameters parameters)
