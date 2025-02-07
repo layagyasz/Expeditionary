@@ -1,29 +1,5 @@
 [
   {
-    "$id": "environment-aphrodite",
-    "Name": "Aphrodite",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-g",
-      "environment-modifier-landform-crystalline-a",
-      "environment-modifier-composition-sulfurous",
-      "environment-modifier-liquid-sulfurous",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-none",
-      "environment-modifier-habitability-dead",
-      "environment-modifier-climate-arid",
-      "environment-modifier-climate-hot",
-      "environment-modifier-terrain-very-rough",
-      "environment-modifier-terrain-steep-plateau",
-      "environment-modifier-biome-field",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-0",
-      "environment-modifier-structure-farm-0",
-      "environment-modifier-structure-mine-0",
-      "environment-modifier-structure-infrastructure-1"
-    ]
-  },
-  {
     "$id": "environment-hellespont",
     "Name": "Hellespont",
     "Modifiers": [

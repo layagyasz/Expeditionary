@@ -1,0 +1,26 @@
+[
+  {
+    "$id": "environment-hrutgard",
+    "Name": "Hrutgard",
+    "Modifiers": [
+      "environment-modifier-default",
+      "environment-modifier-star-class-k",
+      "environment-modifier-landform-lithic-b",
+      "environment-modifier-composition-silicous-ferrous",
+      "environment-modifier-liquid-water",
+      "environment-modifier-liquid-level-inland",
+      "environment-modifier-erosion-none",
+      "environment-modifier-habitability-marginal",
+      "environment-modifier-climate-cold",
+      "environment-modifier-climate-arid",
+      "environment-modifier-terrain-rough",
+      "environment-modifier-terrain-rolling",
+      "environment-modifier-biome-field",
+      "environment-modifier-flora-terran",
+      "environment-modifier-structure-habitation-1",
+      "environment-modifier-structure-farm-1",
+      "environment-modifier-structure-mine-3",
+      "environment-modifier-structure-infrastructure-1"
+    ]
+  }
+]

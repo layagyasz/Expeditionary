@@ -22,29 +22,5 @@
       "environment-modifier-structure-mine-0",
       "environment-modifier-structure-infrastructure-1"
     ]
-  },
-  {
-    "$id": "environment-kwajalein",
-    "Name": "Kwajalein",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-k",
-      "environment-modifier-landform-lithic-b",
-      "environment-modifier-composition-carbide",
-      "environment-modifier-liquid-carbide",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-ancient",
-      "environment-modifier-habitability-fertile",
-      "environment-modifier-climate-aquifer",
-      "environment-modifier-climate-hot",
-      "environment-modifier-terrain-rugged",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-lush",
-      "environment-modifier-flora-fungal",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-1",
-      "environment-modifier-structure-mine-1",
-      "environment-modifier-structure-infrastructure-1"
-    ]
   }
 ]

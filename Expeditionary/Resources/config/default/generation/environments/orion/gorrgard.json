@@ -1,7 +1,7 @@
 [
   {
-    "$id": "environment-taurus",
-    "Name": "Taurus",
+    "$id": "environment-gorrgard",
+    "Name": "Gorrgard",
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-class-a",

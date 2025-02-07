@@ -1,0 +1,27 @@
+[
+  {
+    "$id": "environment-kedromon-yer",
+    "Name": "Kedromon Yer",
+    "Modifiers": [
+      "environment-modifier-default",
+      "environment-modifier-star-class-g",
+      "environment-modifier-landform-lithic-a",
+      "environment-modifier-composition-silicous-terran",
+      "environment-modifier-composition-volcanic",
+      "environment-modifier-liquid-water",
+      "environment-modifier-liquid-level-lakes",
+      "environment-modifier-erosion-old",
+      "environment-modifier-habitability-fertile",
+      "environment-modifier-climate-cold",
+      "environment-modifier-climate-semiarid",
+      "environment-modifier-terrain-flat",
+      "environment-modifier-terrain-plateau",
+      "environment-modifier-biome-lush",
+      "environment-modifier-flora-terran",
+      "environment-modifier-structure-habitation-1",
+      "environment-modifier-structure-farm-2",
+      "environment-modifier-structure-mine-0",
+      "environment-modifier-structure-infrastructure-1"
+    ]
+  }
+]

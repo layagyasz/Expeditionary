@@ -54,19 +54,34 @@
     <None Update="Resources\config\default\factions\wk.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\generation\environments\earth.json">
+    <None Update="Resources\config\default\generation\environments\earth\meridian.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\generation\environments\hyacinth.json">
+    <None Update="Resources\config\default\generation\environments\hyacinth\aphrodite.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\generation\environments\isc.json">
+    <None Update="Resources\config\default\generation\environments\hyacinth\hellespont.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\generation\environments\orion.json">
+    <None Update="Resources\config\default\generation\environments\isc\kokudo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\generation\environments\wk.json">
+    <None Update="Resources\config\default\generation\environments\isc\kwajalein.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\orion\fiskgard.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\orion\gorrgard.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\orion\hrutgard.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\wk\archangel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\wk\kedromon-yer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_biome.lua">
@@ -480,7 +495,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\config\default\generation\environments\" />
+    <Folder Include="Resources\config\default\generation\environments\earth\" />
+    <Folder Include="Resources\config\default\generation\environments\hyacinth\" />
+    <Folder Include="Resources\config\default\generation\environments\isc\" />
+    <Folder Include="Resources\config\default\generation\environments\wk\" />
+    <Folder Include="Resources\config\default\generation\environments\orion\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>
