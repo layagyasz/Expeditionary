@@ -14,8 +14,8 @@
       "defense.maneuver": "+10x0",
       "intrinsic.mass:armor/amount": "+12x0",
       "intrinsic.mass:armor/density": "+0x0",
-      "intrinsic.mass:body/amount": "+12x0",
-      "intrinsic.mass:body/density": "+0x0",
+      "intrinsic.mass:body/amount": "+24x0",
+      "intrinsic.mass:body/density": "+1x0",
       "intrinsic.profile": "+3x0",
       "intrinsic.space": "+24x0"
     }
@@ -36,7 +36,7 @@
       "intrinsic.mass:armor/amount": "+12x0",
       "intrinsic.mass:armor/density": "+0x0",
       "intrinsic.mass:body/amount": "+12x0",
-      "intrinsic.mass:body/density": "+0x0",
+      "intrinsic.mass:body/density": "+1x0",
       "intrinsic.profile": "+6x0",
       "intrinsic.space": "+12x0"
     }
@@ -57,7 +57,7 @@
       "intrinsic.mass:armor/amount": "+18x0",
       "intrinsic.mass:armor/density": "+0x0",
       "intrinsic.mass:body/amount": "+18x0",
-      "intrinsic.mass:body/density": "+0x0",
+      "intrinsic.mass:body/density": "+1x0",
       "intrinsic.profile": "+4x0",
       "intrinsic.space": "+18x0"
     }
@@ -78,7 +78,7 @@
       "intrinsic.mass:armor/amount": "+24x0",
       "intrinsic.mass:armor/density": "+0x0",
       "intrinsic.mass:body/amount": "+24x0",
-      "intrinsic.mass:body/density": "+0x0",
+      "intrinsic.mass:body/density": "+1x0",
       "intrinsic.profile": "+3x0",
       "intrinsic.space": "+24x0"
     }
@@ -99,7 +99,7 @@
       "intrinsic.mass:armor/amount": "+30x0",
       "intrinsic.mass:armor/density": "+0x0",
       "intrinsic.mass:body/amount": "+30x0",
-      "intrinsic.mass:body/density": "+0x0",
+      "intrinsic.mass:body/density": "+1x0",
       "intrinsic.profile": "+2x0",
       "intrinsic.space": "+30x0"
     }

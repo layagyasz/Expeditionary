@@ -2,7 +2,7 @@
 {
     public record struct UnitSpace
     {
-        public Modifier Available { get; set; }
-        public Modifier Used { get; set; }
+        public float Available { get; set; }
+        public float Used { get; set; }
     }
 }

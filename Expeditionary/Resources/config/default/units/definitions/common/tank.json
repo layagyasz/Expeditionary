@@ -8,7 +8,7 @@
         "Weapon": "weapon-common-cannon-120mm"
       }
     ],
-    "Tags": [ "Medium" ],
+    "Tags": [ "Medium", "Armor" ],
     "Traits": [
       "trait-vehicle-base",
       "trait-vehicle-chassis-medium",

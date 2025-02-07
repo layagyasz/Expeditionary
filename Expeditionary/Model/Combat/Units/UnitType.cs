@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Combat.Units
 {
-    [JsonConverter(typeof(BuilderJsonConverter))]
     [BuilderClass(typeof(UnitTypeDefinition))]
     public class UnitType : IKeyed
     {
@@ -17,6 +16,7 @@ namespace Expeditionary.Model.Combat.Units
         }
         public string Name => Definition.Name;
         public string? Symbol => Definition.Symbol;
+        [JsonIgnore]
         public UnitTypeDefinition Definition { get; }
         public ImmutableList<UnitWeaponUsage> Weapons { get; }
         public UnitDefense Defense { get; }
@@ -39,7 +39,7 @@ namespace Expeditionary.Model.Combat.Units
             Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
-            Speed = intrinsics.Power.GetValue() / (intrinsics.Mass + weapons.Sum(x => x.Weapon.Mass.GetValue()));
+            Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
         }
 
         public EnumSet<UnitTag> GetTags()
@@ -49,9 +49,7 @@ namespace Expeditionary.Model.Combat.Units
 
         public bool Validate()
         {
-            return Speed >= 1 
-                && Intrinsics.Space.Available.GetValue() 
-                    >= (Intrinsics.Space.Used.GetValue() + Weapons.Sum(x => x.Weapon.Size.GetValue()));
+            return Speed >= 1 && Intrinsics.Space.Available >= Intrinsics.Space.Used;
         }
     }
 }

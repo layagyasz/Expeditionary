@@ -10,7 +10,6 @@ using Expeditionary.Model;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping.Generator;
-using Expeditionary.Recorders;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Mapping;
@@ -47,6 +46,7 @@ namespace Expeditionary
             options.Converters.Add(new ColorJsonConverter());
             options.Converters.Add(new Vector2iJsonConverter());
             options.Converters.Add(new TextureVolumeJsonConverter());
+            options.Converters.Add(new BuilderJsonConverter());
             var module =
                 JsonSerializer.Deserialize<GameModule>(
                     File.ReadAllText("resources/config/default/module.json"), options)!;
@@ -137,12 +137,14 @@ namespace Expeditionary
 
         private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
         {
-            var context = new RecorderContext();
-            using var stream = new StreamWriter("units.txt");
-            foreach (var unitType in unitTypes)
-            {
-                Recorder.Record(stream, context, unitType);
-            }
+            using var stream = File.OpenWrite("units.json");
+            var options = 
+                new JsonSerializerOptions() 
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    WriteIndented = true
+                };
+            JsonSerializer.Serialize(stream, unitTypes, typeof(IEnumerable<UnitType>), options);
         }
 
         private static void RecordPalette(TerrainViewParameters parameters)

@@ -23,7 +23,7 @@ namespace Expeditionary.Json
 
         public override void Write(Utf8JsonWriter writer, Modifier @object, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(string.Format("+{0}x{1}", @object.Bonus, @object.Multiplier));
+            writer.WriteStringValue($"+{@object.Bonus}x{@object.Multiplier}");
         }
     }
 }

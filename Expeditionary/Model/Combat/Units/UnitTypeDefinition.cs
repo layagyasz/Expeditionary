@@ -15,14 +15,16 @@ namespace Expeditionary.Model.Combat.Units
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<UnitTrait> Traits { get; set; } = new();
-        public List<UnitTag> Tags { get; set; } = new();
+        public EnumSet<UnitTag> Tags { get; set; } = new();
 
         public EnumSet<UnitTag> GetTags()
         {
-            return Enumerable.Concat(
-                Tags, 
-                Enumerable.Concat(
-                    Weapons.SelectMany(x => x.Weapon!.GetTags()), Traits.SelectMany(x => x.Tags))).ToEnumSet();
+            if (Tags.Count == 0)
+            {
+                return Enumerable.Concat(
+                    Weapons.SelectMany(x => x.Weapon!.GetTags()), Traits.SelectMany(x => x.Tags)).ToEnumSet();
+            }
+            return Tags;
         }
 
         public UnitType Build()
@@ -34,7 +36,7 @@ namespace Expeditionary.Model.Combat.Units
                 BuildDefenseEnvelope(attributes),
                 BuildMovement(attributes),
                 BuildCapabilities(attributes),
-                BuildIntrinsics(attributes));
+                BuildIntrinsics(attributes, Weapons));
         }
 
         private static UnitCapabilities BuildCapabilities(IDictionary<string, Modifier> attributes)
@@ -89,17 +91,20 @@ namespace Expeditionary.Model.Combat.Units
             };
         }
 
-        private static UnitIntrinsics BuildIntrinsics(IDictionary<string, Modifier> attributes)
+        private static UnitIntrinsics BuildIntrinsics(
+            IDictionary<string, Modifier> attributes, IEnumerable<UnitWeaponUsage> weapons)
         {
+            var space = BuildSpace("intrinsic.space", attributes);
+            space.Used += weapons.Sum(x => x.Number * x.Weapon.Size.GetValue());
             return new()
             {
                 Manpower = UnitTrait.GetOrDefault(attributes, "intrinsic.manpower", Modifier.None),
-                Mass = BuildMass("intrinsic.mass", attributes),
+                Mass = BuildMass("intrinsic.mass", attributes) + weapons.Sum(x => x.Number * x.Weapon.Mass.GetValue()),
                 Morale = UnitTrait.GetOrDefault(attributes, "intrinsic.morale", Modifier.None),
                 Number = UnitTrait.GetOrDefault(attributes, "intrinsic.number", Modifier.None),
                 Power = UnitTrait.GetOrDefault(attributes, "intrinsic.power", Modifier.None),
                 Profile = UnitTrait.GetOrDefault(attributes, "intrinsic.profile", Modifier.None),
-                Space = BuildSpace("intrinsic.space", attributes),
+                Space = space,
                 Stamina = UnitTrait.GetOrDefault(attributes, "intrinsic.stamina", Modifier.None)
             };
         }
@@ -114,11 +119,12 @@ namespace Expeditionary.Model.Combat.Units
                 {
                     if (attribute.EndsWith("amount"))
                     {
-                        Combine(amounts, attribute[^7..], value);
+                        
+                        Combine(amounts, attribute[(attribute.IndexOf(':')+1)..^7], value);
                     }
                     if (attribute.EndsWith("density"))
                     {
-                        Combine(densities, attribute[^8..], value);
+                        Combine(densities, attribute[(attribute.IndexOf(':')+1)..^8], value);
                     }
                 }
             }
@@ -127,7 +133,7 @@ namespace Expeditionary.Model.Combat.Units
             foreach (var key in amounts.Keys.Union(densities.Keys))
             {
                 total += amounts.GetValueOrDefault(key, Modifier.None).GetValue() 
-                    * amounts.GetValueOrDefault(key, Modifier.None).GetValue();
+                    * densities.GetValueOrDefault(key, Modifier.None).GetValue();
             }
             return total;
         }
@@ -148,8 +154,8 @@ namespace Expeditionary.Model.Combat.Units
         {
             return new()
             {
-                Available = UnitTrait.GetOrDefault(attributes, prefix, Modifier.None),
-                Used = UnitTrait.GetOrDefault(attributes, prefix + "/used", Modifier.None)
+                Available = UnitTrait.GetOrDefault(attributes, prefix, Modifier.None).GetValue(),
+                Used = UnitTrait.GetOrDefault(attributes, prefix + "/used", Modifier.None).GetValue()
             };
         }
 

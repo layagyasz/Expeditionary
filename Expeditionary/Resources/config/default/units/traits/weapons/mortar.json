@@ -7,13 +7,13 @@
     "Tags": [ "Mortar", "Light" ],
     "Modifiers": {
       "volume": "+128x0",
-      "range": "+10x0",
+      "range": "+6x1",
       "range/cap": "+14x0",
       "accuracy": "+4x0",
       "tracking": "+5x0",
       "penetration": "+12x0",
       "lethality": "+10x0",
-      "mass": "+0.02x0",
+      "mass": "+0.04x0",
       "size": "+0.5x0"
     }
   },
@@ -25,13 +25,13 @@
     "Tags": [ "Mortar", "Medium" ],
     "Modifiers": {
       "volume": "+72x0",
-      "range": "+16x0",
+      "range": "+8x1",
       "range/cap": "+20x0",
       "accuracy": "+4x0",
       "tracking": "+4x0",
       "penetration": "+20x0",
       "lethality": "+16x0",
-      "mass": "+0.04x0",
+      "mass": "+0.08x0",
       "size": "+1x0"
     }
   },
@@ -43,13 +43,13 @@
     "Tags": [ "Mortar", "Heavy" ],
     "Modifiers": {
       "volume": "+24x0",
-      "range": "+22x0",
+      "range": "+12x1",
       "range/cap": "+28x0",
       "accuracy": "+4x0",
       "tracking": "+3x0",
       "penetration": "+40x0",
       "lethality": "+32x0",
-      "mass": "+0.15x0",
+      "mass": "+0.3x0",
       "size": "+1.5x0"
     }
   }

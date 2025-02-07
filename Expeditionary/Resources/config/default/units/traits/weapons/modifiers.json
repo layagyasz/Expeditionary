@@ -32,7 +32,7 @@
     "Cost": 2,
     "Level": 1,
     "Modifiers": {
-      "range": "+0x1"
+      "range": "+0x0.5"
     }
   },
   {
@@ -42,7 +42,7 @@
     "Cost": 4,
     "Level": 2,
     "Modifiers": {
-      "range": "+0x2"
+      "range": "+0x1"
     }
   },
   {
@@ -52,7 +52,7 @@
     "Cost": 6,
     "Level": 3,
     "Modifiers": {
-      "range": "+0x3"
+      "range": "+0x1.5"
     }
   },
   {
@@ -62,7 +62,7 @@
     "Cost": 8,
     "Level": 4,
     "Modifiers": {
-      "range": "+0x4"
+      "range": "+0x2"
     }
   },
 
