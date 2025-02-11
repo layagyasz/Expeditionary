@@ -27,6 +27,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\config\default\factionformations\hyacinth.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\isc.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\orion.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\poticas.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\redstar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\sm.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\whitestar.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\wk.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\factions\earth.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -52,6 +76,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\factions\wk.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\factionformations\earth.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\environments\earth\meridian.json">
@@ -500,6 +527,7 @@
     <Folder Include="Resources\config\default\generation\environments\isc\" />
     <Folder Include="Resources\config\default\generation\environments\wk\" />
     <Folder Include="Resources\config\default\generation\environments\orion\" />
+    <Folder Include="Resources\config\default\factionformations\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>

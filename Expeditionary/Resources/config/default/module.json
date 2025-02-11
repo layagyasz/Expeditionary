@@ -4,5 +4,6 @@
   "UnitTraits": [ "resources/config/default/units/traits::*.json" ],
   "UnitWeapons": [ "resources/config/default/units/weapons::*.json" ],
   "UnitTypes": [ "resources/config/default/units/definitions::*.json" ],
-  "Factions": [ "resources/config/default/factions::*.json" ]
+  "Factions": [ "resources/config/default/factions::*.json" ],
+  "FactionFormations": ["resources/config/default/factionformations::*.json" ]
 }

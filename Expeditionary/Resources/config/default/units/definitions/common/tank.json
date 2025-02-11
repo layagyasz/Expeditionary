@@ -1,6 +1,6 @@
 [
   {
-    "$id": "~def-common-tank-medium",
+    "$id": "~unit-type-common-tank-medium",
     "Name": "Medium Tank",
     "Weapons": [
       {

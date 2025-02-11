@@ -1,0 +1,32 @@
+[
+  {
+    "$id": "faction-formation-wk",
+    "Faction": "faction-wk",
+    "Units": [
+      {
+        "Role": "Infantry",
+        "Type": "unit-type-common-infantry-rifle"
+      },
+      {
+        "Role": "Support1",
+        "Type": "unit-type-common-infantry-mg"
+      },
+      {
+        "Role": "Support2",
+        "Type": "unit-type-common-infantry-atgm"
+      },
+      {
+        "Role": "Support3",
+        "Type": "unit-type-common-mortar-81mm"
+      },
+      {
+        "Role": "Tank",
+        "Type": "unit-type-common-tank-medium"
+      },
+      {
+        "Role": "Artillery",
+        "Type": "unit-type-common-howitzer-122mm"
+      }
+    ]
+  }
+]

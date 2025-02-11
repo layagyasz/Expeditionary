@@ -4,11 +4,11 @@ namespace Expeditionary.Model.Combat.Units
 {
     public class UnitCapabilities
     {
-        private readonly EnumMap<CombatCondition, UnitConditionCapabilities> _byCondition;
+        public EnumMap<CombatCondition, UnitConditionCapabilities> ByCondition { get; }
 
         public UnitCapabilities(EnumMap<CombatCondition, UnitConditionCapabilities> byCondition)
         {
-            _byCondition = byCondition;
+            ByCondition = byCondition;
         }
 
         public Modifier GetAccuracy(CombatCondition condition)
@@ -48,7 +48,7 @@ namespace Expeditionary.Model.Combat.Units
 
         private IEnumerable<UnitConditionCapabilities> GetModifiers(CombatCondition condition)
         {
-            return Enum.GetValues<CombatCondition>().Where(x => condition.HasFlag(x)).Select(x => _byCondition[x]);
+            return Enum.GetValues<CombatCondition>().Where(x => condition.HasFlag(x)).Select(x => ByCondition[x]);
         }
     }
 }

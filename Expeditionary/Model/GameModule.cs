@@ -27,5 +27,8 @@ namespace Expeditionary.Model
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<Faction> Factions { get; set; } = new();
+
+        [JsonConverter(typeof(FromMultipleFileJsonConverter))]
+        public Library<FactionFormationConfiguration> FactionFormations { get; set; } = new();
     }
 }

@@ -1,6 +1,6 @@
 [
   {
-    "$id": "~def-common-infantry-howitzer-105mm",
+    "$id": "~unit-type-common-howitzer-105mm",
     "Name": "105mm",
     "Weapons": [
       {
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-howitzer-122mm",
+    "$id": "~unit-type-common-howitzer-122mm",
     "Name": "122mm",
     "Weapons": [
       {
@@ -32,7 +32,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-howitzer-155mm",
+    "$id": "~unit-type-common-howitzer-155mm",
     "Name": "155mm",
     "Weapons": [
       {

@@ -1,6 +1,6 @@
 [
   {
-    "$id": "~def-common-infantry-mortar-72mm",
+    "$id": "~unit-type-common-mortar-72mm",
     "Name": "72mm",
     "Weapons": [
       {
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-mortar-81mm",
+    "$id": "~unit-type-common-mortar-81mm",
     "Name": "81mm",
     "Weapons": [
       {
@@ -32,7 +32,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-mortar-120mm",
+    "$id": "~unit-type-common-mortar-120mm",
     "Name": "120mm",
     "Weapons": [
       {

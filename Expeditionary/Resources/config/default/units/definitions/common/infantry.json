@@ -1,6 +1,6 @@
 [
   {
-    "$id": "~def-common-infantry-rifle",
+    "$id": "~unit-type-common-infantry-rifle",
     "Name": "Rifle",
     "Weapons": [
       {
@@ -18,7 +18,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-lmg",
+    "$id": "~unit-type-common-infantry-lmg",
     "Name": "LMG",
     "Weapons": [
       {
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-mg",
+    "$id": "~unit-type-common-infantry-mg",
     "Name": "MG",
     "Weapons": [
       {
@@ -52,7 +52,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-hmg",
+    "$id": "~unit-type-common-infantry-hmg",
     "Name": "HMG",
     "Weapons": [
       {
@@ -69,7 +69,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-sniper",
+    "$id": "~unit-type-common-infantry-sniper",
     "Name": "Sniper",
     "Weapons": [
       {
@@ -86,7 +86,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-atgm",
+    "$id": "~unit-type-common-infantry-atgm",
     "Name": "ATGM",
     "Weapons": [
       {
@@ -103,7 +103,7 @@
     ]
   },
   {
-    "$id": "~def-common-infantry-iat",
+    "$id": "~unit-type-common-infantry-iat",
     "Name": "Anti-Tank",
     "Weapons": [
       {
