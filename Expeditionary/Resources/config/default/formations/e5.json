@@ -1,0 +1,12 @@
+[
+  {
+    "$id": "formation-brigade-infantry",
+    "Name": "Infantry Brigade",
+    "ComponentFormations": [
+      {
+        "Number": 3,
+        "Formation": "formation-battalion-infantry"
+      }
+    ]
+  }
+]

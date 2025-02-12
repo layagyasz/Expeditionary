@@ -1,0 +1,40 @@
+[
+  {
+    "$id": "formation-company-rifle",
+    "Name": "Rifle Company",
+    "UnitSlots": [
+      {
+        "Number": 3,
+        "Role": "Infantry"
+      },
+      {
+        "Number": 1,
+        "Role": "Support1"
+      },
+      {
+        "Number": 1,
+        "Role": "Support2"
+      }
+    ]
+  },
+  {
+    "$id": "formation-company-tank",
+    "Name": "Tank Company",
+    "UnitSlots": [
+      {
+        "Number": 3,
+        "Role": "Tank"
+      }
+    ]
+  },
+  {
+    "$id": "formation-company-artillery",
+    "Name": "Artillery Battery",
+    "UnitSlots": [
+      {
+        "Number": 3,
+        "Role": "Artillery"
+      }
+    ]
+  }
+]

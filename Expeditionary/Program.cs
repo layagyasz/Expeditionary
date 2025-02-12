@@ -7,6 +7,7 @@ using Cardamom.Window;
 using Expeditionary.Controller;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
+using Expeditionary.Model.Combat.Formations;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping.Generator;
@@ -102,7 +103,8 @@ namespace Expeditionary
             var environment = environmentDefinition.GetEnvironment();
             var mapSize = new Vector2i(100, 100);
             var map = MapGenerator.Generate(environment.Parameters, mapSize, seed: new Random().Next());
-            var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
+            var faction = module.Factions["faction-hyacinth"];
+            var player = new Player(Id: 0, Team: 0, faction);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
             var players = new List<Player>() { player, opponent };
             var match =
@@ -114,6 +116,13 @@ namespace Expeditionary
                         x => new PlayerKnowledge(x, map, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
             var driver = new GameDriver(match, players, new());
             driver.Step();
+
+            /**
+            var formationConfig = module.FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
+            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
+            var formation = 
+                formationGenerator.Generate(new(new SerialIdGenerator(), random, new(), new(), formationConfig.Units));
+            */
 
             var center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50));
             match.Add(module.UnitTypes.Last().Value, player, center);

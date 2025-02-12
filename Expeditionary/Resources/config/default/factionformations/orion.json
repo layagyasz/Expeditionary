@@ -27,6 +27,9 @@
         "Role": "Artillery",
         "Type": "unit-type-common-howitzer-122mm"
       }
+    ],
+    "Formations": [
+      "formation-brigade-infantry"
     ]
   }
 ]

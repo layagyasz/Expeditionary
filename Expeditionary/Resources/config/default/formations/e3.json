@@ -1,0 +1,38 @@
+[
+  {
+    "$id": "formation-battalion-infantry",
+    "Name": "Infantry Battalion",
+    "ComponentFormations": [
+      {
+        "Number": 3,
+        "Formation": "formation-company-rifle"
+      }
+    ],
+    "UnitSlots": [
+      {
+        "Number": 1,
+        "Role": "Support3"
+      }
+    ]
+  },
+  {
+    "$id": "formation-battalion-tank",
+    "Name": "Tank Battalion",
+    "ComponentFormations": [
+      {
+        "Number": 3,
+        "Formation": "formation-company-tank"
+      }
+    ]
+  },
+  {
+    "$id": "formation-battaltion-artillery",
+    "Name": "Artillery Battalion",
+    "ComponentFormations": [
+      {
+        "Number": 3,
+        "Formation": "formation-company-artillery"
+      }
+    ]
+  }
+]

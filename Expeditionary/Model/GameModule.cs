@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
 using Expeditionary.Json;
+using Expeditionary.Model.Combat.Formations.Generator;
 using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Factions;
 using Expeditionary.Model.Mapping;
@@ -24,6 +25,9 @@ namespace Expeditionary.Model
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<UnitType> UnitTypes { get; set; } = new();
+
+        [JsonConverter(typeof(FromMultipleFileJsonConverter))]
+        public Library<FormationGenerator> Formations { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<Faction> Factions { get; set; } = new();
