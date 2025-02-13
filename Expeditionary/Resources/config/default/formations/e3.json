@@ -26,7 +26,7 @@
     ]
   },
   {
-    "$id": "formation-battaltion-artillery",
+    "$id": "formation-battalion-artillery",
     "Name": "Artillery Battalion",
     "ComponentFormations": [
       {

@@ -6,6 +6,10 @@
       {
         "Number": 3,
         "Formation": "formation-battalion-infantry"
+      },
+      {
+        "Number": 1,
+        "Formation": "formation-battalion-artillery"
       }
     ]
   }

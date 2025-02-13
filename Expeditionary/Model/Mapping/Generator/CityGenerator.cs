@@ -15,8 +15,8 @@ namespace Expeditionary.Model.Mapping.Generator
 
         public class LayerParameters
         {
-            public int Cores { get; set; }
-            public int Candidates { get; set; }
+            public float CoreDensity { get; set; }
+            public float CandidateDensity { get; set; }
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
             public StructureType Type { get; set; }
             public int Level { get; set; } = 1;
@@ -71,6 +71,7 @@ namespace Expeditionary.Model.Mapping.Generator
             var nodes = new Dictionary<Vector3i, Node>();
             var cores = new List<Vector3i>();
 
+            int availableTiles = map.GetTiles().Select(map.GetTile).Count(x => !x!.Terrain.IsLiquid);
             foreach (var param in parameters.Layers)
             {
                 var costDict = 
@@ -79,10 +80,12 @@ namespace Expeditionary.Model.Mapping.Generator
                         .ToDictionary(
                             x => x,
                             x => GetCost(x, map, param, parameters.LiquidAffinity) + 0.2f * random.NextSingle());
-                var candidates = costDict.OrderBy(x => x.Value).Take(param.Candidates).ToList();
+                int numCandidates = (int)(param.CandidateDensity * availableTiles);
+                var candidates = costDict.OrderBy(x => x.Value).Take(numCandidates).ToList();
                 candidates.Shuffle(random);
 
-                foreach (var candidate in candidates.Take(param.Cores))
+                int numCores = (int)(param.CoreDensity * availableTiles);
+                foreach (var candidate in candidates.Take(numCores))
                 {
                     closed.Add(candidate.Key);
                     var core = new Core(param, (int)Math.Max(1, param.Size.Generate(random)));
