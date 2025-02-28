@@ -7,10 +7,11 @@ using Cardamom.Window;
 using Expeditionary.Controller;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
-using Expeditionary.Model.Combat.Formations;
-using Expeditionary.Model.Combat.Units;
-using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping.Generator;
+using Expeditionary.Model.Factions;
+using Expeditionary.Model.Formations;
+using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.Deployments;
+using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Mapping;
@@ -102,34 +103,33 @@ namespace Expeditionary
             Console.WriteLine(environmentDefinition.Key);
             var environment = environmentDefinition.GetEnvironment();
             var mapSize = new Vector2i(100, 100);
-            var map = MapGenerator.Generate(environment.Parameters, mapSize, seed: new Random().Next());
-            var faction = module.Factions["faction-hyacinth"];
-            var player = new Player(Id: 0, Team: 0, faction);
+
+            var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
-            var players = new List<Player>() { player, opponent };
-            var match =
-                new Match(
-                    new SerialIdGenerator(),
-                    map,
-                    players.ToDictionary(
-                        x => x,
-                        x => new PlayerKnowledge(x, map, new AssetKnowledge(x), new(map, new KnownMapDiscovery()))));
-            var driver = new GameDriver(match, players, new());
+            var mission = 
+                new Mission(
+                    environment, 
+                    mapSize, 
+                    new() 
+                    { 
+                        new(
+                            player, 
+                            new(), 
+                            new() 
+                            { 
+                                new(RandomFormation(module, player.Faction, random), new RandomDeployment()) 
+                            }),
+                        new(
+                            opponent,
+                            new(),
+                            new()
+                            {
+                                new(RandomFormation(module, opponent.Faction, random), new RandomDeployment())
+                            })
+                    });
+            var match = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
+            var driver = new GameDriver(match, random);
             driver.Step();
-
-            /**
-            var formationConfig = module.FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
-            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
-            var formation = 
-                formationGenerator.Generate(new(new SerialIdGenerator(), random, new(), new(), formationConfig.Units));
-            */
-
-            var center = Cubic.HexagonalOffset.Instance.Wrap(new(50, 50));
-            match.Add(module.UnitTypes.Last().Value, player, center);
-            foreach (var surround in Geometry.GetNeighbors(center).Take(3))
-            {
-                match.Add(module.UnitTypes.First().Value, opponent, surround);
-            }
             match.Initialize();
 
             var terrainParameters = environment.Appearance.Materialize(sensitivity);
@@ -142,6 +142,13 @@ namespace Expeditionary
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             ui.Start();
+        }
+
+        private static  FormationTemplate RandomFormation(GameModule module, Faction faction, Random random)
+        {
+            var formationConfig = module.FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
+            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
+            return formationGenerator.Generate(new(random, new(), new(), formationConfig.Units));
         }
 
         private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)

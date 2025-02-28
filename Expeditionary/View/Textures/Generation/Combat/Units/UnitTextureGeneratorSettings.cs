@@ -2,7 +2,7 @@
 using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 using Cardamom.Json.Graphics;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 using System.Text.Json.Serialization;
 

@@ -1,4 +1,4 @@
-﻿using Expeditionary.Model.Combat;
+﻿using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model

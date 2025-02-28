@@ -1,6 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Knowledge
 {

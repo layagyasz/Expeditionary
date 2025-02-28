@@ -1,7 +1,7 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge

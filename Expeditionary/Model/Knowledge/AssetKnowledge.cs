@@ -1,6 +1,5 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
@@ -131,7 +130,12 @@ namespace Expeditionary.Model.Knowledge
             foreach (var los in delta)
             {
                 var hex = los.Target;
-                var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
+                var tile = mapKnowledge.GetMap().GetTile(hex);
+                if (tile == null)
+                {
+                    continue;
+                }
+                var condition = tile.GetConditions();
                 var detection = SpottingCalculator.GetDetection(unit, los, condition);
                 foreach (var asset in positions[hex].Where(x => !IsPlayer(x)))
                 {

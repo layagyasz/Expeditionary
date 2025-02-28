@@ -15,7 +15,10 @@
   {
     "$id": "weapon-common-small-lmg",
     "Name": "LMG",
-    "Traits": [ "trait-weapon-small-lmg" ],
+    "Traits": [
+      "trait-weapon-small-lmg",
+      "trait-weapon-optic-2"
+    ],
     "Modes": [
       {
         "Condition": "Ranged"
@@ -25,7 +28,10 @@
   {
     "$id": "weapon-common-small-mg",
     "Name": "MG",
-    "Traits": [ "trait-weapon-small-mg" ],
+    "Traits": [
+      "trait-weapon-small-mg",
+      "trait-weapon-optic-2"
+    ],
     "Modes": [
       {
         "Condition": "Ranged"
@@ -35,7 +41,10 @@
   {
     "$id": "weapon-common-small-hmg",
     "Name": "HMG",
-    "Traits": [ "trait-weapon-small-hmg" ],
+    "Traits": [
+      "trait-weapon-small-hmg",
+      "trait-weapon-optic-2"
+    ],
     "Modes": [
       {
         "Condition": "Ranged"

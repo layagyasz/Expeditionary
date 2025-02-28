@@ -2,7 +2,7 @@
 using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 using Cardamom.Ui;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 

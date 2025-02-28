@@ -1,4 +1,4 @@
-﻿using Expeditionary.Model.Combat.Units;
+﻿using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Orders
 {

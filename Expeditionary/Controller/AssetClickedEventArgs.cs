@@ -1,5 +1,5 @@
 ﻿using Cardamom.Ui;
-using Expeditionary.Model.Combat;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Controller
 {

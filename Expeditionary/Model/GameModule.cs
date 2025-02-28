@@ -1,10 +1,10 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
 using Expeditionary.Json;
-using Expeditionary.Model.Combat.Formations.Generator;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Factions;
+using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model

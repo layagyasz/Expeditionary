@@ -1,5 +1,5 @@
 ﻿using Cardamom.Ui.Controller;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 using Expeditionary.View.Scenes.Matches;
 
 namespace Expeditionary.Controller.Scenes.Matches

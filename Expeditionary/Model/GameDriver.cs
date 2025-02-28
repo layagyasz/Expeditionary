@@ -12,15 +12,13 @@ namespace Expeditionary.Model
         public EventHandler<EventArgs>? Stepped { get; set; }
 
         private readonly Match _match;
-        private readonly List<Player> _players;
         private readonly Random _random;
 
         private int _activePlayer = -1;
 
-        public GameDriver(Match match, IEnumerable<Player> players, Random random)
+        public GameDriver(Match match, Random random)
         {
             _match = match;
-            _players = players.ToList();
             _random = random;
         }
 
@@ -49,7 +47,7 @@ namespace Expeditionary.Model
         public void Step()
         {
             _activePlayer++;
-            if (_activePlayer >= _players.Count)
+            if (_activePlayer >= _match.GetPlayers().Count())
             {
                 _activePlayer = 0;
                 _match.Reset();

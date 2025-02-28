@@ -1,8 +1,7 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model
@@ -15,15 +14,25 @@ namespace Expeditionary.Model
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
 
-        private readonly Dictionary<Player, PlayerKnowledge> _playerKnowledge;
+        private readonly List<Player> _players = new();
+        private readonly Dictionary<Player, PlayerKnowledge> _playerKnowledge = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
-        public Match(IIdGenerator idGenerator, Map map, Dictionary<Player, PlayerKnowledge> playerKnowledge)
+        public Match(IIdGenerator idGenerator, Map map)
         {
             _idGenerator = idGenerator;
             _map = map;
-            _playerKnowledge = playerKnowledge;
+        }
+
+        public void Add(Player player, PlayerKnowledge knowledge)
+        {
+            _players.Add(player);
+            _playerKnowledge.Add(player, knowledge);
+            foreach (var asset in _assets)
+            {
+                knowledge.Add(asset, asset.Position, _positions);
+            }
         }
 
         public void Add(UnitType unitType, Player player, Vector3i position)
@@ -46,6 +55,11 @@ namespace Expeditionary.Model
         public Map GetMap()
         {
             return _map;
+        }
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return _players;
         }
 
         public IEnumerable<IAsset> GetAssets()

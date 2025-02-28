@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Hexagons;
-using Expeditionary.Model.Combat.Units;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Combat
 {

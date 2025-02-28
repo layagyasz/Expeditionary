@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Hexagons;
 using Expeditionary.Model.Combat;
-using Expeditionary.Model.Combat.Units;
+using Expeditionary.Model.Units;
 using MathNet.Numerics.Distributions;
 
 namespace Expeditionary.Model.Orders
