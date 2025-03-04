@@ -2,6 +2,8 @@
   {
     "$id": "formation-battalion-infantry",
     "Name": "Infantry Battalion",
+    "Role": "Infantry",
+    "Echelon": 3,
     "ComponentFormations": [
       {
         "Number": 3,
@@ -18,6 +20,8 @@
   {
     "$id": "formation-battalion-tank",
     "Name": "Tank Battalion",
+    "Role": "Tank",
+    "Echelon": 3,
     "ComponentFormations": [
       {
         "Number": 3,
@@ -28,6 +32,8 @@
   {
     "$id": "formation-battalion-artillery",
     "Name": "Artillery Battalion",
+    "Role": "Artillery",
+    "Echelon": 3,
     "ComponentFormations": [
       {
         "Number": 3,

@@ -2,6 +2,8 @@
   {
     "$id": "formation-company-rifle",
     "Name": "Rifle Company",
+    "Role": "Infantry",
+    "Echelon": 2,
     "UnitSlots": [
       {
         "Number": 3,
@@ -20,6 +22,8 @@
   {
     "$id": "formation-company-tank",
     "Name": "Tank Company",
+    "Role": "Tank",
+    "Echelon": 2,
     "UnitSlots": [
       {
         "Number": 3,
@@ -30,6 +34,8 @@
   {
     "$id": "formation-company-artillery",
     "Name": "Artillery Battery",
+    "Role": "Artillery",
+    "Echelon": 2,
     "UnitSlots": [
       {
         "Number": 3,

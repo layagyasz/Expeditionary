@@ -6,22 +6,36 @@ namespace Expeditionary.Model.Formations
 {
     public record class FormationTemplate
     {
+        public record class UnitTypeAndRole(UnitType UnitType, FormationRole Role);
+
         public string Name { get; }
-        public List<FormationTemplate> ComponentFormations { get; }
+        public FormationRole Role { get; }
+        public int Echelon { get; }
+        public List<FormationTemplate> ComponentFormations => _componentFormations;
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
-        public List<UnitType> Units { get; }
+        public IEnumerable<UnitTypeAndRole> UnitTypesAndRoles => _unitTypesAndRoles;
 
-        public FormationTemplate(string name, List<FormationTemplate> componentFormations, List<UnitType> units)
+        private readonly List<UnitTypeAndRole> _unitTypesAndRoles;
+        private readonly List<FormationTemplate> _componentFormations;
+
+        public FormationTemplate(
+            string name,
+            FormationRole role,
+            int echelon,
+            IEnumerable<FormationTemplate> componentFormations,
+            IEnumerable<UnitTypeAndRole> unitTypesAndRoles)
         {
             Name = name;
-            ComponentFormations = componentFormations;
-            Units = units;
+            Role = role;
+            Echelon = echelon;
+            _componentFormations = componentFormations.ToList();
+            _unitTypesAndRoles = unitTypesAndRoles.ToList();
         }
 
-        public IEnumerable<UnitType> GetUnitTypes()
+        public IEnumerable<UnitTypeAndRole> GetUnitTypesAndRoles()
         {
-            return Enumerable.Concat(Units, ComponentFormations.SelectMany(x => x.GetUnitTypes()));
+            return Enumerable.Concat(UnitTypesAndRoles, ComponentFormations.SelectMany(x => x.GetUnitTypesAndRoles()));
         }
     }
 }

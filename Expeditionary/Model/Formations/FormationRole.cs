@@ -3,7 +3,7 @@
 namespace Expeditionary.Model.Formations
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum UnitRole
+    public enum FormationRole
     {
         None,
 

@@ -6,7 +6,7 @@ namespace Expeditionary.Model.Formations.Generator
     public record class FormationSlot
     {
         public int Number { get; set; }
-        public UnitRole Role { get; set; }
+        public FormationRole Role { get; set; }
         public EnumSet<UnitTag> RequiredTags { get; set; } = new();
         public EnumSet<UnitTag> ExcludedTags { get; set; } = new();
 

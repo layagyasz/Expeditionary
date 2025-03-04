@@ -6,7 +6,7 @@ namespace Expeditionary.Model.Formations
 {
     public record class UnitUsage
     {
-        public UnitRole Role { get; set; }
+        public FormationRole Role { get; set; }
 
         [JsonConverter(typeof(ReferenceJsonConverter))]
         public UnitType? Type { get; set; }

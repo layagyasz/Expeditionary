@@ -25,15 +25,21 @@ namespace Expeditionary.Model.Formations.Generator
 
         public string Key { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public FormationRole Role { get; set; }
+        public int Echelon { get; set; }
         public List<ParameterizedFormationGenerator> ComponentFormations { get; set; } = new();
         public List<FormationSlot> UnitSlots { get; set; } = new();
 
         public FormationTemplate Generate(FormationGeneratorContext context)
         {
             return new(
-                Name, 
+                Name,
+                Role,
+                Echelon,
                 ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(), 
-                UnitSlots.SelectMany(x => Enumerable.Repeat(context.Select(x), x.Number)).ToList());
+                UnitSlots.SelectMany(
+                    x => Enumerable.Repeat(
+                        new FormationTemplate.UnitTypeAndRole(context.Select(x), x.Role), x.Number)).ToList());
         }
     }
 }

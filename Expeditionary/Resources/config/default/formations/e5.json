@@ -2,6 +2,8 @@
   {
     "$id": "formation-brigade-infantry",
     "Name": "Infantry Brigade",
+    "Role": "Infantry",
+    "Echelon": 5,
     "ComponentFormations": [
       {
         "Number": 3,

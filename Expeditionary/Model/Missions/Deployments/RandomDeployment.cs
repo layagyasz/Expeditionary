@@ -8,9 +8,9 @@ namespace Expeditionary.Model.Missions.Deployments
         {
             var map = match.GetMap();
             var options = map.GetTiles().Where(x => !map.GetTile(x)!.Terrain.IsLiquid).ToList();
-            foreach (var unit in formation.GetUnitTypes())
+            foreach (var unit in formation.GetUnitTypesAndRoles())
             {
-                match.Add(unit, player, options[context.Random.Next(options.Count)]);
+                match.Add(unit.UnitType, player, options[context.Random.Next(options.Count)]);
             }
         }
     }
