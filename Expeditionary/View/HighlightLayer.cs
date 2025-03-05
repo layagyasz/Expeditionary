@@ -21,7 +21,7 @@ namespace Expeditionary.View
             new(-0.5f, 0, s_Sqrt3d2),
             new(-1, 0, 0)
         };
-        private static readonly float s_Scale = 0.9f;
+        private static readonly float s_Scale = 0.5f;
 
         private static readonly Color4[] s_Levels =
         {

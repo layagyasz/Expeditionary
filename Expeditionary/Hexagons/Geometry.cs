@@ -95,6 +95,11 @@ namespace Expeditionary.Hexagons
             return Vector2.Distance(Cubic.Cartesian.Instance.Project(hexA), Cubic.Cartesian.Instance.Project(hexB));
         }
 
+        public static Vector2 GetCartesianDisplacement(Vector3i hexA, Vector3i hexB)
+        {
+            return Cubic.Cartesian.Instance.Project(hexB) - Cubic.Cartesian.Instance.Project(hexA);
+        }
+
         public static int GetCubicDistance(Vector3i hexA, Vector3i hexB)
         {
             return GetDisplacement(hexB - hexA);
