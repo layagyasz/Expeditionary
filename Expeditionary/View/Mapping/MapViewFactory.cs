@@ -63,11 +63,11 @@ namespace Expeditionary.View.Mapping
             foreach (var corner in Geometry.GetAllCorners(map.Size))
             {
                 var centerHex = Geometry.GetCornerHex(corner, 0);
-                var center = map.GetTile(centerHex);
+                var center = map.Get(centerHex);
                 var leftHex = Geometry.GetCornerHex(corner, 1);
-                var left = map.GetTile(leftHex);
+                var left = map.Get(leftHex);
                 var rightHex = Geometry.GetCornerHex(corner, 2);
-                var right = map.GetTile(rightHex);
+                var right = map.Get(rightHex);
                 if (center == null || left == null || right == null)
                 {
                     continue;
@@ -81,7 +81,7 @@ namespace Expeditionary.View.Mapping
                     var selected = options[random.Next(options.Length)];
                     for (int hex = 0; hex < 3; ++hex)
                     {
-                        var tile = map.GetTile(Geometry.GetCornerHex(corner, hex))!;
+                        var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
                         var color = GetTileColor(tile, layer, parameters, map.ElevationLevels);
                         var index = 9 * triangle + 3 * hex;
                         bufferBuilder.SetVertex(layer, index, new(centerPos, color, selected.TexCoords[hex][0]));

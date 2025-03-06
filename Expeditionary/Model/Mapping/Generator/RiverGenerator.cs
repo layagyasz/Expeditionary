@@ -19,14 +19,14 @@ namespace Expeditionary.Model.Mapping.Generator
             while (true)
             {
                 var coord = new Vector2i(random.Next(map.Width), random.Next(map.Height));
-                if (map.GetTile(coord) == null)
+                if (map.Get(coord) == null)
                 {
                     continue;
                 }
                 var hex = Cubic.HexagonalOffset.Instance.Wrap(coord);
                 Vector3i corner = Geometry.GetCorner(hex, random.Next(6));
                 if (!Geometry.GetCornerHexes(corner)
-                    .Select(map.GetTile)
+                    .Select(map.Get)
                     .Where(x => x != null)
                     .Any(x => x!.Terrain.IsLiquid))
                 {
@@ -59,14 +59,14 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     var tile = 
                         Geometry.GetCornerHexes(next)
-                            .Select(map.GetTile)
+                            .Select(map.Get)
                             .Where(x => x != null)
                             .ArgMin(x => x!.Elevation);
                     tile!.Terrain.IsLiquid = true;
                     break;
                 }
                 if (Geometry.GetCornerHexes(pos)
-                    .Select(map.GetTile)
+                    .Select(map.Get)
                     .Where(x => x != null)
                     .Any(x => x!.Terrain.IsLiquid))
                 {

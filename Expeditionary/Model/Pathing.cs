@@ -34,7 +34,7 @@ namespace Expeditionary.Model
             var nodes = new Dictionary<Vector3i, Node>();
             
             var startNode =
-                new Node(position, map.GetTile(position)!)
+                new Node(position, map.Get(position)!)
                 {
                     Open = true,
                     Cost = 0
@@ -49,7 +49,7 @@ namespace Expeditionary.Model
                 current.Closed = true;
                 foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
                 {
-                    var neighborTile = map.GetTile(neighbor);
+                    var neighborTile = map.Get(neighbor);
                     if (neighborTile == null)
                     {
                         continue;
@@ -107,7 +107,7 @@ namespace Expeditionary.Model
             var nodes = new Dictionary<Vector3i, Node>();
 
             var startNode =
-                new Node(position, map.GetTile(position)!)
+                new Node(position, map.Get(position)!)
                 {
                     Open = true,
                     Cost = 0
@@ -128,7 +128,7 @@ namespace Expeditionary.Model
                 current.Closed = true;
                 foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
                 {
-                    var neighborTile = map.GetTile(neighbor);
+                    var neighborTile = map.Get(neighbor);
                     if (neighborTile == null)
                     {
                         continue;

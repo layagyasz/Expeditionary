@@ -54,7 +54,7 @@ namespace Expeditionary.Model.Mapping.Generator
         {
             foreach (var p in parameters)
             {
-                var wrappers = nodes.Where(x => IsSupported(map.GetTile(x)!, p)).Select(x => new Node(x)).ToList();
+                var wrappers = nodes.Where(x => IsSupported(map.Get(x)!, p)).Select(x => new Node(x)).ToList();
 
                 var voronoiVerts =
                     wrappers

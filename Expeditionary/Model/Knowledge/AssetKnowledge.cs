@@ -40,7 +40,7 @@ namespace Expeditionary.Model.Knowledge
             _assets.Add(asset, current);
 
             var detection = mapKnowledge.GetDetection(position);
-            var condition = mapKnowledge.GetMap().GetTile(position)!.GetConditions();
+            var condition = mapKnowledge.GetMap().Get(position)!.GetConditions();
             var spotted = detection != null && SpottingCalculator.IsSpotted(detection, condition, asset);
             if (spotted)
             {
@@ -80,7 +80,7 @@ namespace Expeditionary.Model.Knowledge
             for (int i=path.Steps.Count - 1; i>=0; --i)
             {
                 var hex = path.Steps[i];
-                var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
+                var condition = mapKnowledge.GetMap().Get(hex)!.GetConditions();
                 var detection = mapKnowledge.GetDetection(hex);
                 var spotted = detection != null && SpottingCalculator.IsSpotted(detection, condition, asset);
                 if (spotted)
@@ -130,7 +130,7 @@ namespace Expeditionary.Model.Knowledge
             foreach (var los in delta)
             {
                 var hex = los.Target;
-                var tile = mapKnowledge.GetMap().GetTile(hex);
+                var tile = mapKnowledge.GetMap().Get(hex);
                 if (tile == null)
                 {
                     continue;
@@ -159,7 +159,7 @@ namespace Expeditionary.Model.Knowledge
             foreach (var los in delta)
             {
                 var hex = los.Target;
-                var condition = mapKnowledge.GetMap().GetTile(hex)!.GetConditions();
+                var condition = mapKnowledge.GetMap().Get(hex)!.GetConditions();
                 var detection = mapKnowledge.GetDetection(hex);
                 foreach (var asset in positions[hex].Where(x => !IsPlayer(x)))
                 {

@@ -71,11 +71,11 @@ namespace Expeditionary.Model.Mapping.Generator
             var nodes = new Dictionary<Vector3i, Node>();
             var cores = new List<Vector3i>();
 
-            int availableTiles = map.GetTiles().Select(map.GetTile).Count(x => !x!.Terrain.IsLiquid);
+            int availableTiles = map.Range().Select(map.Get).Count(x => !x!.Terrain.IsLiquid);
             foreach (var param in parameters.Layers)
             {
                 var costDict = 
-                    map.GetTiles()
+                    map.Range()
                         .Where(x => !closed.Contains(x))
                         .ToDictionary(
                             x => x,
@@ -163,7 +163,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 if (node.Closed && node.Core != null)
                 {
-                    var tile = map.GetTile(node.Hex)!;
+                    var tile = map.Get(node.Hex)!;
                     tile.Structure =
                         new()
                         {
@@ -179,13 +179,13 @@ namespace Expeditionary.Model.Mapping.Generator
 
         private static float GetCost(Vector3i hex, Map map, LayerParameters parameters, float liquidAffinity)
         {
-            var tile = map.GetTile(hex);
+            var tile = map.Get(hex);
             if (tile == null || tile.Terrain.IsLiquid)
             {
                 return float.MaxValue;
             }
             bool neighborsWater =
-                Geometry.GetNeighbors(hex).Select(map.GetTile).Where(x => x != null).Any(x => x!.Terrain.IsLiquid);
+                Geometry.GetNeighbors(hex).Select(map.Get).Where(x => x != null).Any(x => x!.Terrain.IsLiquid);
             bool neighborsRiver =
                 Geometry.GetEdges(hex)
                     .Select(map.GetEdge).Where(x => x != null).Any(x => x!.Levels.ContainsKey(EdgeType.River));

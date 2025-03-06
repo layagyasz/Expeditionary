@@ -140,7 +140,7 @@ namespace Expeditionary.Controller
             if (_selectedUnit != null)
             {
                 _highlightLayer!.SetHighlight(
-                    _driver.GetMatch().GetMap().GetTiles()
+                    _driver.GetMatch().GetMap().Range()
                         .Select(
                             x => new HighlightLayer.HexHighlight(
                                 x, 
@@ -151,8 +151,7 @@ namespace Expeditionary.Controller
                                         Disposition.Offensive, 
                                         Direction.North, 
                                         _selectedUnit.Type),
-                                    new Interval(0, 2))))
-                        .Where(x => x.Level > 0));
+                                    new Interval(0, 2)))));
                 /*
                 if (_selectedOrder == ButtonId.Attack)
                 {

@@ -422,7 +422,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = elevationData[i, j];
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     elevation[i, j] = tileData.R;
                     elevations[i * map.Height + j] = tileData.R;
                 }
@@ -442,7 +442,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
                     if (elevation[i, j] <= 0)
                     {
@@ -456,8 +456,8 @@ namespace Expeditionary.Model.Mapping.Generator
                         {
                             var left = Cubic.HexagonalOffset.Instance.Project(Geometry.GetNeighbor(coord, k));
                             var right = Cubic.HexagonalOffset.Instance.Project(Geometry.GetNeighbor(coord, k + 3));
-                            left = map.ContainsTile(left) ? left : new(i, j);
-                            right = map.ContainsTile(right) ? right : new(i, j);
+                            left = map.Contains(left) ? left : new(i, j);
+                            right = map.Contains(right) ? right : new(i, j);
                             slope[i, j] = Math.Abs(elevation[left.X, left.Y] - elevation[right.X, right.Y]);
                         }
                     }
@@ -467,7 +467,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     tile.Elevation = (int)(parameters.ElevationLevels * elevation[i, j]);
                 }
             }
@@ -479,7 +479,7 @@ namespace Expeditionary.Model.Mapping.Generator
                     corners[i, j] =
                         Geometry.GetCornerHexes(corner)
                             .Select(Cubic.HexagonalOffset.Instance.Project)
-                            .Where(map.ContainsTile)
+                            .Where(map.Contains)
                             .Sum(x => elevation[x.X, x.Y]);
                 }
             }
@@ -498,13 +498,13 @@ namespace Expeditionary.Model.Mapping.Generator
                             .Where(x => x != null)
                             .Any(x => x!.Levels.ContainsKey(EdgeType.River))
                         || Geometry.GetNeighbors(hex)
-                            .Select(map.GetTile)
+                            .Select(map.Get)
                             .Where(x => x != null)
                             .Any(x => x!.Terrain.IsLiquid))
                     {
                         plantData[i, j].G += parameters.LiquidMoistureBonus;
                     }
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     tile.Heat = plantData[i, j].R;
                     tile.Moisture = plantData[i, j].G;
                 }
@@ -519,7 +519,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = stoneData[i, j];
                     var stone = GetBarycentric(tileData.R, tileData.G, parameters.Stone);
-                    map.GetTile(i, j)!.Terrain.Stone = GetMaxComponent(stone);
+                    map.Get(i, j)!.Terrain.Stone = GetMaxComponent(stone);
                 }
             }
         }
@@ -532,7 +532,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = soilData[i, j];
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     var e = elevation[i, j];
                     var s = slope[i, j];
                     if (tileData.B - 0.25f * (e - 0.5f) < parameters.SoilCover)
@@ -560,7 +560,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j = 0; j < map.Height; ++j)
                 {
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     if (tile.Terrain.IsLiquid)
                     {
                         continue;
@@ -581,7 +581,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = plantData[i, j];
-                    var tile = map.GetTile(i, j);
+                    var tile = map.Get(i, j);
                     if (tile!.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
                     {
                         tile.Terrain.Brush = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
@@ -597,7 +597,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 for (int j = 0; j < map.Height; ++j)
                 {
                     Color4 tileData = plantData[i, j];
-                    var tile = map.GetTile(i, j);
+                    var tile = map.Get(i, j);
                     if (!tile!.Terrain.IsLiquid && tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
                     {
                         tile.Terrain.Foliage = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
@@ -617,7 +617,7 @@ namespace Expeditionary.Model.Mapping.Generator
             {
                 for (int j=0; j<map.Height; ++j)
                 {
-                    var tile = map.GetTile(i, j)!;
+                    var tile = map.Get(i, j)!;
                     var hindrance = new Movement.Hindrance();
                     if (tile.Terrain.Foliage != null)
                     {

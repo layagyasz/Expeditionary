@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Combat
                 attacker.Type,
                 mode,
                 defender.Type,
-                GetConditions(mode, range, map.GetTile(defender.Position)!),
+                GetConditions(mode, range, map.Get(defender.Position)!),
                 range,
                 attacker.Number * attack.Number);
         }

@@ -23,7 +23,7 @@ namespace Expeditionary.Evaluation
 
         public static float Evaluate(Vector3i hex, Map map, Disposition disposition, Direction direction, int maxRange)
         {
-            var tile = map.GetTile(hex)!;
+            var tile = map.Get(hex)!;
             if (tile.Terrain.IsLiquid)
             {
                 return -1;
@@ -34,7 +34,7 @@ namespace Expeditionary.Evaluation
             {
                 exp = 1 - exp;
             }
-            var def = EvaluateDefensibility(map.GetTile(hex)!);
+            var def = EvaluateDefensibility(map.Get(hex)!);
             return exp + def;
         }
 
@@ -43,7 +43,7 @@ namespace Expeditionary.Evaluation
         {
             return 1f * Sighting.GetSightField(map, hex, maxRange)
                 .Where(x => !x.IsBlocked)
-                .Where(x => !map.GetTile(x.Target)?.Terrain?.IsLiquid ?? false)
+                .Where(x => !map.Get(x.Target)?.Terrain?.IsLiquid ?? false)
                 .Where(x => DirectionContains(Geometry.GetCartesianDisplacement(hex, x.Target), direction))
                 .Count()
                 / (3f * maxRange * (maxRange + 1));

@@ -4,7 +4,7 @@ namespace Expeditionary.Model.Knowledge
 {
     public interface IMapDiscovery
     {
-        bool Discover(Vector2i offset);
-        bool IsDiscovered(Vector2i offset);
+        bool Discover(Vector3i hex);
+        bool IsDiscovered(Vector3i hex);
     }
 }

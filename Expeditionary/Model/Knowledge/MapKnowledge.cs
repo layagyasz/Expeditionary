@@ -22,13 +22,13 @@ namespace Expeditionary.Model.Knowledge
         public SingleTileKnowledge Get(Vector3i hex)
         {
             var coord = Cubic.HexagonalOffset.Instance.Project(hex);
-            if (coord.X < 0 || coord.X >= _map.Size.X || coord.Y < 0 || coord.Y >= _map.Size.Y)
+            if (!_map.Contains(coord))
             {
                 return new(IsDiscovered: false, IsVisible: false);
             }
-            var condition = _map.GetTile(hex)!.GetConditions();
+            var condition = _map.Get(hex)!.GetConditions();
             return new(
-                _discovery.IsDiscovered(coord), 
+                _discovery.IsDiscovered(hex), 
                 _spotters[hex]
                     .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
                         >= Geometry.GetCubicDistance(x.Position, hex) 
@@ -37,7 +37,7 @@ namespace Expeditionary.Model.Knowledge
 
         public EnumMap<UnitDetectionBand, float>? GetDetection(Vector3i hex)
         {
-            var condition = _map.GetTile(hex)!.GetConditions();
+            var condition = _map.Get(hex)!.GetConditions();
             var spotters = _spotters[hex].ToList();
             if (!spotters.Any())
             {
@@ -82,7 +82,7 @@ namespace Expeditionary.Model.Knowledge
             {
                 if (!los.IsBlocked
                     && los.Distance <= visualRange 
-                    && _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target)))
+                    && _discovery.Discover(los.Target))
                 {
                     result.Add(los.Target);
                 }
@@ -91,7 +91,7 @@ namespace Expeditionary.Model.Knowledge
             {
                 if (!los.IsBlocked && los.Distance <= visualRange)
                 {
-                    _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
+                    _discovery.Discover(los.Target);
                     result.Add(los.Target);
                 }
                 _spotters.Add(los.Target, unit);
@@ -107,7 +107,7 @@ namespace Expeditionary.Model.Knowledge
             {
                 if (!los.IsBlocked && los.Distance <= visualRange)
                 {
-                    _discovery.Discover(Cubic.HexagonalOffset.Instance.Project(los.Target));
+                    _discovery.Discover(los.Target);
                 }
                 _spotters.Add(los.Target, unit);
                 result.Add(los.Target);

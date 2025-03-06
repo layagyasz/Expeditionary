@@ -49,13 +49,13 @@ namespace Expeditionary.Model
                 return true;
             }
 
-            var start = map.GetTile(position);
+            var start = map.Get(position);
             if (start == null)
             {
                 return false;
             }
 
-            var end = map.GetTile(target);
+            var end = map.Get(target);
             if (end == null)
             {
                 return false;
@@ -66,7 +66,7 @@ namespace Expeditionary.Model
             for (int i=1; i<distance; ++i)
             {
                 var hex = Geometry.SnapToHex(position + i * step);
-                var tile = map.GetTile(hex);
+                var tile = map.Get(hex);
                 if (tile == null)
                 {
                     return false;

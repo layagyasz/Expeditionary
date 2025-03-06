@@ -3,63 +3,41 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping
 {
-    public class Map
+    public class Map : DenseHexGrid<Tile>
     {
-        public Vector2i Size => new(Width, Height);
         public int ElevationLevels { get; }
-        public int Width => _tiles.GetLength(0);
-        public int Height => _tiles.GetLength(1);
 
-        private readonly Tile[,] _tiles;
-        private readonly Edge[,] _edges;
+        private readonly Edge?[,] _edges;
 
-        public Map(Vector2i size, int elevationLevels)
+        private Map(Vector2i size, int elevationLevels) : base(size)
         {
-            _tiles = new Tile[size.X, size.Y];
             _edges = new Edge[2 * size.X + 1, 2 * size.Y + 1];
             ElevationLevels = elevationLevels;
+        }
 
-
-            for (int i = 0; i < Width; ++i)
+        public static Map Create(Vector2i size, int elevationLevels)
+        {
+            var map = new Map(size, elevationLevels);
+            for (int i = 0; i < size.X; ++i)
             {
-                for (int j = 0; j < Height; ++j)
+                for (int j = 0; j < size.Y; ++j)
                 {
-                    _tiles[i, j] = new();
+                    map.Set(i, j, new());
                 }
             }
-            for (int i=0; i < _edges.GetLength(0); ++i)
+            for (int i = 0; i < 2 * size.X + 1; ++i)
             {
-                for (int j=0; j< _edges.GetLength(1); ++j)
+                for (int j = 0; j < 2 * size.Y + 1; ++j)
                 {
-                    _edges[i, j] = new();
+                    map.SetEdge(i, j, new());
                 }
             }
+            return map;
         }
 
-        public bool ContainsTile(int x, int y)
+        public Edge? GetEdge(Vector3i edge)
         {
-            return !(x < 0 || y < 0 || x >= Width || y >= Height);
-        }
-
-        public bool ContainsTile(Vector2i offset)
-        {
-            return ContainsTile(offset.X, offset.Y);
-        }
-
-        public IEnumerable<Vector3i> GetTiles()
-        {
-            for (int i = 0; i < Width; ++i)
-            {
-                for (int j = 0; j <  Height; ++j)
-                {
-                    yield return Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                }
-            }
-        }
-
-        public Edge? GetEdge(Vector3i position)
-        {
-            var offset = Cubic.HexagonalOffset.Instance.Project(position) + new Vector2i(1, 1);
+            var offset = Cubic.HexagonalOffset.Instance.Project(edge) + new Vector2i(1, 1);
             if (offset.X < 0 || offset.Y < 0 || offset.X >= _edges.GetLength(0) || offset.Y >= _edges.GetLength(1))
             {
                 return null;
@@ -67,19 +45,23 @@ namespace Expeditionary.Model.Mapping
             return _edges[offset.X, offset.Y];
         }
 
-        public Tile? GetTile(int x, int y)
+        public void SetEdge(int x, int y, Edge? value)
         {
-            return ContainsTile(x, y) ? _tiles[x, y] : null;
+            if (x < 0 || y < 0 || x >= _edges.GetLength(0) || y >= _edges.GetLength(1))
+            {
+                throw new IndexOutOfRangeException();
+            }
+            _edges[x, y] = value;
         }
 
-        public Tile? GetTile(Vector2i offset)
+        public void SetEdge(Vector2i offset, Edge? value)
         {
-            return GetTile(offset.X, offset.Y);
+            SetEdge(offset.X, offset.Y, value);
         }
 
-        public Tile? GetTile(Vector3i position)
+        public void SetEdge(Vector3i edge, Edge? value)
         {
-            return GetTile(Cubic.HexagonalOffset.Instance.Project(position));
+            SetEdge(Cubic.HexagonalOffset.Instance.Project(edge) + new Vector2i(1, 1), value);
         }
     }
 }
