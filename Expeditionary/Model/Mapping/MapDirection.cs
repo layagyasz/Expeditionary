@@ -1,7 +1,7 @@
 ﻿namespace Expeditionary.Model.Mapping
 {
     [Flags]
-    public enum Direction
+    public enum MapDirection
     {
         North,
         South,

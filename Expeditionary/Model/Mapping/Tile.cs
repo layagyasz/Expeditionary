@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Combat;
+﻿using Cardamom.Collections;
+using Expeditionary.Model.Combat;
 
 namespace Expeditionary.Model.Mapping
 {
@@ -11,6 +12,7 @@ namespace Expeditionary.Model.Mapping
         public Terrain Terrain { get; set; } = new();
         public Movement.Hindrance Hindrance { get; set; }
         public Structure Structure { get; set; }
+        public List<MapTag> Tags { get; set; } = new();
 
         public CombatCondition GetConditions()
         {

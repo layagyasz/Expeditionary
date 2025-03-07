@@ -149,7 +149,7 @@ namespace Expeditionary.Controller
                                         x, 
                                         _driver.GetMatch().GetMap(), 
                                         Disposition.Offensive, 
-                                        Direction.North, 
+                                        MapDirection.North, 
                                         _selectedUnit.Type),
                                     new Interval(0, 2)))));
                 /*

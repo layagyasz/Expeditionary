@@ -20,6 +20,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
             public StructureType Type { get; set; }
             public int Level { get; set; } = 1;
+            public List<MapTag> Tags { get; set; } = new();
             public Vector3i Center { get; set; }
             public Quadratic DistancePenalty { get; set; }
             public Quadratic SprawlPenalty { get; set; } = new(0f, 0.5f, 0f);
@@ -171,6 +172,7 @@ namespace Expeditionary.Model.Mapping.Generator
                             Level = node.Core.Parameters.Level
                         };
                     tile.Terrain.Foliage = null;
+                    tile.Tags.AddRange(node.Core.Parameters.Tags);
                 }
             }
 

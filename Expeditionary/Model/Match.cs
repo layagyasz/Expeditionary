@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
@@ -15,6 +16,8 @@ namespace Expeditionary.Model
         private readonly Map _map;
 
         private readonly List<Player> _players = new();
+        private readonly Dictionary<Player, ObjectiveSet> _playerObjectives = new();
+        private readonly Dictionary<Player, PlayerStatistics> _playerStatistics = new();
         private readonly Dictionary<Player, PlayerKnowledge> _playerKnowledge = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
@@ -25,9 +28,11 @@ namespace Expeditionary.Model
             _map = map;
         }
 
-        public void Add(Player player, PlayerKnowledge knowledge)
+        public void Add(Player player, ObjectiveSet objectives, PlayerKnowledge knowledge)
         {
             _players.Add(player);
+            _playerObjectives.Add(player, objectives);
+            _playerStatistics.Add(player, new());
             _playerKnowledge.Add(player, knowledge);
             foreach (var asset in _assets)
             {

@@ -9,8 +9,10 @@ using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Factions;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Deployments;
+using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
 using Expeditionary.View;
@@ -101,38 +103,38 @@ namespace Expeditionary
             var random = new Random();
             var environmentDefinition = module.Environments.ToList()[random.Next(module.Environments.Count)].Value;
             Console.WriteLine(environmentDefinition.Key);
-            var environment = environmentDefinition.GetEnvironment();
-            var mapSize = new Vector2i(100, 100);
 
             var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
             var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
             var mission = 
                 new Mission(
-                    environment, 
-                    mapSize, 
+                    new MapSetup(
+                        environmentDefinition,
+                        new Vector2i(100, 100), 
+                        Enumerable.Empty<CityGenerator.LayerParameters>()),
                     new() 
                     { 
                         new(
                             player, 
-                            new(), 
+                            new(Enumerable.Empty<IObjective>()), 
                             new() 
                             { 
                                 new(RandomFormation(module, player.Faction, random), new RandomDeployment()) 
                             }),
                         new(
                             opponent,
-                            new(),
+                            new(Enumerable.Empty<IObjective>()),
                             new()
                             {
                                 new(RandomFormation(module, opponent.Faction, random), new RandomDeployment())
                             })
                     });
-            var match = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
+            (var match, var appearance) = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
             var driver = new GameDriver(match, random);
             driver.Step();
             match.Initialize();
 
-            var terrainParameters = environment.Appearance.Materialize(sensitivity);
+            var terrainParameters = appearance.Materialize(sensitivity);
             RecordPalette(terrainParameters);
             RecordUnitTypes(module.UnitTypes.Values);
 

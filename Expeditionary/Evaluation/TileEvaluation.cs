@@ -9,7 +9,7 @@ namespace Expeditionary.Evaluation
     public static class TileEvaluation
     {
         public static float Evaluate(
-            Vector3i hex, Map map, Disposition disposition, Direction direction, UnitType unitType)
+            Vector3i hex, Map map, Disposition disposition, MapDirection direction, UnitType unitType)
         {
             return Evaluate(
                 hex, 
@@ -21,7 +21,7 @@ namespace Expeditionary.Evaluation
                     : 4);
         }
 
-        public static float Evaluate(Vector3i hex, Map map, Disposition disposition, Direction direction, int maxRange)
+        public static float Evaluate(Vector3i hex, Map map, Disposition disposition, MapDirection direction, int maxRange)
         {
             var tile = map.Get(hex)!;
             if (tile.Terrain.IsLiquid)
@@ -39,7 +39,7 @@ namespace Expeditionary.Evaluation
         }
 
         private static float EvaluateExposure(
-            Vector3i hex, Map map, Direction direction,  int maxRange)
+            Vector3i hex, Map map, MapDirection direction,  int maxRange)
         {
             return 1f * Sighting.GetSightField(map, hex, maxRange)
                 .Where(x => !x.IsBlocked)
@@ -54,37 +54,37 @@ namespace Expeditionary.Evaluation
             return tile.Terrain.Foliage != null || tile.IsUrban() ? 1 : 0;
         }
 
-        private static float DirectionCoefficient(Direction direction)
+        private static float DirectionCoefficient(MapDirection direction)
         {
             return 5 
-                - Convert.ToSingle(direction.HasFlag(Direction.North)) 
-                - Convert.ToSingle(direction.HasFlag(Direction.South))
-                - Convert.ToSingle(direction.HasFlag(Direction.East))
-                - Convert.ToSingle(direction.HasFlag(Direction.West));
+                - Convert.ToSingle(direction.HasFlag(MapDirection.North)) 
+                - Convert.ToSingle(direction.HasFlag(MapDirection.South))
+                - Convert.ToSingle(direction.HasFlag(MapDirection.East))
+                - Convert.ToSingle(direction.HasFlag(MapDirection.West));
         }
 
-        private static bool DirectionContains(Vector2 displacement, Direction direction)
+        private static bool DirectionContains(Vector2 displacement, MapDirection direction)
         {
 
-            if (direction.HasFlag(Direction.North) 
+            if (direction.HasFlag(MapDirection.North) 
                 && displacement.Y <= 0 
                 && Math.Abs(displacement.Y) >= Math.Abs(displacement.X))
             {
                 return true;
             }
-            if (direction.HasFlag(Direction.South)
+            if (direction.HasFlag(MapDirection.South)
                 && displacement.Y >= 0
                 && Math.Abs(displacement.Y) >= Math.Abs(displacement.X))
             {
                 return true;
             }
-            if (direction.HasFlag(Direction.East)
+            if (direction.HasFlag(MapDirection.East)
                 && displacement.X >= 0
                 && Math.Abs(displacement.X) >= Math.Abs(displacement.Y))
             {
                 return true;
             }
-            if (direction.HasFlag(Direction.West)
+            if (direction.HasFlag(MapDirection.West)
                 && displacement.X <= 0
                 && Math.Abs(displacement.X) >= Math.Abs(displacement.Y))
             {

@@ -2,6 +2,6 @@
 {
     public interface IObjective
     {
-        IObjectiveTracker MakeTracker();
+        ObjectiveStatus ComputeStatus(Player player, Match match);
     }
 }

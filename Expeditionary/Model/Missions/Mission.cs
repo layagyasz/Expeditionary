@@ -1,20 +1,18 @@
-﻿using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Mapping.Generator;
-using OpenTK.Mathematics;
+﻿using Expeditionary.Model.Mapping.Appearance;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class Mission(MapEnvironment MapEnvironment, Vector2i MapSize, List<PlayerSetup> Players)
+    public record class Mission(MapSetup Map, List<PlayerSetup> Players)
     {
-        public Match Setup(SetupContext context)
+        public (Match, MapAppearance) Setup(SetupContext context)
         {
-            var map = MapGenerator.Generate(MapEnvironment.Parameters, MapSize, seed: context.Random.Next());
+            (var map, var appearance) = Map.GenerateMap(context);
             var match = new Match(new SerialIdGenerator(), map);
             foreach (var player in Players)
             {
                 player.Setup(match, context);
             }
-            return match;
+            return (match, appearance);
         }
     }
 }
