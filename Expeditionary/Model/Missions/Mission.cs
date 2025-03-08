@@ -7,7 +7,7 @@ namespace Expeditionary.Model.Missions
         public (Match, MapAppearance) Setup(SetupContext context)
         {
             (var map, var appearance) = Map.GenerateMap(context);
-            var match = new Match(new SerialIdGenerator(), map);
+            var match = new Match(new(), new SerialIdGenerator(), map);
             foreach (var player in Players)
             {
                 player.Setup(match, context);

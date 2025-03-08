@@ -16,7 +16,7 @@ namespace Expeditionary.Controller
 {
     public class MatchController : IController
     {
-        private readonly GameDriver _driver;
+        private readonly Match _match;
         private readonly Player _player;
 
         private MatchScreen? _screen;
@@ -27,9 +27,9 @@ namespace Expeditionary.Controller
         private Unit? _selectedUnit;
         private ButtonId _selectedOrder;
 
-        public MatchController(GameDriver driver, Player player)
+        public MatchController(Match match, Player player)
         {
-            _driver = driver;
+            _match = match;
             _player = player;
         }
 
@@ -88,7 +88,7 @@ namespace Expeditionary.Controller
             {
                 var weapon = _selectedUnit.Type.Weapons.First();
                 var mode = weapon.Weapon!.Modes.First();
-                _driver.DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
+                _match.DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
             }
         }
 
@@ -99,11 +99,11 @@ namespace Expeditionary.Controller
                 // Cheap check to make sure hex is reachable
                 if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Movement)
                 {
-                    _driver.DoOrder(
+                    _match.DoOrder(
                         new MoveOrder(
                             _selectedUnit, 
                             Pathing.GetShortestPath(
-                                _driver.GetMatch().GetMap(),
+                                _match.GetMap(),
                                 _selectedUnit.Position,
                                 e.Hex,
                                 _selectedUnit.Type.Movement, 
@@ -140,14 +140,14 @@ namespace Expeditionary.Controller
             if (_selectedUnit != null)
             {
                 _highlightLayer!.SetHighlight(
-                    _driver.GetMatch().GetMap().Range()
+                    _match.GetMap().Range()
                         .Select(
                             x => new HighlightLayer.HexHighlight(
                                 x, 
                                 HighlightLayer.GetLevel(
                                     TileEvaluation.Evaluate(
-                                        x, 
-                                        _driver.GetMatch().GetMap(), 
+                                        x,
+                                        _match.GetMap(), 
                                         Disposition.Offensive, 
                                         MapDirection.North, 
                                         _selectedUnit.Type),
@@ -159,7 +159,7 @@ namespace Expeditionary.Controller
                         (int)_selectedUnit.Type.Weapons
                             .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.Get()).Max();
                     _highlightLayer!.SetHighlight(
-                        Sighting.GetUnblockedSightField(_driver.GetMatch().GetMap(), _selectedUnit.Position, range)
+                        Sighting.GetUnblockedSightField(_match.GetMap(), _selectedUnit.Position, range)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
@@ -169,7 +169,7 @@ namespace Expeditionary.Controller
                     var used = _selectedUnit.Type.Speed - _selectedUnit.Movement;
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
-                            _driver.GetMatch().GetMap(), 
+                            _match.GetMap(), 
                             _selectedUnit.Position, 
                             _selectedUnit.Type.Movement, 
                             _selectedUnit.Movement)

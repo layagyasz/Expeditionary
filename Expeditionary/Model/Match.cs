@@ -1,7 +1,9 @@
 ﻿using Cardamom.Collections;
+using Cardamom.Logging;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.Objectives;
+using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
@@ -9,9 +11,15 @@ namespace Expeditionary.Model
 {
     public class Match
     {
+        private static readonly ILogger s_Logger = new Logger(new ConsoleBackend(), LogLevel.Info);
+
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
+        public EventHandler<IOrder>? OrderAdded { get; set; }
+        public EventHandler<IOrder>? OrderRemoved { get; set; }
+        public EventHandler<EventArgs>? Stepped { get; set; }
 
+        private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
 
@@ -22,8 +30,11 @@ namespace Expeditionary.Model
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
-        public Match(IIdGenerator idGenerator, Map map)
+        private int _activePlayer = -1;
+
+        public Match(Random random, IIdGenerator idGenerator, Map map)
         {
+            _random = random;
             _idGenerator = idGenerator;
             _map = map;
         }
@@ -52,6 +63,23 @@ namespace Expeditionary.Model
             }
         }
 
+        public bool DoOrder(IOrder order)
+        {
+            if (!ValidatePlayer(order.Unit.Player))
+            {
+                s_Logger.Log($"{order} failed player validation");
+                return false;
+            }
+            if (!order.Validate(this))
+            {
+                s_Logger.Log($"{order} failed match validation");
+                return false;
+            }
+            s_Logger.Log($"{order} executed");
+            order.Execute(this);
+            return true;
+        }
+
         public PlayerKnowledge GetKnowledge(Player player)
         {
             return _playerKnowledge[player];
@@ -75,6 +103,11 @@ namespace Expeditionary.Model
         public IEnumerable<IAsset> GetAssetsAt(Vector3i hex)
         {
             return _positions[hex];
+        }
+
+        public Random GetRandom()
+        {
+            return _random;
         }
 
         public void Initialize()
@@ -112,6 +145,22 @@ namespace Expeditionary.Model
         public void Reset()
         {
             _assets.ForEach(x => x.Reset());
+        }
+
+        public void Step()
+        {
+            _activePlayer++;
+            if (_activePlayer >= GetPlayers().Count())
+            {
+                _activePlayer = 0;
+                Reset();
+            }
+            Stepped?.Invoke(this, EventArgs.Empty);
+        }
+
+        private bool ValidatePlayer(Player player)
+        {
+            return player.Id == _activePlayer;
         }
 
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)

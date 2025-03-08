@@ -130,8 +130,7 @@ namespace Expeditionary
                             })
                     });
             (var match, var appearance) = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
-            var driver = new GameDriver(match, random);
-            driver.Step();
+            match.Step();
             match.Initialize();
 
             var terrainParameters = appearance.Materialize(sensitivity);
@@ -140,7 +139,7 @@ namespace Expeditionary
 
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(driver, player),
+                    new MatchController(match, player),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             ui.Start();

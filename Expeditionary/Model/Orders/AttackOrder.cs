@@ -41,11 +41,11 @@ namespace Expeditionary.Model.Orders
             return true;
         }
 
-        public void Execute(Match match, Random random)
+        public void Execute(Match match)
         {
             Unit.Attacked = true;
             var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Defender, match.GetMap());
-            int kills = (int)preview.Result + Bernoulli.Sample(random, preview.Result % 1);
+            int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
             Defender.Damage(kills);
             Console.WriteLine(preview);
             Console.WriteLine(kills);
