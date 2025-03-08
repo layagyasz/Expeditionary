@@ -139,6 +139,7 @@ namespace Expeditionary.Controller
             _selectedOrder = _unitOverlayController!.GetOrder();
             if (_selectedUnit != null)
             {
+                /*
                 _highlightLayer!.SetHighlight(
                     _match.GetMap().Range()
                         .Select(
@@ -152,7 +153,7 @@ namespace Expeditionary.Controller
                                         MapDirection.North, 
                                         _selectedUnit.Type),
                                     new Interval(0, 2)))));
-                /*
+                */
                 if (_selectedOrder == ButtonId.Attack)
                 {
                     var range = 
@@ -176,7 +177,6 @@ namespace Expeditionary.Controller
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));
                 }
-                */
             }
         }
     }

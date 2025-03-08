@@ -50,6 +50,28 @@ namespace Expeditionary.Model.Knowledge
             }
             return new();
         }
+        
+        public List<IAsset> DestroySelf(
+            MapKnowledge mapKnowledge,
+            Unit unit,
+            IEnumerable<Sighting.LineOfSight> delta,
+            MultiMap<Vector3i, IAsset> positions)
+        {
+            return RemoveSelf(mapKnowledge, unit, delta, positions);
+        }
+
+        public List<IAsset> DestroyOther(IAsset asset)
+        {
+            var result = new List<IAsset>();
+            var current = _assets[asset];
+            if (current.IsVisible)
+            {
+                result.Add(asset);
+                current.IsVisible = false;
+                current.LastSeen = null;
+            }
+            return result;
+        }
 
         public List<IAsset> RemoveSelf(
             MapKnowledge mapKnowledge, 
@@ -159,7 +181,12 @@ namespace Expeditionary.Model.Knowledge
             foreach (var los in delta)
             {
                 var hex = los.Target;
-                var condition = mapKnowledge.GetMap().Get(hex)!.GetConditions();
+                var tile = mapKnowledge.GetMap().Get(hex);
+                if (tile == null)
+                {
+                    continue;
+                }
+                var condition = tile.GetConditions();
                 var detection = mapKnowledge.GetDetection(hex);
                 foreach (var asset in positions[hex].Where(x => !IsPlayer(x)))
                 {

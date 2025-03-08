@@ -12,6 +12,7 @@ namespace Expeditionary.Model.Units
         public int Number { get; private set; }
         public float Movement { get; set; }
         public bool Attacked { get; set; }
+        public bool Destroyed { get; private set; }
 
 
         public Unit(int id, Player player, UnitType type)
@@ -27,6 +28,12 @@ namespace Expeditionary.Model.Units
         public void Damage(int kills)
         {
             Number -= kills;
+        }
+
+        public void Destroy()
+        {
+            Destroyed = true;
+            Position = default;
         }
 
         public void Reset()

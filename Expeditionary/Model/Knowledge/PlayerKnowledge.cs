@@ -46,6 +46,18 @@ namespace Expeditionary.Model.Knowledge
             }
         }
 
+        public void Destroy(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        {
+            if (asset is Unit unit && unit.Player == _player)
+            {
+                DestroySelf(unit, positions);
+            }
+            else
+            {
+                DestroyOther(asset);
+            }
+        }
+
         public void Move(IAsset asset, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
         {
             if (asset is Unit unit && unit.Player == _player)
@@ -84,6 +96,30 @@ namespace Expeditionary.Model.Knowledge
             var delta = Sighting.GetSightField(_map, position, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Place(unit, delta);
             var assetDelta = _assetKnowledge.AddSelf(_mapKnowledge, unit, delta, positions);
+            if (mapDelta.Any())
+            {
+                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
+            }
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void DestroyOther(IAsset asset)
+        {
+            var assetDelta = _assetKnowledge.DestroyOther(asset);
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void DestroySelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
+        {
+            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
+            var mapDelta = _mapKnowledge.Remove(unit, delta);
+            var assetDelta = _assetKnowledge.DestroySelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())
             {
                 MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));

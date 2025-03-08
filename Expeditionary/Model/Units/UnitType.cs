@@ -42,6 +42,12 @@ namespace Expeditionary.Model.Units
             Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
         }
 
+        public int GetPoints()
+        {
+            return Definition.Traits.Sum(x => x.Cost) 
+                + Definition.Weapons.SelectMany(x => x.Weapon.Definition.Traits).Sum(x => x.Cost);
+        }
+
         public EnumSet<UnitTag> GetTags()
         {
             return Definition.GetTags();

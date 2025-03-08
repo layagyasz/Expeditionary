@@ -63,6 +63,32 @@ namespace Expeditionary.Model
             }
         }
 
+        public void Damage(Unit attacker, Unit defender, int kills)
+        {
+            defender.Damage(kills);
+            if (defender.Number <= 0)
+            {
+                Destroy(defender);
+
+                var points = defender.Type.GetPoints();
+                var attackerStats = _playerStatistics[attacker.Player];
+                attackerStats.DestroyedPoints += points;
+                attackerStats.DestroyedUnits += points;
+
+                var defenderStats = _playerStatistics[defender.Player];
+                defenderStats.LostPoints += points;
+                defenderStats.LostUnits += points;
+            }
+        }
+
+        public void Destroy(Unit unit)
+        {
+            foreach (var knowledge in _playerKnowledge.Values)
+            {
+                knowledge.Destroy(unit, _positions);
+            }
+        }
+
         public bool DoOrder(IOrder order)
         {
             if (!ValidatePlayer(order.Unit.Player))
