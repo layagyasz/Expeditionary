@@ -1,45 +1,25 @@
-﻿using Cardamom;
-using Cardamom.Collections;
-using Cardamom.Json;
-using Expeditionary.Model.Units;
-using System.Text.Json.Serialization;
+﻿using Cardamom.Collections;
+using Expeditionary.Model.Factions;
 
 namespace Expeditionary.Model.Formations.Generator
 {
-    public record class FormationGenerator : IKeyed
+    public class FormationGenerator
     {
-        public record class ParameterizedFormationGenerator
+        public Library<FactionFormationConfiguration> FactionFormations { get; }
+        public Library<FormationTemplateGenerator> Formations { get; }
+
+        public FormationGenerator(
+            Library<FactionFormationConfiguration> factionFormations, Library<FormationTemplateGenerator> formations)
         {
-            public int Number { get; set; }
-            public EnumSet<UnitTag> RequiredTags { get; set; } = new();
-            public EnumSet<UnitTag> ExcludedTags { get; set; } = new();
-
-            [JsonConverter(typeof(ReferenceJsonConverter))]
-            public FormationGenerator? Formation { get; set; }
-
-            public FormationTemplate Generate(FormationGeneratorContext context)
-            {
-                return Formation!.Generate(context.WithTags(RequiredTags, ExcludedTags));
-            }
+            FactionFormations = factionFormations;
+            Formations = formations;
         }
 
-        public string Key { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-        public FormationRole Role { get; set; }
-        public int Echelon { get; set; }
-        public List<ParameterizedFormationGenerator> ComponentFormations { get; set; } = new();
-        public List<FormationSlot> UnitSlots { get; set; } = new();
-
-        public FormationTemplate Generate(FormationGeneratorContext context)
+        public FormationTemplate Generate(Faction faction, Random random)
         {
-            return new(
-                Name,
-                Role,
-                Echelon,
-                ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(), 
-                UnitSlots.SelectMany(
-                    x => Enumerable.Repeat(
-                        new FormationTemplate.UnitTypeAndRole(context.Select(x), x.Role), x.Number)).ToList());
+            var formationConfig = FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
+            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
+            return formationGenerator.Generate(new(random, new(), new(), formationConfig.Units));
         }
     }
 }

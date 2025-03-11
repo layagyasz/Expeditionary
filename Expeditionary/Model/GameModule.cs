@@ -27,7 +27,7 @@ namespace Expeditionary.Model
         public Library<UnitType> UnitTypes { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
-        public Library<FormationGenerator> Formations { get; set; } = new();
+        public Library<FormationTemplateGenerator> Formations { get; set; } = new();
 
         [JsonConverter(typeof(FromMultipleFileJsonConverter))]
         public Library<Faction> Factions { get; set; } = new();

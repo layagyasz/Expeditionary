@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Expeditionary.Model.Missions;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Units
 {
@@ -13,6 +14,8 @@ namespace Expeditionary.Model.Units
         public float Movement { get; set; }
         public bool Attacked { get; set; }
         public bool Destroyed { get; private set; }
+
+        public UnitQuantity UnitQuantity => new(1, Type.Points);
 
 
         public Unit(int id, Player player, UnitType type)

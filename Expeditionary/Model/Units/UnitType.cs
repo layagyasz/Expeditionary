@@ -23,6 +23,7 @@ namespace Expeditionary.Model.Units
         public Movement Movement { get; }
         public UnitCapabilities Capabilities { get; }
         public UnitIntrinsics Intrinsics { get; }
+        public int Points { get; }
         public float Speed { get; }
 
         public UnitType(
@@ -39,13 +40,9 @@ namespace Expeditionary.Model.Units
             Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
-            Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
-        }
-
-        public int GetPoints()
-        {
-            return Definition.Traits.Sum(x => x.Cost) 
+            Points = Definition.Traits.Sum(x => x.Cost)
                 + Definition.Weapons.SelectMany(x => x.Weapon.Definition.Traits).Sum(x => x.Cost);
+            Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
         }
 
         public EnumSet<UnitTag> GetTags()

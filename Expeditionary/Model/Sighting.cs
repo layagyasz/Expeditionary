@@ -72,7 +72,7 @@ namespace Expeditionary.Model
                     return false;
                 }
                 var foliage = tile.Terrain.Foliage == null ? 0 : s_FoliageHeight;
-                var structure = tile.Structure.Level == 0 ? 0 : s_StructureHeight;
+                var structure = tile.IsUrban() ? s_StructureHeight : 0;
                 if (tile.Elevation + Math.Max(foliage, structure) > start.Elevation + i * slope)
                 {
                     return false;

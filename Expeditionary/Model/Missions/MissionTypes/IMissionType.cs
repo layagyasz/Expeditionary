@@ -2,6 +2,6 @@
 {
     public interface IMissionType
     {
-        Mission Create(MissionParameters parameters, Random random);
+        Mission Create(MissionParameters parameters, MissionGenerationResources resources);
     }
 }

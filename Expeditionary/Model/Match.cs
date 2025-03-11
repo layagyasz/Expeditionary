@@ -2,6 +2,7 @@
 using Cardamom.Logging;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
@@ -30,6 +31,7 @@ namespace Expeditionary.Model
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
+        private MultiMap<MapTag, Vector3i>? _mapAreas = null;
         private int _activePlayer = -1;
 
         public Match(Random random, IIdGenerator idGenerator, Map map)
@@ -70,14 +72,11 @@ namespace Expeditionary.Model
             {
                 Destroy(defender);
 
-                var points = defender.Type.GetPoints();
                 var attackerStats = _playerStatistics[attacker.Player];
-                attackerStats.DestroyedPoints += points;
-                attackerStats.DestroyedUnits += points;
+                attackerStats.Destroyed += defender.UnitQuantity;
 
                 var defenderStats = _playerStatistics[defender.Player];
-                defenderStats.LostPoints += points;
-                defenderStats.LostUnits += points;
+                defenderStats.Lost += defender.UnitQuantity;
             }
         }
 
@@ -131,9 +130,41 @@ namespace Expeditionary.Model
             return _positions[hex];
         }
 
+        public IEnumerable<IAsset> GetAssetsIn(MapTag tag)
+        {
+            if (_mapAreas == null)
+            {
+                _mapAreas = new();
+                foreach (var hex in _map.Range())
+                {
+                    var tile = _map.Get(hex)!;
+                    foreach (var t in tile.Tags)
+                    {
+                        _mapAreas.Add(t, hex);
+                    }
+                }
+            }
+            return _mapAreas[tag].SelectMany(x => _positions[x]);
+        }
+
+        public IEnumerable<ObjectiveSet> GetObjectiveSets(int team)
+        {
+            return _playerObjectives.Where(x => x.Key.Team == team).Select(x => x.Value);
+        }
+
         public Random GetRandom()
         {
             return _random;
+        }
+
+        public PlayerStatistics GetStatistics(Player player)
+        {
+            return _playerStatistics[player];
+        }
+
+        public IEnumerable<PlayerStatistics> GetStatistics(int team)
+        {
+            return _playerStatistics.Where(x => x.Key.Team == team).Select(x => x.Value);
         }
 
         public void Initialize()

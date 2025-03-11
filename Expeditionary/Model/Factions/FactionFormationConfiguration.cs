@@ -13,6 +13,6 @@ namespace Expeditionary.Model.Factions
         public List<UnitUsage> Units { get; set; } = new();
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
-        public List<FormationGenerator> Formations { get; set; } = new();
+        public List<FormationTemplateGenerator> Formations { get; set; } = new();
     }
 }

@@ -5,14 +5,10 @@ using Cardamom.Json.OpenTK;
 using Cardamom.Ui;
 using Cardamom.Window;
 using Expeditionary.Controller;
-using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Factions;
-using Expeditionary.Model.Formations;
-using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Missions;
-using Expeditionary.Model.Missions.Deployments;
-using Expeditionary.Model.Missions.Objectives;
+using Expeditionary.Model.Missions.MissionTypes;
 using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
 using Expeditionary.View;
@@ -21,7 +17,6 @@ using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -104,31 +99,14 @@ namespace Expeditionary
             var environmentDefinition = module.Environments.ToList()[random.Next(module.Environments.Count)].Value;
             Console.WriteLine(environmentDefinition.Key);
 
-            var player = new Player(Id: 0, Team: 0, module.Factions["faction-hyacinth"]);
-            var opponent = new Player(Id: 1, Team: 1, module.Factions["faction-poticas"]);
-            var mission = 
-                new Mission(
-                    new MapSetup(
-                        environmentDefinition,
-                        new Vector2i(100, 100), 
-                        Enumerable.Empty<CityGenerator.LayerParameters>()),
-                    new() 
-                    { 
+            var mission =
+                new AssaultMission()
+                    .Create(
                         new(
-                            player, 
-                            new(Enumerable.Empty<IObjective>()), 
-                            new() 
-                            { 
-                                new(RandomFormation(module, player.Faction, random), new RandomDeployment()) 
-                            }),
-                        new(
-                            opponent,
-                            new(Enumerable.Empty<IObjective>()),
-                            new()
-                            {
-                                new(RandomFormation(module, opponent.Faction, random), new RandomDeployment())
-                            })
-                    });
+                            environmentDefinition,
+                            new List<Faction>() { module.Factions["faction-hyacinth"] },
+                            new List<Faction>() { module.Factions["faction-poticas"] }), 
+                        new(new(module.FactionFormations, module.Formations), random));
             (var match, var appearance) = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
             match.Step();
             match.Initialize();
@@ -139,17 +117,10 @@ namespace Expeditionary
 
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(match, player),
+                    new MatchController(match, mission.Players.First().Player),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             ui.Start();
-        }
-
-        private static  FormationTemplate RandomFormation(GameModule module, Faction faction, Random random)
-        {
-            var formationConfig = module.FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
-            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
-            return formationGenerator.Generate(new(random, new(), new(), formationConfig.Units));
         }
 
         private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
