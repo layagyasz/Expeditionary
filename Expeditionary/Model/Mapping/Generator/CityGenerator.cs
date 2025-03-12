@@ -31,7 +31,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public Quadratic SandPenalty { get; set; } = new(0f, 1f, 0f);
             public Quadratic ClayPenalty { get; set; }
             public Quadratic SiltPenalty { get; set; }
-            public Quadratic HeatPenality { get; set; }
+            public Quadratic HeatPenalty { get; set; }
             public Quadratic MoisturePenalty { get; set; }
         }
 
@@ -199,7 +199,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 + parameters.SandPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.X : 0)
                 + parameters.ClayPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Y : 0)
                 + parameters.SiltPenalty.Evaluate(tile.Terrain.Soil.HasValue ? tile.Terrain.Soil.Value.Z : 0)
-                + parameters.HeatPenality.Evaluate(tile.Heat)
+                + parameters.HeatPenalty.Evaluate(tile.Heat)
                 + parameters.MoisturePenalty.Evaluate(tile.Moisture);
         }
     }

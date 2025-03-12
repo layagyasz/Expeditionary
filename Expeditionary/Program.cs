@@ -3,11 +3,14 @@ using Cardamom.Json;
 using Cardamom.Json.Graphics.TexturePacking;
 using Cardamom.Json.OpenTK;
 using Cardamom.Ui;
+using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Window;
 using Expeditionary.Controller;
 using Expeditionary.Model;
 using Expeditionary.Model.Factions;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.MissionTypes;
 using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
@@ -99,14 +102,32 @@ namespace Expeditionary
             var environmentDefinition = module.Environments.ToList()[random.Next(module.Environments.Count)].Value;
             Console.WriteLine(environmentDefinition.Key);
 
-            var mission =
-                new AssaultMission()
-                    .Create(
-                        new(
-                            environmentDefinition,
-                            new List<Faction>() { module.Factions["faction-hyacinth"] },
-                            new List<Faction>() { module.Factions["faction-poticas"] }), 
-                        new(new(module.FactionFormations, module.Formations), random));
+            var missionNode =
+                new AssaultMissionNode()
+                {
+                    Environment = new StaticEnvironmentProvider(environmentDefinition),
+                    Difficulty = new() { MissionDifficulty.Medium },
+                    Scale = new() { MissionScale.Medium },
+                    Attackers = new() { module.Factions["faction-hyacinth"] },
+                    Defenders = new() { module.Factions["faction-poticas"] },
+                    ZoneOptions =
+                        new()
+                        {
+                            new()
+                            {
+                                CoreDensity = .0004f,
+                                CandidateDensity = .005f,
+                                Type = StructureType.Mining,
+                                Level = 1,
+                                Size = new NormalSampler(2, 1),
+                                RiverPenalty = new(),
+                                CoastPenalty = new(),
+                                SlopePenalty = new(0, -1, 1),
+                                ElevationPenalty = new(0, -1, 1),
+                            }
+                        }
+                };
+            var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
             (var match, var appearance) = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
             match.Step();
             match.Initialize();
