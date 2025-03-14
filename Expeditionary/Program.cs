@@ -115,7 +115,7 @@ namespace Expeditionary
                         {
                             new()
                             {
-                                CoreDensity = .0004f,
+                                CoreCount = 1,
                                 CandidateDensity = .005f,
                                 Type = StructureType.Mining,
                                 Level = 1,

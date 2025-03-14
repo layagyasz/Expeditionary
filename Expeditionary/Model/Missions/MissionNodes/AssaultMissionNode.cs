@@ -72,6 +72,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
         {
             return new()
             {
+                CoreCount = parameters.CoreCount,
                 CoreDensity = parameters.CoreDensity,
                 CandidateDensity = parameters.CandidateDensity,
                 Size = parameters.Size,
@@ -79,7 +80,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                 Level = parameters.Level,
                 Tags = parameters.Tags.Concat(Enumerable.Repeat(tag, 1)).ToList(),
                 Center = center,
-                DistancePenalty = new(1, 0, 0),
+                DistancePenalty = new(0, 0.2f, 0),
                 SprawlPenalty = parameters.SprawlPenalty,
                 SlopePenalty = parameters.SlopePenalty,
                 ElevationPenalty = parameters.ElevationPenalty,

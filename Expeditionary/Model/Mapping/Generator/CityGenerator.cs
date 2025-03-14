@@ -7,14 +7,15 @@ namespace Expeditionary.Model.Mapping.Generator
 {
     public static class CityGenerator
     {
-        public class Parameters
+        public record class Parameters
         {
             public float LiquidAffinity { get; set; }
             public List<LayerParameters> Layers { get; set; } = new();
         }
 
-        public class LayerParameters
+        public record class LayerParameters
         {
+            public int CoreCount { get; set; }
             public float CoreDensity { get; set; }
             public float CandidateDensity { get; set; }
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
@@ -85,7 +86,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 var candidates = costDict.OrderBy(x => x.Value).Take(numCandidates).ToList();
                 candidates.Shuffle(random);
 
-                int numCores = (int)(param.CoreDensity * availableTiles);
+                int numCores = param.CoreCount == 0 ? (int)(param.CoreDensity * availableTiles) : param.CoreCount;
                 foreach (var candidate in candidates.Take(numCores))
                 {
                     closed.Add(candidate.Key);
