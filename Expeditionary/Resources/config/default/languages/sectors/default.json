@@ -1,0 +1,395 @@
+[
+  {
+    "$id": "sector-naming-default",
+    "StarPrefixes": [
+      "alpha",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta",
+      "theta",
+      "iota",
+      "kappa",
+      "lambda",
+      "mu",
+      "nu",
+      "xi",
+      "omicron",
+      "pi",
+      "rho",
+      "sigma",
+      "tau",
+      "upsilon",
+      "phi",
+      "chi",
+      "psi",
+      "omega"
+    ],
+    "Sectors": [
+      // Earth
+      {
+        "Name": "sol",
+        "StarName": "solis"
+      },
+      {
+        "Name": "antlia",
+        "StarName": "antliae"
+      },
+      {
+        "Name": "apus",
+        "StarName": "apodis"
+      },
+      {
+        "Name": "aquarius",
+        "StarName": "aquarii"
+      },
+      {
+        "Name": "aquila",
+        "StarName": "aquilae"
+      },
+      {
+        "Name": "ara",
+        "StarName": "arae"
+      },
+      {
+        "Name": "aries",
+        "StarName": "arietis"
+      },
+      {
+        "Name": "aquila",
+        "StarName": "aquilae"
+      },
+      {
+        "Name": "bootes",
+        "StarName": "bootae"
+      },
+      {
+        "Name": "caelum",
+        "StarName": "caeli"
+      },
+      {
+        "Name": "cancer",
+        "StarName": "cancri"
+      },
+      {
+        "Name": "canes venatici",
+        "StarName": "canum venaticorum"
+      },
+      {
+        "Name": "canis minor",
+        "SystemName": "canis minoris"
+      },
+      {
+        "Name": "capricornus",
+        "SystemName": "capricorni"
+      },
+      {
+        "Name": "cetus",
+        "SystemName": "ceti"
+      },
+      {
+        "Name": "chameleon",
+        "SystemName": "chameleonis"
+      },
+      {
+        "Name": "columba",
+        "SystemName": "columbae"
+      },
+      {
+        "Name": "coma berenices",
+        "SystemName": "comae berenices"
+      },
+      {
+        "Name": "corona australis",
+        "SystemName": "coronae australis"
+      },
+      {
+        "Name": "corona borealis",
+        "SystemName": "coronae borealis"
+      },
+      {
+        "Name": "corvus",
+        "SystemName": "corvi"
+      },
+      {
+        "Name": "crater",
+        "SystemName": "crateris"
+      },
+      {
+        "Name": "crux",
+        "SystemName": "crucis"
+      },
+      {
+        "Name": "dorado",
+        "SystemName": "doradus"
+      },
+      {
+        "Name": "draco",
+        "SystemName": "draconis"
+      },
+      {
+        "Name": "equuleus",
+        "SystemName": "equulei"
+      },
+      {
+        "Name": "eridanus",
+        "SystemName": "eridani"
+      },
+      {
+        "Name": "fornax",
+        "SystemName": "fornacis"
+      },
+      {
+        "Name": "gemini",
+        "SystemName": "geminorum"
+      },
+      {
+        "Name": "grus",
+        "SystemName": "gruis"
+      },
+      {
+        "Name": "hercules",
+        "SystemName": "herculis"
+      },
+      {
+        "Name": "horologium",
+        "SystemName": "horologii"
+      },
+      {
+        "Name": "hydra",
+        "SystemName": "gruis"
+      },
+      {
+        "Name": "hydrus",
+        "SystemName": "hydri"
+      },
+      {
+        "Name": "indus",
+        "SystemName": "indi"
+      },
+      {
+        "Name": "lacerta",
+        "SystemName": "lacertae"
+      },
+      {
+        "Name": "leo",
+        "SystemName": "leonis"
+      },
+      {
+        "Name": "leo minor",
+        "SystemName": "leonis minoris"
+      },
+      {
+        "Name": "lepus",
+        "SystemName": "leporis"
+      },
+      {
+        "Name": "libra",
+        "SystemName": "librae"
+      },
+      {
+        "Name": "lupus",
+        "SystemName": "lupi"
+      },
+      {
+        "Name": "lynx",
+        "SystemName": "lyncis"
+      },
+      {
+        "Name": "lyra",
+        "SystemName": "lyrae"
+      },
+      {
+        "Name": "mensa",
+        "SystemName": "mensae"
+      },
+      {
+        "Name": "musca",
+        "SystemName": "muscae"
+      },
+      {
+        "Name": "octans",
+        "SystemName": "octantis"
+      },
+      {
+        "Name": "ophiuchus",
+        "SystemName": "ophiuchi"
+      },
+      {
+        "Name": "pavo",
+        "SystemName": "pavonis"
+      },
+      {
+        "Name": "pegasus",
+        "SystemName": "pegasi"
+      },
+      {
+        "Name": "phoenix",
+        "SystemName": "phoenicis"
+      },
+      {
+        "Name": "pictor",
+        "SystemName": "pictoris"
+      },
+      {
+        "Name": "pisces",
+        "SystemName": "piscium"
+      },
+      {
+        "Name": "piscis austrinus",
+        "SystemName": "piscis austrini"
+      },
+      {
+        "Name": "pyxis",
+        "SystemName": "pyxidis"
+      },
+      {
+        "Name": "reticulum",
+        "SystemName": "reticuli"
+      },
+      {
+        "Name": "sculptor",
+        "SystemName": "sculptoris"
+      },
+      {
+        "Name": "serpens",
+        "SystemName": "serpentis"
+      },
+      {
+        "Name": "sextans",
+        "SystemName": "sextantis"
+      },
+      {
+        "Name": "telescopium",
+        "SystemName": "telescopii"
+      },
+      {
+        "Name": "triangulum",
+        "SystemName": "trianguli"
+      },
+      {
+        "Name": "triangulum australe",
+        "SystemName": "trianguli australis"
+      },
+      {
+        "Name": "tucana",
+        "SystemName": "tucanae"
+      },
+      {
+        "Name": "ursa major",
+        "SystemName": "ursae majoris"
+      },
+      {
+        "Name": "ursa minor",
+        "SystemName": "ursae minoris"
+      },
+      {
+        "Name": "virgo",
+        "SystemName": "virginis"
+      },
+      {
+        "Name": "volans",
+        "SystemName": "volantis"
+      },
+
+      // ISC
+      {
+        "Name": "auriga",
+        "StarName": "aurigae"
+      },
+      {
+        "Name": "camelopardalis",
+        "StarName": "camelopardalis"
+      },
+      {
+        "Name": "cassiopeia",
+        "SystemName": "cassiopeiae"
+      },
+      {
+        "Name": "cepheus",
+        "SystemName": "cephei"
+      },
+      {
+        "Name": "cygnus",
+        "SystemName": "cygni"
+      },
+      {
+        "Name": "perseus",
+        "SystemName": "persei"
+      },
+      {
+        "Name": "vulpecula",
+        "SystemName": "vulpeculae"
+      },
+
+
+      // White Star
+      {
+        "Name": "aquila",
+        "StarName": "aquilae"
+      },
+      {
+        "Name": "sagitta",
+        "SystemName": "sagittae"
+      },
+      {
+        "Name": "sagittarius",
+        "SystemName": "sagittarii"
+      },
+      {
+        "Name": "scutum",
+        "SystemName": "scuti"
+      },
+
+      // Red Star
+      {
+        "Name": "centaurus",
+        "SystemName": "centauri"
+      },
+      {
+        "Name": "circinus",
+        "SystemName": "circini"
+      },
+      {
+        "Name": "norma",
+        "SystemName": "normae"
+      },
+      {
+        "Name": "scorpius",
+        "SystemName": "scorpii"
+      },
+
+      // Orion
+      {
+        "Name": "canis major",
+        "SystemName": "canis majoris"
+      },
+      {
+        "Name": "carina",
+        "SystemName": "carinae"
+      },
+      {
+        "Name": "monoceros",
+        "SystemName": "monocerotis"
+      },
+      {
+        "Name": "orion",
+        "SystemName": "orionis"
+      },
+      {
+        "Name": "puppis",
+        "SystemName": "puppis"
+      },
+      {
+        "Name": "taurus",
+        "SystemName": "tauri"
+      },
+      {
+        "Name": "vela",
+        "SystemName": "velae"
+      }
+    ]
+  }
+]

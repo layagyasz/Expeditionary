@@ -6,5 +6,6 @@
   "UnitTypes": [ "resources/config/default/units/definitions::*.json" ],
   "Formations": [ "resources/config/default/formations::*.json" ],
   "Factions": [ "resources/config/default/factions::*.json" ],
-  "FactionFormations": ["resources/config/default/factionformations::*.json" ]
+  "FactionFormations": [ "resources/config/default/factionformations::*.json" ],
+  "SectorNamings": [ "resources/config/default/languages/sectors::*.json" ]
 }

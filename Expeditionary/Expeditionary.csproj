@@ -159,6 +159,9 @@
     <None Update="Resources\config\default\generation\scripts\script_environment_terrain.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\languages\sectors\default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\module.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -537,6 +540,7 @@
     <Folder Include="Resources\config\default\generation\environments\wk\" />
     <Folder Include="Resources\config\default\generation\environments\orion\" />
     <Folder Include="Resources\config\default\factionformations\" />
+    <Folder Include="Resources\config\default\languages\sectors\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>
