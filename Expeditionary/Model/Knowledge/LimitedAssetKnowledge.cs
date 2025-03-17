@@ -4,12 +4,12 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
 {
-    public class AssetKnowledge
+    public class LimitedAssetKnowledge
     {
         private readonly Player _player;
         private readonly Dictionary<IAsset, SingleAssetKnowledge> _assets = new();
 
-        public AssetKnowledge(Player player)
+        public LimitedAssetKnowledge(Player player)
         {
             _player = player;
         }
@@ -24,7 +24,7 @@ namespace Expeditionary.Model.Knowledge
         }
 
         public List<IAsset> AddSelf(
-            MapKnowledge mapKnowledge,
+            LimitedMapKnowledge mapKnowledge,
             Unit unit, 
             IEnumerable<Sighting.LineOfSight> delta,
             MultiMap<Vector3i, IAsset> positions)
@@ -34,10 +34,10 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
-        public List<IAsset> AddOther(MapKnowledge mapKnowledge, IAsset asset, Vector3i position)
+        public List<IAsset> AddOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Vector3i position)
         {
+            var result = new List<IAsset>();
             var current = new SingleAssetKnowledge();
-            _assets.Add(asset, current);
 
             var detection = mapKnowledge.GetDetection(position);
             var condition = mapKnowledge.GetMap().Get(position)!.GetConditions();
@@ -46,13 +46,14 @@ namespace Expeditionary.Model.Knowledge
             {
                 current.IsVisible = true;
                 current.LastSeen = position;
-                return new() { asset };
+                result.Add(asset);
             }
-            return new();
+            _assets.Add(asset, current);
+            return result;
         }
         
         public List<IAsset> DestroySelf(
-            MapKnowledge mapKnowledge,
+            LimitedMapKnowledge mapKnowledge,
             Unit unit,
             IEnumerable<Sighting.LineOfSight> delta,
             MultiMap<Vector3i, IAsset> positions)
@@ -69,12 +70,13 @@ namespace Expeditionary.Model.Knowledge
                 result.Add(asset);
                 current.IsVisible = false;
                 current.LastSeen = null;
+                _assets[asset] = current;
             }
             return result;
         }
 
         public List<IAsset> RemoveSelf(
-            MapKnowledge mapKnowledge, 
+            LimitedMapKnowledge mapKnowledge, 
             Unit unit, 
             IEnumerable<Sighting.LineOfSight> delta,
             MultiMap<Vector3i, IAsset> positions)
@@ -96,7 +98,7 @@ namespace Expeditionary.Model.Knowledge
             return result;
         }
 
-        public List<IAsset> MoveOther(MapKnowledge mapKnowledge, IAsset asset, Pathing.Path path)
+        public List<IAsset> MoveOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Pathing.Path path)
         {
             var current = _assets[asset];
             for (int i=path.Steps.Count - 1; i>=0; --i)
@@ -111,23 +113,26 @@ namespace Expeditionary.Model.Knowledge
                     {
                         current.IsVisible = true;
                         current.LastSeen = hex;
+                        _assets[asset] = current;
                         return new() { asset };
                     }
                     else
                     {
                         current.IsVisible = false;
                         current.LastSeen = path.Steps[i + 1];
+                        _assets[asset] = current;
                         return new() { asset };
                     }
                 }
             }
             current.IsVisible = false;
             current.LastSeen = null;
+            _assets[asset] = current;
             return new();
         }
 
         public List<IAsset> MoveSelf(
-            MapKnowledge mapKnowledge,
+            LimitedMapKnowledge mapKnowledge,
             Unit unit,
             IEnumerable<Sighting.LineOfSight> initial,
             IEnumerable<Sighting.LineOfSight> medial,
@@ -142,7 +147,7 @@ namespace Expeditionary.Model.Knowledge
         }
 
         private List<IAsset> AddLos(
-            MapKnowledge mapKnowledge, 
+            LimitedMapKnowledge mapKnowledge, 
             Unit unit,
             IEnumerable<Sighting.LineOfSight> delta, 
             MultiMap<Vector3i, IAsset> positions,
@@ -169,13 +174,14 @@ namespace Expeditionary.Model.Knowledge
                         current.LastSeen = hex;
                         result.Add(asset);
                     }
+                    _assets[asset] = current;
                 }
             }
             return result;
         }
 
         private List<IAsset> RemoveLos(
-            MapKnowledge mapKnowledge, IEnumerable<Sighting.LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+            LimitedMapKnowledge mapKnowledge, IEnumerable<Sighting.LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>();
             foreach (var los in delta)
@@ -198,6 +204,7 @@ namespace Expeditionary.Model.Knowledge
                         current.LastSeen = hex;
                         result.Add(asset);
                     }
+                    _assets[asset] = current;
                 }
             }
             return result;

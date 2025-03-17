@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions
@@ -7,15 +8,21 @@ namespace Expeditionary.Model.Missions
     {
         public void Setup(Match match, SetupContext context) 
         {
-            match.Add(
-                Player,
-                Objectives,
-                new PlayerKnowledge(
-                    Player, match.GetMap(), new(Player), new MapKnowledge(match.GetMap(), new KnownMapDiscovery())));
+            match.Add(Player, Objectives, CreatePlayerKnowledge(Player, match.GetMap(), context));
             foreach (var formation in Formations)
             {
                 formation.Setup(Player, match, context);
             }
+        }
+
+        private IPlayerKnowledge CreatePlayerKnowledge(Player player, Map map, SetupContext context)
+        {
+            if (context.Player == player && context.IsTest)
+            {
+                return new OmniscientPlayerKnowledge(player);
+            }
+            return new LimitedPlayerKnowledge(
+                Player, map, new(Player), new LimitedMapKnowledge(map, new KnownMapDiscovery()));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Expeditionary.Model
         private readonly List<Player> _players = new();
         private readonly Dictionary<Player, ObjectiveSet> _playerObjectives = new();
         private readonly Dictionary<Player, PlayerStatistics> _playerStatistics = new();
-        private readonly Dictionary<Player, PlayerKnowledge> _playerKnowledge = new();
+        private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
@@ -41,7 +41,7 @@ namespace Expeditionary.Model
             _map = map;
         }
 
-        public void Add(Player player, ObjectiveSet objectives, PlayerKnowledge knowledge)
+        public void Add(Player player, ObjectiveSet objectives, IPlayerKnowledge knowledge)
         {
             _players.Add(player);
             _playerObjectives.Add(player, objectives);
@@ -82,6 +82,7 @@ namespace Expeditionary.Model
 
         public void Destroy(Unit unit)
         {
+            unit.Destroy();
             foreach (var knowledge in _playerKnowledge.Values)
             {
                 knowledge.Destroy(unit, _positions);
@@ -105,7 +106,7 @@ namespace Expeditionary.Model
             return true;
         }
 
-        public PlayerKnowledge GetKnowledge(Player player)
+        public IPlayerKnowledge GetKnowledge(Player player)
         {
             return _playerKnowledge[player];
         }

@@ -7,13 +7,13 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
 {
-    public class MapKnowledge
+    public class LimitedMapKnowledge
     {
         private readonly Map _map;
         private readonly IMapDiscovery _discovery;
         private readonly MultiMap<Vector3i, Unit> _spotters = new();
 
-        public MapKnowledge(Map map, IMapDiscovery discovery) 
+        public LimitedMapKnowledge(Map map, IMapDiscovery discovery) 
         {
             _map = map;
             _discovery = discovery;

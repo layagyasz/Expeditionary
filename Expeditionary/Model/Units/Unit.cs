@@ -9,11 +9,11 @@ namespace Expeditionary.Model.Units
         public Player Player { get; }
         public string TypeKey => Type.Key;
         public Vector3i Position { get; set; }
+        public bool IsDestroyed { get; private set; }
         public UnitType Type { get; }
         public int Number { get; private set; }
         public float Movement { get; set; }
         public bool Attacked { get; set; }
-        public bool Destroyed { get; private set; }
 
         public UnitQuantity UnitQuantity => new(1, Type.Points);
 
@@ -35,7 +35,7 @@ namespace Expeditionary.Model.Units
 
         public void Destroy()
         {
-            Destroyed = true;
+            IsDestroyed = true;
             Position = default;
         }
 

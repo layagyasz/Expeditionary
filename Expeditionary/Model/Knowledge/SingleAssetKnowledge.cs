@@ -2,9 +2,5 @@
 
 namespace Expeditionary.Model.Knowledge
 {
-    public record class SingleAssetKnowledge
-    {
-        public bool IsVisible { get; set; }
-        public Vector3i? LastSeen { get; set; }
-    }
+    public record struct SingleAssetKnowledge(bool IsVisible, Vector3i? LastSeen);
 }

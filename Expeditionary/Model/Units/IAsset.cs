@@ -7,6 +7,7 @@ namespace Expeditionary.Model.Units
         int Id { get; }
         string TypeKey { get; }
         public Vector3i Position { get; set; }
+        public bool IsDestroyed { get; }
         public void Reset();
 
         public string? ToString()

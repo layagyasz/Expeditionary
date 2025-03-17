@@ -45,12 +45,12 @@ namespace Expeditionary.Controller
             _layer = null;
         }
 
-        public void SetKnowledge(PlayerKnowledge knowledge)
+        public void SetKnowledge(IPlayerKnowledge knowledge)
         {
             _layer!.SetAll(_match, knowledge);
         }
 
-        public void UpdateKnowledge(PlayerKnowledge knowledge, IEnumerable<IAsset> delta)
+        public void UpdateKnowledge(IPlayerKnowledge knowledge, IEnumerable<IAsset> delta)
         {
             _layer!.Set(knowledge, delta);
         }

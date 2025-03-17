@@ -27,7 +27,7 @@ namespace Expeditionary.View
             _partitions = partitions;
         }
 
-        public void Set(PlayerKnowledge knowledge, IEnumerable<Vector3i> delta)
+        public void Set(IPlayerKnowledge knowledge, IEnumerable<Vector3i> delta)
         {
             var options = _partitions.Query().ToArray();
             var vertices = new Vertex3[3];
@@ -57,7 +57,7 @@ namespace Expeditionary.View
             }
         }
 
-        public void SetAll(PlayerKnowledge knowledge)
+        public void SetAll(IPlayerKnowledge knowledge)
         {
             var options = _partitions.Query().ToArray();
             int triangles = 3 * ((_size.X + 2) * (2 * _size.Y + 1) + 1);

@@ -6,17 +6,18 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Knowledge
 {
-    public class PlayerKnowledge
+    public class LimitedPlayerKnowledge : IPlayerKnowledge
     {
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
         private readonly Player _player;
         private readonly Map _map;
-        private readonly AssetKnowledge _assetKnowledge;
-        private readonly MapKnowledge _mapKnowledge;
+        private readonly LimitedAssetKnowledge _assetKnowledge;
+        private readonly LimitedMapKnowledge _mapKnowledge;
 
-        public PlayerKnowledge(Player player, Map map, AssetKnowledge assetKnowledge, MapKnowledge mapKnowledge)
+        public LimitedPlayerKnowledge(
+            Player player, Map map, LimitedAssetKnowledge assetKnowledge, LimitedMapKnowledge mapKnowledge)
         {
             _player = player;
             _map = map;

@@ -55,7 +55,7 @@ namespace Expeditionary.View
             _vertices!.Initialize();
         }
 
-        public void SetAll(Match match, PlayerKnowledge knowledge)
+        public void SetAll(Match match, IPlayerKnowledge knowledge)
         {
             _addressMap.Clear();
             _vertices!.Clear();
@@ -69,7 +69,7 @@ namespace Expeditionary.View
             }
         }
 
-        public void Set(PlayerKnowledge knowledge, IEnumerable<IAsset> delta)
+        public void Set(IPlayerKnowledge knowledge, IEnumerable<IAsset> delta)
         {
             foreach (var asset in delta)
             {

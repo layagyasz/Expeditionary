@@ -128,7 +128,9 @@ namespace Expeditionary
                         }
                 };
             var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
-            (var match, var appearance) = mission.Setup(new SetupContext(random, new SerialIdGenerator()));
+            var player = mission.Players.First().Player;
+            (var match, var appearance) =
+                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), isTest: true));
             match.Step();
             match.Initialize();
 
@@ -138,7 +140,7 @@ namespace Expeditionary
 
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(match, mission.Players.First().Player),
+                    new MatchController(match, player),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             ui.Start();
