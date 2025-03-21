@@ -31,7 +31,6 @@ namespace Expeditionary.Model
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
-        private MultiMap<MapTag, Vector3i>? _mapAreas = null;
         private int _activePlayer = -1;
 
         public Match(Random random, IIdGenerator idGenerator, Map map)
@@ -133,19 +132,7 @@ namespace Expeditionary.Model
 
         public IEnumerable<IAsset> GetAssetsIn(MapTag tag)
         {
-            if (_mapAreas == null)
-            {
-                _mapAreas = new();
-                foreach (var hex in _map.Range())
-                {
-                    var tile = _map.Get(hex)!;
-                    foreach (var t in tile.Tags)
-                    {
-                        _mapAreas.Add(t, hex);
-                    }
-                }
-            }
-            return _mapAreas[tag].SelectMany(x => _positions[x]);
+            return _map.GetArea(tag).SelectMany(x => _positions[x]);
         }
 
         public IEnumerable<ObjectiveSet> GetObjectiveSets(int team)

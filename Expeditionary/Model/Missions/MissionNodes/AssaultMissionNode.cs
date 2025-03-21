@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
+using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Missions.Deployments;
 using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.Objectives;
@@ -30,7 +31,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         {
                             new(
                                 resources.FormationGenerator.Generate(attacker, resources.Random), 
-                                new RandomDeployment())
+                                new DefaultDefensiveDeployment(MapDirection.South, new()))
                         });
                 players.Add(setup);
             }
@@ -49,7 +50,8 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         {
                             new(
                                 resources.FormationGenerator.Generate(defender, resources.Random),
-                                new RandomDeployment())
+                                new DefaultDefensiveDeployment(
+                                    MapDirection.North, new() { new TagMapRegion(MapTag.Control1)}))
                         });
                 players.Add(setup);
             }

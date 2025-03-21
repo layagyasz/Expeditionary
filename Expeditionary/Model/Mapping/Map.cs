@@ -1,4 +1,5 @@
-﻿using Expeditionary.Hexagons;
+﻿using Cardamom.Collections;
+using Expeditionary.Hexagons;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Mapping
@@ -8,6 +9,8 @@ namespace Expeditionary.Model.Mapping
         public int ElevationLevels { get; }
 
         private readonly Edge?[,] _edges;
+
+        private MultiMap<MapTag, Vector3i>? _areas;
 
         private Map(Vector2i size, int elevationLevels) : base(size)
         {
@@ -33,6 +36,19 @@ namespace Expeditionary.Model.Mapping
                 }
             }
             return map;
+        }
+
+        public IEnumerable<Vector3i> GetArea(MapTag tag)
+        {
+            if (_areas == null)
+            {
+                PopulateAreas();
+            }
+            if (_areas!.TryGetValue(tag, out IEnumerable<Vector3i> hexes))
+            {
+                return hexes;
+            }
+            return Enumerable.Empty<Vector3i>();
         }
 
         public Edge? GetEdge(Vector3i edge)
@@ -62,6 +78,19 @@ namespace Expeditionary.Model.Mapping
         public void SetEdge(Vector3i edge, Edge? value)
         {
             SetEdge(Cubic.HexagonalOffset.Instance.Project(edge) + new Vector2i(1, 1), value);
+        }
+
+        private void PopulateAreas()
+        {
+            _areas = new();
+            foreach (var hex in Range())
+            {
+                var tile = Get(hex)!;
+                foreach (var t in tile.Tags)
+                {
+                    _areas.Add(t, hex);
+                }
+            }
         }
     }
 }

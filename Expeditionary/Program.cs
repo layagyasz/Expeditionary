@@ -130,7 +130,7 @@ namespace Expeditionary
             var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
             var player = mission.Players.First().Player;
             (var match, var appearance) =
-                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), isTest: true));
+                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), isTest: false));
             match.Step();
             match.Initialize();
 
