@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
@@ -41,40 +42,28 @@ namespace Expeditionary.Model.Missions.Deployments
                 player,
                 defensive,
                 Region, 
-                Facing, 
-                Disposition.Defensive,
-                RangeBucket.Medium,
-                context.EvaluationCache,
+                TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Defensive, RangeBucket.Medium),
                 context.Parent.Random);
             Assign(
                 match,
                 player,
                 shortRange,
                 Region,
-                Facing,
-                Disposition.Offensive,
-                RangeBucket.Short,
-                context.EvaluationCache,
+                TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Short),
                 context.Parent.Random);
             Assign(
                 match,
                 player,
                 medRange,
                 Region,
-                Facing,
-                Disposition.Offensive,
-                RangeBucket.Medium,
-                context.EvaluationCache,
+                TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Medium),
                 context.Parent.Random);
             Assign(
                 match,
                 player,
                 longRange,
                 Region,
-                Facing,
-                Disposition.Offensive,
-                RangeBucket.Long,
-                context.EvaluationCache,
+                TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Long),
                 context.Parent.Random);
         }
 
@@ -83,20 +72,23 @@ namespace Expeditionary.Model.Missions.Deployments
             Player player,
             IEnumerable<UnitType> units, 
             IMapRegion region, 
-            MapDirection facing, 
-            Disposition disposition, 
-            RangeBucket range,
-            EvaluationCache evaluationCache,
+            TileConsideration consideration,
             Random random)
         {
+            var finalConsideration = 
+                TileConsiderations.Combine(
+                    consideration, 
+                    TileConsiderations.Forestation, 
+                    TileConsiderations.Urbanization, 
+                    TileConsiderations.Roading(match.GetMap()),
+                    TileConsiderations.Weight(0.1f, TileConsiderations.Noise(random)));
             var tilesAndEvaluations =
-                region.Range(evaluationCache.Map)
+                region.Range(match.GetMap())
                     .Select(hex =>
                         (
-                            hex, 
-                            score: evaluationCache.Evaluate(hex, facing, disposition, range)
-                                + 0.1f * random.NextSingle())
-                        )
+                            hex,
+                            score: TileConsiderations.Evaluate(finalConsideration, hex, match.GetMap())
+                        ))
                     .ToList();
             while (tilesAndEvaluations.Count < units.Count())
             {

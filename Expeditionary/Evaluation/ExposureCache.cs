@@ -1,12 +1,51 @@
 ﻿using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation
 {
-    public static class TileEvaluation
+    public class ExposureCache
     {
+        private record CacheKey(Vector3i Hex, MapDirection Facing, RangeBucket Range);
+
+        public Map Map { get; }
+
+        private readonly Dictionary<CacheKey, float> _exposureCache = new();
+
+        public ExposureCache(Map map)
+        {
+            Map = map;
+        }
+
+        public float Evaluate(UnitType unitType, Vector3i hex, MapDirection facing, Disposition disposition)
+        {
+            var range = disposition == Disposition.Offensive ? RangeBucketizer.ToBucket(unitType) : RangeBucket.Medium;
+            return Evaluate(hex, facing, disposition, range);
+        }
+
+        public float Evaluate(Vector3i hex, MapDirection facing, Disposition disposition, RangeBucket range)
+        {
+            var exp = GetOrEvaluateExposure(new CacheKey(hex, facing, range));
+            if (disposition == Disposition.Defensive)
+            {
+                return 1 - exp;
+            }
+            return exp;
+        }
+
+        private float GetOrEvaluateExposure(CacheKey key)
+        {
+            if (_exposureCache.TryGetValue(key, out var exp))
+            {
+                return exp;
+            }
+            exp = EvaluateExposure(key.Hex, Map, key.Facing, RangeBucketizer.ToRange(key.Range));
+            _exposureCache.Add(key, exp);
+            return exp;
+        }
+
         public static float EvaluateExposure(
             Vector3i hex, Map map, MapDirection direction, int maxRange)
         {
@@ -19,15 +58,10 @@ namespace Expeditionary.Evaluation
                 / (3f * maxRange * (maxRange + 1));
         }
 
-        public static float EvaluateDefensibility(Tile tile)
-        {
-            return tile.Terrain.Foliage != null || tile.IsUrban() ? 1 : 0;
-        }
-
         private static float DirectionCoefficient(MapDirection direction)
         {
-            return 5 
-                - Convert.ToSingle(direction.HasFlag(MapDirection.North)) 
+            return 5
+                - Convert.ToSingle(direction.HasFlag(MapDirection.North))
                 - Convert.ToSingle(direction.HasFlag(MapDirection.South))
                 - Convert.ToSingle(direction.HasFlag(MapDirection.East))
                 - Convert.ToSingle(direction.HasFlag(MapDirection.West));
@@ -36,8 +70,8 @@ namespace Expeditionary.Evaluation
         private static bool DirectionContains(Vector2 displacement, MapDirection direction)
         {
 
-            if (direction.HasFlag(MapDirection.North) 
-                && displacement.Y <= 0 
+            if (direction.HasFlag(MapDirection.North)
+                && displacement.Y <= 0
                 && Math.Abs(displacement.Y) >= Math.Abs(displacement.X))
             {
                 return true;
