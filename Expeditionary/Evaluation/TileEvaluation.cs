@@ -1,47 +1,17 @@
 ﻿using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation
 {
     public static class TileEvaluation
     {
-        public static float Evaluate(
-            Vector3i hex, Map map, Disposition disposition, MapDirection direction, UnitType unitType)
+        public static float EvaluateExposure(
+            Vector3i hex, Map map, MapDirection direction, int maxRange)
         {
-            return Evaluate(
-                hex, 
-                map,
-                disposition,
-                direction,
-                disposition == Disposition.Offensive
-                    ? (int)unitType.Weapons.SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.Get()).Max() 
-                    : 4);
-        }
-
-        public static float Evaluate(Vector3i hex, Map map, Disposition disposition, MapDirection direction, int maxRange)
-        {
-            var tile = map.Get(hex)!;
-            if (tile.Terrain.IsLiquid)
-            {
-                return -1;
-            }
             var c = DirectionCoefficient(direction);
-            var exp = c * EvaluateExposure(hex, map, direction, maxRange);
-            if (disposition == Disposition.Defensive)
-            {
-                exp = 1 - exp;
-            }
-            var def = EvaluateDefensibility(map.Get(hex)!);
-            return exp + def;
-        }
-
-        private static float EvaluateExposure(
-            Vector3i hex, Map map, MapDirection direction,  int maxRange)
-        {
-            return 1f * Sighting.GetSightField(map, hex, maxRange)
+            return c * Sighting.GetSightField(map, hex, maxRange)
                 .Where(x => !x.IsBlocked)
                 .Where(x => !map.Get(x.Target)?.Terrain?.IsLiquid ?? false)
                 .Where(x => DirectionContains(Geometry.GetCartesianDisplacement(hex, x.Target), direction))
@@ -49,7 +19,7 @@ namespace Expeditionary.Evaluation
                 / (3f * maxRange * (maxRange + 1));
         }
 
-        private static float EvaluateDefensibility(Tile tile)
+        public static float EvaluateDefensibility(Tile tile)
         {
             return tile.Terrain.Foliage != null || tile.IsUrban() ? 1 : 0;
         }

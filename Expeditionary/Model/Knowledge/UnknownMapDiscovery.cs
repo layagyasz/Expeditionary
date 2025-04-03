@@ -15,6 +15,10 @@ namespace Expeditionary.Model.Knowledge
 
         public bool Discover(Vector3i hex)
         {
+            if (!Contains(hex))
+            {
+                return false;
+            }
             var discovered = IsDiscovered(hex);
             Set(hex, true);
             return !discovered;

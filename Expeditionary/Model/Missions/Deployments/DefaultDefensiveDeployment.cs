@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Missions.Deployments
     public record class DefaultDefensiveDeployment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions) 
         : IDeployment
     {
-        public void Setup(FormationTemplate formation, Player player, Match match, SetupContext context)
+        public void Setup(FormationTemplate formation, Player player, Match match, PlayerSetupContext context)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
@@ -28,10 +28,12 @@ namespace Expeditionary.Model.Missions.Deployments
                 var formations = Assign(eligibleOccupiers, region);
                 foreach (var f in formations)
                 {
-                    new RandomDeployment(region.Key).Setup(f, player, match, context);
+                    new AreaDeployment(region.Key, MapDirectionUtils.Invert(DefendingDirection))
+                        .Setup(f, player, match, context);
                 }
             }
-            new RandomDeployment(new EdgeMapRegion(DefendingDirection)).Setup(formation, player, match, context);
+            new AreaDeployment(new EdgeMapRegion(DefendingDirection), MapDirectionUtils.Invert(DefendingDirection))
+                .Setup(formation, player, match, context);
         }
 
         private static List<FormationTemplate> Assign(

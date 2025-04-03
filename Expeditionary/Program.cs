@@ -6,6 +6,7 @@ using Cardamom.Ui;
 using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Window;
 using Expeditionary.Controller;
+using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Factions;
 using Expeditionary.Model.Mapping;
@@ -130,7 +131,7 @@ namespace Expeditionary
             var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
             var player = mission.Players.First().Player;
             (var match, var appearance) =
-                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), isTest: false));
+                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), IsTest: true));
             match.Step();
             match.Initialize();
 

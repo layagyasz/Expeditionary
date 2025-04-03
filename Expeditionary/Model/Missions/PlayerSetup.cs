@@ -6,9 +6,9 @@ namespace Expeditionary.Model.Missions
 {
     public record class PlayerSetup(Player Player, ObjectiveSet Objectives, List<FormationSetup> Formations)
     {
-        public void Setup(Match match, SetupContext context) 
+        public void Setup(Match match, PlayerSetupContext context) 
         {
-            match.Add(Player, Objectives, CreatePlayerKnowledge(Player, match.GetMap(), context));
+            match.Add(Player, Objectives, CreatePlayerKnowledge(Player, match.GetMap(), context.Parent));
             foreach (var formation in Formations)
             {
                 formation.Setup(Player, match, context);

@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Mapping.Appearance;
+﻿using Expeditionary.Evaluation;
+using Expeditionary.Model.Mapping.Appearance;
 
 namespace Expeditionary.Model.Missions
 {
@@ -8,9 +9,10 @@ namespace Expeditionary.Model.Missions
         {
             (var map, var appearance) = Map.GenerateMap(context);
             var match = new Match(new(), new SerialIdGenerator(), map);
+            var evaluationCache = new EvaluationCache(map);
             foreach (var player in Players)
             {
-                player.Setup(match, context);
+                player.Setup(match, new PlayerSetupContext(context, evaluationCache));
             }
             return (match, appearance);
         }
