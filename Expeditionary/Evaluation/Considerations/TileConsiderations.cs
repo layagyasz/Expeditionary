@@ -9,21 +9,63 @@ namespace Expeditionary.Evaluation.Considerations
         public static float Evaluate(TileConsideration consideration, Vector3i hex, Map map)
         {
             var tile = map.Get(hex)!;
-            if (tile.Terrain.IsLiquid)
-            {
-                return -1;
-            }
-            return consideration.Invoke(hex, tile);
+            return consideration(hex, tile);
         }
 
         public static TileConsideration Combine(params TileConsideration[] considerations)
         {
-            return (hex, tile) => considerations.Sum(x => x.Invoke(hex, tile));
+            return (hex, tile) =>
+            {
+                var score = 0f;
+                foreach (var consideration in considerations)
+                {
+                    score += consideration(hex, tile);
+                    if (float.IsInfinity(score))
+                    {
+                        return score;
+                    }
+                }
+                return score;
+            };
         }
 
-        public static TileConsideration Weight(float weight, TileConsideration consideration)
+        public static TileConsideration Distance(SignedDistanceField field, int frontier, int median)
         {
-            return (hex, tile) => weight * consideration.Invoke(hex, tile);
+            median = MathHelper.Clamp(median, -field.MaxInternalDistance + 1, frontier - 1);
+            return (hex, _) =>
+            {
+                var rawDistance = (float)field.Get(hex) - median;
+                if (rawDistance < 0)
+                {
+                    return 0.5f - rawDistance / (field.MaxInternalDistance + median);
+                }
+                else
+                {
+                    if (rawDistance > frontier - median)
+                    {
+                        return float.PositiveInfinity;
+                    }
+                    return 0.5f + rawDistance / (frontier - median);
+                }
+            };
+        }
+
+        public static TileConsideration Edge(TileConsideration consideration)
+        {
+            return (hex, tile) => 1 - 2 * Math.Abs(0.5f - consideration(hex, tile));
+        }
+
+        public static TileConsideration Essential(TileConsideration consideration)
+        {
+            return (hex, tile) =>
+            {
+                var score = consideration(hex, tile);
+                if (score < float.Epsilon)
+                {
+                    return float.NegativeInfinity;
+                }
+                return score;
+            };
         }
 
         public static TileConsideration Exposure(
@@ -35,6 +77,16 @@ namespace Expeditionary.Evaluation.Considerations
         public static float Forestation(Vector3i _, Tile tile)
         {
             return tile.Terrain.Foliage != null ? 1 : 0;
+        }
+
+        public static TileConsideration Inverse(TileConsideration consideration)
+        {
+            return (hex, tile) => 1 - consideration(hex, tile);
+        }
+
+        public static float Land(Vector3i _, Tile tile)
+        {
+            return tile.Terrain.IsLiquid ? 0 : 1;
         }
 
         public static TileConsideration Noise(Random random)
@@ -55,5 +107,11 @@ namespace Expeditionary.Evaluation.Considerations
         {
             return tile.IsUrban() ? 1 : 0;
         }
+
+        public static TileConsideration Weight(float weight, TileConsideration consideration)
+        {
+            return (hex, tile) => weight * consideration.Invoke(hex, tile);
+        }
+
     }
 }

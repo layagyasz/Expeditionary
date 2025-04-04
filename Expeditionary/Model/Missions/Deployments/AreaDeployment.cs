@@ -37,11 +37,14 @@ namespace Expeditionary.Model.Missions.Deployments
                 }
             }
 
+            var sdf = SignedDistanceField.FromRegion(match.GetMap(), Region, 0);
+            var edge = TileConsiderations.Edge(TileConsiderations.Distance(sdf, 1, 0));
             Assign(
                 match, 
                 player,
                 defensive,
                 Region, 
+                TileConsiderations.Edge(TileConsiderations.Distance(sdf, 1, -5)), 
                 TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Defensive, RangeBucket.Medium),
                 context.Parent.Random);
             Assign(
@@ -49,6 +52,7 @@ namespace Expeditionary.Model.Missions.Deployments
                 player,
                 shortRange,
                 Region,
+                edge,
                 TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Short),
                 context.Parent.Random);
             Assign(
@@ -56,13 +60,15 @@ namespace Expeditionary.Model.Missions.Deployments
                 player,
                 medRange,
                 Region,
+                edge, 
                 TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Medium),
                 context.Parent.Random);
             Assign(
                 match,
                 player,
                 longRange,
-                Region,
+                Region,                    
+                edge,
                 TileConsiderations.Exposure(context.ExposureCache, Facing, Disposition.Offensive, RangeBucket.Long),
                 context.Parent.Random);
         }
@@ -72,12 +78,15 @@ namespace Expeditionary.Model.Missions.Deployments
             Player player,
             IEnumerable<UnitType> units, 
             IMapRegion region, 
-            TileConsideration consideration,
+            TileConsideration advancement,
+            TileConsideration exposure,
             Random random)
         {
             var finalConsideration = 
                 TileConsiderations.Combine(
-                    consideration, 
+                    TileConsiderations.Essential(TileConsiderations.Land),
+                    advancement,
+                    exposure, 
                     TileConsiderations.Forestation, 
                     TileConsiderations.Urbanization, 
                     TileConsiderations.Roading(match.GetMap()),
