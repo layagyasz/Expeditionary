@@ -20,6 +20,10 @@ namespace Expeditionary.Evaluation.Considerations
                 foreach (var consideration in considerations)
                 {
                     score += consideration(hex, tile);
+                    if (float.IsNaN(score))
+                    {
+                        throw new ApplicationException();
+                    }
                     if (float.IsInfinity(score))
                     {
                         return score;
@@ -29,30 +33,9 @@ namespace Expeditionary.Evaluation.Considerations
             };
         }
 
-        public static TileConsideration Distance(SignedDistanceField field, int frontier, int median)
+        public static TileConsideration Edge(SignedDistanceField sdf, int offset)
         {
-            median = MathHelper.Clamp(median, -field.MaxInternalDistance + 1, frontier - 1);
-            return (hex, _) =>
-            {
-                var rawDistance = (float)field.Get(hex) - median;
-                if (rawDistance < 0)
-                {
-                    return 0.5f - rawDistance / (field.MaxInternalDistance + median);
-                }
-                else
-                {
-                    if (rawDistance > frontier - median)
-                    {
-                        return float.PositiveInfinity;
-                    }
-                    return 0.5f + rawDistance / (frontier - median);
-                }
-            };
-        }
-
-        public static TileConsideration Edge(TileConsideration consideration)
-        {
-            return (hex, tile) => 1 - 2 * Math.Abs(0.5f - consideration(hex, tile));
+            return (hex, _) => 1 - Math.Abs(SdfRelativeDistance(sdf, hex, offset));
         }
 
         public static TileConsideration Essential(TileConsideration consideration)
@@ -71,12 +54,22 @@ namespace Expeditionary.Evaluation.Considerations
         public static TileConsideration Exposure(
             ExposureCache cache, MapDirection facing, Disposition disposition, RangeBucket range)
         {
-            return (hex, tile) => cache.Evaluate(hex, facing, disposition, range);
+            return (hex, _) => cache.Evaluate(hex, facing, disposition, range);
+        }
+
+        public static TileConsideration Exterior(SignedDistanceField sdf, int offset)
+        {
+            return (hex, _) => Math.Max(0, SdfRelativeDistance(sdf, hex, offset));
         }
 
         public static float Forestation(Vector3i _, Tile tile)
         {
             return tile.Terrain.Foliage != null ? 1 : 0;
+        }
+
+        public static TileConsideration Interior(SignedDistanceField sdf, int offset)
+        {
+            return (hex, _) => Math.Max(0, -SdfRelativeDistance(sdf, hex, offset));
         }
 
         public static TileConsideration Inverse(TileConsideration consideration)
@@ -113,5 +106,40 @@ namespace Expeditionary.Evaluation.Considerations
             return (hex, tile) => weight * consideration.Invoke(hex, tile);
         }
 
+        private static float SdfRelativeDistance(SignedDistanceField sdf, Vector3i hex, int offset) 
+        {
+            var rawDistance = (float)sdf.Get(hex) - offset;
+            if (rawDistance < 0)
+            {
+                if (sdf.MaxInternalDistance + offset > 0)
+                {
+                    return Check(Math.Max(-1, rawDistance / (sdf.MaxInternalDistance + offset)));
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (sdf.MaxExternalDistance - offset > 0)
+                {
+                    return Check(Math.Min(1, rawDistance / (sdf.MaxExternalDistance - offset)));
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        }
+
+        private static float Check(float value)
+        {
+            if (float.IsNaN(value))
+            {
+                throw new ApplicationException();
+            }
+            return value;
+        }
     }
 }

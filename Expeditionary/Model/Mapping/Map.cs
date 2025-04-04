@@ -51,6 +51,59 @@ namespace Expeditionary.Model.Mapping
             return Enumerable.Empty<Vector3i>();
         }
 
+        public int GetAxisSize(MapDirection direction)
+        {
+            int size = 0;
+            if (direction.HasFlag(MapDirection.North) || direction.HasFlag(MapDirection.South))
+            {
+                size = Math.Max(size, Size.Y); 
+            }
+            if (direction.HasFlag(MapDirection.East) || direction.HasFlag(MapDirection.West))
+            {
+                size = Math.Max(size, Size.X);
+            }
+            return size;
+        }
+
+        public IEnumerable<Vector3i> GetBorder(MapDirection direction)
+        {
+            if (direction == MapDirection.North)
+            {
+                for (Vector2i offset = new(); offset.X < Size.X && offset.Y < Size.Y; offset += new Vector2i(1, 0))
+                {
+                    yield return Cubic.HexagonalOffset.Instance.Wrap(offset);
+                }
+            }
+            else if (direction == MapDirection.East)
+            {
+                for (
+                    Vector2i offset = new(Size.X - 1, 0);
+                    offset.X < Size.X && offset.Y < Size.Y;
+                    offset += new Vector2i(0, 1))
+                {
+                    yield return Cubic.HexagonalOffset.Instance.Wrap(offset);
+                }
+            }
+            else if (direction == MapDirection.South)
+            {
+                for (
+                    Vector2i offset = new(0, Size.Y - 1); 
+                    offset.X < Size.X && offset.Y < Size.Y; 
+                    offset += new Vector2i(1, 0))
+                {
+                    yield return Cubic.HexagonalOffset.Instance.Wrap(offset);
+                }
+            }
+            else
+            {
+                for (Vector2i offset = new(); offset.X < Size.X && offset.Y < Size.Y; offset += new Vector2i(0, 1))
+                {
+                    yield return Cubic.HexagonalOffset.Instance.Wrap(offset);
+                }
+            }
+
+        }
+
         public Edge? GetEdge(Vector3i edge)
         {
             var offset = Cubic.HexagonalOffset.Instance.Project(edge) + new Vector2i(1, 1);

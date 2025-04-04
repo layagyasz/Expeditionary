@@ -1,5 +1,4 @@
-﻿using Cardamom.Collections;
-using Expeditionary.Model.Combat;
+﻿using Expeditionary.Model.Combat;
 
 namespace Expeditionary.Model.Mapping
 {

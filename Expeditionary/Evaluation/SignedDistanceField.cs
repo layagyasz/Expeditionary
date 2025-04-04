@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Hexagons;
+using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using OpenTK.Mathematics;
@@ -26,13 +27,24 @@ namespace Expeditionary.Evaluation
         }
 
         public int MaxInternalDistance { get; }
+        public int MaxExternalDistance { get; }
 
         private readonly Dictionary<Vector3i, int> _distances;
 
-        private SignedDistanceField(Dictionary<Vector3i, int> distances, int maxInternalDistance)
+        private SignedDistanceField(
+            int maxInternalDistance, int maxExternalDistance, Dictionary<Vector3i, int> distances)
         {
             MaxInternalDistance = maxInternalDistance;
+            MaxExternalDistance = maxExternalDistance;
             _distances = distances;
+        }
+
+        public static SignedDistanceField FromPathField(IEnumerable<Pathing.PathOption> pathField, int frontier)
+        {
+            return new(
+                -frontier,
+                pathField.Max(x => (int)Math.Ceiling(x.Cost)) - frontier, 
+                pathField.ToDictionary(x => x.Destination, x => (int)Math.Ceiling(x.Cost) - frontier));
         }
 
         public static SignedDistanceField FromRegion(Map map, IMapRegion region, int maxDistance)
@@ -97,8 +109,9 @@ namespace Expeditionary.Evaluation
             }
 
             return new(
-                nodes.ToDictionary(x => x.Key, x => x.Value.IsInternal ? -x.Value.Distance : x.Value.Distance), 
-                maxInternalDistance);
+                maxInternalDistance,
+                maxDistance,
+                nodes.ToDictionary(x => x.Key, x => x.Value.IsInternal ? -x.Value.Distance : x.Value.Distance));
         }
 
         public int Get(Vector3i hex)
@@ -107,7 +120,7 @@ namespace Expeditionary.Evaluation
             {
                 return distance;
             }
-            return int.MaxValue;
+            return MaxExternalDistance;
         }
     }
 }
