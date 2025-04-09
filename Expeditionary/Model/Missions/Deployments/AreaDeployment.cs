@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
@@ -15,7 +16,13 @@ namespace Expeditionary.Model.Missions.Deployments
                 match, 
                 SignedDistanceField.FromRegion(match.GetMap(), Region, 0),
                 Region, 
-                Facing, 
+                Facing,
+                TileConsiderations.Combine(
+                    TileConsiderations.Essential(TileConsiderations.Land),
+                    TileConsiderations.Forestation,
+                    TileConsiderations.Urbanization,
+                    TileConsiderations.Roading(match.GetMap()),
+                    TileConsiderations.Weight(0.1f, TileConsiderations.Noise(context.Parent.Random))),
                 context);
         }
     }

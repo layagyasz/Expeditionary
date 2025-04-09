@@ -24,7 +24,7 @@ namespace Expeditionary.Model.Missions.Deployments
                 formation.GetUnitTypesAndRoles()
                     .GroupBy(x => x.UnitType)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
-            int distance = match.GetMap().GetAxisSize(Direction) / 2;
+            int distance = match.GetMap().GetAxisSize(Direction) / 3;
             var sdf = 
                 SignedDistanceField.FromPathField(
                     Pathing.GetPathField(map, origin, exemplar.Movement, distance), distance >> 1);
@@ -34,7 +34,14 @@ namespace Expeditionary.Model.Missions.Deployments
                 match, 
                 sdf,
                 region,
-                MapDirectionUtils.Invert(Direction), 
+                MapDirectionUtils.Invert(Direction),
+                TileConsiderations.Combine(
+                    TileConsiderations.Essential(TileConsiderations.Land),
+                    TileConsiderations.Direction(origin, MapDirectionUtils.Invert(Direction)),
+                    TileConsiderations.Forestation,
+                    TileConsiderations.Urbanization,
+                    TileConsiderations.Roading(match.GetMap()),
+                    TileConsiderations.Weight(0.1f, TileConsiderations.Noise(context.Parent.Random))),
                 context);
         }
     }

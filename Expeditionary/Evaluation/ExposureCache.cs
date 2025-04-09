@@ -53,9 +53,8 @@ namespace Expeditionary.Evaluation
             return c * Sighting.GetSightField(map, hex, maxRange)
                 .Where(x => !x.IsBlocked)
                 .Where(x => !map.Get(x.Target)?.Terrain?.IsLiquid ?? false)
-                .Where(x => DirectionContains(Geometry.GetCartesianDisplacement(hex, x.Target), direction))
-                .Count()
-                / (3f * maxRange * (maxRange + 1));
+                .Where(x => (direction & MapDirectionUtils.GetExclusiveDirection(hex, x.Target)) > 0)
+                .Count() / (3f * maxRange * (maxRange + 1));
         }
 
         private static float DirectionCoefficient(MapDirection direction)
@@ -65,36 +64,6 @@ namespace Expeditionary.Evaluation
                 - Convert.ToSingle(direction.HasFlag(MapDirection.South))
                 - Convert.ToSingle(direction.HasFlag(MapDirection.East))
                 - Convert.ToSingle(direction.HasFlag(MapDirection.West));
-        }
-
-        private static bool DirectionContains(Vector2 displacement, MapDirection direction)
-        {
-
-            if (direction.HasFlag(MapDirection.North)
-                && displacement.Y <= 0
-                && Math.Abs(displacement.Y) >= Math.Abs(displacement.X))
-            {
-                return true;
-            }
-            if (direction.HasFlag(MapDirection.South)
-                && displacement.Y >= 0
-                && Math.Abs(displacement.Y) >= Math.Abs(displacement.X))
-            {
-                return true;
-            }
-            if (direction.HasFlag(MapDirection.East)
-                && displacement.X >= 0
-                && Math.Abs(displacement.X) >= Math.Abs(displacement.Y))
-            {
-                return true;
-            }
-            if (direction.HasFlag(MapDirection.West)
-                && displacement.X <= 0
-                && Math.Abs(displacement.X) >= Math.Abs(displacement.Y))
-            {
-                return true;
-            }
-            return false;
         }
     }
 }

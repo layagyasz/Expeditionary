@@ -33,6 +33,11 @@ namespace Expeditionary.Evaluation.Considerations
             };
         }
 
+        public static TileConsideration Direction(Vector3i origin, MapDirection direction)
+        {
+            return (hex, tile) => (MapDirectionUtils.GetInclusiveDirection(origin, hex) & direction) > 0 ? 1 : 0;
+        }
+
         public static TileConsideration Edge(SignedDistanceField sdf, int offset)
         {
             return (hex, _) => 1 - Math.Abs(SdfRelativeDistance(sdf, hex, offset));

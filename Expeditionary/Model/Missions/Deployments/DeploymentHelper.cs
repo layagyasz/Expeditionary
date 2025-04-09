@@ -16,6 +16,7 @@ namespace Expeditionary.Model.Missions.Deployments
             SignedDistanceField sdf,
             IMapRegion region, 
             MapDirection facing, 
+            TileConsideration consideration,
             PlayerSetupContext context)
         {
             var defensive = new List<UnitType>();
@@ -50,33 +51,41 @@ namespace Expeditionary.Model.Missions.Deployments
                 player,
                 defensive,
                 region,
-                TileConsiderations.Edge(sdf, -5),
-                TileConsiderations.Exposure(context.ExposureCache, facing, Disposition.Defensive, RangeBucket.Medium),
-                context.Parent.Random);
+                TileConsiderations.Combine(
+                    consideration,
+                    TileConsiderations.Edge(sdf, -5),
+                    TileConsiderations.Exposure(
+                        context.ExposureCache, facing, Disposition.Defensive, RangeBucket.Medium)));
             Assign(
                 match,
                 player,
                 shortRange,
                 region,
-                edge,
-                TileConsiderations.Exposure(context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Short),
-                context.Parent.Random);
+                TileConsiderations.Combine(
+                    consideration,
+                    edge,
+                    TileConsiderations.Exposure(
+                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Short)));
             Assign(
                 match,
                 player,
                 medRange,
                 region,
-                edge,
-                TileConsiderations.Exposure(context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Medium),
-                context.Parent.Random);
+                TileConsiderations.Combine(
+                    consideration,
+                    edge,
+                    TileConsiderations.Exposure(
+                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Medium)));
             Assign(
                 match,
                 player,
                 longRange,
                 region,
-                edge,
-                TileConsiderations.Exposure(context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Long),
-                context.Parent.Random);
+                TileConsiderations.Combine(
+                    consideration,
+                    edge,
+                    TileConsiderations.Exposure(
+                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Long)));
         }
 
         private static void Assign(
@@ -84,25 +93,14 @@ namespace Expeditionary.Model.Missions.Deployments
             Player player,
             IEnumerable<UnitType> units,
             IMapRegion region,
-            TileConsideration advancement,
-            TileConsideration exposure,
-            Random random)
+            TileConsideration consideration)
         {
-            var finalConsideration =
-                TileConsiderations.Combine(
-                    TileConsiderations.Essential(TileConsiderations.Land),
-                    advancement,
-                    exposure,
-                    TileConsiderations.Forestation,
-                    TileConsiderations.Urbanization,
-                    TileConsiderations.Roading(match.GetMap()),
-                    TileConsiderations.Weight(0.1f, TileConsiderations.Noise(random)));
             var tilesAndEvaluations =
                 region.Range(match.GetMap())
                     .Select(hex =>
                         (
                             hex,
-                            score: TileConsiderations.Evaluate(finalConsideration, hex, match.GetMap())
+                            score: TileConsiderations.Evaluate(consideration, hex, match.GetMap())
                         ))
                     .ToList();
             while (tilesAndEvaluations.Count < units.Count())
