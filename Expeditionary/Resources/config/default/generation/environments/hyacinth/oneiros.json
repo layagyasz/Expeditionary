@@ -1,26 +1,26 @@
 [
   {
-    "$id": "environment-gorrgard",
-    "Name": "Gorrgard",
+    "$id": "environment-oneiros",
+    "Name": "Oneiros",
     "Modifiers": [
       "environment-modifier-default",
       "environment-modifier-star-class-a",
-      "environment-modifier-landform-lithic-a",
-      "environment-modifier-composition-silicous-telluric",
+      "environment-modifier-landform-crystalline-c",
+      "environment-modifier-composition-cupric",
       "environment-modifier-liquid-water",
       "environment-modifier-liquid-level-inland",
-      "environment-modifier-erosion-none",
+      "environment-modifier-erosion-young",
       "environment-modifier-habitability-nominal",
       "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-cold",
       "environment-modifier-climate-arid",
-      "environment-modifier-terrain-rough",
-      "environment-modifier-terrain-rolling",
+      "environment-modifier-climate-cold",
+      "environment-modifier-terrain-rugged",
+      "environment-modifier-terrain-steep-plateau",
       "environment-modifier-biome-forest",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-0",
+      "environment-modifier-flora-crystalline",
+      "environment-modifier-structure-habitation-1",
       "environment-modifier-structure-farm-0",
-      "environment-modifier-structure-mine-3",
+      "environment-modifier-structure-mine-2",
       "environment-modifier-structure-infrastructure-1"
     ]
   }

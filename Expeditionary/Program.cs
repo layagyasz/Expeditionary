@@ -100,7 +100,7 @@ namespace Expeditionary
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
             var random = new Random();
-            var environmentDefinition = module.Environments.ToList()[random.Next(module.Environments.Count)].Value;
+            var environmentDefinition = module.Environments["environment-jasper"];
             Console.WriteLine(environmentDefinition.Key);
 
             var missionNode =

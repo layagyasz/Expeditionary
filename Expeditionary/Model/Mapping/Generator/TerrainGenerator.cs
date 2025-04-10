@@ -37,6 +37,8 @@ namespace Expeditionary.Model.Mapping.Generator
             public SoilParameters GroundCover { get; set; } = new();
             public float BrushCover { get; set; }
             public float FoliageCover { get; set; }
+            public bool BrushRequireSoil { get; set; }
+            public bool FoliageRequireSoil { get; set; }
             public float LiquidMoistureBonus { get; set; }
             public float RiverDensity { get; set; }
             public Interval MoistureRange { get; set; }
@@ -444,7 +446,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     var tile = map.Get(i, j)!;
                     var coord = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
-                    if (elevation[i, j] <= 0)
+                    if (elevation[i, j] < 0)
                     {
                         elevation[i, j] = 0;
                         tile.Terrain.IsLiquid = true;
@@ -556,6 +558,10 @@ namespace Expeditionary.Model.Mapping.Generator
         private static void GroundCover(
             Map map, Parameters parameters, Color4[,] soilData, float[,] elevation, float[,] slope)
         {
+            if (parameters.GroundCoverCover < float.Epsilon)
+            {
+                return;
+            }
             for (int i = 0; i < map.Width; ++i)
             {
                 for (int j = 0; j < map.Height; ++j)
@@ -582,7 +588,9 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = plantData[i, j];
                     var tile = map.Get(i, j);
-                    if (tile!.Terrain.Soil.HasValue && tileData.B < parameters.BrushCover)
+                    if (!tile!.Terrain.IsLiquid 
+                        && (!parameters.BrushRequireSoil || tile!.Terrain.Soil.HasValue)
+                        && tileData.B < parameters.BrushCover)
                     {
                         tile.Terrain.Brush = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
                     }
@@ -598,7 +606,9 @@ namespace Expeditionary.Model.Mapping.Generator
                 {
                     Color4 tileData = plantData[i, j];
                     var tile = map.Get(i, j);
-                    if (!tile!.Terrain.IsLiquid && tile!.Terrain.Soil.HasValue && tileData.A < parameters.FoliageCover)
+                    if (!tile!.Terrain.IsLiquid 
+                        && (!parameters.FoliageRequireSoil || tile!.Terrain.Soil.HasValue) 
+                        && tileData.A < parameters.FoliageCover)
                     {
                         tile.Terrain.Foliage = GetCenter(new(tile.Heat, tile.Moisture), s_Centers);
                     }

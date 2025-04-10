@@ -25,15 +25,14 @@ namespace Expeditionary.Model.Missions.Deployments
                     .GroupBy(x => x.UnitType)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = match.GetMap().GetAxisSize(Direction) / 3;
-            var sdf = 
-                SignedDistanceField.FromPathField(
-                    Pathing.GetPathField(map, origin, exemplar.Movement, distance), distance >> 1);
+            var extent = Pathing.GetPathField(map, origin, exemplar.Movement, distance);
+            var sdf = SignedDistanceField.FromPathField(extent, distance >> 1);
             DeploymentHelper.DeployInRegion(
                 formation, 
                 player, 
                 match, 
                 sdf,
-                region,
+                new ExplicitMapRegion(extent.Select(x => x.Destination)),
                 MapDirectionUtils.Invert(Direction),
                 TileConsiderations.Combine(
                     TileConsiderations.Essential(TileConsiderations.Land),

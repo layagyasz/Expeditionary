@@ -11,6 +11,7 @@
       "environment-modifier-liquid-level-lakes",
       "environment-modifier-erosion-none",
       "environment-modifier-habitability-dead",
+      "environment-modifier-groundcover-bare",
       "environment-modifier-climate-arid",
       "environment-modifier-climate-hot",
       "environment-modifier-terrain-very-rough",

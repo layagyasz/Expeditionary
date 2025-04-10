@@ -12,6 +12,7 @@
       "environment-modifier-erosion-young",
       "environment-modifier-habitability-habitable",
       "environment-modifier-climate-wet",
+      "environment-modifier-groundcover-sparse",
       "environment-modifier-climate-cool",
       "environment-modifier-terrain-very-rough",
       "environment-modifier-terrain-rolling",

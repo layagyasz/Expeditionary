@@ -11,6 +11,7 @@
       "environment-modifier-liquid-level-coast",
       "environment-modifier-erosion-old",
       "environment-modifier-habitability-habitable",
+      "environment-modifier-groundcover-bare",
       "environment-modifier-climate-temperate",
       "environment-modifier-climate-average",
       "environment-modifier-terrain-flat",

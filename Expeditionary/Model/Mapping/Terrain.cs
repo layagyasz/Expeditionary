@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Mapping
 {
-    public class Terrain
+    public record class Terrain
     {
         public bool IsLiquid { get; set; }
         public Vector3 Stone { get; set; }

@@ -12,6 +12,9 @@ function Default:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
 
+	terrain.BrushRequireSoil = true
+	terrain.FoliageRequireSoil = true
+
 	-- Basic
 	terrain.StoneLayer.Noise.Frequency = Vector3(0.02, 0.02, 0.02)
 	terrain.StoneLayer.StandardDeviation = 0.2

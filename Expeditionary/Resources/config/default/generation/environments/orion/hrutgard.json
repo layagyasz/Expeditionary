@@ -11,6 +11,7 @@
       "environment-modifier-liquid-level-inland",
       "environment-modifier-erosion-none",
       "environment-modifier-habitability-marginal",
+      "environment-modifier-groundcover-sparse",
       "environment-modifier-climate-cold",
       "environment-modifier-climate-arid",
       "environment-modifier-terrain-rough",

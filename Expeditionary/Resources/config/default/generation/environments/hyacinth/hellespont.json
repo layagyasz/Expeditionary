@@ -11,6 +11,7 @@
       "environment-modifier-liquid-level-inland",
       "environment-modifier-erosion-ancient",
       "environment-modifier-habitability-nominal",
+      "environment-modifier-groundcover-bare",
       "environment-modifier-climate-desert",
       "environment-modifier-climate-hot",
       "environment-modifier-terrain-rugged",

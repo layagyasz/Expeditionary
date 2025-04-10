@@ -147,18 +147,6 @@ function Sulfurous:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.23, 0.18, 1))
 end
 
-Volcanic = MapEnvironmentModifier()
-Volcanic.Key = "environment-modifier-composition-volcanic"
-Volcanic.Name = "Volcanic"
-function Volcanic:Apply(environment)
-	local appearance = environment.Appearance;
-	local parameters = environment.Parameters
-	local terrain = parameters.Terrain
-
-	terrain.Stone.C = 1
-	appearance.Soil.C = StaticColoring(Color4(0.23, 0.23, 0.23, 1))
-end
-
 function Load()
 	return {  
 		Carbide,

@@ -2,10 +2,8 @@
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
-using Expeditionary.Evaluation;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
-using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 using Expeditionary.View;
@@ -94,6 +92,7 @@ namespace Expeditionary.Controller
 
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
+            Console.WriteLine(_match.GetMap().Get(e.Hex));
             if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
@@ -139,21 +138,6 @@ namespace Expeditionary.Controller
             _selectedOrder = _unitOverlayController!.GetOrder();
             if (_selectedUnit != null)
             {
-                /*
-                _highlightLayer!.SetHighlight(
-                    _match.GetMap().Range()
-                        .Select(
-                            x => new HighlightLayer.HexHighlight(
-                                x, 
-                                HighlightLayer.GetLevel(
-                                    TileEvaluation.Evaluate(
-                                        x,
-                                        _match.GetMap(), 
-                                        Disposition.Offensive, 
-                                        MapDirection.North, 
-                                        _selectedUnit.Type),
-                                    new Interval(0, 2)))));
-                */
                 if (_selectedOrder == ButtonId.Attack)
                 {
                     var range = 

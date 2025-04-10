@@ -21,7 +21,7 @@ Nominal.Name = "Nominal"
 function Nominal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0.2
-	terrain.FoliageCover = 0
+	terrain.FoliageCover = 0.15
 	terrain.RiverDensity = 0
 	terrain.SoilA.Weight = 1
 	terrain.SoilB.Weight = 1
@@ -33,8 +33,8 @@ Marginal.Key = "environment-modifier-habitability-marginal"
 Marginal.Name = "Marginal"
 function Marginal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
-	terrain.BrushCover = 0
-	terrain.FoliageCover = 0
+	terrain.BrushCover = 0.1
+	terrain.FoliageCover = 0.075
 	terrain.RiverDensity = 0.025
 	terrain.SoilA.Weight = 2
 	terrain.SoilB.Weight = 1

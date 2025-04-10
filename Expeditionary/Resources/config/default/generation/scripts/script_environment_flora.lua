@@ -79,6 +79,11 @@ Crystalline.Key = "environment-modifier-flora-crystalline"
 Crystalline.Name = "Crystalline"
 function Crystalline:Apply(environment)
 	local appearance = environment.Appearance;
+	local parameters = environment.Parameters
+	local terrain = parameters.Terrain
+
+	terrain.BrushRequireSoil = false
+	terrain.FoliageRequireSoil = false
 
 	appearance.Brush.HotDry = StaticColoring(Color4(0.68, 0.68, 0.68, 1))
 	appearance.Brush.HotWet = StaticColoring(Color4(0.68, 0.68, 0.68, 1))

@@ -99,6 +99,9 @@
     <None Update="Resources\config\default\generation\environments\hyacinth\hellespont.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\generation\environments\hyacinth\oneiros.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\environments\isc\kokudo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -114,7 +117,13 @@
     <None Update="Resources\config\default\generation\environments\orion\hrutgard.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\generation\environments\whitestar\jasper.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\environments\wk\archangel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\environments\wk\hladolet.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\environments\wk\kedromon-yer.json">
@@ -138,6 +147,9 @@
     <None Update="Resources\config\default\generation\scripts\script_environment_flora.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_groundcover.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_habitability.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -148,6 +160,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_liquid_levels.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\generation\scripts\script_environment_special.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\generation\scripts\script_environment_structure.lua">
@@ -537,6 +552,7 @@
     <Folder Include="Resources\config\default\generation\environments\earth\" />
     <Folder Include="Resources\config\default\generation\environments\hyacinth\" />
     <Folder Include="Resources\config\default\generation\environments\isc\" />
+    <Folder Include="Resources\config\default\generation\environments\whitestar\" />
     <Folder Include="Resources\config\default\generation\environments\wk\" />
     <Folder Include="Resources\config\default\generation\environments\orion\" />
     <Folder Include="Resources\config\default\factionformations\" />
