@@ -296,6 +296,14 @@
 
       // ISC
       {
+        "Name": "amnis",
+        "StarName": "amnis"
+      },
+      {
+        "Name": "aranea",
+        "StarName": "arneae"
+      },
+      {
         "Name": "auriga",
         "StarName": "aurigae"
       },
@@ -316,8 +324,40 @@
         "StarName": "cygni"
       },
       {
+        "Name": "flos",
+        "StarName": "floris"
+      },
+      {
+        "Name": "formica",
+        "StarName": "formicae"
+      },
+      {
+        "Name": "funis",
+        "StarName": "funis"
+      },
+      {
+        "Name": "lapides",
+        "StarName": "lapidum"
+      },
+      {
+        "Name": "limax",
+        "StarName": "limacis"
+      },
+      {
+        "Name": "musculus",
+        "StarName": "musculi"
+      },
+      {
         "Name": "perseus",
         "StarName": "persei"
+      },
+      {
+        "Name": "quadra",
+        "StarName": "quadrae"
+      },
+      {
+        "Name": "tympanum",
+        "StarName": "tympani"
       },
       {
         "Name": "vulpecula",
@@ -327,8 +367,48 @@
 
       // White Star
       {
+        "Name": "accipiter",
+        "StarName": "accipitris"
+      },
+      {
+        "Name": "acies",
+        "StarName": "aciei"
+      },
+      {
         "Name": "aquila",
         "StarName": "aquilae"
+      },
+      {
+        "Name": "centurio",
+        "StarName": "centurionis"
+      },
+      {
+        "Name": "collis",
+        "StarName": "collis"
+      },
+      {
+        "Name": "crista",
+        "StarName": "cristae"
+      },
+      {
+        "Name": "fuscina",
+        "StarName": "fuscinae"
+      },
+      {
+        "Name": "gladius",
+        "StarName": "gladii"
+      },
+      {
+        "Name": "hasta",
+        "StarName": "hastae"
+      },
+      {
+        "Name": "murmillo",
+        "StarName": "murmillonis"
+      },
+      {
+        "Name": "pileum",
+        "StarName": "pilei"
       },
       {
         "Name": "sagitta",
@@ -342,8 +422,36 @@
         "Name": "scutum",
         "StarName": "scuti"
       },
+      {
+        "Name": "secutor",
+        "StarName": "secutoris"
+      },
+      {
+        "Name": "spatha",
+        "StarName": "spathae"
+      },
+      {
+        "Name": "thrax",
+        "StarName": "thracis"
+      },
+      {
+        "Name": "triremis",
+        "StarName": "triremis"
+      },
 
       // Red Star
+      {
+        "Name": "aes",
+        "StarName": "aeris"
+      },
+      {
+        "Name": "argentum",
+        "StarName": "argenti"
+      },
+      {
+        "Name": "aurum",
+        "StarName": "auri"
+      },
       {
         "Name": "centaurus",
         "StarName": "centauri"
@@ -353,15 +461,63 @@
         "StarName": "circini"
       },
       {
+        "Name": "ferrum",
+        "StarName": "ferri"
+      },
+      {
+        "Name": "incus",
+        "StarName": "incudis"
+      },
+      {
+        "Name": "malleus",
+        "StarName": "mallei"
+      },
+      {
+        "Name": "molaris",
+        "StarName": "molaris"
+      },
+      {
+        "Name": "murus",
+        "StarName": "muri"
+      },
+      {
         "Name": "norma",
         "StarName": "normae"
+      },
+      {
+        "Name": "orichalcum",
+        "StarName": "orichalci"
+      },
+      {
+        "Name": "pristis",
+        "StarName": "pristis"
       },
       {
         "Name": "scorpius",
         "StarName": "scorpii"
       },
+      {
+        "Name": "squamae",
+        "StarName": "squamarum"
+      },
+      {
+        "Name": "stylus",
+        "StarName": "styli"
+      },
+      {
+        "Name": "tempestas",
+        "StarName": "tempestatus"
+      },
 
       // Orion
+      {
+        "Name": "aeneas",
+        "StarName": "aeneae"
+      },
+      {
+        "Name": "articulus",
+        "StarName": "articuli"
+      },
       {
         "Name": "canis major",
         "StarName": "canis majoris"
@@ -371,8 +527,20 @@
         "StarName": "carinae"
       },
       {
+        "Name": "cumulus",
+        "StarName": "cumuli"
+      },
+      {
+        "Name": "ficus",
+        "StarName": "ficus"
+      },
+      {
         "Name": "monoceros",
         "StarName": "monocerotis"
+      },
+      {
+        "Name": "nimbus",
+        "StarName": "nimbi"
       },
       {
         "Name": "orion",
@@ -383,12 +551,128 @@
         "StarName": "puppis"
       },
       {
+        "Name": "radius",
+        "StarName": "radii"
+      },
+      {
+        "Name": "satyrus",
+        "StarName": "satyri"
+      },
+      {
+        "Name": "sella",
+        "StarName": "sellae"
+      },
+      {
+        "Name": "sertum",
+        "StarName": "serti"
+      },
+      {
+        "Name": "silva",
+        "StarName": "silvae"
+      },
+      {
+        "Name": "styx",
+        "StarName": "stygis"
+      },
+      {
         "Name": "taurus",
         "StarName": "tauri"
       },
       {
         "Name": "vela",
         "StarName": "velae"
+      },
+
+      // WK
+      {
+        "Name": "caliga",
+        "StarName": "caligae"
+      },
+      {
+        "Name": "histrio",
+        "StarName": "histrionis"
+      },
+      {
+        "Name": "hortus",
+        "StarName": "horti"
+      },
+      {
+        "Name": "imperator",
+        "StarName": "imperatoris"
+      },
+      {
+        "Name": "ornatus",
+        "StarName": "ornati"
+      },
+      {
+        "Name": "phasma",
+        "StarName": "phasmatis"
+      },
+      {
+        "Name": "regina",
+        "StarName": "reginae"
+      },
+      {
+        "Name": "rex",
+        "StarName": "regis"
+      },
+      {
+        "Name": "rogus",
+        "StarName": "rogi"
+      },
+      {
+        "Name": "saltator",
+        "StarName": "saltatoris"
+      },
+      {
+        "Name": "solium",
+        "StarName": "solii"
+      },
+      {
+        "Name": "unda",
+        "StarName": "undae"
+      },
+      {
+        "Name": "victoria",
+        "StarName": "victoriae"
+      },
+
+      // Hyacinth
+      {
+        "Name": "augur",
+        "StarName": "auguris"
+      },
+      {
+        "Name": "calix",
+        "StarName": "calicis"
+      },
+      {
+        "Name": "hyacinthus",
+        "StarName": "hyacinthi"
+      },
+      {
+        "Name": "limes",
+        "StarName": "limitus"
+      },
+      {
+        "Name": "murix",
+        "StarName": "muricis"
+      },
+      {
+        "Name": "oculus",
+        "StarName": "oculi"
+      },
+      {
+        "Name": "porta",
+        "StarName": "portae"
+      },
+      {
+        "Name": "radix",
+        "StarName": "radicis"
+      },
+      {
+        "Name": "rota",
+        "StarName": "rotae"
       }
     ]
   }
