@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Missions.Deployments
 {
     public record class DefaultOffensiveDeployment(MapDirection Direction) : IDeployment
     {
-        public void Setup(FormationTemplate formation, Player player, Match match, PlayerSetupContext context)
+        public void Setup(IEnumerable<Formation> formations, Match match, PlayerSetupContext context)
         {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Direction);
@@ -21,15 +21,15 @@ namespace Expeditionary.Model.Missions.Deployments
                         x,
                         map));
             var exemplar = 
-                formation.GetUnitTypesAndRoles()
-                    .GroupBy(x => x.UnitType)
+                formations
+                    .SelectMany(x => x.GetUnitsAndRoles())
+                    .GroupBy(x => x.Item1.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = match.GetMap().GetAxisSize(Direction) / 3;
             var extent = Pathing.GetPathField(map, origin, exemplar.Movement, distance);
             var sdf = SignedDistanceField.FromPathField(extent, distance >> 1);
             DeploymentHelper.DeployInRegion(
-                formation, 
-                player, 
+                formations, 
                 match, 
                 sdf,
                 new ExplicitMapRegion(extent.Select(x => x.Destination)),

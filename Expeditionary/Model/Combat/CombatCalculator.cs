@@ -9,7 +9,7 @@ namespace Expeditionary.Model.Combat
         public static CombatPreview GetPreview(
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
-            float range = Geometry.GetCubicDistance(attacker.Position, defender.Position);
+            float range = Geometry.GetCubicDistance(attacker.Position!.Value, defender.Position!.Value);
             if (range > mode.Range.Get())
             {
                 return new();
@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Combat
                 attacker.Type,
                 mode,
                 defender.Type,
-                GetConditions(mode, range, map.Get(defender.Position)!),
+                GetConditions(mode, range, map.Get(defender.Position!.Value)!),
                 range,
                 attacker.Number * attack.Number);
         }

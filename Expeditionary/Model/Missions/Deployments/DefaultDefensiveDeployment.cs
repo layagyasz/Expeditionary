@@ -8,14 +8,15 @@ namespace Expeditionary.Model.Missions.Deployments
     public record class DefaultDefensiveDeployment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions) 
         : IDeployment
     {
-        public void Setup(FormationTemplate formation, Player player, Match match, PlayerSetupContext context)
+        public void Setup(IEnumerable<Formation> formations, Match match, PlayerSetupContext context)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
-                new LinkedList<Quantity<FormationTemplate>>(
-                    formation.ComponentFormations
+                new LinkedList<Quantity<Formation>>(
+                    formations
+                        .SelectMany(x => x.ComponentFormations)
                         .Where(x => x.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<FormationTemplate>.Create(x, GetCoverage(x)))
+                        .Select(x => Quantity<Formation>.Create(x, GetCoverage(x)))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(x => Quantity<IMapRegion>.Create(x, GetRequiredCoverage(x.Range(map).Count())));
@@ -25,25 +26,24 @@ namespace Expeditionary.Model.Missions.Deployments
                 {
                     break;
                 }
-                var formations = Assign(eligibleOccupiers, region);
-                foreach (var f in formations)
+                var assignments = Assign(eligibleOccupiers, region);
+                foreach (var f in assignments)
                 {
                     new AreaDeployment(region.Key, MapDirectionUtils.Invert(DefendingDirection))
-                        .Setup(f, player, match, context);
+                        .Setup(Enumerable.Repeat(f, 1), match, context);
                 }
             }
             new AreaDeployment(new EdgeMapRegion(DefendingDirection), MapDirectionUtils.Invert(DefendingDirection))
-                .Setup(formation, player, match, context);
+                .Setup(eligibleOccupiers.Select(x => x.Key), match, context);
         }
 
-        private static List<FormationTemplate> Assign(
-            LinkedList<Quantity<FormationTemplate>> formations, Quantity<IMapRegion> region)
+        private static List<Formation> Assign(LinkedList<Quantity<Formation>> formations, Quantity<IMapRegion> region)
         {
-            var result = new List<FormationTemplate>();
+            var result = new List<Formation>();
             float coverage = 0;
             while (coverage < region.Value && formations.Any())
             {
-                Quantity<FormationTemplate> formation;
+                Quantity<Formation> formation;
                 if (!result.Any())
                 {
                     formation = formations.First();
@@ -60,7 +60,7 @@ namespace Expeditionary.Model.Missions.Deployments
             return result;
         }
 
-        private static float GetCoverage(FormationTemplate formation)
+        private static float GetCoverage(Formation formation)
         {
             return GetCoverage(formation.Echelon);
         }

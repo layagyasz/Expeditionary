@@ -4,6 +4,6 @@ namespace Expeditionary.Model.Missions.Deployments
 {
     public interface IDeployment
     {
-        void Setup(FormationTemplate formation, Player player, Match match, PlayerSetupContext context);
+        void Setup(IEnumerable<Formation> formation, Match match, PlayerSetupContext context);
     }
 }

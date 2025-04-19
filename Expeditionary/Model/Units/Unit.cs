@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Units
         public int Id { get; }
         public Player Player { get; }
         public string TypeKey => Type.Key;
-        public Vector3i Position { get; set; }
+        public Vector3i? Position { get; set; }
         public bool IsDestroyed { get; private set; }
         public UnitType Type { get; }
         public int Number { get; private set; }

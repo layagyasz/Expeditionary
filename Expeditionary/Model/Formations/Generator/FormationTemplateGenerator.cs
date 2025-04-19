@@ -38,8 +38,7 @@ namespace Expeditionary.Model.Formations.Generator
                 Echelon,
                 ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(), 
                 UnitSlots.SelectMany(
-                    x => Enumerable.Repeat(
-                        new FormationTemplate.UnitTypeAndRole(context.Select(x), x.Role), x.Number)).ToList());
+                    x => Enumerable.Repeat((context.Select(x), x.Role), x.Number)).ToList());
         }
     }
 }

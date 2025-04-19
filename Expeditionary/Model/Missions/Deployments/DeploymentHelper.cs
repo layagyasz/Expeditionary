@@ -10,8 +10,7 @@ namespace Expeditionary.Model.Missions.Deployments
     public static class DeploymentHelper
     {
         public static void DeployInRegion(
-            FormationTemplate formation,
-            Player player,
+            IEnumerable<Formation> formations,
             Match match, 
             SignedDistanceField sdf,
             IMapRegion region, 
@@ -19,36 +18,35 @@ namespace Expeditionary.Model.Missions.Deployments
             TileConsideration consideration,
             PlayerSetupContext context)
         {
-            var defensive = new List<UnitType>();
-            var shortRange = new List<UnitType>();
-            var medRange = new List<UnitType>();
-            var longRange = new List<UnitType>();
-            foreach (var unit in formation.GetUnitTypesAndRoles())
+            var defensive = new List<Unit>();
+            var shortRange = new List<Unit>();
+            var medRange = new List<Unit>();
+            var longRange = new List<Unit>();
+            foreach ((var unit, var role) in formations.SelectMany(x => x.GetUnitsAndRoles()))
             {
-                if (DefaultDispositionMapper.Map(unit.UnitType) == Disposition.Defensive)
+                if (DefaultDispositionMapper.Map(unit.Type) == Disposition.Defensive)
                 {
-                    defensive.Add(unit.UnitType);
+                    defensive.Add(unit);
                     continue;
                 }
-                var range = RangeBucketizer.ToBucket(unit.UnitType);
+                var range = RangeBucketizer.ToBucket(unit.Type);
                 if (range == RangeBucket.Short)
                 {
-                    shortRange.Add(unit.UnitType);
+                    shortRange.Add(unit);
                 }
                 else if (range == RangeBucket.Medium)
                 {
-                    medRange.Add(unit.UnitType);
+                    medRange.Add(unit);
                 }
                 else
                 {
-                    longRange.Add(unit.UnitType);
+                    longRange.Add(unit);
                 }
             }
 
             var edge = TileConsiderations.Edge(sdf, 0);
             Assign(
                 match,
-                player,
                 defensive,
                 region,
                 TileConsiderations.Combine(
@@ -58,7 +56,6 @@ namespace Expeditionary.Model.Missions.Deployments
                         context.ExposureCache, facing, Disposition.Defensive, RangeBucket.Medium)));
             Assign(
                 match,
-                player,
                 shortRange,
                 region,
                 TileConsiderations.Combine(
@@ -68,7 +65,6 @@ namespace Expeditionary.Model.Missions.Deployments
                         context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Short)));
             Assign(
                 match,
-                player,
                 medRange,
                 region,
                 TileConsiderations.Combine(
@@ -78,7 +74,6 @@ namespace Expeditionary.Model.Missions.Deployments
                         context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Medium)));
             Assign(
                 match,
-                player,
                 longRange,
                 region,
                 TileConsiderations.Combine(
@@ -90,8 +85,7 @@ namespace Expeditionary.Model.Missions.Deployments
 
         private static void Assign(
             Match match,
-            Player player,
-            IEnumerable<UnitType> units,
+            IEnumerable<Unit> units,
             IMapRegion region,
             TileConsideration consideration)
         {
@@ -109,9 +103,9 @@ namespace Expeditionary.Model.Missions.Deployments
             }
             tilesAndEvaluations.Sort((x, y) => -x.score.CompareTo(y.score));
             var assignments = units.Zip(tilesAndEvaluations).Select(x => (x.First, x.Second.hex));
-            foreach (var (unitType, hex) in assignments)
+            foreach (var (unit, hex) in assignments)
             {
-                match.Add(unitType, player, hex);
+                match.Place(unit, hex);
             }
         }
     }

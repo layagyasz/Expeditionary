@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Logging;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
@@ -28,6 +29,7 @@ namespace Expeditionary.Model
         private readonly Dictionary<Player, ObjectiveSet> _playerObjectives = new();
         private readonly Dictionary<Player, PlayerStatistics> _playerStatistics = new();
         private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
+        private readonly List<Formation> _formations = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
@@ -48,20 +50,18 @@ namespace Expeditionary.Model
             _playerKnowledge.Add(player, knowledge);
             foreach (var asset in _assets)
             {
-                knowledge.Add(asset, asset.Position, _positions);
+                if (asset.Position.HasValue)
+                {
+                    knowledge.Place(asset, asset.Position.Value, _positions);
+                }
             }
         }
 
-        public void Add(UnitType unitType, Player player, Vector3i position)
+        public Formation Add(Player player, FormationTemplate template)
         {
-            var asset = new Unit(_idGenerator.Next(), player, unitType) {  Position = position };
-            _assets.Add(asset);
-            _positions.Add(position, asset);
-
-            foreach (var knowledge in _playerKnowledge.Values)
-            {
-                knowledge.Add(asset, position, _positions);
-            }
+            var formation = template.Materialize(player, _idGenerator);
+            _formations.Add(formation);
+            return formation;
         }
 
         public void Damage(Unit attacker, Unit defender, int kills)
@@ -176,10 +176,38 @@ namespace Expeditionary.Model
             }
         }
 
+        public void Place(IAsset asset, Vector3i position)
+        {
+            if (asset.Position.HasValue)
+            {
+                _positions.Remove(asset.Position.Value, asset);
+                
+                foreach (var knowledge in _playerKnowledge.Values)
+                {
+                    knowledge.Remove(asset, _positions);
+                }
+            }
+            else
+            {
+                _assets.Add(asset);
+            }
+            _positions.Add(position, asset);
+            asset.Position = position;
+
+            foreach (var knowledge in _playerKnowledge.Values)
+            {
+                knowledge.Place(asset, position, _positions);
+            }
+        }
+
         public void Remove(IAsset asset)
         {
             _assets.Remove(asset);
-            _positions.Remove(asset.Position, asset);
+            if (asset.Position.HasValue)
+            {
+                _positions.Remove(asset.Position.Value, asset);
+                asset.Position = null;
+            }
 
             foreach (var knowledge in _playerKnowledge.Values)
             {

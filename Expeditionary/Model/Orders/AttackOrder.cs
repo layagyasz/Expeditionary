@@ -30,11 +30,11 @@ namespace Expeditionary.Model.Orders
             {
                 return false;
             }
-            if (Geometry.GetCubicDistance(Unit.Position, Defender.Position) > Mode.Range.Get())
+            if (Geometry.GetCubicDistance(Unit.Position!.Value, Defender.Position!.Value) > Mode.Range.Get())
             {
                 return false;
             }
-            if (!Sighting.IsValidLineOfSight(match.GetMap(), Unit.Position, Defender.Position))
+            if (!Sighting.IsValidLineOfSight(match.GetMap(), Unit.Position!.Value, Defender.Position!.Value))
             {
                 return false;
             }

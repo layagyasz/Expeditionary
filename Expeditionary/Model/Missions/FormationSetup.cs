@@ -7,7 +7,8 @@ namespace Expeditionary.Model.Missions
     {
         public void Setup(Player player, Match match, PlayerSetupContext context)
         {
-            Deployment.Setup(Formation, player, match, context);
+            var formation = match.Add(player, Formation);
+            Deployment.Setup(Enumerable.Repeat(formation, 1), match, context);
         }
     }
 }

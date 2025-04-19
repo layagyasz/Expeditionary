@@ -5,13 +5,13 @@ namespace Expeditionary.Model.Missions.Deployments
 {
     public record class RandomDeployment(IMapRegion DeploymentRegion) : IDeployment
     {
-        public void Setup(FormationTemplate formation, Player player, Match match, PlayerSetupContext context)
+        public void Setup(IEnumerable<Formation> formations, Match match, PlayerSetupContext context)
         {
             var map = match.GetMap();
             var options = DeploymentRegion.Range(map).Where(x => !map.Get(x)!.Terrain.IsLiquid).ToList();
-            foreach (var unit in formation.GetUnitTypesAndRoles())
+            foreach ((var unit, var _) in formations.SelectMany(x => x.GetUnitsAndRoles()))
             {
-                match.Add(unit.UnitType, player, options[context.Parent.Random.Next(options.Count)]);
+                match.Place(unit, options[context.Parent.Random.Next(options.Count)]);
             }
         }
     }

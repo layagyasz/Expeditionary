@@ -35,18 +35,6 @@ namespace Expeditionary.Model.Knowledge
             return _mapKnowledge.Get(hex);
         }
 
-        public void Add(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
-        {
-            if (asset is Unit unit && unit.Player == _player)
-            {
-                AddSelf(unit, position, positions);
-            }
-            else
-            {
-                AddOther(asset, position);
-            }
-        }
-
         public void Destroy(IAsset asset, MultiMap<Vector3i, IAsset> positions)
         {
             if (asset is Unit unit && unit.Player == _player)
@@ -71,6 +59,18 @@ namespace Expeditionary.Model.Knowledge
             }
         }
 
+        public void Place(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        {
+            if (asset is Unit unit && unit.Player == _player)
+            {
+                PlaceSelf(unit, position, positions);
+            }
+            else
+            {
+                PlaceOther(asset, position);
+            }
+        }
+
         public void Remove(IAsset asset, MultiMap<Vector3i, IAsset> positions)
         {
             if (asset is Unit unit && unit.Player == _player)
@@ -80,30 +80,6 @@ namespace Expeditionary.Model.Knowledge
             else
             {
                 RemoveOther(asset);
-            }
-        }
-
-        private void AddOther(IAsset asset, Vector3i position)
-        {
-            var assetDelta = _assetKnowledge.AddOther(_mapKnowledge, asset, position);
-            if (assetDelta.Any())
-            {
-                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
-            }
-        }
-
-        private void AddSelf(Unit unit, Vector3i position, MultiMap<Vector3i, IAsset> positions)
-        {
-            var delta = Sighting.GetSightField(_map, position, GetMaxRange(unit)).ToList();
-            var mapDelta = _mapKnowledge.Place(unit, delta);
-            var assetDelta = _assetKnowledge.AddSelf(_mapKnowledge, unit, delta, positions);
-            if (mapDelta.Any())
-            {
-                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
-            }
-            if (assetDelta.Any())
-            {
-                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
             }
         }
 
@@ -118,7 +94,11 @@ namespace Expeditionary.Model.Knowledge
 
         private void DestroySelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
         {
-            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
+            if (!unit.Position.HasValue)
+            {
+                return;
+            }
+            var delta = Sighting.GetSightField(_map, unit.Position.Value, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
             var assetDelta = _assetKnowledge.DestroySelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())
@@ -162,6 +142,30 @@ namespace Expeditionary.Model.Knowledge
             }
         }
 
+        private void PlaceOther(IAsset asset, Vector3i position)
+        {
+            var assetDelta = _assetKnowledge.AddOther(_mapKnowledge, asset, position);
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
+        private void PlaceSelf(Unit unit, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        {
+            var delta = Sighting.GetSightField(_map, position, GetMaxRange(unit)).ToList();
+            var mapDelta = _mapKnowledge.Place(unit, delta);
+            var assetDelta = _assetKnowledge.AddSelf(_mapKnowledge, unit, delta, positions);
+            if (mapDelta.Any())
+            {
+                MapKnowledgeChanged?.Invoke(this, new(_player, mapDelta));
+            }
+            if (assetDelta.Any())
+            {
+                AssetKnowledgeChanged?.Invoke(this, new(_player, assetDelta));
+            }
+        }
+
         private void RemoveOther(IAsset asset)
         {
             var assetDelta = _assetKnowledge.RemoveOther(asset);
@@ -173,7 +177,11 @@ namespace Expeditionary.Model.Knowledge
 
         private void RemoveSelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
         {
-            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
+            if (!unit.Position.HasValue)
+            {
+                return;
+            }
+            var delta = Sighting.GetSightField(_map, unit.Position.Value, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
             var assetDelta = _assetKnowledge.RemoveSelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())

@@ -96,14 +96,14 @@ namespace Expeditionary.Controller
             if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
-                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Movement)
+                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Movement)
                 {
                     _match.DoOrder(
                         new MoveOrder(
                             _selectedUnit, 
                             Pathing.GetShortestPath(
                                 _match.GetMap(),
-                                _selectedUnit.Position,
+                                _selectedUnit.Position.Value,
                                 e.Hex,
                                 _selectedUnit.Type.Movement, 
                                 _selectedUnit.Type.Speed)));
@@ -144,7 +144,7 @@ namespace Expeditionary.Controller
                         (int)_selectedUnit.Type.Weapons
                             .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.Get()).Max();
                     _highlightLayer!.SetHighlight(
-                        Sighting.GetUnblockedSightField(_match.GetMap(), _selectedUnit.Position, range)
+                        Sighting.GetUnblockedSightField(_match.GetMap(), _selectedUnit.Position!.Value, range)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
@@ -155,7 +155,7 @@ namespace Expeditionary.Controller
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
                             _match.GetMap(), 
-                            _selectedUnit.Position, 
+                            _selectedUnit.Position!.Value, 
                             _selectedUnit.Type.Movement, 
                             _selectedUnit.Movement)
                             .Select(x => new HighlightLayer.HexHighlight(
