@@ -13,7 +13,8 @@ namespace Expeditionary.Model
 {
     public class Match
     {
-        private static readonly ILogger s_Logger = new Logger(new ConsoleBackend(), LogLevel.Info);
+        private static readonly ILogger s_Logger = 
+            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(Match));
 
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
@@ -55,12 +56,14 @@ namespace Expeditionary.Model
                     knowledge.Place(asset, asset.Position.Value, _positions);
                 }
             }
+            s_Logger.Log($"{player} added");
         }
 
         public Formation Add(Player player, FormationTemplate template)
         {
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
+            s_Logger.Log($"{formation} added for {player}");
             return formation;
         }
 
@@ -77,6 +80,7 @@ namespace Expeditionary.Model
                 var defenderStats = _playerStatistics[defender.Player];
                 defenderStats.Lost += defender.UnitQuantity;
             }
+            s_Logger.Log($"{attacker} damaged {defender} by {kills}");
         }
 
         public void Destroy(Unit unit)
@@ -86,6 +90,7 @@ namespace Expeditionary.Model
             {
                 knowledge.Destroy(unit, _positions);
             }
+            s_Logger.Log($"{unit} destroyed");
         }
 
         public bool DoOrder(IOrder order)
@@ -105,19 +110,9 @@ namespace Expeditionary.Model
             return true;
         }
 
-        public IPlayerKnowledge GetKnowledge(Player player)
+        public Player GetActivePlayer()
         {
-            return _playerKnowledge[player];
-        }
-
-        public Map GetMap()
-        {
-            return _map;
-        }
-
-        public IEnumerable<Player> GetPlayers()
-        {
-            return _players;
+            return _players[_activePlayer];
         }
 
         public IEnumerable<IAsset> GetAssets()
@@ -135,9 +130,24 @@ namespace Expeditionary.Model
             return _map.GetArea(tag).SelectMany(x => _positions[x]);
         }
 
+        public IPlayerKnowledge GetKnowledge(Player player)
+        {
+            return _playerKnowledge[player];
+        }
+
+        public Map GetMap()
+        {
+            return _map;
+        }
+
         public IEnumerable<ObjectiveSet> GetObjectiveSets(int team)
         {
             return _playerObjectives.Where(x => x.Key.Team == team).Select(x => x.Value);
+        }
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return _players;
         }
 
         public Random GetRandom()
@@ -162,6 +172,7 @@ namespace Expeditionary.Model
                 knowledge.AssetKnowledgeChanged += HandleAssetKnowledgeChanged;
                 knowledge.MapKnowledgeChanged += HandleMapKnowledgeChanged;
             }
+            s_Logger.Log("Initialized");
         }
 
         public void Move(IAsset asset, Pathing.Path path)
@@ -174,6 +185,7 @@ namespace Expeditionary.Model
             {
                 knowledge.Move(asset, path, _positions);
             }
+            s_Logger.Log($"{asset} moved along {path}");
         }
 
         public void Place(IAsset asset, Vector3i position)
@@ -198,6 +210,7 @@ namespace Expeditionary.Model
             {
                 knowledge.Place(asset, position, _positions);
             }
+            s_Logger.Log($"{asset} placed at {position}");
         }
 
         public void Remove(IAsset asset)
@@ -213,11 +226,13 @@ namespace Expeditionary.Model
             {
                 knowledge.Remove(asset, _positions);
             }
+            s_Logger.Log($"{asset} removed");
         }
 
         public void Reset()
         {
             _assets.ForEach(x => x.Reset());
+            s_Logger.Log("Reset assets");
         }
 
         public void Step()
@@ -228,6 +243,7 @@ namespace Expeditionary.Model
                 _activePlayer = 0;
                 Reset();
             }
+            s_Logger.Log($"Entered turn {_players[_activePlayer]}");
             Stepped?.Invoke(this, EventArgs.Empty);
         }
 
@@ -238,12 +254,13 @@ namespace Expeditionary.Model
 
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
-            Console.WriteLine($"{e.Player}: {string.Join(",", e.Delta)}");
+            s_Logger.Log(e.ToString());
             AssetKnowledgeChanged?.Invoke(this, e);
         }
 
         private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)
         {
+            s_Logger.Log(e.ToString());
             MapKnowledgeChanged?.Invoke(this, e);
         }
     }

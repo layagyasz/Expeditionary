@@ -11,7 +11,7 @@ namespace Expeditionary.Model.Missions.Deployments
         public void Setup(IEnumerable<Formation> formations, Match match, PlayerSetupContext context)
         {
             var map = match.GetMap();
-            var region = new EdgeMapRegion(Direction);
+            var region = new EdgeMapRegion(Direction, 0.5f);
             var origin = 
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(

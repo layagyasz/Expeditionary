@@ -12,7 +12,7 @@ namespace Expeditionary.Model.Units
 
         public string? ToString()
         {
-            return $"[Asset: Id={Id}, TypeKey={TypeKey}]";
+            return $"[IAsset: Id={Id}, TypeKey={TypeKey}]";
         }
     }
 }

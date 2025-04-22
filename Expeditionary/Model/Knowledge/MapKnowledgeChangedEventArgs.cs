@@ -2,15 +2,11 @@
 
 namespace Expeditionary.Model.Knowledge
 {
-    public record class MapKnowledgeChangedEventArgs
+    public record class MapKnowledgeChangedEventArgs(Player Player, List<Vector3i> Delta)
     {
-        public Player Player { get; init; }
-        public List<Vector3i> Delta { get; init; }
-
-        public MapKnowledgeChangedEventArgs(Player player, List<Vector3i> delta)
+        public override string ToString()
         {
-            Player = player;
-            Delta = delta;
+            return $"[MapKnowledgeChangedEventArgs: Player={Player}, Delta={string.Join(",", Delta)}]";
         }
     }
 }

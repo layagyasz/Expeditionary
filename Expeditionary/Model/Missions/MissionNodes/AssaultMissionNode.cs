@@ -31,7 +31,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         {
                             new(
                                 resources.FormationGenerator.Generate(attacker, resources.Random), 
-                                new DefaultOffensiveDeployment(MapDirection.South))
+                                new AreaDeployment(new EdgeMapRegion(MapDirection.South, 0.5f), MapDirection.North))
                         });
                 players.Add(setup);
             }

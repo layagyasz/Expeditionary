@@ -47,8 +47,6 @@ namespace Expeditionary.Model.Orders
             var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Defender, match.GetMap());
             int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
             match.Damage(Unit, Defender, kills);
-            Console.WriteLine(preview);
-            Console.WriteLine(kills);
         }
     }
 }

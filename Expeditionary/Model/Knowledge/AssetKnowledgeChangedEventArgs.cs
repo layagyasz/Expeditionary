@@ -2,15 +2,11 @@
 
 namespace Expeditionary.Model.Knowledge
 {
-    public record class AssetKnowledgeChangedEventArgs
+    public record class AssetKnowledgeChangedEventArgs(Player Player, List<IAsset> Delta)
     {
-        public Player Player { get; init; }
-        public List<IAsset> Delta { get; init; }
-
-        public AssetKnowledgeChangedEventArgs(Player player, List<IAsset> delta)
+        public override string ToString()
         {
-            Player = player;
-            Delta = delta;
+            return $"[AssetKnowledgeChangedEventArgs: Player={Player}, Delta={string.Join(",", Delta)}]";
         }
     }
 }

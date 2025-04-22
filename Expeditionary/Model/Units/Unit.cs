@@ -17,7 +17,6 @@ namespace Expeditionary.Model.Units
 
         public UnitQuantity UnitQuantity => new(1, Type.Points);
 
-
         public Unit(int id, Player player, UnitType type)
         {
             Id = id;
@@ -43,6 +42,11 @@ namespace Expeditionary.Model.Units
         {
             Movement = Type.Speed;
             Attacked = false;
+        }
+
+        public override string ToString()
+        {
+            return $"[Unit: Id={Id}, TypeKey={TypeKey}]";
         }
     }
 }

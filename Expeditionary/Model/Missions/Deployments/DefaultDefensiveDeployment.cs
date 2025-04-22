@@ -33,7 +33,8 @@ namespace Expeditionary.Model.Missions.Deployments
                         .Setup(Enumerable.Repeat(f, 1), match, context);
                 }
             }
-            new AreaDeployment(new EdgeMapRegion(DefendingDirection), MapDirectionUtils.Invert(DefendingDirection))
+            new AreaDeployment(
+                new EdgeMapRegion(DefendingDirection, 0.5f), MapDirectionUtils.Invert(DefendingDirection))
                 .Setup(eligibleOccupiers.Select(x => x.Key), match, context);
         }
 

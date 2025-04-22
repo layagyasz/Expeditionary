@@ -5,6 +5,7 @@ using Cardamom.Json.OpenTK;
 using Cardamom.Ui;
 using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Window;
+using Expeditionary.Ai;
 using Expeditionary.Controller;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
@@ -132,8 +133,9 @@ namespace Expeditionary
             var player = mission.Players.First().Player;
             (var match, var appearance) =
                 mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), IsTest: true));
-            match.Step();
+            var aiManager = AiManager.Create(match, mission.Players.Select(x => x.Player));
             match.Initialize();
+            aiManager.Initialize();
 
             var terrainParameters = appearance.Materialize(sensitivity);
             RecordPalette(terrainParameters);
@@ -144,6 +146,7 @@ namespace Expeditionary
                     new MatchController(match, player),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
+            match.Step();
             ui.Start();
         }
 

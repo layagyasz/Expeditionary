@@ -34,5 +34,10 @@ namespace Expeditionary.Model.Formations
         {
             return Enumerable.Concat(_unitsAndRoles, ComponentFormations.SelectMany(x => x.GetUnitsAndRoles()));
         }
+
+        public override string ToString()
+        {
+            return $"[Formation: Name={Name}, Role={Role}, Echelon={Echelon}]";
+        }
     }
 }
