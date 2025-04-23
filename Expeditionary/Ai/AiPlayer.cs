@@ -1,6 +1,8 @@
-﻿using Cardamom.Logging;
+﻿using Cardamom.Collections;
+using Cardamom.Logging;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
+using Expeditionary.Model.Combat;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Orders;
@@ -28,11 +30,15 @@ namespace Expeditionary.Ai
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
-            foreach (var unit in _match.GetAssets().Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == Player))
+            foreach (var unit in 
+                _match.GetAssets()
+                    .Where(x => x is Unit)
+                    .Cast<Unit>()
+                    .Where(x => x.Player == Player)
+                    .Where(x => !x.IsDestroyed))
             {
                 DoUnitTurn(unit);
             }
-            Thread.Sleep(5000);
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
         }
@@ -45,22 +51,23 @@ namespace Expeditionary.Ai
             var target = 
                 FindValidTargets(unit, mode, map)
                     .Select(target => (target, AttackEvaluation.Evaluate(unit, attack, mode, target, map)))
-                    .MaxBy(x => x.Item2);
+                    .ArgMax(x => x.Item2);
             if (target.target != null)
             {
                 s_Logger.With(Player.Id).Log($"{unit} found target {target.target} with value {target.Item2}");
-                // Need to implement event buffers to send orders
-                // _match.DoOrder(new AttackOrder(unit, attack, mode, target.target));
+                _match.DoOrder(new AttackOrder(unit, attack, mode, target.target));
+                Thread.Sleep(1000);
             }
         }
 
         private IEnumerable<Unit> FindValidTargets(Unit unit, UnitWeapon.Mode mode, Map map)
         {
             return _match.GetAssets()
+                .Where(x => !x.IsDestroyed)
                 .Where(x => _knowledge.GetAsset(x).IsVisible)
                 .Where(x => x is Unit)
                 .Cast<Unit>()
-                .Where(x => AttackEvaluation.IsValidTarget(unit, mode, x, map));
+                .Where(x => CombatCalculator.IsValidTarget(unit, mode, x, map));
         }
     }
 }

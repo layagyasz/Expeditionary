@@ -16,11 +16,13 @@ namespace Expeditionary.Model
         private static readonly ILogger s_Logger = 
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(Match));
 
-        public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
-        public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
-        public EventHandler<IOrder>? OrderAdded { get; set; }
-        public EventHandler<IOrder>? OrderRemoved { get; set; }
-        public EventHandler<EventArgs>? Stepped { get; set; }
+        public event EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged;
+        public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
+        public event EventHandler<EventArgs>? Stepped;
+
+        private readonly EventBuffer<AssetKnowledgeChangedEventArgs> _assetKnowledgeChanged;
+        private readonly EventBuffer<MapKnowledgeChangedEventArgs> _mapKnowledgeChanged;
+        private readonly EventBuffer<EventArgs> _stepped;
 
         private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
@@ -41,6 +43,12 @@ namespace Expeditionary.Model
             _random = random;
             _idGenerator = idGenerator;
             _map = map;
+
+            _assetKnowledgeChanged =
+                new EventBuffer<AssetKnowledgeChangedEventArgs>((s, e) => AssetKnowledgeChanged?.Invoke(s, e));
+            _mapKnowledgeChanged =
+                new EventBuffer<MapKnowledgeChangedEventArgs>((s, e) => MapKnowledgeChanged?.Invoke(s, e));
+            _stepped = new EventBuffer<EventArgs>((s, e) => Stepped?.Invoke(s, e));
         }
 
         public void Add(Player player, ObjectiveSet objectives, IPlayerKnowledge knowledge)
@@ -69,6 +77,7 @@ namespace Expeditionary.Model
 
         public void Damage(Unit attacker, Unit defender, int kills)
         {
+            s_Logger.Log($"{attacker} damaged {defender} by {kills}");
             defender.Damage(kills);
             if (defender.Number <= 0)
             {
@@ -80,17 +89,23 @@ namespace Expeditionary.Model
                 var defenderStats = _playerStatistics[defender.Player];
                 defenderStats.Lost += defender.UnitQuantity;
             }
-            s_Logger.Log($"{attacker} damaged {defender} by {kills}");
         }
 
         public void Destroy(Unit unit)
         {
+            s_Logger.Log($"{unit} destroyed");
             unit.Destroy();
             foreach (var knowledge in _playerKnowledge.Values)
             {
                 knowledge.Destroy(unit, _positions);
             }
-            s_Logger.Log($"{unit} destroyed");
+        }
+
+        public void DispatchEvents()
+        {
+            _assetKnowledgeChanged.DispatchEvents();
+            _mapKnowledgeChanged.DispatchEvents();
+            _stepped.DispatchEvents();
         }
 
         public bool DoOrder(IOrder order)
@@ -177,6 +192,7 @@ namespace Expeditionary.Model
 
         public void Move(IAsset asset, Pathing.Path path)
         {
+            s_Logger.Log($"{asset} moved along {path}");
             asset.Position = path.Destination;
             _positions.Remove(path.Origin, asset);
             _positions.Add(path.Destination, asset);
@@ -185,11 +201,11 @@ namespace Expeditionary.Model
             {
                 knowledge.Move(asset, path, _positions);
             }
-            s_Logger.Log($"{asset} moved along {path}");
         }
 
         public void Place(IAsset asset, Vector3i position)
         {
+            s_Logger.Log($"{asset} placed at {position}");
             if (asset.Position.HasValue)
             {
                 _positions.Remove(asset.Position.Value, asset);
@@ -210,11 +226,11 @@ namespace Expeditionary.Model
             {
                 knowledge.Place(asset, position, _positions);
             }
-            s_Logger.Log($"{asset} placed at {position}");
         }
 
         public void Remove(IAsset asset)
         {
+            s_Logger.Log($"{asset} removed");
             _assets.Remove(asset);
             if (asset.Position.HasValue)
             {
@@ -226,13 +242,12 @@ namespace Expeditionary.Model
             {
                 knowledge.Remove(asset, _positions);
             }
-            s_Logger.Log($"{asset} removed");
         }
 
         public void Reset()
         {
-            _assets.ForEach(x => x.Reset());
             s_Logger.Log("Reset assets");
+            _assets.ForEach(x => x.Reset());
         }
 
         public void Step()
@@ -244,7 +259,7 @@ namespace Expeditionary.Model
                 Reset();
             }
             s_Logger.Log($"Entered turn {_players[_activePlayer]}");
-            Stepped?.Invoke(this, EventArgs.Empty);
+            _stepped.QueueEvent(this, EventArgs.Empty);
         }
 
         private bool ValidatePlayer(Player player)
@@ -255,13 +270,13 @@ namespace Expeditionary.Model
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            AssetKnowledgeChanged?.Invoke(this, e);
+            _assetKnowledgeChanged.QueueEvent(sender, e);
         }
 
         private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            MapKnowledgeChanged?.Invoke(this, e);
+            _mapKnowledgeChanged.QueueEvent(sender, e);
         }
     }
 }

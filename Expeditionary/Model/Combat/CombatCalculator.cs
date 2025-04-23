@@ -6,6 +6,23 @@ namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
+        public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit defender, Map map)
+        {
+            if (attacker.Player.Team == defender.Player.Team)
+            {
+                return false;
+            }
+            if (Geometry.GetCubicDistance(attacker.Position!.Value, defender.Position!.Value) > mode.Range.Get())
+            {
+                return false;
+            }
+            if (!Sighting.IsValidLineOfSight(map, attacker.Position!.Value, defender.Position!.Value))
+            {
+                return false;
+            }
+            return true;
+        }
+
         public static CombatPreview GetPreview(
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {

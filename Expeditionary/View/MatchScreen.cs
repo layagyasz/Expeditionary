@@ -8,6 +8,8 @@ namespace Expeditionary.View
 {
     public class MatchScreen : GraphicsResource, IRenderable
     {
+        public event EventHandler<EventArgs>? Updated;
+
         public IController Controller { get; }
         public MatchScene? Scene { get; private set; }
         public UnitOverlay? UnitOverlay { get; private set; }
@@ -41,6 +43,7 @@ namespace Expeditionary.View
 
         public void Update(long delta)
         {
+            Updated?.Invoke(this, EventArgs.Empty);
             Scene!.Update(delta);
             UnitOverlay!.Update(delta);
         }

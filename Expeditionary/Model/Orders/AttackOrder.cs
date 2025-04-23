@@ -1,5 +1,4 @@
-﻿using Expeditionary.Hexagons;
-using Expeditionary.Model.Combat;
+﻿using Expeditionary.Model.Combat;
 using Expeditionary.Model.Units;
 using MathNet.Numerics.Distributions;
 
@@ -26,15 +25,7 @@ namespace Expeditionary.Model.Orders
             {
                 return false;
             }
-            if (Unit.Player.Team == Defender.Player.Team)
-            {
-                return false;
-            }
-            if (Geometry.GetCubicDistance(Unit.Position!.Value, Defender.Position!.Value) > Mode.Range.Get())
-            {
-                return false;
-            }
-            if (!Sighting.IsValidLineOfSight(match.GetMap(), Unit.Position!.Value, Defender.Position!.Value))
+            if (!CombatCalculator.IsValidTarget(Unit, Mode, Defender, match.GetMap()))
             {
                 return false;
             }

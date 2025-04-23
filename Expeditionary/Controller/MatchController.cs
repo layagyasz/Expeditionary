@@ -1,4 +1,5 @@
-﻿using Cardamom.Mathematics;
+﻿using Cardamom.Logging;
+using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
@@ -14,6 +15,9 @@ namespace Expeditionary.Controller
 {
     public class MatchController : IController
     {
+        private static readonly ILogger s_Logger = 
+            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(MatchController));
+
         private readonly Match _match;
         private readonly Player _player;
 
@@ -46,6 +50,7 @@ namespace Expeditionary.Controller
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
 
             _screen.UnitOverlay.Visible = false;
+            _screen.Updated += HandleFrame;
         }
 
         public void Unbind()
@@ -56,6 +61,13 @@ namespace Expeditionary.Controller
 
             _unitOverlayController!.OrderChanged -= HandleOrderChanged;
             _unitOverlayController = null;
+
+            _screen!.Updated -= HandleFrame;
+        }
+
+        private void HandleFrame(object? sender, EventArgs e)
+        {
+            _match.DispatchEvents();
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
@@ -92,7 +104,7 @@ namespace Expeditionary.Controller
 
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
-            Console.WriteLine(_match.GetMap().Get(e.Hex));
+            s_Logger.Log(_match.GetMap().Get(e.Hex)?.ToString() ?? "off map");
             if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
