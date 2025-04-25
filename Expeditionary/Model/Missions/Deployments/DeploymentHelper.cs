@@ -10,19 +10,19 @@ namespace Expeditionary.Model.Missions.Deployments
     public static class DeploymentHelper
     {
         public static void DeployInRegion(
-            IEnumerable<Formation> formations,
+            Formation formation,
             Match match, 
             SignedDistanceField sdf,
             IMapRegion region, 
             MapDirection facing, 
             TileConsideration consideration,
-            PlayerSetupContext context)
+            EvaluationCache evaluationCache)
         {
             var defensive = new List<Unit>();
             var shortRange = new List<Unit>();
             var medRange = new List<Unit>();
             var longRange = new List<Unit>();
-            foreach ((var unit, var role) in formations.SelectMany(x => x.GetUnitsAndRoles()))
+            foreach ((var unit, var _) in formation.GetUnitsAndRoles())
             {
                 if (DefaultDispositionMapper.Map(unit.Type) == Disposition.Defensive)
                 {
@@ -53,7 +53,7 @@ namespace Expeditionary.Model.Missions.Deployments
                     consideration,
                     TileConsiderations.Edge(sdf, -5),
                     TileConsiderations.Exposure(
-                        context.ExposureCache, facing, Disposition.Defensive, RangeBucket.Medium)));
+                        evaluationCache.Exposure, facing, Disposition.Defensive, RangeBucket.Medium)));
             Assign(
                 match,
                 shortRange,
@@ -62,7 +62,7 @@ namespace Expeditionary.Model.Missions.Deployments
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Short)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Short)));
             Assign(
                 match,
                 medRange,
@@ -71,7 +71,7 @@ namespace Expeditionary.Model.Missions.Deployments
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Medium)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Medium)));
             Assign(
                 match,
                 longRange,
@@ -80,7 +80,7 @@ namespace Expeditionary.Model.Missions.Deployments
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        context.ExposureCache, facing, Disposition.Offensive, RangeBucket.Long)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Long)));
         }
 
         private static void Assign(

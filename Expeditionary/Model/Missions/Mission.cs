@@ -9,10 +9,10 @@ namespace Expeditionary.Model.Missions
         {
             (var map, var appearance) = Map.GenerateMap(context);
             var match = new Match(new(), new SerialIdGenerator(), map);
-            var exposureCache = new ExposureCache(map);
+            var evaluationCache = new EvaluationCache(new ExposureCache(map));
             foreach (var player in Players)
             {
-                player.Setup(match, new PlayerSetupContext(context, exposureCache));
+                player.Setup(match, context, evaluationCache);
             }
             return (match, appearance);
         }

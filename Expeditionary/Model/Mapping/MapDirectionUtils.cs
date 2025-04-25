@@ -75,5 +75,27 @@ namespace Expeditionary.Model.Mapping
             }
             return result;
         }
+
+        public static IEnumerable<Vector3i> GetNeighborsInDirection(Vector3i hex, MapDirection direction)
+        {
+            if (direction.HasFlag(MapDirection.North))
+            {
+                yield return hex + new Vector3i(0, -1, 1);
+            }
+            if (direction.HasFlag(MapDirection.East))
+            {
+                yield return hex + new Vector3i(1, -1, 0);
+                yield return hex + new Vector3i(1, 0, -1);
+            }
+            if (direction.HasFlag(MapDirection.South))
+            {
+                yield return hex + new Vector3i(0, 1, -1);
+            }
+            if (direction.HasFlag(MapDirection.West))
+            {
+                yield return hex + new Vector3i(-1, 1, 0);
+                yield return hex + new Vector3i(-1, 0, 1);
+            }
+        }
     }
 }

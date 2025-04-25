@@ -19,43 +19,45 @@ namespace Expeditionary.Ai
 
         private readonly Match _match;
         private readonly IPlayerKnowledge _knowledge;
+        private readonly List<FormationAssignment> _formations;
 
         public AiPlayer(Player player, Match match)
         {
             Player = player;
             _match = match;
             _knowledge = match.GetKnowledge(Player);
+            _formations = match.GetFormations(Player).Select(FormationAssignment.Create).ToList();
         }
 
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
-            foreach (var unit in 
-                _match.GetAssets()
-                    .Where(x => x is Unit)
-                    .Cast<Unit>()
-                    .Where(x => x.Player == Player)
-                    .Where(x => !x.IsDestroyed))
-            {
-                DoUnitTurn(unit);
-            }
+            _formations.ForEach(DoFormationTurn);
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
         }
 
-        private void DoUnitTurn(Unit unit)
+        private void DoFormationTurn(FormationAssignment formation)
+        {
+            foreach (var unit in formation.Units.Where(x => x.IsActive()))
+            {
+                DoUnitTurn(unit);
+            }
+        }
+
+        private void DoUnitTurn(UnitAssignment unit)
         {
             var map = _match.GetMap();
-            var attack = unit.Type.Weapons.First();
+            var attack = unit.Unit.Type.Weapons.First();
             var mode = attack.Weapon!.Modes.First();
             var target = 
-                FindValidTargets(unit, mode, map)
-                    .Select(target => (target, AttackEvaluation.Evaluate(unit, attack, mode, target, map)))
+                FindValidTargets(unit.Unit, mode, map)
+                    .Select(target => (target, AttackEvaluation.Evaluate(unit.Unit, attack, mode, target, map)))
                     .ArgMax(x => x.Item2);
             if (target.target != null)
             {
                 s_Logger.With(Player.Id).Log($"{unit} found target {target.target} with value {target.Item2}");
-                _match.DoOrder(new AttackOrder(unit, attack, mode, target.target));
+                _match.DoOrder(new AttackOrder(unit.Unit, attack, mode, target.target));
                 Thread.Sleep(1000);
             }
         }

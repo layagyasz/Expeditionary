@@ -1,9 +1,10 @@
-﻿using Expeditionary.Model.Formations;
+﻿using Expeditionary.Evaluation;
+using Expeditionary.Model.Formations;
 
 namespace Expeditionary.Model.Missions.Deployments
 {
     public interface IDeployment
     {
-        void Setup(IEnumerable<Formation> formation, Match match, PlayerSetupContext context);
+        void Setup(Formation formation, Match match, EvaluationCache evaluationCache, Random random);
     }
 }

@@ -47,13 +47,12 @@ namespace Expeditionary.Evaluation
                 pathField.ToDictionary(x => x.Destination, x => (int)Math.Ceiling(x.Cost) - frontier));
         }
 
-        public static SignedDistanceField FromRegion(Map map, IMapRegion region, int maxDistance)
+        public static SignedDistanceField FromRegion(Map map, IMapRegion region, int maxDistance, MapDirection facing)
         {
             var range = region.Range(map).ToHashSet();
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
-            foreach (var hex in range.Where(
-                x => Geometry.GetNeighbors(x).Any(y => map.Contains(y) && !range.Contains(y))))
+            foreach (var hex in range.Where(x => IsFacing(x, facing, range, map)))
             {
                 var node = new Node(hex, true, 0, true);
                 open.Push(node, 0);
@@ -121,6 +120,12 @@ namespace Expeditionary.Evaluation
                 return distance;
             }
             return MaxExternalDistance;
+        }
+
+        private static bool IsFacing(Vector3i hex, MapDirection direction, ISet<Vector3i> range, Map map)
+        {
+            return MapDirectionUtils.GetNeighborsInDirection(hex, direction)
+                .Any(y => map.Contains(y) && !range.Contains(y));
         }
     }
 }

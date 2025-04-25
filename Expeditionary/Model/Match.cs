@@ -17,6 +17,7 @@ namespace Expeditionary.Model
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(Match));
 
         public event EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged;
+        public event EventHandler<Formation>? FormationAdded;
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
 
@@ -72,6 +73,7 @@ namespace Expeditionary.Model
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
             s_Logger.Log($"{formation} added for {player}");
+            FormationAdded?.Invoke(this, formation);
             return formation;
         }
 
@@ -143,6 +145,11 @@ namespace Expeditionary.Model
         public IEnumerable<IAsset> GetAssetsIn(MapTag tag)
         {
             return _map.GetArea(tag).SelectMany(x => _positions[x]);
+        }
+
+        public IEnumerable<Formation> GetFormations(Player player)
+        {
+            return _formations.Where(x => x.Player.Id == player.Id);
         }
 
         public IPlayerKnowledge GetKnowledge(Player player)

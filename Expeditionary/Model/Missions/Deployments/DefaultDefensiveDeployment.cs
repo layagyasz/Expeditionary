@@ -1,20 +1,21 @@
 ﻿using Cardamom.Trackers;
+using Expeditionary.Evaluation;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Missions.Deployments
 {
-    public record class DefaultDefensiveDeployment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions) 
+    public record class DefaultDefensiveDeployment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
         : IDeployment
     {
-        public void Setup(IEnumerable<Formation> formations, Match match, PlayerSetupContext context)
+        public void Setup(Formation formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
                 new LinkedList<Quantity<Formation>>(
-                    formations
-                        .SelectMany(x => x.ComponentFormations)
+                    formation.ComponentFormations
                         .Where(x => x.Role == FormationRole.Infantry)
                         .Select(x => Quantity<Formation>.Create(x, GetCoverage(x)))
                         .OrderBy(x => x.Value));
@@ -30,12 +31,22 @@ namespace Expeditionary.Model.Missions.Deployments
                 foreach (var f in assignments)
                 {
                     new AreaDeployment(region.Key, MapDirectionUtils.Invert(DefendingDirection))
-                        .Setup(Enumerable.Repeat(f, 1), match, context);
+                        .Setup(f, match, evaluationCache, random);
                 }
             }
-            new AreaDeployment(
-                new EdgeMapRegion(DefendingDirection, 0.5f), MapDirectionUtils.Invert(DefendingDirection))
-                .Setup(eligibleOccupiers.Select(x => x.Key), match, context);
+            var edgeRegion = new EdgeMapRegion(DefendingDirection, 0.5f);
+            var keyVector = GetKeyVector(DefendingDirection);
+            var facing = MapDirectionUtils.Invert(DefendingDirection);
+            foreach ((var f, var r) in eligibleOccupiers
+                .Select(x => x.Key).Zip(edgeRegion.Partition(map, keyVector, eligibleOccupiers.Count)))
+            {
+                new AreaDeployment(r, facing).Setup(f, match, evaluationCache, random);
+            }
+            foreach (var f in formation.ComponentFormations.Where(x => x.Role != FormationRole.Infantry))
+            {
+                new AreaDeployment(new EdgeMapRegion(DefendingDirection, 0.25f), facing)
+                    .Setup(f, match, evaluationCache, random);
+            }
         }
 
         private static List<Formation> Assign(LinkedList<Quantity<Formation>> formations, Quantity<IMapRegion> region)
@@ -74,6 +85,15 @@ namespace Expeditionary.Model.Missions.Deployments
         private static float GetRequiredCoverage(int tileCount)
         {
             return 1.3333333f * MathF.Sqrt(tileCount);
+        }
+
+        private static Vector2 GetKeyVector(MapDirection direction)
+        {
+            if (direction.HasFlag(MapDirection.North) || direction.HasFlag(MapDirection.South))
+            {
+                return Vector2.UnitX;
+            }
+            return Vector2.UnitY;
         }
     }
 }
