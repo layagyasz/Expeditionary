@@ -1,7 +1,7 @@
-﻿using Expeditionary.Model.Mapping;
+﻿using Expeditionary.Ai.Assignments.Formations;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
-using Expeditionary.Model.Missions.Deployments;
 using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.Objectives;
 using OpenTK.Mathematics;
@@ -31,7 +31,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         {
                             new(
                                 resources.FormationGenerator.Generate(attacker, resources.Random), 
-                                new AreaDeployment(new EdgeMapRegion(MapDirection.South, 0.5f), MapDirection.North))
+                                new DefaultOffensiveAssignment(MapDirection.South))
                         });
                 players.Add(setup);
             }
@@ -50,7 +50,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         {
                             new(
                                 resources.FormationGenerator.Generate(defender, resources.Random),
-                                new DefaultDefensiveDeployment(
+                                new DefaultDefensiveAssignment(
                                     MapDirection.North, new() { new TagMapRegion(MapTag.Control1)}))
                         });
                 players.Add(setup);

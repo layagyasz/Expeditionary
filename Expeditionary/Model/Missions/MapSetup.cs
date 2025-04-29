@@ -23,12 +23,11 @@ namespace Expeditionary.Model.Missions
             _extraLayers = extraLayers.ToList();
         }
 
-        public (Map, MapAppearance) GenerateMap(SetupContext context)
+        public (Map, MapAppearance) GenerateMap(Random random)
         {
             var environment = Environment.GetEnvironment();
             environment.Parameters.Cities.Layers.InsertRange(0, _extraLayers);
-            return (MapGenerator.Generate(environment.Parameters, Size, seed: context.Random.Next()), 
-                environment.Appearance);
+            return (MapGenerator.Generate(environment.Parameters, Size, seed: random.Next()), environment.Appearance);
         }
     }
 }

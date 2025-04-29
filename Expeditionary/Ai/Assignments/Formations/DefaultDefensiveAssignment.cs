@@ -1,23 +1,24 @@
 ﻿using Cardamom.Trackers;
 using Expeditionary.Evaluation;
+using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Model.Missions.Deployments
+namespace Expeditionary.Ai.Assignments.Formations
 {
-    public record class DefaultDefensiveDeployment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
-        : IDeployment
+    public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
+        : IFormationAssignment
     {
-        public void Setup(Formation formation, Match match, EvaluationCache evaluationCache, Random random)
+        public void Assign(FormationAssignment formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
-                new LinkedList<Quantity<Formation>>(
-                    formation.ComponentFormations
-                        .Where(x => x.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<Formation>.Create(x, GetCoverage(x)))
+                new LinkedList<Quantity<FormationAssignment>>(
+                    formation.Children
+                        .Where(x => x.Formation.Role == FormationRole.Infantry)
+                        .Select(x => Quantity<FormationAssignment>.Create(x, GetCoverage(x)))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(x => Quantity<IMapRegion>.Create(x, GetRequiredCoverage(x.Range(map).Count())));
@@ -30,8 +31,7 @@ namespace Expeditionary.Model.Missions.Deployments
                 var assignments = Assign(eligibleOccupiers, region);
                 foreach (var f in assignments)
                 {
-                    new AreaDeployment(region.Key, MapDirectionUtils.Invert(DefendingDirection))
-                        .Setup(f, match, evaluationCache, random);
+                    f.SetAssignment(new AreaAssignment(region.Key, MapDirectionUtils.Invert(DefendingDirection)));
                 }
             }
             var edgeRegion = new EdgeMapRegion(DefendingDirection, 0.5f);
@@ -40,22 +40,22 @@ namespace Expeditionary.Model.Missions.Deployments
             foreach ((var f, var r) in eligibleOccupiers
                 .Select(x => x.Key).Zip(edgeRegion.Partition(map, keyVector, eligibleOccupiers.Count)))
             {
-                new AreaDeployment(r, facing).Setup(f, match, evaluationCache, random);
+                f.SetAssignment(new AreaAssignment(r, facing));
             }
-            foreach (var f in formation.ComponentFormations.Where(x => x.Role != FormationRole.Infantry))
+            foreach (var f in formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry))
             {
-                new AreaDeployment(new EdgeMapRegion(DefendingDirection, 0.25f), facing)
-                    .Setup(f, match, evaluationCache, random);
+                f.SetAssignment(new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.25f), facing));
             }
         }
 
-        private static List<Formation> Assign(LinkedList<Quantity<Formation>> formations, Quantity<IMapRegion> region)
+        private static List<FormationAssignment> Assign(
+            LinkedList<Quantity<FormationAssignment>> formations, Quantity<IMapRegion> region)
         {
-            var result = new List<Formation>();
+            var result = new List<FormationAssignment>();
             float coverage = 0;
             while (coverage < region.Value && formations.Any())
             {
-                Quantity<Formation> formation;
+                Quantity<FormationAssignment> formation;
                 if (!result.Any())
                 {
                     formation = formations.First();
@@ -72,9 +72,9 @@ namespace Expeditionary.Model.Missions.Deployments
             return result;
         }
 
-        private static float GetCoverage(Formation formation)
+        private static float GetCoverage(FormationAssignment formation)
         {
-            return GetCoverage(formation.Echelon);
+            return GetCoverage(formation.Formation.Echelon);
         }
 
         private static float GetCoverage(int echelon)

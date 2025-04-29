@@ -1,15 +1,19 @@
-﻿using Expeditionary.Evaluation;
+﻿using Expeditionary.Ai.Assignments.Formations;
 using Expeditionary.Model.Formations;
-using Expeditionary.Model.Missions.Deployments;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class FormationSetup(FormationTemplate Formation, IDeployment Deployment)
+    public record class FormationSetup(FormationTemplate Formation, IFormationAssignment Assignment)
     {
-        public void Setup(Player player, Match match, SetupContext context, EvaluationCache evaluationCache)
+        public void Setup(Player player, Match match, SetupContext context)
         {
             var formation = match.Add(player, Formation);
-            Deployment.Setup(formation, match, evaluationCache, context.Random);
+            var handler =
+                context.AiManager.GetHandler(player)
+                ?? context.AiManager.CreateHandler(player);
+            var formationAssignment = handler.AddFormation(formation);
+            formationAssignment.SetAssignment(Assignment);
+            handler.Setup();
         }
     }
 }

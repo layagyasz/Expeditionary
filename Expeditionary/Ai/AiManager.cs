@@ -1,5 +1,6 @@
 ﻿using Cardamom;
 using Cardamom.Logging;
+using Expeditionary.Evaluation;
 using Expeditionary.Model;
 
 namespace Expeditionary.Ai
@@ -10,34 +11,56 @@ namespace Expeditionary.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiManager));
 
         private readonly Match _match;
-        private readonly Dictionary<Player, AiPlayer> _players;
+        private readonly EvaluationCache _evaluationCache;
+        private readonly Random _random;
+        private readonly Dictionary<Player, AiPlayerHandler> _handlers;
 
-        private AiManager(Match match, Dictionary<Player, AiPlayer> players)
+        public AiManager(Match match, EvaluationCache evaluationCache, Random random, IEnumerable<Player> players)
         {
             _match = match;
-            _players = players;
+            _evaluationCache = evaluationCache;
+            _random = random;
+            _handlers = players.ToDictionary(x => x, CreateHandler);
         }
 
-        public static AiManager Create(Match match, IEnumerable<Player> players)
+        public AiPlayerHandler CreateHandler(Player player)
         {
-            return new(match, players.ToDictionary(x => x, x => new AiPlayer(x, match)));
+            return new(player, _match, _evaluationCache, _random);
         }
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             _match.Stepped -= HandleStep;
+            foreach (var handler in _handlers.Values) 
+            {
+                handler.Dispose();
+            }
             s_Logger.Log("Disposed");
         }
 
         public void Initialize()
         {
             _match.Stepped += HandleStep;
+            foreach (var handler in _handlers.Values)
+            {
+                handler.Initialize();
+            }
             s_Logger.Log("Initialized");
+        }
+
+        public AiPlayerHandler? GetHandler(Player player)
+        {
+            if (_handlers.TryGetValue(player, out var handler))
+            {
+                return handler;
+            }
+            return null;
         }
 
         private void HandleStep(object? sender, EventArgs e)
         {
-            if (_players.TryGetValue(_match.GetActivePlayer(), out var handler))
+            if (_handlers.TryGetValue(_match.GetActivePlayer(), out var handler))
             {
                 Task.Run(handler.DoTurn);
             }

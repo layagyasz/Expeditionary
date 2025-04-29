@@ -1,6 +1,6 @@
-﻿using Expeditionary.Model.Formations;
+﻿using Expeditionary.Ai.Assignments.Units;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Units;
-using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai
 {
@@ -8,12 +8,17 @@ namespace Expeditionary.Ai
     {
         public Unit Unit { get; }
         public FormationRole Role { get; }
-        public Vector3i Position { get; set; }
+        public IUnitAssignment Assignment { get; private set; } = new NoUnitAssignment();
 
         public UnitAssignment(Unit unit, FormationRole role)
         {
             Unit = unit;
             Role = role;
+        }
+
+        public void SetAssignment(IUnitAssignment assignment)
+        {
+            Assignment = assignment;
         }
 
         public bool IsActive()

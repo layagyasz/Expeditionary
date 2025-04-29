@@ -1,7 +1,6 @@
-﻿using Expeditionary.Evaluation;
+﻿using Expeditionary.Ai;
 
 namespace Expeditionary.Model.Missions
 {
-    public record SetupContext(
-        Player Player, Random Random, IIdGenerator IdGenerator, bool IsTest);
+    public record SetupContext(Random Random, IIdGenerator IdGenerator, AiManager AiManager);
 }

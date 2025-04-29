@@ -1,5 +1,4 @@
-﻿using Expeditionary.Evaluation;
-using Expeditionary.Model.Knowledge;
+﻿using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.Objectives;
 
@@ -7,16 +6,20 @@ namespace Expeditionary.Model.Missions
 {
     public record class PlayerSetup(Player Player, ObjectiveSet Objectives, List<FormationSetup> Formations)
     {
-        public void Setup(Match match, SetupContext context, EvaluationCache evaluationCache) 
+        public void Create(Match match, CreationContext context)
         {
             match.Add(Player, Objectives, CreatePlayerKnowledge(Player, match.GetMap(), context));
+        }
+
+        public void Setup(Match match, SetupContext context) 
+        {
             foreach (var formation in Formations)
             {
-                formation.Setup(Player, match, context, evaluationCache);
+                formation.Setup(Player, match, context);
             }
         }
 
-        private IPlayerKnowledge CreatePlayerKnowledge(Player player, Map map, SetupContext context)
+        private IPlayerKnowledge CreatePlayerKnowledge(Player player, Map map, CreationContext context)
         {
             if (context.Player == player && context.IsTest)
             {

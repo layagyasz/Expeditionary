@@ -131,9 +131,12 @@ namespace Expeditionary
                 };
             var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
             var player = mission.Players.First().Player;
-            (var match, var appearance) =
-                mission.Setup(new SetupContext(player, random, new SerialIdGenerator(), IsTest: true));
-            var aiManager = AiManager.Create(match, mission.Players.Select(x => x.Player));
+            var creationContext = new CreationContext(player, IsTest: true);
+            (var match, var appearance) = mission.Create(random, creationContext);
+            var evaluationCache = new EvaluationCache(new ExposureCache(match.GetMap()));
+            var aiManager = new AiManager(match, evaluationCache, random, mission.Players.Select(x => x.Player));
+            var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
+            mission.Setup(match, setupContext);
             match.Initialize();
             aiManager.Initialize();
 

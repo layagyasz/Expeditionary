@@ -1,20 +1,20 @@
 ﻿using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model.Formations;
+using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 
-namespace Expeditionary.Model.Missions.Deployments
+namespace Expeditionary.Ai.Assignments.Formations
 {
-    public record class AreaDeployment(IMapRegion Region, MapDirection Facing) : IDeployment
+    public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IFormationAssignment
     {
-        public void Setup(Formation formation, Match match, EvaluationCache evaluationCache, Random random)
+        public void Assign(FormationAssignment formation, Match match, EvaluationCache evaluationCache, Random random)
         {
-            DeploymentHelper.DeployInRegion(
+            AssignmentHelper.DeployInRegion(
                 formation,
-                match, 
+                match,
                 SignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing),
-                Region, 
+                Region,
                 Facing,
                 TileConsiderations.Combine(
                     TileConsiderations.Essential(TileConsiderations.Land),

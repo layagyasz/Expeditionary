@@ -1,20 +1,26 @@
-﻿using Expeditionary.Evaluation;
-using Expeditionary.Model.Mapping.Appearance;
+﻿using Expeditionary.Model.Mapping.Appearance;
 
 namespace Expeditionary.Model.Missions
 {
     public record class Mission(MapSetup Map, List<PlayerSetup> Players)
     {
-        public (Match, MapAppearance) Setup(SetupContext context)
+        public (Match, MapAppearance) Create(Random random, CreationContext context)
         {
-            (var map, var appearance) = Map.GenerateMap(context);
+            (var map, var appearance) = Map.GenerateMap(random);
             var match = new Match(new(), new SerialIdGenerator(), map);
-            var evaluationCache = new EvaluationCache(new ExposureCache(map));
             foreach (var player in Players)
             {
-                player.Setup(match, context, evaluationCache);
+                player.Create(match, context);
             }
             return (match, appearance);
+        }
+
+        public void Setup(Match match, SetupContext context)
+        {
+            foreach (var player in Players)
+            {
+                player.Setup(match, context);
+            }
         }
     }
 }

@@ -1,35 +1,35 @@
-﻿using Expeditionary.Evaluation;
+﻿using Expeditionary.Ai.Assignments.Units;
+using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model.Formations;
+using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
-using Expeditionary.Model.Units;
 
-namespace Expeditionary.Model.Missions.Deployments
+namespace Expeditionary.Ai.Assignments.Formations
 {
-    public static class DeploymentHelper
+    public static class AssignmentHelper
     {
         public static void DeployInRegion(
-            Formation formation,
-            Match match, 
+            FormationAssignment formation,
+            Match match,
             SignedDistanceField sdf,
-            IMapRegion region, 
-            MapDirection facing, 
+            IMapRegion region,
+            MapDirection facing,
             TileConsideration consideration,
             EvaluationCache evaluationCache)
         {
-            var defensive = new List<Unit>();
-            var shortRange = new List<Unit>();
-            var medRange = new List<Unit>();
-            var longRange = new List<Unit>();
-            foreach ((var unit, var _) in formation.GetUnitsAndRoles())
+            var defensive = new List<UnitAssignment>();
+            var shortRange = new List<UnitAssignment>();
+            var medRange = new List<UnitAssignment>();
+            var longRange = new List<UnitAssignment>();
+            foreach (var unit in formation.GetUnitAssignments())
             {
-                if (DefaultDispositionMapper.Map(unit.Type) == Disposition.Defensive)
+                if (DefaultDispositionMapper.Map(unit.Unit.Type) == Disposition.Defensive)
                 {
                     defensive.Add(unit);
                     continue;
                 }
-                var range = RangeBucketizer.ToBucket(unit.Type);
+                var range = RangeBucketizer.ToBucket(unit.Unit.Type);
                 if (range == RangeBucket.Short)
                 {
                     shortRange.Add(unit);
@@ -85,7 +85,7 @@ namespace Expeditionary.Model.Missions.Deployments
 
         private static void Assign(
             Match match,
-            IEnumerable<Unit> units,
+            IEnumerable<UnitAssignment> units,
             IMapRegion region,
             TileConsideration consideration)
         {
@@ -105,7 +105,7 @@ namespace Expeditionary.Model.Missions.Deployments
             var assignments = units.Zip(tilesAndEvaluations).Select(x => (x.First, x.Second.hex));
             foreach (var (unit, hex) in assignments)
             {
-                match.Place(unit, hex);
+                unit.SetAssignment(new PositionAssignment(hex));
             }
         }
     }

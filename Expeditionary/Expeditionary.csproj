@@ -549,6 +549,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Model\Missions\Deployments\" />
     <Folder Include="Resources\config\default\generation\environments\earth\" />
     <Folder Include="Resources\config\default\generation\environments\hyacinth\" />
     <Folder Include="Resources\config\default\generation\environments\isc\" />

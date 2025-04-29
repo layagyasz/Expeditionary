@@ -1,8 +1,10 @@
-﻿using Cardamom.Collections;
+﻿using Cardamom;
+using Cardamom.Collections;
 using Cardamom.Logging;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Orders;
@@ -10,36 +12,84 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
 {
-    public class AiPlayer
+    public class AiPlayerHandler : IDisposable, IInitializable
     {
         private static readonly ILogger s_Logger = 
-            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiPlayer));
+            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiPlayerHandler));
 
         public Player Player { get; }
 
         private readonly Match _match;
+        private readonly EvaluationCache _evaluationCache;
+        private readonly Random _random;
         private readonly IPlayerKnowledge _knowledge;
         private readonly List<FormationAssignment> _formations;
 
-        public AiPlayer(Player player, Match match)
+        public AiPlayerHandler(Player player, Match match, EvaluationCache evaluationCache, Random random)
         {
             Player = player;
             _match = match;
+            _evaluationCache = evaluationCache;
+            _random = random;
             _knowledge = match.GetKnowledge(Player);
             _formations = match.GetFormations(Player).Select(FormationAssignment.Create).ToList();
+        }
+
+        public FormationAssignment AddFormation(Formation formation)
+        {
+            var result = FormationAssignment.Create(formation);
+            _formations.Add(result);
+            return result;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            _match.FormationAdded -= HandleFormationAdded;
+            s_Logger.With(Player.Id).Log("Disposed");
         }
 
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
             _formations.ForEach(DoFormationTurn);
+            Thread.Sleep(1000);
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
         }
 
+        public IEnumerable<FormationAssignment> GetFormationAssignments()
+        {
+            return _formations;
+        }
+
+        public IEnumerable<UnitAssignment> GetUnitAssignments()
+        {
+            return _formations.SelectMany(x => x.GetUnitAssignments());
+        }
+
+        public void Initialize()
+        {
+            _match.FormationAdded += HandleFormationAdded;
+            s_Logger.With(Player.Id).Log("Initialized");
+        }
+
+        public void Setup()
+        {
+            s_Logger.With(Player.Id).Log("Setup");
+            foreach (var formation in GetFormationAssignments())
+            {
+                formation.AssignChildren(_match, _evaluationCache, _random);
+            }
+            foreach (var unit in GetUnitAssignments())
+            {
+                unit.Assignment.Place(unit, _match);
+            }
+        }
+
         private void DoFormationTurn(FormationAssignment formation)
         {
-            foreach (var unit in formation.Units.Where(x => x.IsActive()))
+            foreach (var unit in formation.GetUnitAssignments().Where(x => x.IsActive()))
             {
                 DoUnitTurn(unit);
             }
@@ -70,6 +120,12 @@ namespace Expeditionary.Ai
                 .Where(x => x is Unit)
                 .Cast<Unit>()
                 .Where(x => CombatCalculator.IsValidTarget(unit, mode, x, map));
+        }
+
+        private void HandleFormationAdded(object? sender, Formation formation)
+        {
+            // Add formation in correct location in formation tree.
+            s_Logger.With(Player.Id).AtWarning().Log("HandleFormationAdded not implemented");
         }
     }
 }
