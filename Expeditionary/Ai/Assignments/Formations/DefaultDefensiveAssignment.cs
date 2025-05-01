@@ -11,14 +11,14 @@ namespace Expeditionary.Ai.Assignments.Formations
     public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
         : IFormationAssignment
     {
-        public void Assign(FormationAssignment formation, Match match, EvaluationCache evaluationCache, Random random)
+        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
-                new LinkedList<Quantity<FormationAssignment>>(
+                new LinkedList<Quantity<FormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<FormationAssignment>.Create(x, GetCoverage(x)))
+                        .Select(x => Quantity<FormationHandler>.Create(x, GetCoverage(x)))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(x => Quantity<IMapRegion>.Create(x, GetRequiredCoverage(x.Range(map).Count())));
@@ -48,14 +48,14 @@ namespace Expeditionary.Ai.Assignments.Formations
             }
         }
 
-        private static List<FormationAssignment> Assign(
-            LinkedList<Quantity<FormationAssignment>> formations, Quantity<IMapRegion> region)
+        private static List<FormationHandler> Assign(
+            LinkedList<Quantity<FormationHandler>> formations, Quantity<IMapRegion> region)
         {
-            var result = new List<FormationAssignment>();
+            var result = new List<FormationHandler>();
             float coverage = 0;
             while (coverage < region.Value && formations.Any())
             {
-                Quantity<FormationAssignment> formation;
+                Quantity<FormationHandler> formation;
                 if (!result.Any())
                 {
                     formation = formations.First();
@@ -72,7 +72,7 @@ namespace Expeditionary.Ai.Assignments.Formations
             return result;
         }
 
-        private static float GetCoverage(FormationAssignment formation)
+        private static float GetCoverage(FormationHandler formation)
         {
             return GetCoverage(formation.Formation.Echelon);
         }

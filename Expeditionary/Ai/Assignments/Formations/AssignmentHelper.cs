@@ -10,7 +10,7 @@ namespace Expeditionary.Ai.Assignments.Formations
     public static class AssignmentHelper
     {
         public static void DeployInRegion(
-            FormationAssignment formation,
+            FormationHandler formation,
             Match match,
             SignedDistanceField sdf,
             IMapRegion region,
@@ -18,11 +18,11 @@ namespace Expeditionary.Ai.Assignments.Formations
             TileConsideration consideration,
             EvaluationCache evaluationCache)
         {
-            var defensive = new List<UnitAssignment>();
-            var shortRange = new List<UnitAssignment>();
-            var medRange = new List<UnitAssignment>();
-            var longRange = new List<UnitAssignment>();
-            foreach (var unit in formation.GetUnitAssignments())
+            var defensive = new List<UnitHandler>();
+            var shortRange = new List<UnitHandler>();
+            var medRange = new List<UnitHandler>();
+            var longRange = new List<UnitHandler>();
+            foreach (var unit in formation.GetUnitHandlers())
             {
                 if (DefaultDispositionMapper.Map(unit.Unit.Type) == Disposition.Defensive)
                 {
@@ -85,7 +85,7 @@ namespace Expeditionary.Ai.Assignments.Formations
 
         private static void Assign(
             Match match,
-            IEnumerable<UnitAssignment> units,
+            IEnumerable<UnitHandler> units,
             IMapRegion region,
             TileConsideration consideration)
         {

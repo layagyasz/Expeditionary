@@ -8,7 +8,7 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class DefaultOffensiveAssignment(MapDirection Direction) : IFormationAssignment
     {
-        public void Assign(FormationAssignment formation, Match match, EvaluationCache evaluationCache, Random random)
+        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Direction, 0.5f);

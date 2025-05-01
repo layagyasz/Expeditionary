@@ -4,6 +4,6 @@ namespace Expeditionary.Ai.Assignments.Units
 {
     public class NoUnitAssignment : IUnitAssignment
     {
-        public void Place(UnitAssignment unit, Match match) { }
+        public void Place(UnitHandler unit, Match match) { }
     }
 }

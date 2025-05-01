@@ -6,33 +6,33 @@ using Expeditionary.Model.Formations;
 
 namespace Expeditionary.Ai
 {
-    public class FormationAssignment
+    public class FormationHandler
     {
         private readonly ILogger s_Logger = 
-            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(FormationAssignment));
+            new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(FormationHandler));
 
         public Formation Formation { get; }
         public IFormationAssignment Assignment { get; private set; } = new NoFormationAssignment();
-        public IEnumerable<FormationAssignment> Children => _children;
-        public IEnumerable<UnitAssignment> Units => _units;
+        public IEnumerable<FormationHandler> Children => _children;
+        public IEnumerable<UnitHandler> Units => _units;
 
-        private readonly List<FormationAssignment> _children;
-        private readonly List<UnitAssignment> _units;
+        private readonly List<FormationHandler> _children;
+        private readonly List<UnitHandler> _units;
 
-        private FormationAssignment(
-            Formation formation, IEnumerable<FormationAssignment> children, IEnumerable<UnitAssignment> units)
+        private FormationHandler(
+            Formation formation, IEnumerable<FormationHandler> children, IEnumerable<UnitHandler> units)
         {
             Formation = formation;
             _children = children.ToList();
             _units = units.ToList();
         }
 
-        public static FormationAssignment Create(Formation formation)
+        public static FormationHandler Create(Formation formation)
         {
             return new(
                 formation,
                 formation.ComponentFormations.Select(Create), 
-                formation.UnitsAndRoles.Select(x => new UnitAssignment(x.Item1, x.Item2)));
+                formation.UnitsAndRoles.Select(x => new UnitHandler(x.Item1, x.Item2)));
         }
 
         public void AssignChildren(Match match, EvaluationCache evaluationCache, Random random)
@@ -45,9 +45,9 @@ namespace Expeditionary.Ai
             }
         }
 
-        public IEnumerable<UnitAssignment> GetUnitAssignments()
+        public IEnumerable<UnitHandler> GetUnitHandlers()
         {
-            return Enumerable.Concat(_units, _children.SelectMany(x => x.GetUnitAssignments()));
+            return Enumerable.Concat(_units, _children.SelectMany(x => x.GetUnitHandlers()));
         }
 
         public void SetAssignment(IFormationAssignment assignment)

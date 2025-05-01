@@ -23,7 +23,7 @@ namespace Expeditionary.Ai
         private readonly EvaluationCache _evaluationCache;
         private readonly Random _random;
         private readonly IPlayerKnowledge _knowledge;
-        private readonly List<FormationAssignment> _formations;
+        private readonly List<FormationHandler> _formations;
 
         public AiPlayerHandler(Player player, Match match, EvaluationCache evaluationCache, Random random)
         {
@@ -32,12 +32,12 @@ namespace Expeditionary.Ai
             _evaluationCache = evaluationCache;
             _random = random;
             _knowledge = match.GetKnowledge(Player);
-            _formations = match.GetFormations(Player).Select(FormationAssignment.Create).ToList();
+            _formations = match.GetFormations(Player).Select(FormationHandler.Create).ToList();
         }
 
-        public FormationAssignment AddFormation(Formation formation)
+        public FormationHandler AddFormation(Formation formation)
         {
-            var result = FormationAssignment.Create(formation);
+            var result = FormationHandler.Create(formation);
             _formations.Add(result);
             return result;
         }
@@ -58,14 +58,14 @@ namespace Expeditionary.Ai
             s_Logger.With(Player.Id).Log($"finished automated turn");
         }
 
-        public IEnumerable<FormationAssignment> GetFormationAssignments()
+        public IEnumerable<FormationHandler> GetFormationAssignments()
         {
             return _formations;
         }
 
-        public IEnumerable<UnitAssignment> GetUnitAssignments()
+        public IEnumerable<UnitHandler> GetUnitHandlers()
         {
-            return _formations.SelectMany(x => x.GetUnitAssignments());
+            return _formations.SelectMany(x => x.GetUnitHandlers());
         }
 
         public void Initialize()
@@ -81,21 +81,21 @@ namespace Expeditionary.Ai
             {
                 formation.AssignChildren(_match, _evaluationCache, _random);
             }
-            foreach (var unit in GetUnitAssignments())
+            foreach (var unit in GetUnitHandlers())
             {
                 unit.Assignment.Place(unit, _match);
             }
         }
 
-        private void DoFormationTurn(FormationAssignment formation)
+        private void DoFormationTurn(FormationHandler formation)
         {
-            foreach (var unit in formation.GetUnitAssignments().Where(x => x.IsActive()))
+            foreach (var unit in formation.GetUnitHandlers().Where(x => x.IsActive()))
             {
                 DoUnitTurn(unit);
             }
         }
 
-        private void DoUnitTurn(UnitAssignment unit)
+        private void DoUnitTurn(UnitHandler unit)
         {
             var map = _match.GetMap();
             var attack = unit.Unit.Type.Weapons.First();

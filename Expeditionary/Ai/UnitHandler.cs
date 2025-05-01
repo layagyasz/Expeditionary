@@ -4,13 +4,13 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
 {
-    public class UnitAssignment
+    public class UnitHandler
     {
         public Unit Unit { get; }
         public FormationRole Role { get; }
         public IUnitAssignment Assignment { get; private set; } = new NoUnitAssignment();
 
-        public UnitAssignment(Unit unit, FormationRole role)
+        public UnitHandler(Unit unit, FormationRole role)
         {
             Unit = unit;
             Role = role;

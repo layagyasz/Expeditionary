@@ -6,7 +6,7 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class RandomAssignment(IMapRegion DeploymentRegion) : IFormationAssignment
     {
-        public void Assign(FormationAssignment formation, Match match, EvaluationCache evaluationCache, Random random)
+        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var options = DeploymentRegion.Range(map).Where(x => !map.Get(x)!.Terrain.IsLiquid).ToList();
