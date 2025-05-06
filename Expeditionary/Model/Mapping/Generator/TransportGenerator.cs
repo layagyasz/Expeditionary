@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Graphing;
 using DelaunayTriangulator;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using MathNet.Numerics.Statistics;
 using OpenTK.Mathematics;
@@ -101,7 +102,7 @@ namespace Expeditionary.Model.Mapping.Generator
 
         private static void AddEdge(Vector3i origin, Vector3i destination, Parameters parameters, Map map)
         {
-            var path = Pathing.GetShortestPath(map, origin, destination, s_Movement)!;
+            var path = Pathing.GetShortestPath(map, origin, destination, s_Movement, TileConsiderations.None)!;
             if (path.Cost> parameters.MaximumCost)
             {
                 return;

@@ -8,6 +8,14 @@ namespace Expeditionary.Model.Combat
     {
         public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit defender, Map map)
         {
+            if (defender.IsDestroyed)
+            {
+                return false;
+            }
+            if (!defender.Position.HasValue)
+            {
+                return false;
+            }
             if (attacker.Player.Team == defender.Player.Team)
             {
                 return false;

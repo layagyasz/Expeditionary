@@ -3,6 +3,7 @@ using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Orders;
@@ -117,7 +118,8 @@ namespace Expeditionary.Controller
                                 _match.GetMap(),
                                 _selectedUnit.Position.Value,
                                 e.Hex,
-                                _selectedUnit.Type.Movement, 
+                                _selectedUnit.Type.Movement,
+                                TileConsiderations.None,
                                 _selectedUnit.Type.Speed)));
                     UpdateOrder();
                 }
@@ -169,6 +171,7 @@ namespace Expeditionary.Controller
                             _match.GetMap(), 
                             _selectedUnit.Position!.Value, 
                             _selectedUnit.Type.Movement, 
+                            TileConsiderations.None,
                             _selectedUnit.Movement)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));

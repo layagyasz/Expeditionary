@@ -25,7 +25,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                     .GroupBy(x => x.Item1.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = match.GetMap().GetAxisSize(Direction) / 3;
-            var extent = Pathing.GetPathField(map, origin, exemplar.Movement, distance);
+            var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
             var sdf = SignedDistanceField.FromPathField(extent, distance >> 1);
             AssignmentHelper.DeployInRegion(
                 formation,

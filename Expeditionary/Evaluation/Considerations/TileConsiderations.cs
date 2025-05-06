@@ -92,6 +92,11 @@ namespace Expeditionary.Evaluation.Considerations
             return (_, _) => random.NextSingle();
         }
 
+        public static float None(Vector3i _0, Tile _1)
+        {
+            return 0;
+        }
+
         public static TileConsideration Roading(Map map)
         {
             return (hex, tile) => 

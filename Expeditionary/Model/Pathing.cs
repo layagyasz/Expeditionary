@@ -1,4 +1,5 @@
 ﻿using Cardamom.Collections;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
@@ -14,79 +15,39 @@ namespace Expeditionary.Model
         {
             public Vector3i Hex { get; }
             public Tile Tile { get; }
+            public float ExtraCost { get; }
             public bool Open { get; set; }
-            public bool Closed { get; set; }
             public float Cost { get; set; }
+            public bool Closed { get; set; }
             public Node? Parent { get; set; }
 
-            internal Node(Vector3i hex, Tile tile)
+            private Node(Vector3i hex, Tile tile, float extraCost, float cost)
             {
                 Hex = hex;
-                Cost = float.MaxValue;
                 Tile = tile;
+                ExtraCost = extraCost;
+                Cost = cost;
+            }
+
+            internal static Node CreateRoot(Vector3i hex, Tile tile, float cost)
+            {
+                return new(hex, tile, cost, cost) { Open = true };
+            }
+
+            internal static Node Create(Vector3i hex, Tile tile, float extraCost)
+            {
+                return new(hex, tile, extraCost, float.MaxValue);
             }
         }
 
         public static IEnumerable<PathOption> GetPathField(
-            Map map, Vector3i position, Movement movement, float maxCost = float.PositiveInfinity)
+            Map map, 
+            Vector3i position,
+            Movement movement,
+            TileConsideration extraTileCost, 
+            float maxCost = float.PositiveInfinity)
         {
-            var open = new Heap<Node, float>();
-            var nodes = new Dictionary<Vector3i, Node>();
-            
-            var startNode =
-                new Node(position, map.Get(position)!)
-                {
-                    Open = true,
-                    Cost = 0
-                };
-            nodes.Add(position, startNode);
-            open.Push(startNode, 0);
-
-            while (open.Count > 0)
-            {
-                var current = open.Pop();
-                current.Open = false;
-                current.Closed = true;
-                foreach (var neighbor in Geometry.GetNeighbors(current.Hex))
-                {
-                    var neighborTile = map.Get(neighbor);
-                    if (neighborTile == null)
-                    {
-                        continue;
-                    }
-
-                    if (!nodes.TryGetValue(neighbor, out var neighborNode))
-                    {
-                        neighborNode = new(neighbor, neighborTile);
-                        nodes.Add(neighbor, neighborNode);
-                    }
-                    
-                    if (neighborNode.Closed)
-                    {
-                        continue;
-                    }
-
-                    var cost = current.Cost
-                        + movement.GetCost(
-                            GetHindrance(
-                                current.Tile, neighborTile, map.GetEdge(Geometry.GetEdge(current.Hex, neighbor))!));
-                    if (cost <= maxCost && cost < neighborNode.Cost)
-                    {
-                        if (neighborNode.Open)
-                        {
-                            open.Remove(neighborNode);
-                        }
-                        else
-                        {
-                            neighborNode.Open = true;
-                        }
-                        neighborNode.Cost = cost;
-                        neighborNode.Parent = current;
-                        open.Push(neighborNode, cost);
-                    }
-                }
-            }
-
+            var nodes = GeneratePaths(map, position, movement, extraTileCost, maxCost, _ => 0, _ => false);
             foreach (var node in nodes.Values)
             {
                 if (node.Closed && !(node.Cost > maxCost))
@@ -101,27 +62,49 @@ namespace Expeditionary.Model
             Vector3i position, 
             Vector3i destination, 
             Movement movement, 
+            TileConsideration extraTileCost,
             float maxCost = float.PositiveInfinity)
+        {
+            var nodes = 
+                GeneratePaths(
+                    map, 
+                    position,
+                    movement,
+                    extraTileCost,
+                    maxCost,
+                    x => Geometry.GetCartesianDistance(destination, x),
+                    x => x == destination);
+            if (nodes.TryGetValue(destination, out var node))
+            {
+                return BuildPath(node);
+            }
+            return null;
+        }
+
+        private static Dictionary<Vector3i, Node> GeneratePaths(
+            Map map,
+            Vector3i position,
+            Movement movement,
+            TileConsideration extraTileCost,
+            float maxCost,
+            Func<Vector3i, float> heuristic,
+            Predicate<Vector3i> exitCondition)
         {
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
 
-            var startNode =
-                new Node(position, map.Get(position)!)
-                {
-                    Open = true,
-                    Cost = 0
-                };
+            var tile = map.Get(position)!;
+            var startNode = Node.CreateRoot(position, tile, extraTileCost(position, tile));
             nodes.Add(position, startNode);
-            open.Push(startNode, 0);
+            open.Push(startNode, startNode.Cost);
 
             while (open.Count > 0)
             {
                 var current = open.Pop();
 
-                if (current.Hex == destination)
+                if (exitCondition(current.Hex))
                 {
-                    return BuildPath(current);
+                    return nodes;
                 }
 
                 current.Open = false;
@@ -136,7 +119,7 @@ namespace Expeditionary.Model
 
                     if (!nodes.TryGetValue(neighbor, out var neighborNode))
                     {
-                        neighborNode = new(neighbor, neighborTile);
+                        neighborNode = Node.Create(neighbor, neighborTile, extraTileCost(neighbor, neighborTile));
                         nodes.Add(neighbor, neighborNode);
                     }
 
@@ -145,7 +128,8 @@ namespace Expeditionary.Model
                         continue;
                     }
 
-                    var cost = current.Cost 
+                    var cost = current.Cost
+                        + neighborNode.ExtraCost
                         + movement.GetCost(
                             GetHindrance(
                                 current.Tile, neighborTile, map.GetEdge(Geometry.GetEdge(current.Hex, neighbor))!));
@@ -162,12 +146,12 @@ namespace Expeditionary.Model
                         }
                         neighborNode.Cost = cost;
                         neighborNode.Parent = current;
-                        open.Push(neighborNode, cost + Geometry.GetCartesianDistance(destination, neighbor));
+                        open.Push(neighborNode, cost + heuristic(neighbor));
                     }
                 }
             }
 
-            return null;
+            return nodes;
         }
 
         private static Movement.Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
