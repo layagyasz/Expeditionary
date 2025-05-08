@@ -9,8 +9,8 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public static class AssignmentHelper
     {
-        public static void DeployInRegion(
-            FormationHandler formation,
+        public static FormationAssignment AssignInRegion(
+            IFormationHandler formation,
             Match match,
             SignedDistanceField sdf,
             IMapRegion region,
@@ -44,6 +44,14 @@ namespace Expeditionary.Ai.Assignments.Formations
                 }
             }
 
+            var formationResult = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
+            var unitResult = new Dictionary<UnitHandler, IUnitAssignment>();
+
+            foreach (var f in formation.GetAllFormationHandlers())
+            {
+                formationResult.Add(f, new AreaAssignment(region, facing));
+            }
+
             var edge = TileConsiderations.Edge(sdf, 0);
             Assign(
                 match,
@@ -53,7 +61,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                     consideration,
                     TileConsiderations.Edge(sdf, -5),
                     TileConsiderations.Exposure(
-                        evaluationCache.Exposure, facing, Disposition.Defensive, RangeBucket.Medium)));
+                        evaluationCache.Exposure, facing, Disposition.Defensive, RangeBucket.Medium)),
+                unitResult);
             Assign(
                 match,
                 shortRange,
@@ -62,7 +71,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Short)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Short)),
+                unitResult);
             Assign(
                 match,
                 medRange,
@@ -71,7 +81,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Medium)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Medium)),
+                unitResult);
             Assign(
                 match,
                 longRange,
@@ -80,14 +91,18 @@ namespace Expeditionary.Ai.Assignments.Formations
                     consideration,
                     edge,
                     TileConsiderations.Exposure(
-                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Long)));
+                        evaluationCache.Exposure, facing, Disposition.Offensive, RangeBucket.Long)),
+                unitResult);
+
+            return new(formationResult, unitResult);
         }
 
         private static void Assign(
             Match match,
             IEnumerable<UnitHandler> units,
             IMapRegion region,
-            TileConsideration consideration)
+            TileConsideration consideration,
+            Dictionary<UnitHandler, IUnitAssignment> result)
         {
             var tilesAndEvaluations =
                 region.Range(match.GetMap())
@@ -102,10 +117,9 @@ namespace Expeditionary.Ai.Assignments.Formations
                 tilesAndEvaluations.AddRange(tilesAndEvaluations);
             }
             tilesAndEvaluations.Sort((x, y) => -x.score.CompareTo(y.score));
-            var assignments = units.Zip(tilesAndEvaluations).Select(x => (x.First, x.Second.hex));
-            foreach (var (unit, hex) in assignments)
+            foreach ((var unit, var hex) in units.Zip(tilesAndEvaluations).Select(x => (x.First, x.Second.hex)))
             {
-                unit.SetAssignment(new PositionAssignment(hex));
+                result.Add(unit, new PositionAssignment(hex));
             }
         }
     }

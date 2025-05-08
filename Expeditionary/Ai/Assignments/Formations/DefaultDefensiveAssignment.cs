@@ -1,4 +1,5 @@
 ﻿using Cardamom.Trackers;
+using Expeditionary.Ai.Assignments.Units;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
@@ -11,17 +12,19 @@ namespace Expeditionary.Ai.Assignments.Formations
     public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
         : IFormationAssignment
     {
-        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(
+            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var eligibleOccupiers =
-                new LinkedList<Quantity<FormationHandler>>(
+                new LinkedList<Quantity<SimpleFormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<FormationHandler>.Create(x, GetCoverage(x)))
+                        .Select(x => Quantity<SimpleFormationHandler>.Create(x, GetCoverage(x)))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(x => Quantity<IMapRegion>.Create(x, GetRequiredCoverage(x.Range(map).Count())));
+            var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
             foreach (var region in regions)
             {
                 if (!eligibleOccupiers.Any())
@@ -31,7 +34,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                 var assignments = Assign(eligibleOccupiers, region);
                 foreach (var f in assignments)
                 {
-                    f.SetAssignment(new AreaAssignment(region.Key, MapDirectionUtils.Invert(DefendingDirection)));
+                    result.Add(f, new AreaAssignment(region.Key, MapDirectionUtils.Invert(DefendingDirection)));
                 }
             }
             var edgeRegion = new EdgeMapRegion(DefendingDirection, 0.5f);
@@ -40,22 +43,25 @@ namespace Expeditionary.Ai.Assignments.Formations
             foreach ((var f, var r) in eligibleOccupiers
                 .Select(x => x.Key).Zip(edgeRegion.Partition(map, keyVector, eligibleOccupiers.Count)))
             {
-                f.SetAssignment(new AreaAssignment(r, facing));
+                result.Add(f, new AreaAssignment(r, facing));
             }
             foreach (var f in formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry))
             {
-                f.SetAssignment(new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.25f), facing));
+                result.Add(f, new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.25f), facing));
             }
+
+            // Handle top-echelon units
+            return new(result, new Dictionary<UnitHandler, IUnitAssignment>());
         }
 
-        private static List<FormationHandler> Assign(
-            LinkedList<Quantity<FormationHandler>> formations, Quantity<IMapRegion> region)
+        private static List<SimpleFormationHandler> Assign(
+            LinkedList<Quantity<SimpleFormationHandler>> formations, Quantity<IMapRegion> region)
         {
-            var result = new List<FormationHandler>();
+            var result = new List<SimpleFormationHandler>();
             float coverage = 0;
             while (coverage < region.Value && formations.Any())
             {
-                Quantity<FormationHandler> formation;
+                Quantity<SimpleFormationHandler> formation;
                 if (!result.Any())
                 {
                     formation = formations.First();
@@ -72,7 +78,7 @@ namespace Expeditionary.Ai.Assignments.Formations
             return result;
         }
 
-        private static float GetCoverage(FormationHandler formation)
+        private static float GetCoverage(SimpleFormationHandler formation)
         {
             return GetCoverage(formation.Formation.Echelon);
         }

@@ -8,9 +8,10 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IFormationAssignment
     {
-        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(
+            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
-            AssignmentHelper.DeployInRegion(
+            return AssignmentHelper.AssignInRegion(
                 formation,
                 match,
                 SignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing),

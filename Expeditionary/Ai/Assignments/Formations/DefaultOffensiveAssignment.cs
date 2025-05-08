@@ -8,7 +8,8 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class DefaultOffensiveAssignment(MapDirection Direction) : IFormationAssignment
     {
-        public void Assign(FormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(
+            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
         {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Direction, 0.5f);
@@ -21,13 +22,13 @@ namespace Expeditionary.Ai.Assignments.Formations
                         x,
                         map));
             var exemplar =
-                formation.Formation.GetUnitsAndRoles()
-                    .GroupBy(x => x.Item1.Type)
+                formation.GetAllUnitHandlers()
+                    .GroupBy(x => x.Unit.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = match.GetMap().GetAxisSize(Direction) / 3;
             var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
             var sdf = SignedDistanceField.FromPathField(extent, distance >> 1);
-            AssignmentHelper.DeployInRegion(
+            return AssignmentHelper.AssignInRegion(
                 formation,
                 match,
                 sdf,

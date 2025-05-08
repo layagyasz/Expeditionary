@@ -23,7 +23,7 @@ namespace Expeditionary.Ai
         private readonly EvaluationCache _evaluationCache;
         private readonly Random _random;
         private readonly IPlayerKnowledge _knowledge;
-        private readonly List<FormationHandler> _formations;
+        private readonly RootFormationHandler _rootFormationHandler;
 
         public AiPlayerHandler(Player player, Match match, EvaluationCache evaluationCache, Random random)
         {
@@ -32,13 +32,14 @@ namespace Expeditionary.Ai
             _evaluationCache = evaluationCache;
             _random = random;
             _knowledge = match.GetKnowledge(Player);
-            _formations = match.GetFormations(Player).Select(FormationHandler.Create).ToList();
+            _rootFormationHandler = 
+                new RootFormationHandler(player, match.GetFormations(Player).Select(SimpleFormationHandler.Create));
         }
 
-        public FormationHandler AddFormation(Formation formation)
+        public IFormationHandler AddFormation(Formation formation)
         {
-            var result = FormationHandler.Create(formation);
-            _formations.Add(result);
+            var result = SimpleFormationHandler.Create(formation);
+            _rootFormationHandler.Add(result);
             return result;
         }
 
@@ -52,20 +53,13 @@ namespace Expeditionary.Ai
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
-            _formations.ForEach(DoFormationTurn);
+            foreach (var formation in _rootFormationHandler.GetAllFormationHandlers())
+            {
+                DoFormationTurn(formation);
+            }
             Thread.Sleep(1000);
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
-        }
-
-        public IEnumerable<FormationHandler> GetFormationAssignments()
-        {
-            return _formations;
-        }
-
-        public IEnumerable<UnitHandler> GetUnitHandlers()
-        {
-            return _formations.SelectMany(x => x.GetUnitHandlers());
         }
 
         public void Initialize()
@@ -76,20 +70,21 @@ namespace Expeditionary.Ai
 
         public void Setup()
         {
-            s_Logger.With(Player.Id).Log("Setup");
-            foreach (var formation in GetFormationAssignments())
+            s_Logger.With(Player.Id).Log("Setup formations");
+            foreach (var formation in _rootFormationHandler.Children)
             {
-                formation.AssignChildren(_match, _evaluationCache, _random);
+                formation.Reevaluate(_match, _evaluationCache, _random);
             }
-            foreach (var unit in GetUnitHandlers())
+            s_Logger.With(Player.Id).Log("Setup units");
+            foreach (var unit in _rootFormationHandler.GetAllUnitHandlers())
             {
                 unit.Assignment.Place(unit, _match);
             }
         }
 
-        private void DoFormationTurn(FormationHandler formation)
+        private void DoFormationTurn(SimpleFormationHandler formation)
         {
-            foreach (var unit in formation.GetUnitHandlers().Where(x => x.IsActive()))
+            foreach (var unit in formation.GetUnitHandlers())
             {
                 DoUnitTurn(unit);
             }
