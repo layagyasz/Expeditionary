@@ -94,7 +94,8 @@ namespace Expeditionary.Model
             var nodes = new Dictionary<Vector3i, Node>();
 
             var tile = map.Get(position)!;
-            var startNode = Node.CreateRoot(position, tile, extraTileCost(position, tile));
+            var startNode = 
+                Node.CreateRoot(position, tile, extraTileCost(position, () => tile, Enumerable.Empty<Edge>));
             nodes.Add(position, startNode);
             open.Push(startNode, startNode.Cost);
 
@@ -119,7 +120,11 @@ namespace Expeditionary.Model
 
                     if (!nodes.TryGetValue(neighbor, out var neighborNode))
                     {
-                        neighborNode = Node.Create(neighbor, neighborTile, extraTileCost(neighbor, neighborTile));
+                        neighborNode = 
+                            Node.Create(
+                                neighbor,
+                                neighborTile, 
+                                extraTileCost(neighbor, () => neighborTile, Enumerable.Empty<Edge>));
                         nodes.Add(neighbor, neighborNode);
                     }
 

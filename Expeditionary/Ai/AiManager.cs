@@ -25,7 +25,7 @@ namespace Expeditionary.Ai
 
         public AiPlayerHandler CreateHandler(Player player)
         {
-            return new(player, _match, _evaluationCache, _random);
+            return new(player, _match, new(_evaluationCache, _random));
         }
 
         public void Dispose()

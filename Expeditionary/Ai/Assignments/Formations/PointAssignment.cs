@@ -12,14 +12,20 @@ namespace Expeditionary.Ai.Assignments.Formations
     public record class PointAssignment(Vector3i Hex, MapDirection Facing) : IFormationAssignment
     {
         public static FormationAssignment SelectFrom(
-            IFormationHandler formation, Map map, IMapRegion region, MapDirection facing, Random random)
+            IFormationHandler formation,
+            Map map, 
+            IMapRegion region,
+            MapDirection facing,
+            TileEvaluator tileEvaluator, 
+            TileConsideration extraConsideration)
         {
             return SelectFrom(
                 formation.Children,
                 map, 
                 region,
                 facing,
-                DefaultConsideration(map, random),
+                tileEvaluator,
+                extraConsideration,
                 2 * GetSpacing(formation.Echelon));
         }
 
@@ -28,14 +34,19 @@ namespace Expeditionary.Ai.Assignments.Formations
             Map map,
             IMapRegion region, 
             MapDirection facing, 
-            TileConsideration consideration, 
+            TileEvaluator tileEvaluator,
+            TileConsideration extraConsideration, 
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            consideration = TileConsiderations.Combine(consideration, TileConsiderations.Exterior(sdf, 0));
             var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
             foreach (var formation in formations)
             {
+                var consideration = 
+                    TileConsiderations.Combine(
+                        tileEvaluator.GetConsiderationFor(formation.Formation, facing), 
+                        extraConsideration,
+                        TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
                 result.Add(formation, new PointAssignment(hex, facing));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
@@ -44,13 +55,23 @@ namespace Expeditionary.Ai.Assignments.Formations
         }
 
         public static FormationAssignment SelectFrom(
-            IEnumerable<UnitHandler> units, Map map, IMapRegion region, TileConsideration consideration, int spacing)
+            IEnumerable<UnitHandler> units,
+            Map map, 
+            IMapRegion region,
+            MapDirection facing,
+            TileEvaluator tileEvaluator,
+            TileConsideration extraConsideration, 
+            int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            consideration = TileConsiderations.Combine(consideration, TileConsiderations.Exterior(sdf, 0));
             var result = new Dictionary<UnitHandler, IUnitAssignment>();
             foreach (var unit in units)
             {
+                var consideration = 
+                    TileConsiderations.Combine(
+                        tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, facing),
+                        extraConsideration,
+                        TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
                 result.Add(unit, new PositionAssignment(hex));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
@@ -58,12 +79,10 @@ namespace Expeditionary.Ai.Assignments.Formations
             return new(new(), result);
         }
 
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             int spacing = GetSpacing(formation.Echelon);
             var supportRegion = new PointMapRegion(Hex, 2 * spacing);
-            var consideration = DefaultConsideration(match.GetMap(), random);
             // Handle extra units
             if (formation.Children.Any())
             {
@@ -77,9 +96,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                         match.GetMap(),
                         supportRegion, 
                         Facing,
-                        TileConsiderations.Combine(
-                            consideration, 
-                            TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0)),
+                        tileEvaluator,
+                        TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
                         spacing));
             } 
             else if (formation.GetUnitHandlers().Any())
@@ -94,9 +112,9 @@ namespace Expeditionary.Ai.Assignments.Formations
                         units.Skip(1),
                         match.GetMap(),
                         supportRegion, 
-                        TileConsiderations.Combine(
-                            consideration,
-                            TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0)),
+                        Facing,
+                        tileEvaluator,
+                        TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
                         spacing));
             }
             throw new ArgumentException($"Formation {formation} had no children or units.");
@@ -109,16 +127,6 @@ namespace Expeditionary.Ai.Assignments.Formations
                 return 1;
             }
             return (int)Math.Pow(3, echelon - 2);
-        }
-
-        private static TileConsideration DefaultConsideration(Map map, Random random)
-        {
-            return TileConsiderations.Combine(
-                TileConsiderations.Essential(TileConsiderations.Land),
-                TileConsiderations.Forestation,
-                TileConsiderations.Urbanization,
-                TileConsiderations.Roading(map),
-                TileConsiderations.Weight(0.1f, TileConsiderations.Noise(random)));
         }
     }
 }

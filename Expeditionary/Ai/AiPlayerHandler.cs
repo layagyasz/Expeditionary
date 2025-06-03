@@ -20,17 +20,15 @@ namespace Expeditionary.Ai
         public Player Player { get; }
 
         private readonly Match _match;
-        private readonly EvaluationCache _evaluationCache;
-        private readonly Random _random;
+        private readonly TileEvaluator _tileEvaluator;
         private readonly IPlayerKnowledge _knowledge;
         private readonly RootFormationHandler _rootFormationHandler;
 
-        public AiPlayerHandler(Player player, Match match, EvaluationCache evaluationCache, Random random)
+        public AiPlayerHandler(Player player, Match match, TileEvaluator tileEvaluator)
         {
             Player = player;
             _match = match;
-            _evaluationCache = evaluationCache;
-            _random = random;
+            _tileEvaluator = tileEvaluator;
             _knowledge = match.GetKnowledge(Player);
             _rootFormationHandler = 
                 new RootFormationHandler(player, match.GetFormations(Player).Select(SimpleFormationHandler.Create));
@@ -73,7 +71,7 @@ namespace Expeditionary.Ai
             s_Logger.With(Player.Id).Log("Setup formations");
             foreach (var formation in _rootFormationHandler.Children)
             {
-                formation.Reevaluate(_match, _evaluationCache, _random);
+                formation.Reevaluate(_match, _tileEvaluator);
             }
             s_Logger.With(Player.Id).Log("Setup units");
             foreach (var unit in _rootFormationHandler.GetAllUnitHandlers())

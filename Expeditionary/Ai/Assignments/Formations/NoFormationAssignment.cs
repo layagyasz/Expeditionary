@@ -6,8 +6,7 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public class NoFormationAssignment : IFormationAssignment
     {
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random) 
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator) 
         {
             return new(
                 formation.Children.ToDictionary(x => x, x => (IFormationAssignment)new NoFormationAssignment()),

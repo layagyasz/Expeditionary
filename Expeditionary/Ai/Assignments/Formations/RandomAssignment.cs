@@ -5,15 +5,15 @@ using Expeditionary.Model.Mapping.Regions;
 
 namespace Expeditionary.Ai.Assignments.Formations
 {
-    public record class RandomAssignment(IMapRegion DeploymentRegion) : IFormationAssignment
+    public record class RandomAssignment(IMapRegion Region) : IFormationAssignment
     {
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
-            var options = DeploymentRegion.Range(map).Where(x => !map.Get(x)!.Terrain.IsLiquid).ToList();
+            var options = Region.Range(map).Where(x => !map.Get(x)!.Terrain.IsLiquid).ToList();
             var formationResult = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
             var unitResult = new Dictionary<UnitHandler, IUnitAssignment>();
+            var random = new Random();
             foreach (var child in formation.Children)
             {
                 formationResult.Add(child, this);

@@ -40,14 +40,14 @@ namespace Expeditionary.Ai
 
         public abstract IEnumerable<UnitHandler> GetUnitHandlers();
 
-        public void Reevaluate(Match match, EvaluationCache evaluationCache, Random random)
+        public void Reevaluate(Match match, TileEvaluator tileEvaluator)
         {
             s_Logger.With(Id).Log($"reevaluate {Assignment}");
-            var assignment = Assignment.Assign(this, match, evaluationCache, random);
+            var assignment = Assignment.Assign(this, match, tileEvaluator);
             DoAssignment(assignment);
             foreach (var child in Children)
             {
-                child.Reevaluate(match, evaluationCache, random);
+                child.Reevaluate(match, tileEvaluator);
             }
         }
 

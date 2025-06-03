@@ -9,8 +9,7 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class DefaultOffensiveAssignment(MapDirection Direction) : IFormationAssignment
     {
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Direction, 0.5f);
@@ -18,31 +17,24 @@ namespace Expeditionary.Ai.Assignments.Formations
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(
                         TileConsiderations.Combine(
-                            TileConsiderations.Weight(0.1f, TileConsiderations.Noise(random)),
-                            TileConsiderations.Roading(map)),
+                            TileConsiderations.Weight(0.1f, TileConsiderations.Noise(new())),
+                            TileConsiderations.Roading),
                         x,
                         map));
             var exemplar =
                 formation.GetAllUnitHandlers()
                     .GroupBy(x => x.Unit.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
-            int distance = match.GetMap().GetAxisSize(Direction) / 3;
+            int distance = match.GetMap().GetAxisSize(Direction) >> 2;
             var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
             var sdf = DenseSignedDistanceField.FromPathField(extent, distance >> 1);
-            return AssignmentHelper.AssignInRegion(
-                formation,
-                match,
-                sdf,
+            return PointAssignment.SelectFrom(
+                formation, 
+                map, 
                 new ExplicitMapRegion(extent.Select(x => x.Destination)),
                 MapDirectionUtils.Invert(Direction),
-                TileConsiderations.Combine(
-                    TileConsiderations.Essential(TileConsiderations.Land),
-                    TileConsiderations.Direction(origin, MapDirectionUtils.Invert(Direction)),
-                    TileConsiderations.Forestation,
-                    TileConsiderations.Urbanization,
-                    TileConsiderations.Roading(match.GetMap()),
-                    TileConsiderations.Weight(0.1f, TileConsiderations.Noise(random))),
-                evaluationCache);
+                tileEvaluator, 
+                TileConsiderations.Edge(sdf, 0));
         }
     }
 }

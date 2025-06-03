@@ -5,7 +5,6 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public interface IFormationAssignment
     {
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random);
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator);
     }
 }

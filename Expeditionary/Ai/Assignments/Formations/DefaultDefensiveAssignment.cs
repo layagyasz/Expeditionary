@@ -10,8 +10,7 @@ namespace Expeditionary.Ai.Assignments.Formations
     public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
         : IFormationAssignment
     {
-        public FormationAssignment Assign(
-            IFormationHandler formation, Match match, EvaluationCache evaluationCache, Random random)
+        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
             var eligibleOccupiers =

@@ -11,7 +11,7 @@ namespace Expeditionary.Ai
         public string Id { get; }
         public int Echelon { get; }
         public void Add(SimpleFormationHandler handler);
-        public void Reevaluate(Match match, EvaluationCache evaluationCache, Random random);
+        public void Reevaluate(Match match, TileEvaluator tileEvaluator);
         public IEnumerable<SimpleFormationHandler> GetAllFormationHandlers();
         public IEnumerable<UnitHandler> GetAllUnitHandlers();
         public IEnumerable<UnitHandler> GetUnitHandlers();

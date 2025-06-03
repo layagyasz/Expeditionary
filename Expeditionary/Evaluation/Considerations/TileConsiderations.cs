@@ -10,17 +10,20 @@ namespace Expeditionary.Evaluation.Considerations
         public static float Evaluate(TileConsideration consideration, Vector3i hex, Map map)
         {
             var tile = map.Get(hex)!;
-            return consideration(hex, tile);
+            return consideration(
+                hex,
+                () => tile, 
+                () => Geometry.GetEdges(hex).Select(map.GetEdge).Where(x => x != null).Cast<Edge>());
         }
 
         public static TileConsideration Combine(params TileConsideration[] considerations)
         {
-            return (hex, tile) =>
+            return (hex, tileFn, edgesFn) =>
             {
                 var score = 0f;
                 foreach (var consideration in considerations)
                 {
-                    score += consideration(hex, tile);
+                    score += consideration(hex, tileFn, edgesFn);
                     if (float.IsNaN(score))
                     {
                         throw new ApplicationException();
@@ -36,19 +39,19 @@ namespace Expeditionary.Evaluation.Considerations
 
         public static TileConsideration Direction(Vector3i origin, MapDirection direction)
         {
-            return (hex, tile) => (MapDirectionUtils.GetInclusiveDirection(origin, hex) & direction) > 0 ? 1 : 0;
+            return (hex, _, _) => (MapDirectionUtils.GetInclusiveDirection(origin, hex) & direction) > 0 ? 1 : 0;
         }
 
         public static TileConsideration Edge(ISignedDistanceField sdf, int offset)
         {
-            return (hex, _) => 1 - Math.Abs(SdfRelativeDistance(sdf, hex, offset));
+            return (hex, _, _) => 1 - Math.Abs(SdfRelativeDistance(sdf, hex, offset));
         }
 
         public static TileConsideration Essential(TileConsideration consideration)
         {
-            return (hex, tile) =>
+            return (hex, tileFn, edgesFn) =>
             {
-                var score = consideration(hex, tile);
+                var score = consideration(hex, tileFn, edgesFn);
                 if (score < float.Epsilon)
                 {
                     return float.NegativeInfinity;
@@ -60,61 +63,59 @@ namespace Expeditionary.Evaluation.Considerations
         public static TileConsideration Exposure(
             ExposureCache cache, MapDirection facing, Disposition disposition, RangeBucket range)
         {
-            return (hex, _) => cache.Evaluate(hex, facing, disposition, range);
+            return (hex, _, _) => cache.Evaluate(hex, facing, disposition, range);
         }
 
         public static TileConsideration Exterior(ISignedDistanceField sdf, int offset)
         {
-            return (hex, _) => Math.Max(0, SdfRelativeDistance(sdf, hex, offset));
+            return (hex, _, _) => Math.Max(0, SdfRelativeDistance(sdf, hex, offset));
         }
 
-        public static float Forestation(Vector3i _, Tile tile)
+        public static float Forestation(Vector3i _0, Func<Tile> tileFn, Func<IEnumerable<Edge>> _2)
         {
-            return tile.Terrain.Foliage != null ? 1 : 0;
+            return tileFn().Terrain.Foliage != null ? 1 : 0;
         }
 
         public static TileConsideration Interior(ISignedDistanceField sdf, int offset)
         {
-            return (hex, _) => Math.Max(0, -SdfRelativeDistance(sdf, hex, offset));
+            return (hex, _, _) => Math.Max(0, -SdfRelativeDistance(sdf, hex, offset));
         }
 
         public static TileConsideration Inverse(TileConsideration consideration)
         {
-            return (hex, tile) => 1 - consideration(hex, tile);
+            return (hex, tileFn, edgesFn) => 1 - consideration(hex, tileFn, edgesFn);
         }
 
-        public static float Land(Vector3i _, Tile tile)
+        public static float Land(Vector3i _0, Func<Tile> tileFn, Func<IEnumerable<Edge>> _2)
         {
-            return tile.Terrain.IsLiquid ? 0 : 1;
+            return tileFn().Terrain.IsLiquid ? 0 : 1;
         }
 
         public static TileConsideration Noise(Random random)
         {
-            return (_, _) => random.NextSingle();
+            return (_, _, _) => random.NextSingle();
         }
 
-        public static float None(Vector3i _0, Tile _1)
+        public static float None(Vector3i _0, Func<Tile> _1, Func<IEnumerable<Edge>> _2)
         {
             return 0;
         }
 
-        public static TileConsideration Roading(Map map)
+        public static float Roading(Vector3i hex, Func<Tile> tileFn, Func<IEnumerable<Edge>> edgesFn)
         {
-            return (hex, tile) => 
-                0.1666666667f * Geometry.GetEdges(hex)
-                    .Select(map.GetEdge)
-                    .Where(x => x != null)
-                    .Count(x => x!.Levels[EdgeType.Road] > 0);
+            return 0.1666666667f * edgesFn()
+                .Where(x => x != null)
+                .Count(x => x!.Levels[EdgeType.Road] > 0);
         }
 
-        public static float Urbanization(Vector3i _, Tile tile)
+        public static float Urbanization(Vector3i _0, Func<Tile> tileFn, Func<IEnumerable<Edge>> _2)
         {
-            return tile.IsUrban() ? 1 : 0;
+            return tileFn().IsUrban() ? 1 : 0;
         }
 
         public static TileConsideration Weight(float weight, TileConsideration consideration)
         {
-            return (hex, tile) => weight * consideration.Invoke(hex, tile);
+            return (hex, tileFn, edgesFn) => weight * consideration.Invoke(hex, tileFn, edgesFn);
         }
 
         private static float SdfRelativeDistance(ISignedDistanceField sdf, Vector3i hex, int offset) 
