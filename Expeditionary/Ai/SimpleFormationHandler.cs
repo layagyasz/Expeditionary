@@ -5,6 +5,7 @@ namespace Expeditionary.Ai
     public class SimpleFormationHandler : FormationHandlerBase
     {
         public override string Id => Formation.Name;
+        public override int Echelon => Formation.Echelon;
         public Formation Formation { get; }
         public IEnumerable<UnitHandler> Units => _units;
 

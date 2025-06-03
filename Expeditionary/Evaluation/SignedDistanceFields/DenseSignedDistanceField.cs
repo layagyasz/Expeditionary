@@ -5,9 +5,9 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Evaluation
+namespace Expeditionary.Evaluation.SignedDistanceFields
 {
-    public class SignedDistanceField
+    public class DenseSignedDistanceField : ISignedDistanceField
     {
         private record class Node
         {
@@ -31,7 +31,7 @@ namespace Expeditionary.Evaluation
 
         private readonly Dictionary<Vector3i, int> _distances;
 
-        private SignedDistanceField(
+        private DenseSignedDistanceField(
             int maxInternalDistance, int maxExternalDistance, Dictionary<Vector3i, int> distances)
         {
             MaxInternalDistance = maxInternalDistance;
@@ -39,15 +39,16 @@ namespace Expeditionary.Evaluation
             _distances = distances;
         }
 
-        public static SignedDistanceField FromPathField(IEnumerable<Pathing.PathOption> pathField, int frontier)
+        public static DenseSignedDistanceField FromPathField(IEnumerable<Pathing.PathOption> pathField, int frontier)
         {
             return new(
                 -frontier,
-                pathField.Max(x => (int)Math.Ceiling(x.Cost)) - frontier, 
+                pathField.Max(x => (int)Math.Ceiling(x.Cost)) - frontier,
                 pathField.ToDictionary(x => x.Destination, x => (int)Math.Ceiling(x.Cost) - frontier));
         }
 
-        public static SignedDistanceField FromRegion(Map map, IMapRegion region, int maxDistance, MapDirection facing)
+        public static DenseSignedDistanceField FromRegion(
+            Map map, IMapRegion region, int maxDistance, MapDirection facing)
         {
             var range = region.Range(map).ToHashSet();
             var open = new Heap<Node, float>();

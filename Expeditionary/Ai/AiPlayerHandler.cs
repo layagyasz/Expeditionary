@@ -92,6 +92,10 @@ namespace Expeditionary.Ai
 
         private void DoUnitTurn(UnitHandler unit)
         {
+            if (!unit.IsActive())
+            {
+                return;
+            }
             var map = _match.GetMap();
             var attack = unit.Unit.Type.Weapons.First();
             var mode = attack.Weapon!.Modes.First();

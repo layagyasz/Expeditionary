@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
+using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
@@ -27,7 +28,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = match.GetMap().GetAxisSize(Direction) / 3;
             var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
-            var sdf = SignedDistanceField.FromPathField(extent, distance >> 1);
+            var sdf = DenseSignedDistanceField.FromPathField(extent, distance >> 1);
             return AssignmentHelper.AssignInRegion(
                 formation,
                 match,

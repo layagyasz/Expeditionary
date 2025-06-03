@@ -9,6 +9,7 @@ namespace Expeditionary.Ai
         public IFormationAssignment Assignment { get; }
         public IEnumerable<SimpleFormationHandler> Children { get; }
         public string Id { get; }
+        public int Echelon { get; }
         public void Add(SimpleFormationHandler handler);
         public void Reevaluate(Match match, EvaluationCache evaluationCache, Random random);
         public IEnumerable<SimpleFormationHandler> GetAllFormationHandlers();

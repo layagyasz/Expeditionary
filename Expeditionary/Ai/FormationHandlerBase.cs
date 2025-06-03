@@ -12,6 +12,7 @@ namespace Expeditionary.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(FormationHandlerBase));
 
         public abstract string Id { get; }
+        public abstract int Echelon { get; }
         public IFormationAssignment Assignment { get; private set; } = new NoFormationAssignment();
         public IEnumerable<SimpleFormationHandler> Children => _children;
 
@@ -41,7 +42,7 @@ namespace Expeditionary.Ai
 
         public void Reevaluate(Match match, EvaluationCache evaluationCache, Random random)
         {
-            s_Logger.With(Id).Log($"reevaluate");
+            s_Logger.With(Id).Log($"reevaluate {Assignment}");
             var assignment = Assignment.Assign(this, match, evaluationCache, random);
             DoAssignment(assignment);
             foreach (var child in Children)

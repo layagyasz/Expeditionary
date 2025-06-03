@@ -1,4 +1,5 @@
-﻿using Expeditionary.Hexagons;
+﻿using Expeditionary.Evaluation.SignedDistanceFields;
+using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
@@ -38,7 +39,7 @@ namespace Expeditionary.Evaluation.Considerations
             return (hex, tile) => (MapDirectionUtils.GetInclusiveDirection(origin, hex) & direction) > 0 ? 1 : 0;
         }
 
-        public static TileConsideration Edge(SignedDistanceField sdf, int offset)
+        public static TileConsideration Edge(ISignedDistanceField sdf, int offset)
         {
             return (hex, _) => 1 - Math.Abs(SdfRelativeDistance(sdf, hex, offset));
         }
@@ -62,7 +63,7 @@ namespace Expeditionary.Evaluation.Considerations
             return (hex, _) => cache.Evaluate(hex, facing, disposition, range);
         }
 
-        public static TileConsideration Exterior(SignedDistanceField sdf, int offset)
+        public static TileConsideration Exterior(ISignedDistanceField sdf, int offset)
         {
             return (hex, _) => Math.Max(0, SdfRelativeDistance(sdf, hex, offset));
         }
@@ -72,7 +73,7 @@ namespace Expeditionary.Evaluation.Considerations
             return tile.Terrain.Foliage != null ? 1 : 0;
         }
 
-        public static TileConsideration Interior(SignedDistanceField sdf, int offset)
+        public static TileConsideration Interior(ISignedDistanceField sdf, int offset)
         {
             return (hex, _) => Math.Max(0, -SdfRelativeDistance(sdf, hex, offset));
         }
@@ -116,7 +117,7 @@ namespace Expeditionary.Evaluation.Considerations
             return (hex, tile) => weight * consideration.Invoke(hex, tile);
         }
 
-        private static float SdfRelativeDistance(SignedDistanceField sdf, Vector3i hex, int offset) 
+        private static float SdfRelativeDistance(ISignedDistanceField sdf, Vector3i hex, int offset) 
         {
             var rawDistance = (float)sdf.Get(hex) - offset;
             if (rawDistance < 0)

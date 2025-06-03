@@ -1,11 +1,9 @@
 ﻿using Cardamom.Trackers;
-using Expeditionary.Ai.Assignments.Units;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
-using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments.Formations
 {
@@ -37,21 +35,17 @@ namespace Expeditionary.Ai.Assignments.Formations
                     result.Add(f, new AreaAssignment(region.Key, MapDirectionUtils.Invert(DefendingDirection)));
                 }
             }
-            var edgeRegion = new EdgeMapRegion(DefendingDirection, 0.5f);
-            var keyVector = GetKeyVector(DefendingDirection);
-            var facing = MapDirectionUtils.Invert(DefendingDirection);
-            foreach ((var f, var r) in eligibleOccupiers
-                .Select(x => x.Key).Zip(edgeRegion.Partition(map, keyVector, eligibleOccupiers.Count)))
-            {
-                result.Add(f, new AreaAssignment(r, facing));
-            }
-            foreach (var f in formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry))
-            {
-                result.Add(f, new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.25f), facing));
-            }
+            var currentAssignment = new FormationAssignment(result, new());
+            var parentAssignment = 
+                new AreaAssignment(
+                    new EdgeMapRegion(DefendingDirection, 0.5f), MapDirectionUtils.Invert(DefendingDirection));
+            var defensiveAssignment =
+                parentAssignment.PartitionByFormations(eligibleOccupiers.Select(x => x.Key), map);
+            var offensiveAssignment = 
+                parentAssignment.PartitionByFormations(
+                    formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry), map);
 
-            // Handle top-echelon units
-            return new(result, new Dictionary<UnitHandler, IUnitAssignment>());
+            return FormationAssignment.Combine(currentAssignment, defensiveAssignment, offensiveAssignment);
         }
 
         private static List<SimpleFormationHandler> Assign(
@@ -91,15 +85,6 @@ namespace Expeditionary.Ai.Assignments.Formations
         private static float GetRequiredCoverage(int tileCount)
         {
             return 1.3333333f * MathF.Sqrt(tileCount);
-        }
-
-        private static Vector2 GetKeyVector(MapDirection direction)
-        {
-            if (direction.HasFlag(MapDirection.North) || direction.HasFlag(MapDirection.South))
-            {
-                return Vector2.UnitX;
-            }
-            return Vector2.UnitY;
         }
     }
 }
