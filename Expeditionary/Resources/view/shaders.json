@@ -35,10 +35,10 @@
     }
   },
   {
-    "$id": "shader-generate-river",
+    "$id": "shader-generate-edge",
     "Element": {
       "Vertex": "Resources/view/textures/generation/default.vert",
-      "Fragment": "Resources/view/textures/generation/river.frag"
+      "Fragment": "Resources/view/textures/generation/edge.frag"
     }
   },
   {

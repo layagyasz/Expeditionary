@@ -8,7 +8,7 @@ namespace Expeditionary.View.Mapping
 {
     public class StructureLayerCreator
     {
-        private static readonly int s_LayerId = 4;
+        private static readonly int s_LayerId = 5;
         private static readonly float s_Sqrt3d2 = 0.5f * MathF.Sqrt(3);
         private static readonly Vector3[] s_Corners =
         {

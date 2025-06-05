@@ -12,6 +12,9 @@ namespace Expeditionary.View.Mapping
 {
     public class MapViewFactory
     {
+        private static readonly int s_RidgeLayerId = 3;
+        private static readonly int s_RiverLayerId = 4;
+
         private static readonly float s_Sqrt3d2 = 0.5f * MathF.Sqrt(3);
         private static readonly Vector3[] s_Corners =
         {
@@ -56,6 +59,7 @@ namespace Expeditionary.View.Mapping
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(triangles)
+                    .AddLayer(triangles)
                     .AddLayer(18 * map.Width * map.Height);
             var maskBufferBuilder = new LayeredVertexBuffer.Builder().AddLayer(3 * triangles);
 
@@ -93,24 +97,38 @@ namespace Expeditionary.View.Mapping
                 var edgeA = map.GetEdge(Geometry.GetEdge(centerHex, leftHex))!;
                 var edgeB = map.GetEdge(Geometry.GetEdge(leftHex, rightHex))!;
                 var edgeC = map.GetEdge(Geometry.GetEdge(centerHex, rightHex))!;
-                bool[] query =
+                AddEdge(
+                    bufferBuilder, 
+                    s_RiverLayerId, 
+                    triangle,
+                    parameters.Liquid,
+                    centerPos, 
+                    leftPos, 
+                    rightPos,
+                    random,
+                    _textureLibrary.Rivers,
                     new bool[]
                     {
                         edgeA.Levels.ContainsKey(EdgeType.River),
                         edgeB.Levels.ContainsKey(EdgeType.River),
                         edgeC.Levels.ContainsKey(EdgeType.River)
-                    };
-                if (query.Any(x => x))
-                {
-                    var edgeOptions = _textureLibrary.Edges.Query(query).ToArray();
-                    var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
-                    bufferBuilder.SetVertex(
-                        layer: 3, 3 * triangle, new(centerPos, parameters.Liquid, selectedEdge.TexCoords[0]));
-                    bufferBuilder.SetVertex(
-                        layer: 3, 3 * triangle + 1, new(leftPos, parameters.Liquid, selectedEdge.TexCoords[1]));
-                    bufferBuilder.SetVertex(
-                        layer: 3, 3 * triangle + 2, new(rightPos, parameters.Liquid, selectedEdge.TexCoords[2]));
-                }
+                    });
+                AddEdge(
+                    bufferBuilder,
+                    s_RidgeLayerId,
+                    triangle,
+                    GetRidgeColor(center, left, right, parameters),
+                    centerPos,
+                    leftPos,
+                    rightPos,
+                    random,
+                    _textureLibrary.Ridges,
+                    new bool[]
+                    {
+                        center.Elevation != left.Elevation,
+                        left.Elevation != right.Elevation,
+                        center.Elevation != right.Elevation
+                    });
 
                 Vector3i foliageQuery = 
                     2 * new Vector3i(
@@ -157,20 +175,60 @@ namespace Expeditionary.View.Mapping
                 _maskShader,
                 _filterShader,
                 _textureLibrary);
-
         }
 
         private Color4 GetTileColor(Tile tile, int layer, TerrainViewParameters parameters, int elevationLevels)
         {
-            var color = (Color4)Color4.ToHsv(GetBaseTileColor(tile, layer, parameters));
             if (!tile.Terrain.IsLiquid)
             {
-                var adj = _parameters.ElevationGradient.Minimum + (1f * tile.Elevation / elevationLevels) *
-                    (_parameters.ElevationGradient.Maximum -
-                        _parameters.ElevationGradient.Minimum);
-                color.B = MathHelper.Clamp(color.B * adj, 0, 1);
+                return Shift(
+                    GetBaseTileColor(tile, layer, parameters),
+                    new(
+                        1, 
+                        1,
+                        MathHelper.Lerp(
+                            _parameters.ElevationGradient.Minimum,
+                            _parameters.ElevationGradient.Maximum,
+                            1f * tile.Elevation / elevationLevels), 
+                        1));
             }
-            return Color4.FromHsv((Vector4)color);
+            return GetBaseTileColor(tile, layer, parameters);
+        }
+
+        private Color4 GetRidgeColor(Tile a, Tile b, Tile c, TerrainViewParameters parameters)
+        {
+            var tile = a;
+            if (b.Elevation > tile.Elevation)
+            {
+                tile = b;
+            }
+            if (c.Elevation > tile.Elevation)
+            {
+                tile = c;
+            }
+            return Shift(GetBaseTileColor(tile, layer: 0, parameters), _parameters.RidgeShift);
+        }
+
+        private static void AddEdge(
+            LayeredVertexBuffer.Builder builder,
+            int layerId,
+            int index,
+            Color4 color,
+            Vector3 a,
+            Vector3 b,
+            Vector3 c,
+            Random random,
+            EdgeLibrary library,
+            bool[] query)
+        {
+            if (query.Any(x => x))
+            {
+                var edgeOptions = library.Query(query).ToArray();
+                var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
+                builder.SetVertex(layerId, 3 * index, new(a, color, selectedEdge.TexCoords[0]));
+                builder.SetVertex(layerId, 3 * index + 1, new(b, color, selectedEdge.TexCoords[1]));
+                builder.SetVertex(layerId, 3 * index + 2, new(c, color, selectedEdge.TexCoords[2]));
+            }
         }
 
         private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)
@@ -219,6 +277,16 @@ namespace Expeditionary.View.Mapping
                 return parameters.Soil.Interpolate(tile.Terrain.Soil.Value);
             }
             return parameters.Stone.Interpolate(tile.Terrain.Stone);
+        }
+
+        private static Color4 Shift(Color4 color, Vector4 shift)
+        {
+            var result = Color4.ToHsv(color) * shift;
+            result.X = Math.Clamp(result.X, 0, 1);
+            result.Y = Math.Clamp(result.Y, 0, 1);
+            result.Z = Math.Clamp(result.Z, 0, 1);
+            result.W = Math.Clamp(result.W, 0, 1);
+            return Color4.FromHsv(result);
         }
 
         private static Vector3 ToVector3(Vector2 x)

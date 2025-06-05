@@ -75,9 +75,11 @@ namespace Expeditionary
             var masks = maskTextureGenerator.Generate(
                 frequencyRange: new(4f, 8f), magnitudeRange: new(0f, 1f), seed: 0, count: 16);
 
-            var riverTextureGenerator = new RiverTextureGenerator(resources.GetShader("shader-generate-river"));
-            var edges = riverTextureGenerator.Generate(
-                frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 2f), seed: 0, count: 10);
+            var edgeTextureGenerator = new EdgeTextureGenerator(resources.GetShader("shader-generate-edge"));
+            var rivers = edgeTextureGenerator.Generate(
+                frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 2f), gauge: 9, seed: 0, count: 10);
+            var ridges = edgeTextureGenerator.Generate(
+                frequencyRange: new(0.5f, 2f), magnitudeRange: new(0f, 1f), gauge: 4, seed: 0, count: 10);
 
             var structureTextureGenerator =
                 new StructureTextureGenerator(resources.GetShader("shader-default-no-tex"));
@@ -88,9 +90,10 @@ namespace Expeditionary
                     new MapViewFactory(
                         new()
                         {
-                            ElevationGradient = new(0.75f, 2f),
+                            ElevationGradient = new(0.9f, 1.25f),
+                            RidgeShift = new(1, 0.5f, 0.5f, 1)
                         },
-                        new(edges, masks, partitions, structures),
+                        new(rivers, ridges, masks, partitions, structures),
                         resources.GetShader("shader-filter-no-tex"),
                         resources.GetShader("shader-mask"),
                         resources.GetShader("shader-default")),
@@ -101,7 +104,7 @@ namespace Expeditionary
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
             var random = new Random();
-            var environmentDefinition = module.Environments["environment-jasper"];
+            var environmentDefinition = module.Environments["environment-kwajalein"];
             Console.WriteLine(environmentDefinition.Key);
 
             var missionNode =

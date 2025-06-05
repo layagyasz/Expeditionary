@@ -7,6 +7,7 @@ out vec4 out_color;
 in vec4 vert_color;
 in vec2 vert_tex_coord;
 
+uniform float gauge;
 uniform float magnitude;
 uniform float edge_delta;
 uniform int mask;
@@ -49,7 +50,7 @@ void main()
     blended *= blended;
     int min_component = min_component(blended.xyz);
     float cross_dist = 2 * get_dist(blended.xyz, min_component);
-    float value = 1 - 9 * cross_dist * cross_dist;
+    float value = 1 - gauge * cross_dist * cross_dist;
     value = int(2 * value);
     float noise = min(0.2f * tex_color.b + 0.9f, 1f);
     out_color = ((mask & min_component) > 0 ? 1 : 0) * vec4(noise, noise, noise, value);

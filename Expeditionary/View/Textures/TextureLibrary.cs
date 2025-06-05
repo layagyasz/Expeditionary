@@ -2,15 +2,21 @@
 {
     public class TextureLibrary
     {
-        public EdgeLibrary Edges { get; }
+        public EdgeLibrary Rivers { get; }
+        public EdgeLibrary Ridges { get; }
         public MaskLibrary Masks { get; }
         public PartitionLibrary Partitions { get; }
         public StructureLibrary Structures { get; }
 
         public TextureLibrary(
-            EdgeLibrary edges, MaskLibrary masks, PartitionLibrary partitions, StructureLibrary structures)
+            EdgeLibrary rivers,
+            EdgeLibrary ridges,
+            MaskLibrary masks, 
+            PartitionLibrary partitions,
+            StructureLibrary structures)
         {
-            Edges = edges;
+            Rivers = rivers;
+            Ridges = ridges;
             Masks = masks;
             Partitions = partitions;
             Structures = structures;

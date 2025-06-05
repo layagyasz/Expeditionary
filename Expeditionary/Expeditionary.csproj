@@ -330,7 +330,7 @@
     <None Update="Resources\view\textures\generation\mask.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\textures\generation\river.frag">
+    <None Update="Resources\view\textures\generation\edge.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\shaders\default.frag">

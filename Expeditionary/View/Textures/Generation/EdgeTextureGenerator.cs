@@ -10,12 +10,12 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Expeditionary.View.Textures.Generation
 {
-    public class RiverTextureGenerator
+    public class EdgeTextureGenerator
     {
         private static readonly float s_Sqrt3 = MathF.Sqrt(3);
         private static readonly int[] s_Masks = { 1, 3, 7 };
 
-        private readonly RenderShader _riverShader;
+        private readonly RenderShader _edgeShader;
 
         private readonly Pipeline _pipeline;
         private readonly ConstantSupplier<int> _aSeed = new();
@@ -23,9 +23,9 @@ namespace Expeditionary.View.Textures.Generation
         private readonly ConstantSupplier<int> _wSeed = new();
         private readonly ConstantSupplier<Vector3> _frequency = new();
 
-        public RiverTextureGenerator(RenderShader riverShader)
+        public EdgeTextureGenerator(RenderShader riverShader)
         {
-            _riverShader = riverShader;
+            _edgeShader = riverShader;
             _pipeline =
                 new Pipeline.Builder()
                     .AddNode(new GeneratorNode.Builder().SetKey("new"))
@@ -80,7 +80,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public EdgeLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
+        public EdgeLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int gauge, int seed, int count)
         {  
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
 
@@ -92,7 +92,8 @@ namespace Expeditionary.View.Textures.Generation
                 new(new(0.5f, -0.05f, 0f), new(0f, 1f, 0f, 1f), new(0f, 0f)),
                 new(new(1.05f, h, 0f), new(0f, 0f, 1f, 1f), new(1f, 1f))
             };
-            _riverShader.SetFloat("edge_delta", -0.05f);
+            _edgeShader.SetFloat("edge_delta", -0.05f);
+            _edgeShader.SetFloat("gauge", gauge);
             renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(0, 1, 0, 1, -10, 10)));
             renderTexture.PushViewMatrix(Matrix4.Identity);
             renderTexture.PushModelMatrix(Matrix4.Identity);
@@ -121,20 +122,20 @@ namespace Expeditionary.View.Textures.Generation
                 var result = _pipeline.Run(canvasProvider)[0];
                 var texture = result.GetTexture();
                 canvasProvider.Return(result);
-                _riverShader.SetFloat(
+                _edgeShader.SetFloat(
                     "magnitude",
                     (float)(magnitudeRange.Minimum
                         + random.NextDouble() * (magnitudeRange.Maximum - magnitudeRange.Minimum)));
                 for (int j = 0; j < s_Masks.Length; ++j)
                 {
-                    _riverShader.SetInt32("mask", s_Masks[j]);
+                    _edgeShader.SetInt32("mask", s_Masks[j]);
                     renderTexture.Clear();
                     renderTexture.Draw(
                         verts,
                         PrimitiveType.Triangles,
                         0,
                         verts.Length,
-                        new(BlendMode.None, _riverShader, texture));
+                        new(BlendMode.None, _edgeShader, texture));
                     renderTexture.Display();
                     sheet.Add(renderTexture.GetTexture(), out var segment);
                     options[3 * i + j] =
