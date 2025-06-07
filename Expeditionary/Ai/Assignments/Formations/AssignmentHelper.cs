@@ -1,7 +1,5 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Ai.Assignments.Units;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using OpenTK.Mathematics;
@@ -34,19 +32,19 @@ namespace Expeditionary.Ai.Assignments.Formations
             return tilesAndEvaluations.Take(count).Select(x => x.hex);
         }
 
-        private static void Assign(
-            Match match,
-            IEnumerable<UnitHandler> units,
-            IMapRegion region,
-            TileConsideration consideration,
-            Dictionary<UnitHandler, IUnitAssignment> result)
+        public static float GetCoverage(SimpleFormationHandler formation)
         {
-            foreach ((var unit, var hex) in 
-                units.Zip(
-                    GetTop(match.GetMap(), region, consideration, units.Count())).Select(x => (x.First, x.Second)))
-            {
-                result.Add(unit, new PositionAssignment(hex));
-            }
+            return GetCoverage(formation.Formation.Echelon);
+        }
+
+        public static float GetCoverage(int echelon)
+        {
+            return MathF.Pow(3, echelon - 1);
+        }
+
+        public static float GetRequiredCoverage(int tileCount)
+        {
+            return 1.3333333f * MathF.Sqrt(tileCount);
         }
     }
 }

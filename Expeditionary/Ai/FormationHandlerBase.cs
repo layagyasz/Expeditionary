@@ -18,6 +18,8 @@ namespace Expeditionary.Ai
 
         private readonly List<SimpleFormationHandler> _children;
 
+        private FormationAssignment? _assignmentRealization;
+
         protected FormationHandlerBase(IEnumerable<SimpleFormationHandler> children)
         {
             _children = children.ToList();
@@ -43,12 +45,8 @@ namespace Expeditionary.Ai
         public void Reevaluate(Match match, TileEvaluator tileEvaluator)
         {
             s_Logger.With(Id).Log($"reevaluate {Assignment}");
-            var assignment = Assignment.Assign(this, match, tileEvaluator);
-            DoAssignment(assignment);
-            foreach (var child in Children)
-            {
-                child.Reevaluate(match, tileEvaluator);
-            }
+            _assignmentRealization = Assignment.Assign(this, match, tileEvaluator);
+            DoAssignment(_assignmentRealization);
         }
 
         public void SetAssignment(IFormationAssignment assignment)

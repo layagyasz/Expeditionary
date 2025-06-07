@@ -11,8 +11,7 @@ namespace Expeditionary.Model.Missions
             var handler =
                 context.AiManager.GetHandler(player)
                 ?? context.AiManager.CreateHandler(player);
-            var formationAssignment = handler.AddFormation(formation);
-            formationAssignment.SetAssignment(Assignment);
+            handler.AddFormation(formation, Assignment);
             handler.Setup();
         }
     }

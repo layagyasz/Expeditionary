@@ -1,14 +1,12 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
 using Cardamom.Logging;
+using Expeditionary.Ai.Assignments.Formations;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
-using Expeditionary.Model.Combat;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Orders;
-using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
 {
@@ -34,11 +32,11 @@ namespace Expeditionary.Ai
                 new RootFormationHandler(player, match.GetFormations(Player).Select(SimpleFormationHandler.Create));
         }
 
-        public IFormationHandler AddFormation(Formation formation)
+        public void AddFormation(Formation formation, IFormationAssignment assignment)
         {
             var result = SimpleFormationHandler.Create(formation);
             _rootFormationHandler.Add(result);
-            return result;
+            _rootFormationHandler.SetAssignment(assignment);
         }
 
         public void Dispose()
@@ -51,6 +49,7 @@ namespace Expeditionary.Ai
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
+            _rootFormationHandler.Reevaluate(_match, _tileEvaluator);
             foreach (var formation in _rootFormationHandler.GetAllFormationHandlers())
             {
                 DoFormationTurn(formation);
@@ -69,9 +68,10 @@ namespace Expeditionary.Ai
         public void Setup()
         {
             s_Logger.With(Player.Id).Log("Setup formations");
-            foreach (var formation in _rootFormationHandler.Children)
+            _rootFormationHandler.Reevaluate(_match, _tileEvaluator);
+            foreach (var formationHandler in _rootFormationHandler.GetAllFormationHandlers())
             {
-                formation.Reevaluate(_match, _tileEvaluator);
+                formationHandler.Reevaluate(_match, _tileEvaluator);
             }
             s_Logger.With(Player.Id).Log("Setup units");
             foreach (var unit in _rootFormationHandler.GetAllUnitHandlers())
@@ -82,41 +82,11 @@ namespace Expeditionary.Ai
 
         private void DoFormationTurn(SimpleFormationHandler formation)
         {
+            formation.Reevaluate(_match, _tileEvaluator);
             foreach (var unit in formation.GetUnitHandlers())
             {
-                DoUnitTurn(unit);
+                unit.DoTurn(_match, _knowledge);
             }
-        }
-
-        private void DoUnitTurn(UnitHandler unit)
-        {
-            if (!unit.IsActive())
-            {
-                return;
-            }
-            var map = _match.GetMap();
-            var attack = unit.Unit.Type.Weapons.First();
-            var mode = attack.Weapon!.Modes.First();
-            var target = 
-                FindValidTargets(unit.Unit, mode, map)
-                    .Select(target => (target, AttackEvaluation.Evaluate(unit.Unit, attack, mode, target, map)))
-                    .ArgMax(x => x.Item2);
-            if (target.target != null)
-            {
-                s_Logger.With(Player.Id).Log($"{unit} found target {target.target} with value {target.Item2}");
-                _match.DoOrder(new AttackOrder(unit.Unit, attack, mode, target.target));
-                Thread.Sleep(1000);
-            }
-        }
-
-        private IEnumerable<Unit> FindValidTargets(Unit unit, UnitWeapon.Mode mode, Map map)
-        {
-            return _match.GetAssets()
-                .Where(x => !x.IsDestroyed)
-                .Where(x => _knowledge.GetAsset(x).IsVisible)
-                .Where(x => x is Unit)
-                .Cast<Unit>()
-                .Where(x => CombatCalculator.IsValidTarget(unit, mode, x, map));
         }
 
         private void HandleFormationAdded(object? sender, Formation formation)

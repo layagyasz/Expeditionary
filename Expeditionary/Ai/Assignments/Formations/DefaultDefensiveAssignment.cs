@@ -12,15 +12,25 @@ namespace Expeditionary.Ai.Assignments.Formations
     {
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
+            if (formation is RootFormationHandler root)
+            {
+                return new(
+                    new()
+                    {
+                        { root.Children.First(), new DefaultDefensiveAssignment(DefendingDirection, DefenseRegions) }
+                    },
+                    new());
+            }
             var map = match.GetMap();
             var eligibleOccupiers =
                 new LinkedList<Quantity<SimpleFormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<SimpleFormationHandler>.Create(x, GetCoverage(x)))
+                        .Select(x => Quantity<SimpleFormationHandler>.Create(x, AssignmentHelper.GetCoverage(x)))
                         .OrderBy(x => x.Value));
             var regions =
-                DefenseRegions.Select(x => Quantity<IMapRegion>.Create(x, GetRequiredCoverage(x.Range(map).Count())));
+                DefenseRegions.Select(
+                    x => Quantity<IMapRegion>.Create(x, AssignmentHelper.GetRequiredCoverage(x.Range(map).Count())));
             var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
             foreach (var region in regions)
             {
@@ -69,21 +79,6 @@ namespace Expeditionary.Ai.Assignments.Formations
                 result.Add(formation.Key);
             }
             return result;
-        }
-
-        private static float GetCoverage(SimpleFormationHandler formation)
-        {
-            return GetCoverage(formation.Formation.Echelon);
-        }
-
-        private static float GetCoverage(int echelon)
-        {
-            return MathF.Pow(3, echelon - 1);
-        }
-
-        private static float GetRequiredCoverage(int tileCount)
-        {
-            return 1.3333333f * MathF.Sqrt(tileCount);
         }
     }
 }

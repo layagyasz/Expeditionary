@@ -1,6 +1,9 @@
-﻿using Cardamom.Logging;
+﻿using Cardamom.Collections;
+using Cardamom.Logging;
 using Expeditionary.Ai.Assignments.Units;
+using Expeditionary.Model;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
@@ -18,6 +21,19 @@ namespace Expeditionary.Ai
         {
             Unit = unit;
             Role = role;
+        }
+
+        public void DoTurn(Match match, IPlayerKnowledge knowledge)
+        {
+            if (!IsActive())
+            {
+                return;
+            }
+            var action =
+                AttackAction.GenerateValidAttacks(match, knowledge, Unit)
+                    .Select(Action => (Action, Action.GetValue(match, Unit)))
+                    .ArgMax(x => x.Item2).Action;
+            action?.Do(match, Unit);
         }
 
         public void SetAssignment(IUnitAssignment assignment)

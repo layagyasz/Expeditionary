@@ -47,7 +47,7 @@ namespace Expeditionary.Model.Mapping.Generator
             new(
                 restriction: new(new(1, 0), new(1, 5), new(1, 5)),
                 roughness: new(new(1, 0), new(1, 25), new(1, 5)),
-                slope: new(new(1, 0), new(1, 10), new(1, 5)),
+                slope: new(new(1, 0), new(1, 25), new(1, 5)),
                 softness: new(new(1, 0), new(1, 25), new(1, 5)),
                 waterDepth: new(new(1, 0), new(1, 50), new(1, 5)));
 

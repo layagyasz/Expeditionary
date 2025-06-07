@@ -11,6 +11,12 @@ namespace Expeditionary.Ai.Assignments.Formations
     {
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
+            return AssignDeployment(formation, match, tileEvaluator);
+        }
+
+        private FormationAssignment AssignDeployment(
+            IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Direction, 0.5f);
             var origin =
@@ -29,12 +35,17 @@ namespace Expeditionary.Ai.Assignments.Formations
             var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
             var sdf = DenseSignedDistanceField.FromPathField(extent, distance >> 1);
             return PointAssignment.SelectFrom(
-                formation, 
-                map, 
+                formation,
+                map,
                 new ExplicitMapRegion(extent.Select(x => x.Destination)),
                 MapDirectionUtils.Invert(Direction),
-                tileEvaluator, 
+                tileEvaluator,
                 TileConsiderations.Edge(sdf, 0));
+        }
+
+        private static bool IsDeployed(IFormationHandler formation)
+        {
+            return formation.GetAllUnitHandlers().Any(x => x.Unit.IsDestroyed || x.Unit.Position != null);
         }
     }
 }
