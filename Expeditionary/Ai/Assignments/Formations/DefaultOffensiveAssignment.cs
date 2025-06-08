@@ -18,7 +18,7 @@ namespace Expeditionary.Ai.Assignments.Formations
             IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
-            var region = new EdgeMapRegion(Direction, 0.5f);
+            var region = new EdgeMapRegion(Direction, 0.33f);
             var origin =
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(
@@ -31,8 +31,10 @@ namespace Expeditionary.Ai.Assignments.Formations
                 formation.GetAllUnitHandlers()
                     .GroupBy(x => x.Unit.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
-            int distance = match.GetMap().GetAxisSize(Direction) >> 2;
-            var extent = Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance);
+            int distance = 16;
+            var extent =
+                Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance)
+                    .Where(x => region.Contains(map, x.Destination)).ToList();
             var sdf = DenseSignedDistanceField.FromPathField(extent, distance >> 1);
             return PointAssignment.SelectFrom(
                 formation,

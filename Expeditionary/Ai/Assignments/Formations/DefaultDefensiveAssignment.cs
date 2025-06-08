@@ -54,7 +54,11 @@ namespace Expeditionary.Ai.Assignments.Formations
                 parentAssignment.PartitionByFormations(
                     formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry), map);
 
-            return FormationAssignment.Combine(currentAssignment, defensiveAssignment, offensiveAssignment);
+            return new FormationAssignment.Builder()
+                .AddAll(currentAssignment)
+                .AddAll(defensiveAssignment)
+                .AddAll(offensiveAssignment)
+                .Build();
         }
 
         private static List<SimpleFormationHandler> Assign(

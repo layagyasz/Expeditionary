@@ -91,7 +91,7 @@ namespace Expeditionary
                         new()
                         {
                             ElevationGradient = new(0.9f, 1.25f),
-                            RidgeShift = new(1, 0.5f, 0.5f, 1)
+                            RidgeShift = new(0f, 0.5f, 0.5f, 1)
                         },
                         new(rivers, ridges, masks, partitions, structures),
                         resources.GetShader("shader-filter-no-tex"),
@@ -104,7 +104,7 @@ namespace Expeditionary
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
             var random = new Random();
-            var environmentDefinition = module.Environments["environment-kwajalein"];
+            var environmentDefinition = module.Environments.Values.ToList()[random.Next(module.Environments.Count)];
             Console.WriteLine(environmentDefinition.Key);
 
             var missionNode =

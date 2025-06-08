@@ -9,7 +9,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments.Formations
 {
-    public record class PointAssignment(Vector3i Hex, MapDirection Facing) : IFormationAssignment
+    public record class PointAssignment(Vector3i Hex, IMapRegion Bounds, MapDirection Facing) : IFormationAssignment
     {
         public static FormationAssignment SelectFrom(
             IFormationHandler formation,
@@ -19,14 +19,21 @@ namespace Expeditionary.Ai.Assignments.Formations
             TileEvaluator tileEvaluator, 
             TileConsideration extraConsideration)
         {
-            return SelectFrom(
-                formation.Children,
-                map, 
-                region,
-                facing,
-                tileEvaluator,
-                extraConsideration,
-                2 * GetSpacing(formation.Echelon));
+            var spacing = 2 * GetSpacing(formation.Echelon);
+            return new FormationAssignment.Builder()
+                .AddAll(
+                    SelectFrom(
+                        formation.Children,
+                        map, 
+                        region,
+                        facing,
+                        tileEvaluator,
+                        extraConsideration,
+                        spacing))
+                .AddAll(
+                    SelectFrom(
+                        formation.GetUnitHandlers(), map, region, facing, tileEvaluator, extraConsideration, spacing))
+                .Build();
         }
 
         public static FormationAssignment SelectFrom(
@@ -48,7 +55,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
-                result.Add(formation, new PointAssignment(hex, facing));
+                result.Add(formation, new PointAssignment(hex, region, facing));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
             }
             return new(result, new());
@@ -65,7 +72,7 @@ namespace Expeditionary.Ai.Assignments.Formations
         {
             var sdf = new CompositeSignedDistanceField();
             var result = new Dictionary<UnitHandler, IUnitAssignment>();
-            foreach (var unit in units)
+            foreach (var unit in units.OrderBy(x => -x.Unit.Type.Points))
             {
                 var consideration = 
                     TileConsiderations.Combine(
@@ -82,42 +89,53 @@ namespace Expeditionary.Ai.Assignments.Formations
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             int spacing = GetSpacing(formation.Echelon);
-            var supportRegion = new PointMapRegion(Hex, 2 * spacing);
-            // Handle extra units
+            var supportRegion = CompositeMapRegion.Intersect(new PointMapRegion(Hex, 2 * spacing), Bounds);
+            var result = new FormationAssignment.Builder();
             if (formation.Children.Any())
             {
-                var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
                 var first = formation.Children.First();
-                result.Add(first, new PointAssignment(Hex, Facing));
-                return FormationAssignment.Combine(
-                    new(result, new()), 
+                result.Add(first, new PointAssignment(Hex, Bounds, Facing));
+                result.AddAll(
                     SelectFrom(
                         formation.Children.Skip(1),
                         match.GetMap(),
-                        supportRegion, 
+                        supportRegion,
                         Facing,
                         tileEvaluator,
                         TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
                         spacing));
             } 
-            else if (formation.GetUnitHandlers().Any())
+            if (formation.GetUnitHandlers().Any())
             {
-                var units = formation.GetUnitHandlers().ToList();
-                var result = new Dictionary<UnitHandler, IUnitAssignment>();
-                var first = units.First();
-                result.Add(first, new PositionAssignment(Hex));
-                return FormationAssignment.Combine(
-                    new(new(), result),
-                    SelectFrom(
-                        units.Skip(1),
-                        match.GetMap(),
-                        supportRegion, 
-                        Facing,
-                        tileEvaluator,
-                        TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
-                        spacing));
+                if (formation.Children.Any())
+                {
+                    var units = formation.GetUnitHandlers().ToList();
+                    var first = units.First();
+                    result.Add(first, new PositionAssignment(Hex));
+                    result.AddAll(
+                        SelectFrom(
+                            units.Skip(1),
+                            match.GetMap(),
+                            supportRegion,
+                            Facing,
+                            tileEvaluator,
+                            TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
+                            spacing));
+                }
+                else
+                {
+                    result.AddAll(
+                        SelectFrom(
+                            formation.GetUnitHandlers(),
+                            match.GetMap(),
+                            supportRegion,
+                            Facing,
+                            tileEvaluator,
+                            TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
+                            spacing));
+                }
             }
-            throw new ArgumentException($"Formation {formation} had no children or units.");
+            return result.Build();
         }
 
         private static int GetSpacing(int echelon)

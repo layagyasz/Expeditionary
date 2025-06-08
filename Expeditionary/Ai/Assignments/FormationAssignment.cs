@@ -7,24 +7,43 @@ namespace Expeditionary.Ai.Assignments
         Dictionary<SimpleFormationHandler, IFormationAssignment> ChildFormationAssignments, 
         Dictionary<UnitHandler, IUnitAssignment> UnitAssignments)
     {
-        public static FormationAssignment Combine(params FormationAssignment[] assignments)
+        public class Builder
         {
-            var children = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
-            var units = new Dictionary<UnitHandler, IUnitAssignment>();
-            foreach (var assignment in assignments)
-            {
-                AddAll(children, assignment.ChildFormationAssignments);
-                AddAll(units, assignment.UnitAssignments);
-            }
-            return new(children, units);
-        }
+            private readonly Dictionary<SimpleFormationHandler, IFormationAssignment> _childFormationAssignments = 
+                new();
+            private readonly Dictionary<UnitHandler, IUnitAssignment> _unitAssignments = new();
 
-        public static void AddAll<TKey, TValue>(Dictionary<TKey, TValue> sink, Dictionary<TKey, TValue> source)
-            where TKey : notnull
-        {
-            foreach (var kvp in source)
+            public Builder Add(SimpleFormationHandler formation, IFormationAssignment assignment)
             {
-                sink.Add(kvp.Key, kvp.Value);
+                _childFormationAssignments.Add(formation, assignment);
+                return this;
+            }
+
+            public Builder Add(UnitHandler unit, IUnitAssignment assignment)
+            {
+                _unitAssignments.Add(unit, assignment);
+                return this;
+            }
+
+            public Builder AddAll(FormationAssignment other)
+            {
+                AddAll(_childFormationAssignments, other.ChildFormationAssignments);
+                AddAll(_unitAssignments, other.UnitAssignments);
+                return this;
+            }
+
+            public FormationAssignment Build()
+            {
+                return new(_childFormationAssignments, _unitAssignments);
+            }
+
+            private static void AddAll<TKey, TValue>(Dictionary<TKey, TValue> sink, Dictionary<TKey, TValue> source)
+                where TKey : notnull
+            {
+                foreach (var kvp in source)
+                {
+                    sink.Add(kvp.Key, kvp.Value);
+                }
             }
         }
     }

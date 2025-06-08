@@ -117,7 +117,7 @@ namespace Expeditionary.View.Mapping
                     bufferBuilder,
                     s_RidgeLayerId,
                     triangle,
-                    GetRidgeColor(center, left, right, parameters),
+                    GetRidgeColor(center, left, right, parameters, map.ElevationLevels),
                     centerPos,
                     leftPos,
                     rightPos,
@@ -181,21 +181,21 @@ namespace Expeditionary.View.Mapping
         {
             if (!tile.Terrain.IsLiquid)
             {
-                return Shift(
-                    GetBaseTileColor(tile, layer, parameters),
+                return Color4.FromHsv(Colors.CombineHsv(
+                    Color4.ToHsv(GetBaseTileColor(tile, layer, parameters)),
                     new(
-                        1, 
+                        0, 
                         1,
                         MathHelper.Lerp(
                             _parameters.ElevationGradient.Minimum,
                             _parameters.ElevationGradient.Maximum,
                             1f * tile.Elevation / elevationLevels), 
-                        1));
+                        1)));
             }
             return GetBaseTileColor(tile, layer, parameters);
         }
 
-        private Color4 GetRidgeColor(Tile a, Tile b, Tile c, TerrainViewParameters parameters)
+        private Color4 GetRidgeColor(Tile a, Tile b, Tile c, TerrainViewParameters parameters, int elevationLevels)
         {
             var tile = a;
             if (b.Elevation > tile.Elevation)
@@ -206,7 +206,8 @@ namespace Expeditionary.View.Mapping
             {
                 tile = c;
             }
-            return Shift(GetBaseTileColor(tile, layer: 0, parameters), _parameters.RidgeShift);
+            return Color4.FromHsv(Colors.CombineHsv(
+                Color4.ToHsv(GetTileColor(tile, layer: 0, parameters, elevationLevels)), _parameters.RidgeShift));
         }
 
         private static void AddEdge(
@@ -277,16 +278,6 @@ namespace Expeditionary.View.Mapping
                 return parameters.Soil.Interpolate(tile.Terrain.Soil.Value);
             }
             return parameters.Stone.Interpolate(tile.Terrain.Stone);
-        }
-
-        private static Color4 Shift(Color4 color, Vector4 shift)
-        {
-            var result = Color4.ToHsv(color) * shift;
-            result.X = Math.Clamp(result.X, 0, 1);
-            result.Y = Math.Clamp(result.Y, 0, 1);
-            result.Z = Math.Clamp(result.Z, 0, 1);
-            result.W = Math.Clamp(result.W, 0, 1);
-            return Color4.FromHsv(result);
         }
 
         private static Vector3 ToVector3(Vector2 x)

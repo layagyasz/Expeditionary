@@ -10,16 +10,7 @@ namespace Expeditionary.Model.Mapping.Appearance
         {
             public Color4 Get(Color4 solarOutput)
             {
-                return Color4.FromHsv(CombineHsv((Vector4)solarOutput, (Vector4)Offset));
-            }
-
-            private static Vector4 CombineHsv(Vector4 color, Vector4 adjustment)
-            {
-                var hsv = color;
-                hsv.X = (hsv.X + 1 + adjustment.X) % 1;
-                hsv.Y = MathHelper.Clamp(hsv.Y * adjustment.Y, 0, 1);
-                hsv.Z = MathHelper.Clamp(hsv.Z * adjustment.Z, 0, 1);
-                return hsv;
+                return Color4.FromHsv(Colors.CombineHsv((Vector4)solarOutput, (Vector4)Offset));
             }
         }
 
