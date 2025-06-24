@@ -7,5 +7,6 @@
         South = 2,
         East = 4,
         West = 8,
+        All = 15
     }
 }

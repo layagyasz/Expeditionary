@@ -85,7 +85,7 @@ namespace Expeditionary.Ai
             formation.Reevaluate(_match, _tileEvaluator);
             foreach (var unit in formation.GetUnitHandlers())
             {
-                unit.DoTurn(_match, _knowledge);
+                unit.DoTurn(_match, _knowledge, _tileEvaluator);
             }
         }
 

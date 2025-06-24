@@ -1,6 +1,8 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Logging;
+using Expeditionary.Ai.Actions;
 using Expeditionary.Ai.Assignments.Units;
+using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
@@ -23,17 +25,19 @@ namespace Expeditionary.Ai
             Role = role;
         }
 
-        public void DoTurn(Match match, IPlayerKnowledge knowledge)
+        public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
         {
             if (!IsActive())
             {
                 return;
             }
+            var evaluator = tileEvaluator.GetEvaluatorFor(Unit, Assignment.Facing);
             var action =
-                AttackAction.GenerateValidAttacks(match, knowledge, Unit)
-                    .Select(Action => (Action, Action.GetValue(match, Unit)))
-                    .ArgMax(x => x.Item2).Action;
-            action?.Do(match, Unit);
+                GenerateActions(match, knowledge)
+                    .Select(Action => (Action, Value: Assignment.Evaluate(Unit, Action, evaluator, match)))
+                    .ArgMax(x => x.Value);
+            s_Logger.With(Unit.Id).Log($"action {action.Action} value {action.Value}");
+            action.Action?.Do(match, Unit);
         }
 
         public void SetAssignment(IUnitAssignment assignment)
@@ -45,6 +49,19 @@ namespace Expeditionary.Ai
         public bool IsActive()
         {
             return !Unit.IsDestroyed && Unit.Position != null;
+        }
+
+        private IEnumerable<IUnitAction> GenerateActions(Match match, IPlayerKnowledge knowledge)
+        {
+            foreach (var attack in AttackAction.GenerateValidAttacks(match, knowledge, Unit))
+            {
+                yield return attack;
+            }
+            foreach (var move in MoveAction.GenerateValidMoves(match, Unit))
+            {
+                yield return move;
+            }
+            yield return new IdleAction();
         }
     }
 }

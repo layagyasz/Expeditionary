@@ -1,23 +1,17 @@
-﻿using Expeditionary.Evaluation;
-using Expeditionary.Model;
+﻿using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 
-namespace Expeditionary.Ai.Assignments.Units
+namespace Expeditionary.Ai.Actions
 {
     public record class AttackAction(Unit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
     {
         public void Do(Match match, Unit unit)
         {
             match.DoOrder(new AttackOrder(unit, Attack, Mode, Target));
-        }
-
-        public float GetValue(Match match, Unit unit)
-        {
-            return AttackEvaluation.Evaluate(unit, Attack, Mode, Target, match.GetMap());
         }
 
         public static IEnumerable<AttackAction> GenerateValidAttacks(

@@ -119,6 +119,11 @@ namespace Expeditionary.Evaluation.Considerations
                 .Count(x => x!.Levels[EdgeType.Road] > 0);
         }
 
+        public static TileConsideration Subtract(TileConsideration left, TileConsideration right)
+        {
+            return (hex, tileFn, edgesFn) => left(hex, tileFn, edgesFn) - right(hex, tileFn, edgesFn);
+        }
+
         public static TileConsideration Threat(Unit unit, IPlayerKnowledge knowledge, Match match)
         {
             var attackers = 
@@ -130,7 +135,6 @@ namespace Expeditionary.Evaluation.Considerations
                     .Where(x => x.Item2.IsVisible && x.Item2.LastSeen != null)
                     .ToList();
             var map = match.GetMap();
-            var position = unit.Position!.Value;
             return (hex, tileFn, edgesFn) =>
             {
                 var total = 0f;

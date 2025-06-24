@@ -80,7 +80,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
-                result.Add(unit, new PositionAssignment(hex));
+                result.Add(unit, new PositionAssignment(facing, hex));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
             }
             return new(new(), result);
@@ -111,7 +111,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                 {
                     var units = formation.GetUnitHandlers().ToList();
                     var first = units.First();
-                    result.Add(first, new PositionAssignment(Hex));
+                    result.Add(first, new PositionAssignment(Facing, Hex));
                     result.AddAll(
                         SelectFrom(
                             units.Skip(1),

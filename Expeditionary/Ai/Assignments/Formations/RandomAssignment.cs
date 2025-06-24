@@ -1,6 +1,7 @@
 ﻿using Expeditionary.Ai.Assignments.Units;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 
 namespace Expeditionary.Ai.Assignments.Formations
@@ -19,7 +20,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                 formationResult.Add(child, this);
                 foreach (var unit in child.GetUnitHandlers())
                 {
-                    unitResult.Add(unit, new PositionAssignment(options[random.Next(options.Count)]));
+                    unitResult.Add(
+                        unit, new PositionAssignment(MapDirection.All, options[random.Next(options.Count)]));
                 }
             }
             return new(formationResult, unitResult);

@@ -45,7 +45,7 @@ namespace Expeditionary.Model
             Vector3i position,
             Movement movement,
             TileConsideration extraTileCost, 
-            float maxCost = float.PositiveInfinity)
+            float maxCost)
         {
             var nodes = GeneratePaths(map, position, movement, extraTileCost, maxCost, _ => 0, _ => false);
             foreach (var node in nodes.Values)

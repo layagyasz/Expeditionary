@@ -27,34 +27,40 @@ namespace Expeditionary.Model.Knowledge
                 return new(IsDiscovered: false, IsVisible: false);
             }
             var condition = _map.Get(hex)!.GetConditions();
-            return new(
-                _discovery.IsDiscovered(hex), 
-                _spotters[hex]
-                    .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
-                        >= Geometry.GetCubicDistance(x.Position!.Value, hex) 
-                        && Sighting.IsValidLineOfSight(_map, x.Position!.Value, hex)));
+            lock (_spotters)
+            {
+                return new(
+                    _discovery.IsDiscovered(hex),
+                    _spotters[hex]
+                        .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
+                            >= Geometry.GetCubicDistance(x.Position!.Value, hex)
+                            && Sighting.IsValidLineOfSight(_map, x.Position!.Value, hex)));
+            }
         }
 
         public EnumMap<UnitDetectionBand, float>? GetDetection(Vector3i hex)
         {
-            var condition = _map.Get(hex)!.GetConditions();
-            var spotters = _spotters[hex].ToList();
-            if (!spotters.Any())
+            lock (_spotters)
             {
-                return null;
-            }
-
-            var result = new EnumMap<UnitDetectionBand, float>();
-            foreach (var spotter in _spotters[hex])
-            {
-                var los = Sighting.GetLineOfSight(_map, spotter.Position!.Value, hex);
-                foreach (var band in Enum.GetValues<UnitDetectionBand>())
+                var condition = _map.Get(hex)!.GetConditions();
+                var spotters = _spotters[hex].ToList();
+                if (!spotters.Any())
                 {
-                    result[band] = 
-                        Math.Max(result[band], SpottingCalculator.GetDetection(spotter, band, los, condition));
+                    return null;
                 }
+
+                var result = new EnumMap<UnitDetectionBand, float>();
+                foreach (var spotter in _spotters[hex])
+                {
+                    var los = Sighting.GetLineOfSight(_map, spotter.Position!.Value, hex);
+                    foreach (var band in Enum.GetValues<UnitDetectionBand>())
+                    {
+                        result[band] =
+                            Math.Max(result[band], SpottingCalculator.GetDetection(spotter, band, los, condition));
+                    }
+                }
+                return result;
             }
-            return result;
         }
 
         public Map GetMap()
@@ -76,7 +82,10 @@ namespace Expeditionary.Model.Knowledge
                 {
                     result.Add(los.Target);
                 }
-                _spotters.Remove(los.Target, unit);
+                lock (_spotters)
+                {
+                    _spotters.Remove(los.Target, unit);
+                }
             }
             foreach (var los in medial)
             {
@@ -94,7 +103,10 @@ namespace Expeditionary.Model.Knowledge
                     _discovery.Discover(los.Target);
                     result.Add(los.Target);
                 }
-                _spotters.Add(los.Target, unit);
+                lock (_spotters)
+                {
+                    _spotters.Add(los.Target, unit);
+                }
             }
             return result;
         }
@@ -103,14 +115,17 @@ namespace Expeditionary.Model.Knowledge
         {
             var result = new List<Vector3i>();
             var visualRange = GetVisualRange(unit);
-            foreach (var los in delta)
+            lock (_spotters)
             {
-                if (!los.IsBlocked && los.Distance <= visualRange)
+                foreach (var los in delta)
                 {
-                    _discovery.Discover(los.Target);
+                    if (!los.IsBlocked && los.Distance <= visualRange)
+                    {
+                        _discovery.Discover(los.Target);
+                    }
+                    _spotters.Add(los.Target, unit);
+                    result.Add(los.Target);
                 }
-                _spotters.Add(los.Target, unit);
-                result.Add(los.Target);
             }
             return result;
         }
@@ -118,11 +133,14 @@ namespace Expeditionary.Model.Knowledge
         public List<Vector3i> Remove(Unit unit, IEnumerable<Sighting.LineOfSight> delta)
         {
             var result = new List<Vector3i>();
-            foreach (var los in delta)
+            lock (_spotters)
             {
-                if (_spotters.Remove(los.Target, unit))
+                foreach (var los in delta)
                 {
-                    result.Add(los.Target);
+                    if (_spotters.Remove(los.Target, unit))
+                    {
+                        result.Add(los.Target);
+                    }
                 }
             }
             return result;
