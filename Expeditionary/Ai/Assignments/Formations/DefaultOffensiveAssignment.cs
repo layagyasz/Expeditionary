@@ -23,8 +23,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(
                         TileConsiderations.Combine(
-                            TileConsiderations.Weight(0.1f, TileConsiderations.Noise(new())),
-                            TileConsiderations.Roading),
+                            (0.1f, TileConsiderations.Noise(new())),
+                            (1, TileConsiderations.Roading)),
                         x,
                         map));
             var exemplar =

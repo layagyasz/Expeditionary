@@ -9,7 +9,9 @@ namespace Expeditionary.Evaluation
         public static float Evaluate(
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
-            var preview = CombatCalculator.GetPreview(attacker, attack, mode, defender, map);
+            var preview =
+                CombatCalculator.GetPreview(
+                    attacker, attacker.Position!.Value, attack, mode, defender, defender.Position!.Value, map);
             return defender.Type.Points * Math.Min(1, preview.Result / defender.Number);
         }
     }

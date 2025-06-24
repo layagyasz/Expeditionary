@@ -1,7 +1,9 @@
 ﻿using Cardamom.Graphics;
 using Cardamom.Mathematics;
 using Cardamom.Ui;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
+using Expeditionary.Model.Mapping;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -82,6 +84,26 @@ namespace Expeditionary.View
             _vertices = null;
         }
 
+        public static IEnumerable<HexHighlight> ForConsideration(Map map, TileConsideration consideration)
+        {
+            return map.Range()
+                .Select(x => new HexHighlight(
+                    x, GetUnitIntervalLevel(TileConsiderations.Evaluate(consideration, x, map))));
+        }
+
+        public static int GetUnitIntervalLevel(float value)
+        {
+            if (value <= float.Epsilon)
+            {
+                return 0;
+            }
+            if (value >= 1)
+            {
+                return Levels - 1;
+            }
+            return (int)(Levels * value);
+        }
+
         public static int GetLevel(float value, Interval interval)
         {
             if (value <= interval.Minimum)
@@ -93,7 +115,6 @@ namespace Expeditionary.View
                 return Levels - 1;
             }
             return (int)(Levels * (value - interval.Minimum) / (interval.Maximum - interval.Minimum));
-            
         }
 
         private static Vector3 ToVector3(Vector2 x)

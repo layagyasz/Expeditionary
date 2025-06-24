@@ -1,7 +1,12 @@
 ﻿using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Hexagons;
+using Expeditionary.Model;
+using Expeditionary.Model.Combat;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
+using System.Runtime.CompilerServices;
 
 namespace Expeditionary.Evaluation.Considerations
 {
@@ -18,12 +23,18 @@ namespace Expeditionary.Evaluation.Considerations
 
         public static TileConsideration Combine(params TileConsideration[] considerations)
         {
+            return Combine(considerations.Select(x => (1f, x)).ToArray());
+        }
+
+        public static TileConsideration Combine(params (float, TileConsideration)[] considerations)
+        {
+            var total = 1f / considerations.Sum(x => x.Item1);
             return (hex, tileFn, edgesFn) =>
             {
                 var score = 0f;
-                foreach (var consideration in considerations)
+                foreach ((var weight, var consideration) in considerations)
                 {
-                    score += consideration(hex, tileFn, edgesFn);
+                    score += weight * consideration(hex, tileFn, edgesFn);
                     if (float.IsNaN(score))
                     {
                         throw new ApplicationException();
@@ -33,7 +44,7 @@ namespace Expeditionary.Evaluation.Considerations
                         return score;
                     }
                 }
-                return score;
+                return total * score;
             };
         }
 
@@ -101,21 +112,50 @@ namespace Expeditionary.Evaluation.Considerations
             return 0;
         }
 
-        public static float Roading(Vector3i hex, Func<Tile> tileFn, Func<IEnumerable<Edge>> edgesFn)
+        public static float Roading(Vector3i _0, Func<Tile> _1, Func<IEnumerable<Edge>> edgesFn)
         {
             return 0.1666666667f * edgesFn()
                 .Where(x => x != null)
                 .Count(x => x!.Levels[EdgeType.Road] > 0);
         }
 
+        public static TileConsideration Threat(Unit unit, IPlayerKnowledge knowledge, Match match)
+        {
+            var attackers = 
+                match.GetAssets()
+                    .Where(x => x is Unit)
+                    .Cast<Unit>()
+                    .Where(x => CombatCalculator.IsValidTarget(x, unit))
+                    .Select(x => (x, knowledge.GetAsset(x)))
+                    .Where(x => x.Item2.IsVisible && x.Item2.LastSeen != null)
+                    .ToList();
+            var map = match.GetMap();
+            var position = unit.Position!.Value;
+            return (hex, tileFn, edgesFn) =>
+            {
+                var total = 0f;
+                foreach ((var attacker, var assetKnowledge) in attackers)
+                {
+                    var attackerPosition = assetKnowledge.LastSeen!.Value;
+                    var potential =
+                        attacker.Type.Weapons
+                            .SelectMany(Weapon => Weapon.Weapon.Modes.Select(Mode => (Weapon, Mode)))
+                            .Where(x => 
+                                CombatCalculator.IsValidTarget(attacker, attackerPosition, x.Mode, unit, hex, map))
+                            .Select(x => 
+                                CombatCalculator.GetPreview(
+                                    attacker, attackerPosition, x.Weapon, x.Mode, unit, hex, map).Result)
+                            .DefaultIfEmpty(0)
+                            .Max();
+                    total += potential;
+                }
+                return Math.Min(1f, total / unit.Number);
+            };
+        }
+
         public static float Urbanization(Vector3i _0, Func<Tile> tileFn, Func<IEnumerable<Edge>> _2)
         {
             return tileFn().IsUrban() ? 1 : 0;
-        }
-
-        public static TileConsideration Weight(float weight, TileConsideration consideration)
-        {
-            return (hex, tileFn, edgesFn) => weight * consideration.Invoke(hex, tileFn, edgesFn);
         }
 
         private static float SdfRelativeDistance(ISignedDistanceField sdf, Vector3i hex, int offset) 

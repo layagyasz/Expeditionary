@@ -35,19 +35,18 @@ namespace Expeditionary.Evaluation
         private TileConsideration DefaultConsideration(Disposition disposition, MapDirection facing, RangeBucket range)
         {
             return TileConsiderations.Combine(
-                DefaultConsideration(),
-                TileConsiderations.Weight(
-                    2f, TileConsiderations.Exposure(_evaluationCache.Exposure, facing, disposition, range)));
+                (1f, DefaultConsideration()),
+                (2f, TileConsiderations.Exposure(_evaluationCache.Exposure, facing, disposition, range)));
         }
 
         private TileConsideration DefaultConsideration()
         {
             return TileConsiderations.Combine(
-                TileConsiderations.Essential(TileConsiderations.Land),
-                TileConsiderations.Forestation,
-                TileConsiderations.Urbanization,
-                TileConsiderations.Roading,
-                TileConsiderations.Weight(0.1f, TileConsiderations.Noise(_random)));
+                (1f, TileConsiderations.Essential(TileConsiderations.Land)),
+                (1f, TileConsiderations.Forestation),
+                (1f, TileConsiderations.Urbanization),
+                (1f, TileConsiderations.Roading),
+                (0.1f, TileConsiderations.Noise(_random)));
         }
     }
 }
