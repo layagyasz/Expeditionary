@@ -86,6 +86,8 @@ namespace Expeditionary.Ai.Assignments.Formations
             return new(new(), result);
         }
 
+        public IMapRegion OperatingRegion => Bounds;
+
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             int spacing = GetSpacing(formation.Echelon);
@@ -136,6 +138,11 @@ namespace Expeditionary.Ai.Assignments.Formations
                 }
             }
             return result.Build();
+        }
+
+        public float Evaluate(FormationAssignment assignment, Match match)
+        {
+            return 0;
         }
 
         private static int GetSpacing(int echelon)

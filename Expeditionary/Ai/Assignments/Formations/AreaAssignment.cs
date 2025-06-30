@@ -10,6 +10,8 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IFormationAssignment
     {
+        public IMapRegion OperatingRegion => Region;
+
         public FormationAssignment Assign(
             IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
@@ -21,6 +23,14 @@ namespace Expeditionary.Ai.Assignments.Formations
             {
                 return AssignHighEchelon(formation, match);
             }
+        }
+
+        public float Evaluate(FormationAssignment assignment, Match match)
+        {
+            return Math.Min(1f, assignment.ChildFormationAssignments
+                .Where(x => MapRegions.Intersects(x.Value.OperatingRegion, Region, match.GetMap()))
+                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points)
+                / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 
         public FormationAssignment PartitionByChildren(IFormationHandler formation, Map map)

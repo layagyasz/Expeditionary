@@ -14,20 +14,30 @@ namespace Expeditionary.Model.Mapping.Regions
         private readonly Operation _operation;
         private readonly ImmutableList<IMapRegion> _regions;
 
-        private CompositeMapRegion(Operation operation, params IMapRegion[] regions)
+        private CompositeMapRegion(Operation operation, ImmutableList<IMapRegion> regions)
         {
             _operation = operation;
-            _regions = regions.ToImmutableList();
+            _regions = regions;
         }
 
         public static CompositeMapRegion Intersect(params IMapRegion[] regions)
         {
-            return new(Operation.Intersection, regions);
+            return new(Operation.Intersection, regions.ToImmutableList());
+        }
+
+        public static CompositeMapRegion Intersect(IEnumerable<IMapRegion> regions)
+        {
+            return new(Operation.Intersection, regions.ToImmutableList());
         }
 
         public static CompositeMapRegion Union(params IMapRegion[] regions)
         {
-            return new(Operation.Union, regions);
+            return new(Operation.Union, regions.ToImmutableList());
+        }
+
+        public static CompositeMapRegion Union(IEnumerable<IMapRegion> regions)
+        {
+            return new(Operation.Union, regions.ToImmutableList());
         }
 
         public bool Contains(Map map, Vector3i hex)

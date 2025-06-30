@@ -7,11 +7,27 @@ using Expeditionary.Model.Mapping.Regions;
 
 namespace Expeditionary.Ai.Assignments.Formations
 {
-    public record class DefaultOffensiveAssignment(MapDirection Direction) : IFormationAssignment
+    public record class DefaultOffensiveAssignment(MapDirection Direction, List<IMapRegion> TargetRegions) 
+        : IFormationAssignment
     {
+        public IMapRegion OperatingRegion => CompositeMapRegion.Union(TargetRegions);
+
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
-            return AssignDeployment(formation, match, tileEvaluator);
+            if (IsDeployed(formation))
+            {
+                return new DefaultDefensiveAssignment(Direction, TargetRegions)
+                    .Assign(formation, match, tileEvaluator);
+            }
+            else
+            {
+                return AssignDeployment(formation, match, tileEvaluator);
+            }
+        }
+
+        public float Evaluate(FormationAssignment assignment, Match match)
+        {
+            return new DefaultDefensiveAssignment(Direction, TargetRegions).Evaluate(assignment, match);
         }
 
         private FormationAssignment AssignDeployment(

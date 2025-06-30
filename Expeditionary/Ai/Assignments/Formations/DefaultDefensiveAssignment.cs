@@ -10,6 +10,8 @@ namespace Expeditionary.Ai.Assignments.Formations
     public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
         : IFormationAssignment
     {
+        public IMapRegion OperatingRegion => CompositeMapRegion.Union(DefenseRegions);
+
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (formation is RootFormationHandler root)
@@ -26,7 +28,8 @@ namespace Expeditionary.Ai.Assignments.Formations
                 new LinkedList<Quantity<SimpleFormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x => Quantity<SimpleFormationHandler>.Create(x, AssignmentHelper.GetCoverage(x)))
+                        .Select(x => 
+                            Quantity<SimpleFormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(
@@ -59,6 +62,19 @@ namespace Expeditionary.Ai.Assignments.Formations
                 .AddAll(defensiveAssignment)
                 .AddAll(offensiveAssignment)
                 .Build();
+        }
+
+        public float Evaluate(FormationAssignment assignment, Match match)
+        {
+            return DefenseRegions.Sum(x => EvaluateRegion(assignment, match, x));
+        }
+
+        private static float EvaluateRegion(FormationAssignment assignment, Match match, IMapRegion region)
+        {
+            return Math.Min(1f, assignment.ChildFormationAssignments
+                .Where(x => MapRegions.Intersects(x.Value.OperatingRegion, region, match.GetMap()))
+                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points) 
+                / AssignmentHelper.GetRequiredCoverage(region.Range(match.GetMap()).Count()));
         }
 
         private static List<SimpleFormationHandler> Assign(

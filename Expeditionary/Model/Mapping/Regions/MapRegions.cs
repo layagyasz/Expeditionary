@@ -4,6 +4,13 @@ namespace Expeditionary.Model.Mapping.Regions
 {
     public static class MapRegions
     {
+        public static readonly IMapRegion Empty = new ExplicitMapRegion(Enumerable.Empty<Vector3i>());
+
+        public static bool Intersects(IMapRegion left, IMapRegion right, Map map)
+        {
+            return left.Range(map).Any(x => right.Contains(map, x));
+        }
+
         public static IEnumerable<IMapRegion> Partition(
             this IMapRegion region, Map map, Vector2 keyVector, int partitions)
         {

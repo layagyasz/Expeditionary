@@ -11,6 +11,8 @@ namespace Expeditionary.Ai
         protected readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(FormationHandlerBase));
 
+        private static readonly float s_ReassignmentWeight = 0.8f;
+
         public abstract string Id { get; }
         public abstract int Echelon { get; }
         public IFormationAssignment Assignment { get; private set; } = new NoFormationAssignment();
@@ -44,9 +46,15 @@ namespace Expeditionary.Ai
 
         public void Reevaluate(Match match, TileEvaluator tileEvaluator)
         {
-            s_Logger.With(Id).Log($"reevaluate {Assignment}");
-            _assignmentRealization = Assignment.Assign(this, match, tileEvaluator);
-            DoAssignment(_assignmentRealization);
+            var newAssignment = Assignment.Assign(this, match, tileEvaluator);
+            if (_assignmentRealization == null || 
+                s_ReassignmentWeight * Assignment.Evaluate(newAssignment, match)
+                    > Assignment.Evaluate(_assignmentRealization, match))
+            {
+                s_Logger.With(Id).Log($"reevaluated {Assignment}");
+                _assignmentRealization = newAssignment;
+                DoAssignment(_assignmentRealization);
+            }
         }
 
         public void SetAssignment(IFormationAssignment assignment)

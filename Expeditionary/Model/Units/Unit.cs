@@ -38,6 +38,11 @@ namespace Expeditionary.Model.Units
             Position = default;
         }
 
+        public bool IsActive()
+        {
+            return !IsDestroyed && Position != null;
+        }
+
         public void Reset()
         {
             Movement = Type.Speed;

@@ -27,7 +27,9 @@ namespace Expeditionary.Evaluation
                 facing, 
                 formation.GetUnitsAndRoles()
                     .Where(x => x.Item2 == formation.Role)
-                    .Max(x => RangeBucketizer.ToBucket(x.Item1.Type)));
+                    .Select(x => RangeBucketizer.ToBucket(x.Item1.Type))
+                    .DefaultIfEmpty(RangeBucket.Short)
+                    .Max());
         }
 
         public TileConsideration GetConsiderationFor(FormationRole role, UnitType unitType, MapDirection facing)

@@ -8,6 +8,8 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public record class RandomAssignment(IMapRegion Region) : IFormationAssignment
     {
+        public IMapRegion OperatingRegion => Region;
+
         public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
@@ -18,13 +20,17 @@ namespace Expeditionary.Ai.Assignments.Formations
             foreach (var child in formation.Children)
             {
                 formationResult.Add(child, this);
-                foreach (var unit in child.GetUnitHandlers())
-                {
-                    unitResult.Add(
-                        unit, new PositionAssignment(MapDirection.All, options[random.Next(options.Count)]));
-                }
+            }
+            foreach (var unit in formation.GetUnitHandlers())
+            {
+                unitResult.Add(unit, new PositionAssignment(MapDirection.All, options[random.Next(options.Count)]));
             }
             return new(formationResult, unitResult);
+        }
+
+        public float Evaluate(FormationAssignment assignment, Match match)
+        {
+            return 1f;
         }
     }
 }

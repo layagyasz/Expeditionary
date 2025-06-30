@@ -8,6 +8,8 @@ namespace Expeditionary.Ai.Assignments.Formations
 {
     public static class AssignmentHelper
     {
+        private static readonly float s_CoverageCoefficient = 200f;
+
         public static Vector3i GetBest(Map map, IMapRegion region, TileConsideration consideration)
         {
             return region.Range(map).ArgMax(x => TileConsiderations.Evaluate(consideration, x, map));
@@ -32,19 +34,9 @@ namespace Expeditionary.Ai.Assignments.Formations
             return tilesAndEvaluations.Take(count).Select(x => x.hex);
         }
 
-        public static float GetCoverage(SimpleFormationHandler formation)
-        {
-            return GetCoverage(formation.Formation.Echelon);
-        }
-
-        public static float GetCoverage(int echelon)
-        {
-            return MathF.Pow(3, echelon - 1);
-        }
-
         public static float GetRequiredCoverage(int tileCount)
         {
-            return 1.3333333f * MathF.Sqrt(tileCount);
+            return s_CoverageCoefficient * MathF.Sqrt(tileCount);
         }
     }
 }

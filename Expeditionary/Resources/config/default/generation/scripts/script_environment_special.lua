@@ -1,5 +1,6 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
+Color4=luanet.import_type('OpenTK.Mathematics.Color4')
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
 
 Volcanic = MapEnvironmentModifier()

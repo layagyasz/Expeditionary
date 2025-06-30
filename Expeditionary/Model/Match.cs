@@ -72,7 +72,7 @@ namespace Expeditionary.Model
         {
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
-            s_Logger.Log($"{formation} added for {player}");
+            s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
             FormationAdded?.Invoke(this, formation);
             return formation;
         }

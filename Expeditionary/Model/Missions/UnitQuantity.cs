@@ -2,6 +2,8 @@
 {
     public record struct UnitQuantity(int Number, int Points)
     {
+        public static readonly UnitQuantity None = new(0, 0);
+
         public static UnitQuantity operator +(UnitQuantity left, UnitQuantity right)
         {
             return new(left.Number + right.Number, left.Points + right.Points);

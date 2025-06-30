@@ -27,7 +27,7 @@ namespace Expeditionary.Ai
 
         public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
         {
-            if (!IsActive())
+            if (!Unit.IsActive())
             {
                 return;
             }
@@ -44,11 +44,6 @@ namespace Expeditionary.Ai
         {
             Assignment = assignment;
             s_Logger.With(Unit.Id).Log($"assigned {assignment}");
-        }
-
-        public bool IsActive()
-        {
-            return !Unit.IsDestroyed && Unit.Position != null;
         }
 
         private IEnumerable<IUnitAction> GenerateActions(Match match, IPlayerKnowledge knowledge)
