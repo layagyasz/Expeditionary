@@ -1,4 +1,4 @@
-﻿using Expeditionary.Ai.Assignments.Formations;
+﻿using Expeditionary.Ai.Assignments;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;

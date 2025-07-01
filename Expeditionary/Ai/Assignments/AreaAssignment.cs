@@ -1,18 +1,19 @@
-﻿using Expeditionary.Evaluation;
+﻿using Expeditionary.Ai.Actions;
+using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
+using static Expeditionary.Evaluation.TileEvaluator;
 
-namespace Expeditionary.Ai.Assignments.Formations
+namespace Expeditionary.Ai.Assignments
 {
-    public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IFormationAssignment
+    public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IAssignment
     {
-        public IMapRegion OperatingRegion => Region;
-
-        public FormationAssignment Assign(
+        public AssignmentRealization Assign(
             IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (formation.Echelon <= 3)
@@ -25,36 +26,46 @@ namespace Expeditionary.Ai.Assignments.Formations
             }
         }
 
-        public float Evaluate(FormationAssignment assignment, Match match)
+        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
         {
-            return Math.Min(1f, assignment.ChildFormationAssignments
-                .Where(x => MapRegions.Intersects(x.Value.OperatingRegion, Region, match.GetMap()))
+            throw new NotImplementedException();
+        }
+
+        public float EvaluateRealization(AssignmentRealization realization, Match match)
+        {
+            return Math.Min(1f, realization.ChildFormationAssignments
+                .Where(x => MapRegions.Intersects(x.Value.Region, Region, match.GetMap()))
                 .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points)
                 / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 
-        public FormationAssignment PartitionByChildren(IFormationHandler formation, Map map)
+        public void Place(UnitHandler unit, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AssignmentRealization PartitionByChildren(IFormationHandler formation, Map map)
         {
             return PartitionByFormations(formation.Children, map);
         }
 
-        public FormationAssignment PartitionByFormations(IEnumerable<SimpleFormationHandler> formations, Map map)
+        public AssignmentRealization PartitionByFormations(IEnumerable<SimpleFormationHandler> formations, Map map)
         {
             var keyVector = GetKeyVector(Facing);
             // Handle top-echelon units
             return
                 new(
                     formations.Zip(Region.Partition(map, keyVector, formations.Count()))
-                        .ToDictionary(x => x.First, x => (IFormationAssignment)new AreaAssignment(x.Second, Facing)),
+                        .ToDictionary(x => x.First, x => (IAssignment)new AreaAssignment(x.Second, Facing)),
                 new());
         }
 
-        private FormationAssignment AssignHighEchelon(IFormationHandler formation, Match match)
+        private AssignmentRealization AssignHighEchelon(IFormationHandler formation, Match match)
         {
             return PartitionByChildren(formation, match.GetMap());
         }
 
-        private FormationAssignment AssignLowEchelon(
+        private AssignmentRealization AssignLowEchelon(
             IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             return PointAssignment.SelectFrom(
@@ -62,7 +73,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                 match.GetMap(),
                 Region,
                 Facing,
-                tileEvaluator, 
+                tileEvaluator,
                 TileConsiderations.Edge(DenseSignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing), 0));
         }
 

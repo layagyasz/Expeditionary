@@ -1,6 +1,5 @@
 ﻿using Cardamom.Logging;
 using Expeditionary.Ai.Assignments;
-using Expeditionary.Ai.Assignments.Formations;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 
@@ -15,12 +14,13 @@ namespace Expeditionary.Ai
 
         public abstract string Id { get; }
         public abstract int Echelon { get; }
-        public IFormationAssignment Assignment { get; private set; } = new NoFormationAssignment();
+        public IAssignment Assignment { get; private set; } = new NoAssignment();
         public IEnumerable<SimpleFormationHandler> Children => _children;
 
         private readonly List<SimpleFormationHandler> _children;
 
-        private FormationAssignment? _assignmentRealization;
+        private bool _isDirty = true;
+        private AssignmentRealization? _assignmentRealization;
 
         protected FormationHandlerBase(IEnumerable<SimpleFormationHandler> children)
         {
@@ -46,24 +46,27 @@ namespace Expeditionary.Ai
 
         public void Reevaluate(Match match, TileEvaluator tileEvaluator)
         {
-            var newAssignment = Assignment.Assign(this, match, tileEvaluator);
-            if (_assignmentRealization == null || 
-                s_ReassignmentWeight * Assignment.Evaluate(newAssignment, match)
-                    > Assignment.Evaluate(_assignmentRealization, match))
+            var newRealization = Assignment.Assign(this, match, tileEvaluator);
+            if (_assignmentRealization == null
+                || _isDirty
+                || s_ReassignmentWeight * Assignment.EvaluateRealization(newRealization, match)
+                    > Assignment.EvaluateRealization(_assignmentRealization, match))
             {
                 s_Logger.With(Id).Log($"reevaluated {Assignment}");
-                _assignmentRealization = newAssignment;
+                _assignmentRealization = newRealization;
+                _isDirty = false;
                 DoAssignment(_assignmentRealization);
             }
         }
 
-        public void SetAssignment(IFormationAssignment assignment)
+        public void SetAssignment(IAssignment assignment)
         {
             Assignment = assignment;
+            _isDirty = true;
             s_Logger.With(Id).Log($"assigned {assignment}");
         }
 
-        private static void DoAssignment(FormationAssignment assignment)
+        private static void DoAssignment(AssignmentRealization assignment)
         {
             foreach ((var f, var a) in  assignment.ChildFormationAssignments)
             {

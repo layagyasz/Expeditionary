@@ -1,9 +1,9 @@
-﻿using Expeditionary.Ai.Assignments.Formations;
+﻿using Expeditionary.Ai.Assignments;
 using Expeditionary.Model.Formations;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class FormationSetup(FormationTemplate Formation, IFormationAssignment Assignment)
+    public record class FormationSetup(FormationTemplate Formation, IAssignment Assignment)
     {
         public void Setup(Player player, Match match, SetupContext context)
         {

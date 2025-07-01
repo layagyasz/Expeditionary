@@ -1,7 +1,7 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
 using Cardamom.Logging;
-using Expeditionary.Ai.Assignments.Formations;
+using Expeditionary.Ai.Assignments;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
@@ -32,7 +32,7 @@ namespace Expeditionary.Ai
                 new RootFormationHandler(player, match.GetFormations(Player).Select(SimpleFormationHandler.Create));
         }
 
-        public void AddFormation(Formation formation, IFormationAssignment assignment)
+        public void AddFormation(Formation formation, IAssignment assignment)
         {
             var result = SimpleFormationHandler.Create(formation);
             _rootFormationHandler.Add(result);

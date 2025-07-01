@@ -1,4 +1,4 @@
-﻿using Expeditionary.Ai.Assignments.Formations;
+﻿using Expeditionary.Ai.Assignments;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 
@@ -6,7 +6,7 @@ namespace Expeditionary.Ai
 {
     public interface IFormationHandler
     {
-        public IFormationAssignment Assignment { get; }
+        public IAssignment Assignment { get; }
         public IEnumerable<SimpleFormationHandler> Children { get; }
         public string Id { get; }
         public int Echelon { get; }
@@ -15,6 +15,6 @@ namespace Expeditionary.Ai
         public IEnumerable<SimpleFormationHandler> GetAllFormationHandlers();
         public IEnumerable<UnitHandler> GetAllUnitHandlers();
         public IEnumerable<UnitHandler> GetUnitHandlers();
-        public void SetAssignment(IFormationAssignment assignment);
+        public void SetAssignment(IAssignment assignment);
     }
 }

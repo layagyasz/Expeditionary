@@ -1,22 +1,25 @@
-﻿using Expeditionary.Evaluation;
+﻿using Expeditionary.Ai.Actions;
+using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Units;
+using static Expeditionary.Evaluation.TileEvaluator;
 
-namespace Expeditionary.Ai.Assignments.Formations
+namespace Expeditionary.Ai.Assignments
 {
-    public record class DefaultOffensiveAssignment(MapDirection Direction, List<IMapRegion> TargetRegions) 
-        : IFormationAssignment
+    public record class DefaultOffensiveAssignment(MapDirection Facing, List<IMapRegion> TargetRegions)
+        : IAssignment
     {
-        public IMapRegion OperatingRegion => CompositeMapRegion.Union(TargetRegions);
+        public IMapRegion Region => CompositeMapRegion.Union(TargetRegions);
 
-        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (IsDeployed(formation))
             {
-                return new DefaultDefensiveAssignment(Direction, TargetRegions)
+                return new DefaultDefensiveAssignment(Facing, TargetRegions)
                     .Assign(formation, match, tileEvaluator);
             }
             else
@@ -25,16 +28,26 @@ namespace Expeditionary.Ai.Assignments.Formations
             }
         }
 
-        public float Evaluate(FormationAssignment assignment, Match match)
+        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
         {
-            return new DefaultDefensiveAssignment(Direction, TargetRegions).Evaluate(assignment, match);
+            throw new NotImplementedException();
         }
 
-        private FormationAssignment AssignDeployment(
+        public float EvaluateRealization(AssignmentRealization realization, Match match)
+        {
+            return new DefaultDefensiveAssignment(Facing, TargetRegions).EvaluateRealization(realization, match);
+        }
+
+        public void Place(UnitHandler unit, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
+        private AssignmentRealization AssignDeployment(
             IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
-            var region = new EdgeMapRegion(Direction, 0.33f);
+            var region = new EdgeMapRegion(Facing, 0.33f);
             var origin =
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(
@@ -56,7 +69,7 @@ namespace Expeditionary.Ai.Assignments.Formations
                 formation,
                 map,
                 new ExplicitMapRegion(extent.Select(x => x.Destination)),
-                MapDirectionUtils.Invert(Direction),
+                MapDirectionUtils.Invert(Facing),
                 tileEvaluator,
                 TileConsiderations.Edge(sdf, 0));
         }

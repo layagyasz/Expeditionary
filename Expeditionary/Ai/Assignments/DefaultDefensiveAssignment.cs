@@ -1,18 +1,22 @@
 ﻿using Cardamom.Trackers;
+using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Units;
+using static Expeditionary.Evaluation.TileEvaluator;
 
-namespace Expeditionary.Ai.Assignments.Formations
+namespace Expeditionary.Ai.Assignments
 {
     public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
-        : IFormationAssignment
+        : IAssignment
     {
-        public IMapRegion OperatingRegion => CompositeMapRegion.Union(DefenseRegions);
+        public MapDirection Facing => MapDirectionUtils.Invert(DefendingDirection);
+        public IMapRegion Region => CompositeMapRegion.Union(DefenseRegions);
 
-        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (formation is RootFormationHandler root)
             {
@@ -28,13 +32,13 @@ namespace Expeditionary.Ai.Assignments.Formations
                 new LinkedList<Quantity<SimpleFormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x => 
+                        .Select(x =>
                             Quantity<SimpleFormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(
                     x => Quantity<IMapRegion>.Create(x, AssignmentHelper.GetRequiredCoverage(x.Range(map).Count())));
-            var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
+            var result = new Dictionary<SimpleFormationHandler, IAssignment>();
             foreach (var region in regions)
             {
                 if (!eligibleOccupiers.Any())
@@ -44,36 +48,44 @@ namespace Expeditionary.Ai.Assignments.Formations
                 var assignments = Assign(eligibleOccupiers, region);
                 foreach (var f in assignments)
                 {
-                    result.Add(f, new AreaAssignment(region.Key, MapDirectionUtils.Invert(DefendingDirection)));
+                    result.Add(f, new AreaAssignment(region.Key, Facing));
                 }
             }
-            var currentAssignment = new FormationAssignment(result, new());
-            var parentAssignment = 
-                new AreaAssignment(
-                    new EdgeMapRegion(DefendingDirection, 0.5f), MapDirectionUtils.Invert(DefendingDirection));
+            var currentAssignment = new AssignmentRealization(result, new());
+            var parentAssignment = new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.5f), Facing);
             var defensiveAssignment =
                 parentAssignment.PartitionByFormations(eligibleOccupiers.Select(x => x.Key), map);
-            var offensiveAssignment = 
+            var offensiveAssignment =
                 parentAssignment.PartitionByFormations(
                     formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry), map);
 
-            return new FormationAssignment.Builder()
+            return new AssignmentRealization.Builder()
                 .AddAll(currentAssignment)
                 .AddAll(defensiveAssignment)
                 .AddAll(offensiveAssignment)
                 .Build();
         }
 
-        public float Evaluate(FormationAssignment assignment, Match match)
+        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float EvaluateRealization(AssignmentRealization assignment, Match match)
         {
             return DefenseRegions.Sum(x => EvaluateRegion(assignment, match, x));
         }
 
-        private static float EvaluateRegion(FormationAssignment assignment, Match match, IMapRegion region)
+        public void Place(UnitHandler unit, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static float EvaluateRegion(AssignmentRealization assignment, Match match, IMapRegion region)
         {
             return Math.Min(1f, assignment.ChildFormationAssignments
-                .Where(x => MapRegions.Intersects(x.Value.OperatingRegion, region, match.GetMap()))
-                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points) 
+                .Where(x => MapRegions.Intersects(x.Value.Region, region, match.GetMap()))
+                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points)
                 / AssignmentHelper.GetRequiredCoverage(region.Range(match.GetMap()).Count()));
         }
 

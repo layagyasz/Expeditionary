@@ -1,30 +1,35 @@
-﻿using Expeditionary.Ai.Assignments.Units;
+﻿using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
+using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
+using static Expeditionary.Evaluation.TileEvaluator;
 
-namespace Expeditionary.Ai.Assignments.Formations
+namespace Expeditionary.Ai.Assignments
 {
-    public record class PointAssignment(Vector3i Hex, IMapRegion Bounds, MapDirection Facing) : IFormationAssignment
+    public record class PointAssignment(Vector3i Hex, IMapRegion Bounds, MapDirection Facing) : IAssignment
     {
-        public static FormationAssignment SelectFrom(
+        private static readonly float s_Reward = 20f;
+
+        public static AssignmentRealization SelectFrom(
             IFormationHandler formation,
-            Map map, 
+            Map map,
             IMapRegion region,
             MapDirection facing,
-            TileEvaluator tileEvaluator, 
+            TileEvaluator tileEvaluator,
             TileConsideration extraConsideration)
         {
             var spacing = 2 * GetSpacing(formation.Echelon);
-            return new FormationAssignment.Builder()
+            return new AssignmentRealization.Builder()
                 .AddAll(
                     SelectFrom(
                         formation.Children,
-                        map, 
+                        map,
                         region,
                         facing,
                         tileEvaluator,
@@ -36,22 +41,22 @@ namespace Expeditionary.Ai.Assignments.Formations
                 .Build();
         }
 
-        public static FormationAssignment SelectFrom(
-            IEnumerable<SimpleFormationHandler> formations, 
+        public static AssignmentRealization SelectFrom(
+            IEnumerable<SimpleFormationHandler> formations,
             Map map,
-            IMapRegion region, 
-            MapDirection facing, 
+            IMapRegion region,
+            MapDirection facing,
             TileEvaluator tileEvaluator,
-            TileConsideration extraConsideration, 
+            TileConsideration extraConsideration,
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            var result = new Dictionary<SimpleFormationHandler, IFormationAssignment>();
+            var result = new Dictionary<SimpleFormationHandler, IAssignment>();
             foreach (var formation in formations)
             {
-                var consideration = 
+                var consideration =
                     TileConsiderations.Combine(
-                        tileEvaluator.GetConsiderationFor(formation.Formation, facing), 
+                        tileEvaluator.GetConsiderationFor(formation.Formation, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
@@ -61,38 +66,38 @@ namespace Expeditionary.Ai.Assignments.Formations
             return new(result, new());
         }
 
-        public static FormationAssignment SelectFrom(
+        public static AssignmentRealization SelectFrom(
             IEnumerable<UnitHandler> units,
-            Map map, 
+            Map map,
             IMapRegion region,
             MapDirection facing,
             TileEvaluator tileEvaluator,
-            TileConsideration extraConsideration, 
+            TileConsideration extraConsideration,
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            var result = new Dictionary<UnitHandler, IUnitAssignment>();
+            var result = new Dictionary<UnitHandler, IAssignment>();
             foreach (var unit in units.OrderBy(x => -x.Unit.Type.Points))
             {
-                var consideration = 
+                var consideration =
                     TileConsiderations.Combine(
                         tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
-                result.Add(unit, new PositionAssignment(facing, hex));
+                result.Add(unit, new PointAssignment(hex, region, facing));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
             }
             return new(new(), result);
         }
 
-        public IMapRegion OperatingRegion => Bounds;
+        public IMapRegion Region => Bounds;
 
-        public FormationAssignment Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             int spacing = GetSpacing(formation.Echelon);
             var supportRegion = CompositeMapRegion.Intersect(new PointMapRegion(Hex, 2 * spacing), Bounds);
-            var result = new FormationAssignment.Builder();
+            var result = new AssignmentRealization.Builder();
             if (formation.Children.Any())
             {
                 var first = formation.Children.First();
@@ -106,14 +111,14 @@ namespace Expeditionary.Ai.Assignments.Formations
                         tileEvaluator,
                         TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
                         spacing));
-            } 
+            }
             if (formation.GetUnitHandlers().Any())
             {
                 if (formation.Children.Any())
                 {
                     var units = formation.GetUnitHandlers().ToList();
                     var first = units.First();
-                    result.Add(first, new PositionAssignment(Facing, Hex));
+                    result.Add(first, new PointAssignment(Hex, Bounds, Facing));
                     result.AddAll(
                         SelectFrom(
                             units.Skip(1),
@@ -140,10 +145,52 @@ namespace Expeditionary.Ai.Assignments.Formations
             return result.Build();
         }
 
-        public float Evaluate(FormationAssignment assignment, Match match)
+        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
+        {
+            if (action is AttackAction attackAction)
+            {
+                return AttackEvaluation.Evaluate(
+                    unit, attackAction.Attack, attackAction.Mode, attackAction.Target, match.GetMap());
+            }
+            if (action is MoveAction moveAction)
+            {
+                var consideration =
+                    tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match);
+                var baseline = TileConsiderations.Evaluate(consideration, unit.Position!.Value, match.GetMap());
+                if (unit.Position != Hex)
+                {
+                    var inDirection =
+                        Geometry.GetCubicDistance(unit.Position!.Value, Hex)
+                        > Geometry.GetCubicDistance(moveAction.Path.Destination, Hex) ? 1 : 0;
+                    return unit.UnitQuantity.Points
+                        * (TileConsiderations.Evaluate(
+                            consideration, moveAction.Path.Destination, match.GetMap()) - baseline) +
+                            s_Reward * (moveAction.Path.Cost / unit.Movement + inDirection);
+                }
+                else
+                {
+                    return unit.UnitQuantity.Points
+                        * (TileConsiderations.Evaluate(
+                            consideration, moveAction.Path.Destination, match.GetMap()) - baseline) - s_Reward;
+                }
+            }
+            if (action is IdleAction)
+            {
+                return unit.Position == Hex ? s_Reward : 0;
+            }
+            throw new ArgumentException($"Unsupported action {action}");
+        }
+
+        public float EvaluateRealization(AssignmentRealization realization, Match match)
         {
             return 0;
         }
+
+        public void Place(UnitHandler unit, Match match)
+        {
+            match.Place(unit.Unit, Hex);
+        }
+
 
         private static int GetSpacing(int echelon)
         {

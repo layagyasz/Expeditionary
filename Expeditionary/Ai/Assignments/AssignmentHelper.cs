@@ -4,7 +4,7 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Ai.Assignments.Formations
+namespace Expeditionary.Ai.Assignments
 {
     public static class AssignmentHelper
     {
