@@ -10,25 +10,26 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
 {
-    public class UnitHandler : IFormationHandler
+    public class UnitHandler : IAiHandler
     {
         protected readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(UnitHandler));
 
-        public Unit Unit { get; }
         public FormationRole Role { get; }
+        public Unit Unit { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment();
-        public IEnumerable<SimpleFormationHandler> Children => Enumerable.Empty<SimpleFormationHandler>();
+        public IEnumerable<FormationHandler> Children => Enumerable.Empty<FormationHandler>();
+        public IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
         public string Id => $"unit-{Unit.Id}";
         public int Echelon => 1;
 
-        public UnitHandler(Unit unit, FormationRole role)
+        public UnitHandler(FormationRole role, Unit unit)
         {
             Unit = unit;
             Role = role;
         }
 
-        public void Add(SimpleFormationHandler handler)
+        public void Add(FormationHandler handler)
         {
             throw new NotImplementedException();
         }
@@ -47,23 +48,6 @@ namespace Expeditionary.Ai
             s_Logger.With(Unit.Id).Log($"action {action.Action} value {action.Value}");
             action.Action?.Do(match, Unit);
         }
-
-        public IEnumerable<SimpleFormationHandler> GetAllFormationHandlers()
-        {
-            return Enumerable.Empty<SimpleFormationHandler>();
-        }
-
-        public IEnumerable<UnitHandler> GetAllUnitHandlers()
-        {
-            return Enumerable.Empty<UnitHandler>();
-        }
-
-        public IEnumerable<UnitHandler> GetUnitHandlers()
-        {
-            return Enumerable.Empty<UnitHandler>();
-        }
-
-        public void Reevaluate(Match match, TileEvaluator tileEvaluator) { }
 
         public void SetAssignment(IAssignment assignment)
         {

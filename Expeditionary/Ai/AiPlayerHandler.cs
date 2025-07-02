@@ -1,12 +1,10 @@
 ﻿using Cardamom;
-using Cardamom.Collections;
 using Cardamom.Logging;
 using Expeditionary.Ai.Assignments;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Orders;
 
 namespace Expeditionary.Ai
 {
@@ -20,7 +18,7 @@ namespace Expeditionary.Ai
         private readonly Match _match;
         private readonly TileEvaluator _tileEvaluator;
         private readonly IPlayerKnowledge _knowledge;
-        private readonly RootFormationHandler _rootFormationHandler;
+        private readonly RootHandler _rootFormationHandler;
 
         public AiPlayerHandler(Player player, Match match, TileEvaluator tileEvaluator)
         {
@@ -29,12 +27,12 @@ namespace Expeditionary.Ai
             _tileEvaluator = tileEvaluator;
             _knowledge = match.GetKnowledge(Player);
             _rootFormationHandler = 
-                new RootFormationHandler(player, match.GetFormations(Player).Select(SimpleFormationHandler.Create));
+                new RootHandler(player, match.GetFormations(Player).Select(FormationHandler.Create));
         }
 
         public void AddFormation(Formation formation, IAssignment assignment)
         {
-            var result = SimpleFormationHandler.Create(formation);
+            var result = FormationHandler.Create(formation);
             _rootFormationHandler.Add(result);
             _rootFormationHandler.SetAssignment(assignment);
         }
@@ -49,8 +47,8 @@ namespace Expeditionary.Ai
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
-            _rootFormationHandler.Reevaluate(_match, _tileEvaluator);
-            foreach (var formation in _rootFormationHandler.GetAllFormationHandlers())
+            _rootFormationHandler.DoTurn(_match, _knowledge, _tileEvaluator);
+            foreach (var formation in _rootFormationHandler.Children)
             {
                 DoFormationTurn(formation);
             }
@@ -68,24 +66,23 @@ namespace Expeditionary.Ai
         public void Setup()
         {
             s_Logger.With(Player.Id).Log("Setup formations");
-            _rootFormationHandler.Reevaluate(_match, _tileEvaluator);
-            foreach (var formationHandler in _rootFormationHandler.GetAllFormationHandlers())
+            _rootFormationHandler.DoTurn(_match, _knowledge, _tileEvaluator);
+            foreach (var formationHandler in _rootFormationHandler.Children)
             {
-                formationHandler.Reevaluate(_match, _tileEvaluator);
-            }
-            s_Logger.With(Player.Id).Log("Setup units");
-            foreach (var unit in _rootFormationHandler.GetAllUnitHandlers())
-            {
-                unit.Assignment.Place(unit, _match);
+                DoFormationTurn(formationHandler);
             }
         }
 
-        private void DoFormationTurn(SimpleFormationHandler formation)
+        private void DoFormationTurn(FormationHandler formation)
         {
-            formation.Reevaluate(_match, _tileEvaluator);
-            foreach (var unit in formation.GetUnitHandlers())
+            formation.DoTurn(_match, _knowledge, _tileEvaluator);
+            foreach (var diad in formation.Diads)
             {
-                unit.DoTurn(_match, _knowledge, _tileEvaluator);
+                diad.DoTurn(_match, _knowledge, _tileEvaluator);
+            }
+            foreach (var child in formation.Children)
+            {
+                DoFormationTurn(child);
             }
         }
 

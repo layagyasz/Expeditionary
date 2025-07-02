@@ -25,9 +25,9 @@ namespace Expeditionary.Evaluation
             return DefaultConsideration(
                 DefaultDispositionMapper.Map(formation.Role), 
                 facing, 
-                formation.GetUnitsAndRoles()
-                    .Where(x => x.Item2 == formation.Role)
-                    .Select(x => RangeBucketizer.ToBucket(x.Item1.Type))
+                formation.GetDiads()
+                    .Where(x => x.Role == formation.Role)
+                    .Select(x => RangeBucketizer.ToBucket(x.Unit.Type))
                     .DefaultIfEmpty(RangeBucket.Short)
                     .Max());
         }

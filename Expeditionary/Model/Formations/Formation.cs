@@ -5,14 +5,16 @@ namespace Expeditionary.Model.Formations
 {
     public class Formation
     {
+        public record class Diad(FormationRole Role, Unit Unit, Unit? Transport);
+
         public Player Player { get; }
         public string Name { get; }
         public FormationRole Role { get; }
         public int Echelon { get; }
-        public List<(Unit, FormationRole)> UnitsAndRoles => _unitsAndRoles;
+        public List<Diad> UnitsAndRoles => _diads;
         public List<Formation> ComponentFormations => _componentFormations;
 
-        private readonly List<(Unit, FormationRole)> _unitsAndRoles;
+        private readonly List<Diad> _diads;
         private readonly List<Formation> _componentFormations;
 
         public Formation(
@@ -20,27 +22,27 @@ namespace Expeditionary.Model.Formations
             string name,
             FormationRole role, 
             int echelon,
-            IEnumerable<(Unit, FormationRole)> unitsAndRoles,
+            IEnumerable<Diad> diads,
             IEnumerable<Formation> componentFormations)
         {
             Player = player;
             Name = name;
             Role = role;
             Echelon = echelon;
-            _unitsAndRoles = unitsAndRoles.ToList();
+            _diads = diads.ToList();
             _componentFormations = componentFormations.ToList();
         }
 
-        public IEnumerable<(Unit, FormationRole)> GetUnitsAndRoles()
+        public IEnumerable<Diad> GetDiads()
         {
-            return Enumerable.Concat(_unitsAndRoles, ComponentFormations.SelectMany(x => x.GetUnitsAndRoles()));
+            return Enumerable.Concat(_diads, ComponentFormations.SelectMany(x => x.GetDiads()));
         }
 
         public UnitQuantity GetAliveUnitQuantity()
         {
             return Enumerable.Concat(
                 _componentFormations.Select(x => x.GetAliveUnitQuantity()),
-                _unitsAndRoles.Select(x => x.Item1.UnitQuantity))
+                _diads.Select(x => x.Unit.UnitQuantity))
                 .Aggregate(UnitQuantity.None, (x, y) => x + y);
         }
 

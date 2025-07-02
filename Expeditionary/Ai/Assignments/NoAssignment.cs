@@ -4,7 +4,6 @@ using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -13,14 +12,15 @@ namespace Expeditionary.Ai.Assignments
         public MapDirection Facing => MapDirection.All;
         public IMapRegion Region => MapRegions.Empty;
 
-        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             return new(
                 formation.Children.ToDictionary(x => x, x => (IAssignment)new NoAssignment()),
-                formation.GetUnitHandlers().ToDictionary(x => x, x => (IAssignment)new NoAssignment()));
+                formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment()));
         }
 
-        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
+        public float EvaluateAction(
+            Unit unit, IUnitAction action, TileEvaluator.UnitTileEvaluator tileEvaluator, Match match)
         {
             throw new NotImplementedException();
         }

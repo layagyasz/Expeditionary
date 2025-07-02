@@ -2,10 +2,11 @@
 using Expeditionary.Ai.Assignments;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
+using Expeditionary.Model.Knowledge;
 
 namespace Expeditionary.Ai
 {
-    public abstract class FormationHandlerBase : IFormationHandler
+    public abstract class FormationHandlerBase : IAiHandler
     {
         protected readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(FormationHandlerBase));
@@ -15,36 +16,25 @@ namespace Expeditionary.Ai
         public abstract string Id { get; }
         public abstract int Echelon { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment();
-        public IEnumerable<SimpleFormationHandler> Children => _children;
+        public IEnumerable<FormationHandler> Children => _children;
+        public abstract IEnumerable<DiadHandler> Diads { get; }
 
-        private readonly List<SimpleFormationHandler> _children;
+        private readonly List<FormationHandler> _children;
 
         private bool _isDirty = true;
         private AssignmentRealization? _assignmentRealization;
 
-        protected FormationHandlerBase(IEnumerable<SimpleFormationHandler> children)
+        protected FormationHandlerBase(IEnumerable<FormationHandler> children)
         {
             _children = children.ToList();
         }
 
-        public void Add(SimpleFormationHandler handler)
+        public void Add(FormationHandler handler)
         {
             _children.Add(handler);
         }
 
-        public IEnumerable<SimpleFormationHandler> GetAllFormationHandlers()
-        {
-            return Enumerable.Concat(_children, _children.SelectMany(x => x.GetAllFormationHandlers()));
-        }
-
-        public IEnumerable<UnitHandler> GetAllUnitHandlers()
-        {
-            return Enumerable.Concat(GetUnitHandlers(), Children.SelectMany(x => x.GetAllUnitHandlers()));
-        }
-
-        public abstract IEnumerable<UnitHandler> GetUnitHandlers();
-
-        public void Reevaluate(Match match, TileEvaluator tileEvaluator)
+        public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
         {
             var newRealization = Assignment.Assign(this, match, tileEvaluator);
             if (_assignmentRealization == null

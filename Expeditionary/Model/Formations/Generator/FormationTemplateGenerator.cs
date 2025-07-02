@@ -36,9 +36,12 @@ namespace Expeditionary.Model.Formations.Generator
                 Name,
                 Role,
                 Echelon,
-                ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(), 
+                ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(),
+                // TODO: Select transport units
                 UnitSlots.SelectMany(
-                    x => Enumerable.Repeat((context.Select(x), x.Role), x.Number)).ToList());
+                    x => Enumerable.Repeat(
+                        new FormationTemplate.Diad(x.Role, context.Select(x), TransportType: null), x.Number))
+                    .ToList());
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Expeditionary.Ai.Assignments
     {
         MapDirection Facing { get; }
         IMapRegion Region { get; }
-        AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator);
+        AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator);
         float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match);
         float EvaluateRealization(AssignmentRealization realization, Match match);
         void Place(UnitHandler unit, Match match);

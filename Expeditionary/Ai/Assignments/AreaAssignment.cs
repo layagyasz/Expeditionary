@@ -14,7 +14,7 @@ namespace Expeditionary.Ai.Assignments
     public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IAssignment
     {
         public AssignmentRealization Assign(
-            IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (formation.Echelon <= 3)
             {
@@ -44,12 +44,12 @@ namespace Expeditionary.Ai.Assignments
             throw new NotImplementedException();
         }
 
-        public AssignmentRealization PartitionByChildren(IFormationHandler formation, Map map)
+        public AssignmentRealization PartitionByChildren(IAiHandler formation, Map map)
         {
             return PartitionByFormations(formation.Children, map);
         }
 
-        public AssignmentRealization PartitionByFormations(IEnumerable<SimpleFormationHandler> formations, Map map)
+        public AssignmentRealization PartitionByFormations(IEnumerable<FormationHandler> formations, Map map)
         {
             var keyVector = GetKeyVector(Facing);
             // Handle top-echelon units
@@ -60,13 +60,13 @@ namespace Expeditionary.Ai.Assignments
                 new());
         }
 
-        private AssignmentRealization AssignHighEchelon(IFormationHandler formation, Match match)
+        private AssignmentRealization AssignHighEchelon(IAiHandler formation, Match match)
         {
             return PartitionByChildren(formation, match.GetMap());
         }
 
         private AssignmentRealization AssignLowEchelon(
-            IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             return PointAssignment.SelectFrom(
                 formation,

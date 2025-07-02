@@ -16,9 +16,9 @@ namespace Expeditionary.Ai.Assignments
         public MapDirection Facing => MapDirectionUtils.Invert(DefendingDirection);
         public IMapRegion Region => CompositeMapRegion.Union(DefenseRegions);
 
-        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
-            if (formation is RootFormationHandler root)
+            if (formation is RootHandler root)
             {
                 return new(
                     new()
@@ -29,16 +29,16 @@ namespace Expeditionary.Ai.Assignments
             }
             var map = match.GetMap();
             var eligibleOccupiers =
-                new LinkedList<Quantity<SimpleFormationHandler>>(
+                new LinkedList<Quantity<FormationHandler>>(
                     formation.Children
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
                         .Select(x =>
-                            Quantity<SimpleFormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
+                            Quantity<FormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(
                     x => Quantity<IMapRegion>.Create(x, AssignmentHelper.GetRequiredCoverage(x.Range(map).Count())));
-            var result = new Dictionary<SimpleFormationHandler, IAssignment>();
+            var result = new Dictionary<FormationHandler, IAssignment>();
             foreach (var region in regions)
             {
                 if (!eligibleOccupiers.Any())
@@ -89,14 +89,14 @@ namespace Expeditionary.Ai.Assignments
                 / AssignmentHelper.GetRequiredCoverage(region.Range(match.GetMap()).Count()));
         }
 
-        private static List<SimpleFormationHandler> Assign(
-            LinkedList<Quantity<SimpleFormationHandler>> formations, Quantity<IMapRegion> region)
+        private static List<FormationHandler> Assign(
+            LinkedList<Quantity<FormationHandler>> formations, Quantity<IMapRegion> region)
         {
-            var result = new List<SimpleFormationHandler>();
+            var result = new List<FormationHandler>();
             float coverage = 0;
             while (coverage < region.Value && formations.Any())
             {
-                Quantity<SimpleFormationHandler> formation;
+                Quantity<FormationHandler> formation;
                 if (!result.Any())
                 {
                     formation = formations.First();

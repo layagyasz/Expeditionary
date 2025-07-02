@@ -1,24 +1,24 @@
 ﻿namespace Expeditionary.Ai.Assignments
 {
     public record class AssignmentRealization(
-        Dictionary<SimpleFormationHandler, IAssignment> ChildFormationAssignments, 
-        Dictionary<UnitHandler, IAssignment> UnitAssignments)
+        Dictionary<FormationHandler, IAssignment> ChildFormationAssignments, 
+        Dictionary<DiadHandler, IAssignment> UnitAssignments)
     {
         public class Builder
         {
-            private readonly Dictionary<SimpleFormationHandler, IAssignment> _childFormationAssignments = 
+            private readonly Dictionary<FormationHandler, IAssignment> _childFormationAssignments = 
                 new();
-            private readonly Dictionary<UnitHandler, IAssignment> _unitAssignments = new();
+            private readonly Dictionary<DiadHandler, IAssignment> _unitAssignments = new();
 
-            public Builder Add(SimpleFormationHandler formation, IAssignment assignment)
+            public Builder Add(FormationHandler formation, IAssignment assignment)
             {
                 _childFormationAssignments.Add(formation, assignment);
                 return this;
             }
 
-            public Builder Add(UnitHandler unit, IAssignment assignment)
+            public Builder Add(DiadHandler diad, IAssignment assignment)
             {
-                _unitAssignments.Add(unit, assignment);
+                _unitAssignments.Add(diad, assignment);
                 return this;
             }
 

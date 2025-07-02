@@ -15,7 +15,7 @@ namespace Expeditionary.Ai.Assignments
     {
         public IMapRegion Region => CompositeMapRegion.Union(TargetRegions);
 
-        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             if (IsDeployed(formation))
             {
@@ -44,7 +44,7 @@ namespace Expeditionary.Ai.Assignments
         }
 
         private AssignmentRealization AssignDeployment(
-            IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
             var region = new EdgeMapRegion(Facing, 0.33f);
@@ -57,8 +57,8 @@ namespace Expeditionary.Ai.Assignments
                         x,
                         map));
             var exemplar =
-                formation.GetAllUnitHandlers()
-                    .GroupBy(x => x.Unit.Type)
+                formation.GetAllDiads()
+                    .GroupBy(x => x.Unit.Unit.Type)
                     .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
             int distance = 16;
             var extent =
@@ -74,9 +74,9 @@ namespace Expeditionary.Ai.Assignments
                 TileConsiderations.Edge(sdf, 0));
         }
 
-        private static bool IsDeployed(IFormationHandler formation)
+        private static bool IsDeployed(IAiHandler formation)
         {
-            return formation.GetAllUnitHandlers().Any(x => x.Unit.IsDestroyed || x.Unit.Position != null);
+            return formation.GetAllDiads().Any(x => x.Unit.Unit.IsDestroyed || x.Unit.Unit.Position != null);
         }
     }
 }

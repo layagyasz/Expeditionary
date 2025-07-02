@@ -17,7 +17,7 @@ namespace Expeditionary.Ai.Assignments
         private static readonly float s_Reward = 20f;
 
         public static AssignmentRealization SelectFrom(
-            IFormationHandler formation,
+            IAiHandler formation,
             Map map,
             IMapRegion region,
             MapDirection facing,
@@ -35,14 +35,12 @@ namespace Expeditionary.Ai.Assignments
                         tileEvaluator,
                         extraConsideration,
                         spacing))
-                .AddAll(
-                    SelectFrom(
-                        formation.GetUnitHandlers(), map, region, facing, tileEvaluator, extraConsideration, spacing))
+                .AddAll(SelectFrom(formation.Diads, map, region, facing, tileEvaluator, extraConsideration, spacing))
                 .Build();
         }
 
         public static AssignmentRealization SelectFrom(
-            IEnumerable<SimpleFormationHandler> formations,
+            IEnumerable<FormationHandler> formations,
             Map map,
             IMapRegion region,
             MapDirection facing,
@@ -51,7 +49,7 @@ namespace Expeditionary.Ai.Assignments
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            var result = new Dictionary<SimpleFormationHandler, IAssignment>();
+            var result = new Dictionary<FormationHandler, IAssignment>();
             foreach (var formation in formations)
             {
                 var consideration =
@@ -67,7 +65,7 @@ namespace Expeditionary.Ai.Assignments
         }
 
         public static AssignmentRealization SelectFrom(
-            IEnumerable<UnitHandler> units,
+            IEnumerable<DiadHandler> diads,
             Map map,
             IMapRegion region,
             MapDirection facing,
@@ -76,12 +74,12 @@ namespace Expeditionary.Ai.Assignments
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
-            var result = new Dictionary<UnitHandler, IAssignment>();
-            foreach (var unit in units.OrderBy(x => -x.Unit.Type.Points))
+            var result = new Dictionary<DiadHandler, IAssignment>();
+            foreach (var unit in diads.OrderBy(x => -x.Unit.Unit.Type.Points))
             {
                 var consideration =
                     TileConsiderations.Combine(
-                        tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, facing),
+                        tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Unit.Type, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
@@ -93,7 +91,7 @@ namespace Expeditionary.Ai.Assignments
 
         public IMapRegion Region => Bounds;
 
-        public AssignmentRealization Assign(IFormationHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             int spacing = GetSpacing(formation.Echelon);
             var supportRegion = CompositeMapRegion.Intersect(new PointMapRegion(Hex, 2 * spacing), Bounds);
@@ -112,16 +110,16 @@ namespace Expeditionary.Ai.Assignments
                         TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
                         spacing));
             }
-            if (formation.GetUnitHandlers().Any())
+            if (formation.Diads.Any())
             {
                 if (formation.Children.Any())
                 {
-                    var units = formation.GetUnitHandlers().ToList();
-                    var first = units.First();
+                    var diads = formation.Diads.ToList();
+                    var first = diads.First();
                     result.Add(first, new PointAssignment(Hex, Bounds, Facing));
                     result.AddAll(
                         SelectFrom(
-                            units.Skip(1),
+                            diads.Skip(1),
                             match.GetMap(),
                             supportRegion,
                             Facing,
@@ -133,7 +131,7 @@ namespace Expeditionary.Ai.Assignments
                 {
                     result.AddAll(
                         SelectFrom(
-                            formation.GetUnitHandlers(),
+                            formation.Diads,
                             match.GetMap(),
                             supportRegion,
                             Facing,
