@@ -10,10 +10,15 @@
         "Formation": "formation-company-rifle"
       }
     ],
-    "UnitSlots": [
+    "Diads": [
       {
         "Number": 1,
-        "Role": "Support3"
+        "Unit": {
+          "Role": "Support3"
+        },
+        "Transport": {
+          "Role": "Transport"
+        }
       }
     ]
   },

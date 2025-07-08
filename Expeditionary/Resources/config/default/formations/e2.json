@@ -4,18 +4,33 @@
     "Name": "Rifle Company",
     "Role": "Infantry",
     "Echelon": 2,
-    "UnitSlots": [
+    "Diads": [
       {
         "Number": 3,
-        "Role": "Infantry"
+        "Unit": {
+          "Role": "Infantry"
+        },
+        "Transport": {
+          "Role": "Transport"
+        }
       },
       {
         "Number": 1,
-        "Role": "Support1"
+        "Unit": {
+          "Role": "Support1"
+        },
+        "Transport": {
+          "Role": "Transport"
+        }
       },
       {
         "Number": 1,
-        "Role": "Support2"
+        "Unit": {
+          "Role": "Support2"
+        },
+        "Transport": {
+          "Role": "Transport"
+        }
       }
     ]
   },
@@ -24,10 +39,12 @@
     "Name": "Tank Company",
     "Role": "Tank",
     "Echelon": 2,
-    "UnitSlots": [
+    "Diads": [
       {
         "Number": 3,
-        "Role": "Tank"
+        "Unit": {
+          "Role": "Tank"
+        }
       }
     ]
   },
@@ -36,10 +53,15 @@
     "Name": "Artillery Battery",
     "Role": "Artillery",
     "Echelon": 2,
-    "UnitSlots": [
+    "Diads": [
       {
         "Number": 3,
-        "Role": "Artillery"
+        "Unit": {
+          "Role": "Artillery"
+        },
+        "Transport": {
+          "Role": "Transport"
+        }
       }
     ]
   }

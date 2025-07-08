@@ -31,9 +31,13 @@ namespace Expeditionary.Model.Formations.Generator
                 AvailableUnits);
         }
 
-        public UnitType Select(FormationSlot slot)
+        public UnitType? Select(UnitSlot slot)
         {
             var matchingUnits = AvailableUnits.Where(slot.Matches).ToList();
+            if (!matchingUnits.Any())
+            {
+                return null;
+            }
             return matchingUnits[Random.Next(matchingUnits.Count)].Type!;
         }
     }

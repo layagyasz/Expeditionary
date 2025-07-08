@@ -3,23 +3,11 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Formations.Generator
 {
-    public record class FormationSlot
+    public record class UnitSlot
     {
-        public int Number { get; set; }
         public FormationRole Role { get; set; }
         public EnumSet<UnitTag> RequiredTags { get; set; } = new();
         public EnumSet<UnitTag> ExcludedTags { get; set; } = new();
-
-        public FormationSlot WithTags(IEnumerable<UnitTag> requiredTags, IEnumerable<UnitTag> excludedTags)
-        {
-            return new()
-            {
-                Number = Number,
-                Role = Role,
-                RequiredTags = RequiredTags.Union(requiredTags).ToEnumSet(),
-                ExcludedTags = ExcludedTags.Union(excludedTags).ToEnumSet()
-            };
-        }
 
         public bool Matches(UnitUsage unitUsage)
         {

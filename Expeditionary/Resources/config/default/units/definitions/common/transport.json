@@ -1,0 +1,16 @@
+[
+  {
+    "$id": "~unit-type-common-truck",
+    "Name": "Truck",
+    "Weapons": [],
+    "Tags": [ "Transport" ],
+    "Traits": [
+      "trait-vehicle-base",
+      "trait-vehicle-chassis-truck",
+      "trait-vehicle-suspension-wheeled",
+      "trait-vehicle-camo-1",
+      "trait-powerplant-size-small",
+      "trait-powerplant-type-piston-3"
+    ]
+  }
+]

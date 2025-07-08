@@ -6,6 +6,10 @@ namespace Expeditionary.Evaluation
     {
         public static RangeBucket ToBucket(UnitType unitType)
         {
+            if (!unitType.Weapons.Any())
+            {
+                return RangeBucket.Short;
+            }
             return ToBucket(unitType.Weapons.Select(x => x.Weapon).SelectMany(x => x.Modes).Max(x => x.Range.Get()));
         }
 

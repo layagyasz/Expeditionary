@@ -26,6 +26,14 @@
       {
         "Role": "Artillery",
         "Type": "unit-type-common-howitzer-122mm"
+      },
+      {
+        "Role": "Transport",
+        "Type": "unit-type-common-truck"
+      },
+      {
+        "Role": "Tractor",
+        "Type": "unit-type-common-truck"
       }
     ],
     "Formations": [

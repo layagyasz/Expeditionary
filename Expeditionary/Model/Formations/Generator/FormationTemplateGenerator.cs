@@ -28,7 +28,7 @@ namespace Expeditionary.Model.Formations.Generator
         public FormationRole Role { get; set; }
         public int Echelon { get; set; }
         public List<ParameterizedFormationGenerator> ComponentFormations { get; set; } = new();
-        public List<FormationSlot> UnitSlots { get; set; } = new();
+        public List<DiadTemplate> Diads { get; set; } = new();
 
         public FormationTemplate Generate(FormationGeneratorContext context)
         {
@@ -37,11 +37,15 @@ namespace Expeditionary.Model.Formations.Generator
                 Role,
                 Echelon,
                 ComponentFormations.SelectMany(x => Enumerable.Repeat(x.Generate(context), x.Number)).ToList(),
-                // TODO: Select transport units
-                UnitSlots.SelectMany(
-                    x => Enumerable.Repeat(
-                        new FormationTemplate.Diad(x.Role, context.Select(x), TransportType: null), x.Number))
-                    .ToList());
+                Diads.SelectMany(x => Enumerable.Repeat(Select(x, context), x.Number)).ToList());
+        }
+
+        private static FormationTemplate.Diad Select(DiadTemplate diad, FormationGeneratorContext context)
+        {
+            return new(
+                diad.Unit.Role,
+                context.Select(diad.Unit)!, 
+                diad.Transport == null ? null : context.Select(diad.Transport));
         }
     }
 }
