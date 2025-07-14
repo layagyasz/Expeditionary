@@ -2,26 +2,21 @@
 
 namespace Expeditionary.Model.Orders
 {
-    public class MoveOrder : IOrder
+    public record class MoveOrder(Unit Unit, Pathing.Path? Path) : IOrder
     {
-        public Unit Unit { get; }
-        public Pathing.Path? Path { get; }
-
-        public MoveOrder(Unit unit, Pathing.Path? path)
-        {
-            Unit = unit;
-            Path = path;
-        }
-
         public bool Validate(Match match)
         {
-            return Path != null && Path.Cost <= Unit.Movement;
+            return Path != null && Unit.Actions > 0 && Unit.Type.Speed >= Path.Cost && !Unit.IsPassenger;
         }
 
         public void Execute(Match match)
         {
-            Unit.Movement -= Path!.Cost;
+            Unit.ConsumeAction();
             match.Move(Unit, Path!);
+            if (Unit.Passenger != null)
+            {
+                match.Move(Unit, Path!);
+            }
         }
     }
 }

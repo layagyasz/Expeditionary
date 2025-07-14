@@ -4,28 +4,15 @@ using MathNet.Numerics.Distributions;
 
 namespace Expeditionary.Model.Orders
 {
-    public class AttackOrder : IOrder
+    public record class AttackOrder(Unit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Unit Target) : IOrder
     {
-        public Unit Unit { get; }
-        public UnitWeaponUsage Weapon { get; }
-        public UnitWeapon.Mode Mode { get; }
-        public Unit Defender { get; }
-
-        public AttackOrder(Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit defender)
-        {
-            Unit = attacker;
-            Weapon = weapon;
-            Mode = mode;
-            Defender = defender;
-        }
-
         public bool Validate(Match match)
         {
-            if (Unit.Attacked)
+            if (Unit.Actions == 0)
             {
                 return false;
             }
-            if (!CombatCalculator.IsValidTarget(Unit, Mode, Defender, match.GetMap()))
+            if (!CombatCalculator.IsValidTarget(Unit, Mode, Target, match.GetMap()))
             {
                 return false;
             }
@@ -34,10 +21,10 @@ namespace Expeditionary.Model.Orders
 
         public void Execute(Match match)
         {
-            Unit.Attacked = true;
-            var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Defender, match.GetMap());
+            Unit.ConsumeAction();
+            var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Target, match.GetMap());
             int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
-            match.Damage(Unit, Defender, kills);
+            match.Damage(Unit, Target, kills);
         }
     }
 }

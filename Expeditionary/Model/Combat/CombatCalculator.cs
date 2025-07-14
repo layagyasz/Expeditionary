@@ -7,45 +7,53 @@ namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
-        public static bool IsValidTarget(Unit attacker, Unit defender)
+        public static bool IsValidTarget(Unit attacker, Unit target)
         {
-            if (defender.IsDestroyed)
+            if (target.IsDestroyed)
             {
                 return false;
             }
-            if (!defender.Position.HasValue)
+            if (!target.Position.HasValue)
             {
                 return false;
             }
-            if (attacker.Player.Team == defender.Player.Team)
+            if (attacker.Player.Team == target.Player.Team)
+            {
+                return false;
+            }
+            if (attacker.IsPassenger)
+            {
+                return false;
+            }
+            if (target.IsPassenger)
             {
                 return false;
             }
             return true;
         }
 
-        public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit defender, Map map)
+        public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            return IsValidTarget(attacker, attacker.Position!.Value, mode, defender, defender.Position!.Value, map);
+            return IsValidTarget(attacker, attacker.Position!.Value, mode, target, target.Position!.Value, map);
         }
 
         public static bool IsValidTarget(
             Unit attacker,
             Vector3i attackerPosition,
             UnitWeapon.Mode mode, 
-            Unit defender, 
-            Vector3i defenderPosition,
+            Unit target, 
+            Vector3i targetPosition,
             Map map)
         {
-            if (!IsValidTarget(attacker, defender))
+            if (!IsValidTarget(attacker, target))
             {
                 return false;
             }
-            if (Geometry.GetCubicDistance(attackerPosition, defenderPosition) > mode.Range.Get())
+            if (Geometry.GetCubicDistance(attackerPosition, targetPosition) > mode.Range.Get())
             {
                 return false;
             }
-            if (!Sighting.IsValidLineOfSight(map, attackerPosition, defenderPosition))
+            if (!Sighting.IsValidLineOfSight(map, attackerPosition, targetPosition))
             {
                 return false;
             }
@@ -53,10 +61,10 @@ namespace Expeditionary.Model.Combat
         }
 
         public static CombatPreview GetPreview(
-            Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit defender, Map map)
+            Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
         {
             return GetPreview(
-                attacker, attacker.Position!.Value, weapon, mode, defender, defender.Position!.Value, map);
+                attacker, attacker.Position!.Value, weapon, mode, target, target.Position!.Value, map);
         }
 
         public static CombatPreview GetPreview(

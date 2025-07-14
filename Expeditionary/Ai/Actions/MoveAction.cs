@@ -22,7 +22,7 @@ namespace Expeditionary.Ai.Actions
         public static IEnumerable<IUnitAction> GenerateValidMoves(Match match, Unit unit)
         {
             return Pathing.GetPathField(
-                match.GetMap(), unit.Position!.Value, unit.Type.Movement, TileConsiderations.None, unit.Movement)
+                match.GetMap(), unit.Position!.Value, unit.Type.Movement, TileConsiderations.None, unit.Type.Speed)
                 .Where(x => x.Destination != unit.Position)
                 .Select(x => new MoveAction(x));
         }

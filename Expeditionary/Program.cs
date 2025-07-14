@@ -134,7 +134,7 @@ namespace Expeditionary
                 };
             var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
             var player = mission.Players.First().Player;
-            var creationContext = new CreationContext(player, IsTest: true);
+            var creationContext = new CreationContext(player, IsTest: false);
             (var match, var appearance) = mission.Create(random, creationContext);
             var evaluationCache = new EvaluationCache(new ExposureCache(match.GetMap()));
             var aiManager = new AiManager(match, evaluationCache, random, mission.Players.Select(x => x.Player));

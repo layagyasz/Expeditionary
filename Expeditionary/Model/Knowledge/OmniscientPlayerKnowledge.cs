@@ -45,5 +45,10 @@ namespace Expeditionary.Model.Knowledge
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }
+
+        public void Suppress(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        {
+            AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
+        }
     }
 }

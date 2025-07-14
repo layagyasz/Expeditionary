@@ -163,7 +163,7 @@ namespace Expeditionary.Ai.Assignments
                     return unit.UnitQuantity.Points
                         * (TileConsiderations.Evaluate(
                             consideration, moveAction.Path.Destination, match.GetMap()) - baseline) +
-                            s_Reward * (moveAction.Path.Cost / unit.Movement + inDirection);
+                            s_Reward * (moveAction.Path.Cost / unit.Type.Speed + inDirection);
                 }
                 else
                 {

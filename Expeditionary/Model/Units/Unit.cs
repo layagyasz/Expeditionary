@@ -7,13 +7,14 @@ namespace Expeditionary.Model.Units
     {
         public int Id { get; }
         public Player Player { get; }
+        public UnitType Type { get; }
         public string TypeKey => Type.Key;
         public Vector3i? Position { get; set; }
         public bool IsDestroyed { get; private set; }
-        public UnitType Type { get; }
+        public bool IsPassenger { get; set; }
         public int Number { get; private set; }
-        public float Movement { get; set; }
-        public bool Attacked { get; set; }
+        public int Actions { get; private set; }
+        public IAsset? Passenger { get; set; }
 
         public UnitQuantity UnitQuantity => new(1, Type.Points);
 
@@ -25,6 +26,11 @@ namespace Expeditionary.Model.Units
             Number = (int)type.Intrinsics.Number.GetValue();
 
             Reset();
+        }
+
+        public void ConsumeAction()
+        {
+            Actions -= 1;
         }
 
         public void Damage(int kills)
@@ -45,8 +51,7 @@ namespace Expeditionary.Model.Units
 
         public void Reset()
         {
-            Movement = Type.Speed;
-            Attacked = false;
+            Actions = 1;
         }
 
         public override string ToString()

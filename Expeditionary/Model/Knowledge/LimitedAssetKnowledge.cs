@@ -30,7 +30,10 @@ namespace Expeditionary.Model.Knowledge
             MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
-            result.AddRange(AddLos(mapKnowledge, unit, delta, positions, isPermanent: true));
+            if (!unit.IsPassenger)
+            {
+                result.AddRange(AddLos(mapKnowledge, unit, delta, positions, isPermanent: true));
+            }
             return result;
         }
 
@@ -82,7 +85,10 @@ namespace Expeditionary.Model.Knowledge
             MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
-            result.AddRange(RemoveLos(mapKnowledge, delta, positions));
+            if (!unit.IsPassenger)
+            {
+                result.AddRange(RemoveLos(mapKnowledge, delta, positions));
+            }
             return result;
         }
 
@@ -140,9 +146,12 @@ namespace Expeditionary.Model.Knowledge
             MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>() { unit };
-            result.AddRange(RemoveLos(mapKnowledge, initial, positions));
-            result.AddRange(AddLos(mapKnowledge, unit, medial, positions, isPermanent: false));
-            result.AddRange(AddLos(mapKnowledge, unit, final, positions, isPermanent: true));
+            if (!unit.IsPassenger)
+            {
+                result.AddRange(RemoveLos(mapKnowledge, initial, positions));
+                result.AddRange(AddLos(mapKnowledge, unit, medial, positions, isPermanent: false));
+                result.AddRange(AddLos(mapKnowledge, unit, final, positions, isPermanent: true));
+            }
             return result.Distinct().ToList();
         }
 
@@ -181,7 +190,9 @@ namespace Expeditionary.Model.Knowledge
         }
 
         private List<IAsset> RemoveLos(
-            LimitedMapKnowledge mapKnowledge, IEnumerable<Sighting.LineOfSight> delta, MultiMap<Vector3i, IAsset> positions)
+            LimitedMapKnowledge mapKnowledge, 
+            IEnumerable<Sighting.LineOfSight> delta, 
+            MultiMap<Vector3i, IAsset> positions)
         {
             var result = new List<IAsset>();
             foreach (var los in delta)

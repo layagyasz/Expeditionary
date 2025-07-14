@@ -33,7 +33,7 @@ namespace Expeditionary.Ai.Assignments
 
         public void Place(UnitHandler unit, Match match)
         {
-            throw new NotImplementedException();
+             throw new NotImplementedException();
         }
     }
 }

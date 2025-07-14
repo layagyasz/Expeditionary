@@ -197,6 +197,18 @@ namespace Expeditionary.Model
             s_Logger.Log("Initialized");
         }
 
+        public void Load(Unit unit, IAsset asset)
+        {
+            s_Logger.Log($"{unit} loaded {asset}");
+            unit.Passenger = asset;
+            asset.IsPassenger = true;
+
+            foreach (var knowledge in _playerKnowledge.Values)
+            {
+                knowledge.Suppress(asset, _positions);
+            }
+        }
+
         public void Move(IAsset asset, Pathing.Path path)
         {
             s_Logger.Log($"{asset} moved along {path}");
@@ -267,6 +279,25 @@ namespace Expeditionary.Model
             }
             s_Logger.Log($"Entered turn {_players[_activePlayer]}");
             _stepped.QueueEvent(this, EventArgs.Empty);
+        }
+
+        public void Unload(Unit unit)
+        {
+            s_Logger.Log($"{unit} unloaded");
+            var passenger = unit.Passenger;
+            if (passenger != null)
+            {
+                passenger.IsPassenger = false;
+
+                if (passenger.Position != null)
+                {
+                    foreach (var knowledge in _playerKnowledge.Values)
+                    {
+                        knowledge.Place(passenger, passenger.Position.Value, _positions);
+                    }
+                }
+            }
+            unit.Passenger = null;
         }
 
         private bool ValidatePlayer(Player player)

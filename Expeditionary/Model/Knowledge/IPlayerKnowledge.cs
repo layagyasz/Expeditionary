@@ -16,5 +16,6 @@ namespace Expeditionary.Model.Knowledge
         void Place(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions);
 
         void Remove(IAsset asset, MultiMap<Vector3i, IAsset> positions);
+        void Suppress(IAsset asset, MultiMap<Vector3i, IAsset> positions);
     }
 }

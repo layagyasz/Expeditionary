@@ -83,6 +83,14 @@ namespace Expeditionary.Model.Knowledge
             }
         }
 
+        public void Suppress(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        {
+            if (asset is Unit unit && unit.Player == _player)
+            {
+                RemoveSelf(unit, positions);
+            }
+        }
+
         private void DestroyOther(IAsset asset)
         {
             var assetDelta = _assetKnowledge.DestroyOther(asset);

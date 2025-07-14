@@ -49,7 +49,10 @@ namespace Expeditionary.Ai
         {
             Assignment = assignment;
             Unit.SetAssignment(Assignment);
-            // Transport?.SetAssignment(Assignment);
+            if (Unit.Unit.Position == null && Transport != null && Transport.Unit.Position == null)
+            {
+                Transport?.SetAssignment(Assignment);
+            }
         }
     }
 }
