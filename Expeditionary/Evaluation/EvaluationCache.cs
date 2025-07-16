@@ -1,4 +1,4 @@
 ﻿namespace Expeditionary.Evaluation
 {
-    public record class EvaluationCache(ExposureCache Exposure);
+    public record class EvaluationCache(ExposureCache Exposure, PartitionCache Partition);
 }

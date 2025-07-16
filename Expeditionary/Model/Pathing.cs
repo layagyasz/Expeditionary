@@ -136,7 +136,7 @@ namespace Expeditionary.Model
                     var cost = current.Cost
                         + neighborNode.ExtraCost
                         + movement.GetCost(
-                            GetHindrance(
+                            Movement.GetHindrance(
                                 current.Tile, neighborTile, map.GetEdge(Geometry.GetEdge(current.Hex, neighbor))!));
 
                     if (cost <= maxCost && cost < neighborNode.Cost)
@@ -157,29 +157,6 @@ namespace Expeditionary.Model
             }
 
             return nodes;
-        }
-
-        private static Movement.Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
-        {
-            if (edge.Levels.ContainsKey(EdgeType.Road))
-            {
-                return new(Restriction: 0, Roughness: 0, Slope: 0, Softness: 0, WaterDepth: 0);
-            }
-            if (destination.Terrain.IsLiquid)
-            {
-                return new(Restriction: 0, Roughness: 0, Slope: 0, Softness: 0, WaterDepth: 5);
-            }
-            Movement.Hindrance h = destination.Hindrance;
-            if (edge.Levels.ContainsKey(EdgeType.River))
-            {
-                h.WaterDepth = Math.Min(h.WaterDepth + 2, 5);
-            }
-            if (origin.Elevation != destination.Elevation)
-            {
-                h.Slope = Math.Abs(origin.Elevation - destination.Elevation);
-            }
-            h.Restriction = Math.Min(origin.Hindrance.Restriction, destination.Hindrance.Restriction);
-            return h;
         }
 
         private static Path BuildPath(Node destination)

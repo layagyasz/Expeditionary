@@ -1,4 +1,7 @@
-﻿namespace Expeditionary.Model
+﻿using Expeditionary.Model.Mapping;
+using OpenTK.Mathematics;
+
+namespace Expeditionary.Model
 {
     public record class Movement
     {
@@ -6,13 +9,13 @@
 
         public record struct CostFunction
         {
-            public Modifier Minimum { get; set; } = Modifier.None;
-            public Modifier Maximum { get; set; } = Modifier.None;
-            public Modifier Cap { get; set; } = new(1, 5);
+            public float Minimum { get; set; }
+            public float Maximum { get; set; }
+            public int Cap { get; set; } = 5;
 
             public CostFunction() { }
 
-            public CostFunction(Modifier minimum, Modifier maximum, Modifier cap)
+            public CostFunction(float minimum, float maximum, int cap)
             {
                 Minimum = minimum;
                 Maximum = maximum;
@@ -21,11 +24,11 @@
 
             public float GetCost(int value)
             {
-                if (value > Cap.GetValue())
+                if (value > Cap)
                 {
                     return float.PositiveInfinity;
                 }
-                return Minimum.GetValue() + (Maximum.GetValue() - Minimum.GetValue()) * (1f * value / Cap.GetValue());
+                return MathHelper.Lerp(Minimum, Maximum, 1f * value / Cap);
             }
         }
 
@@ -56,6 +59,29 @@
            return 1 + Restriction.GetCost(hindrance.Restriction) + Roughness.GetCost(hindrance.Roughness) 
                 + Slope.GetCost(hindrance.Slope) + Softness.GetCost(hindrance.Softness)
                 + WaterDepth.GetCost(hindrance.WaterDepth);
+        }
+
+        public static Movement.Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
+        {
+            if (edge.Levels.ContainsKey(EdgeType.Road))
+            {
+                return new(Restriction: 0, Roughness: 0, Slope: 0, Softness: 0, WaterDepth: 0);
+            }
+            if (destination.Terrain.IsLiquid)
+            {
+                return new(Restriction: 0, Roughness: 0, Slope: 0, Softness: 0, WaterDepth: 5);
+            }
+            Movement.Hindrance h = destination.Hindrance;
+            if (edge.Levels.ContainsKey(EdgeType.River))
+            {
+                h.WaterDepth = Math.Min(h.WaterDepth + 2, 5);
+            }
+            if (origin.Elevation != destination.Elevation)
+            {
+                h.Slope = Math.Abs(origin.Elevation - destination.Elevation);
+            }
+            h.Restriction = Math.Min(origin.Hindrance.Restriction, destination.Hindrance.Restriction);
+            return h;
         }
     }
 }

@@ -136,7 +136,8 @@ namespace Expeditionary
             var player = mission.Players.First().Player;
             var creationContext = new CreationContext(player, IsTest: false);
             (var match, var appearance) = mission.Create(random, creationContext);
-            var evaluationCache = new EvaluationCache(new ExposureCache(match.GetMap()));
+            var evaluationCache =
+                new EvaluationCache(new ExposureCache(match.GetMap()), new PartitionCache(match.GetMap()));
             var aiManager = new AiManager(match, evaluationCache, random, mission.Players.Select(x => x.Player));
             var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
             mission.Setup(match, setupContext);

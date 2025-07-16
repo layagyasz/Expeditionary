@@ -86,9 +86,9 @@ namespace Expeditionary.Model.Units
         {
             return new()
             {
-                Minimum = UnitTrait.GetOrDefault(attributes, attribute + "/min", Modifier.None),
-                Maximum = UnitTrait.GetOrDefault(attributes, attribute + "/max", Modifier.None),
-                Cap = UnitTrait.GetOrDefault(attributes, attribute + "/cap", Modifier.None)
+                Minimum = UnitTrait.GetOrDefault(attributes, attribute + "/min", Modifier.None).GetValue(),
+                Maximum = UnitTrait.GetOrDefault(attributes, attribute + "/max", Modifier.None).GetValue(),
+                Cap = (int) UnitTrait.GetOrDefault(attributes, attribute + "/cap", Modifier.None).GetValue()
             };
         }
 
