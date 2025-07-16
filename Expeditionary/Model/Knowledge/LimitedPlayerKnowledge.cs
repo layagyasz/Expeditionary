@@ -1,4 +1,5 @@
-﻿using Cardamom.Collections;
+﻿using Cardamom;
+using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
@@ -102,11 +103,7 @@ namespace Expeditionary.Model.Knowledge
 
         private void DestroySelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
         {
-            if (!unit.Position.HasValue)
-            {
-                return;
-            }
-            var delta = Sighting.GetSightField(_map, unit.Position.Value, GetMaxRange(unit)).ToList();
+            var delta = Sighting.GetSightField(_map, unit.Position!.Value, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
             var assetDelta = _assetKnowledge.DestroySelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())

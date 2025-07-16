@@ -96,11 +96,11 @@ namespace Expeditionary.Model
         public void Destroy(Unit unit)
         {
             s_Logger.Log($"{unit} destroyed");
-            unit.Destroy();
             foreach (var knowledge in _playerKnowledge.Values)
             {
                 knowledge.Destroy(unit, _positions);
             }
+            unit.Destroy();
         }
 
         public void DispatchEvents()

@@ -39,9 +39,9 @@ namespace Expeditionary.Ai.Assignments
                 / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 
-        public void Place(UnitHandler unit, Match match)
+        public Vector3i SelectHex(Map map)
         {
-            throw new NotImplementedException();
+            return Region.Range(map).First();
         }
 
         public AssignmentRealization PartitionByChildren(IAiHandler formation, Map map)

@@ -44,9 +44,18 @@ namespace Expeditionary.Ai
             {
                 s_Logger.With(Id).Log($"reevaluated {Assignment}");
                 _assignmentRealization = newRealization;
-                _isDirty = false;
                 DoAssignment(_assignmentRealization);
+                _isDirty = false;
             }
+        }
+
+        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        {
+            s_Logger.With(Id).Log($"setup {Assignment}");
+            var newRealization = Assignment.Assign(this, match, tileEvaluator);
+            _assignmentRealization = newRealization;
+            DoAssignment(_assignmentRealization);
+            _isDirty = false;
         }
 
         public void SetAssignment(IAssignment assignment)

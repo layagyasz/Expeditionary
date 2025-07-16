@@ -89,6 +89,25 @@ namespace Expeditionary.Ai.Assignments
             return new(new(), result);
         }
 
+        public static PointAssignment GetShadowPoint(
+            PointAssignment assignment, UnitHandler unit, Match match, TileEvaluator tileEvaluator)
+        {
+            return new PointAssignment(
+                AssignmentHelper.GetBest(
+                    match.GetMap(),
+                    new ExplicitMapRegion(
+                        Pathing.GetPathField(
+                            match.GetMap(),
+                            assignment.Hex,
+                            unit.Unit.Type.Movement, 
+                            TileConsiderations.None, 
+                            unit.Unit.Type.Speed)
+                        .Select(x => x.Destination)),
+                    tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, assignment.Facing)), 
+                assignment.Bounds, 
+                assignment.Facing);
+        }
+
         public IMapRegion Region => Bounds;
 
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
@@ -184,11 +203,10 @@ namespace Expeditionary.Ai.Assignments
             return 0;
         }
 
-        public void Place(UnitHandler unit, Match match)
+        public Vector3i SelectHex(Map map)
         {
-            match.Place(unit.Unit, Hex);
+            return Hex;
         }
-
 
         private static int GetSpacing(int echelon)
         {

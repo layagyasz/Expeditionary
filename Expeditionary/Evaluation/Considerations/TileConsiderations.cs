@@ -6,7 +6,6 @@ using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using System.Runtime.CompilerServices;
 
 namespace Expeditionary.Evaluation.Considerations
 {

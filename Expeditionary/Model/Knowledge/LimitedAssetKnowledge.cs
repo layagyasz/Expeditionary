@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Knowledge
         {
             if (IsPlayer(asset))
             {
-                return new() { IsVisible = true, LastSeen = asset.Position };
+                return asset.IsDestroyed ? new(false, null) : new(true, asset.Position);
             }
             return _assets.TryGetValue(asset, out var value) ? value : new();
         }

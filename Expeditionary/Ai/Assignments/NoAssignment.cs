@@ -4,6 +4,7 @@ using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -31,9 +32,9 @@ namespace Expeditionary.Ai.Assignments
                 && realization.UnitAssignments.All(x => x.Value is NoAssignment) ? 1f : 0f;
         }
 
-        public void Place(UnitHandler unit, Match match)
+        public Vector3i SelectHex(Map map)
         {
-             throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

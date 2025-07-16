@@ -66,10 +66,10 @@ namespace Expeditionary.Ai
         public void Setup()
         {
             s_Logger.With(Player.Id).Log("Setup formations");
-            _rootFormationHandler.DoTurn(_match, _knowledge, _tileEvaluator);
+            _rootFormationHandler.Setup(_match, _knowledge, _tileEvaluator);
             foreach (var formationHandler in _rootFormationHandler.Children)
             {
-                DoFormationTurn(formationHandler);
+                SetupFormation(formationHandler);
             }
         }
 
@@ -83,6 +83,19 @@ namespace Expeditionary.Ai
             foreach (var child in formation.Children)
             {
                 DoFormationTurn(child);
+            }
+        }
+
+        private void SetupFormation(FormationHandler formation)
+        {
+            formation.Setup(_match, _knowledge, _tileEvaluator);
+            foreach (var diad in formation.Diads)
+            {
+                diad.Setup(_match, _knowledge, _tileEvaluator);
+            }
+            foreach (var child in formation.Children)
+            {
+                SetupFormation(child);
             }
         }
 

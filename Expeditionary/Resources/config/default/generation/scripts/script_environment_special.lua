@@ -3,6 +3,7 @@ luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 Color4=luanet.import_type('OpenTK.Mathematics.Color4')
 MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 
 Volcanic = MapEnvironmentModifier()
 Volcanic.Key = "environment-modifier-special-volcanic"

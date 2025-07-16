@@ -3,6 +3,7 @@ using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Mapping.Regions;
 
 namespace Expeditionary.Ai
 {
@@ -17,6 +18,8 @@ namespace Expeditionary.Ai
         public string Id => $"diad-{Unit.Id}-{Transport?.Id ?? "NA"}";
         public int Echelon => 1;
 
+        private bool _isDirty = true;
+
         public DiadHandler(UnitHandler unit, UnitHandler? transport)
         {
             Unit = unit;
@@ -29,30 +32,40 @@ namespace Expeditionary.Ai
         }
 
         public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        { 
+            if (_isDirty)
+            {
+                Unit.SetAssignment(Assignment);
+                Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match, tileEvaluator));
+                _isDirty = false;
+            }
+            
+            Unit.DoTurn(match, knowledge, tileEvaluator);
+            Transport?.DoTurn(match, knowledge, tileEvaluator);
+        }
+
+        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
         {
-            if (Unit.Unit.Position == null && !Unit.Unit.IsDestroyed)
-            {
-                Unit.Assignment.Place(Unit, match);
-            }
-            if (Transport != null && Transport.Unit.Position == null && !Transport.Unit.IsDestroyed)
-            {
-                Transport.Assignment.Place(Transport, match);
-            }
-            else
-            {
-                Unit.DoTurn(match, knowledge, tileEvaluator);
-                Transport?.DoTurn(match, knowledge, tileEvaluator);
-            }
+            Unit.SetAssignment(Assignment);
+            Unit.Setup(match, knowledge, tileEvaluator);
+            Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match, tileEvaluator));
+            Transport?.Setup(match, knowledge, tileEvaluator);
         }
 
         public void SetAssignment(IAssignment assignment)
         {
             Assignment = assignment;
-            Unit.SetAssignment(Assignment);
-            if (Unit.Unit.Position == null && Transport != null && Transport.Unit.Position == null)
+            _isDirty = true;
+        }
+
+        private static IAssignment GetShadowAssignment(
+            UnitHandler unit, IAssignment assignment, Match match, TileEvaluator tileEvaluator)
+        {
+            if (assignment is PointAssignment pointAssignment)
             {
-                Transport?.SetAssignment(Assignment);
+                return PointAssignment.GetShadowPoint(pointAssignment, unit, match, tileEvaluator);
             }
+            return new NoAssignment();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Expeditionary.Ai
         public int Echelon { get; }
         public void Add(FormationHandler handler);
         public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator);
+        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator);
         public void SetAssignment(IAssignment assignment);
     }
 }

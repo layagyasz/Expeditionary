@@ -49,6 +49,11 @@ namespace Expeditionary.Ai
             action.Action?.Do(match, Unit);
         }
 
+        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        {
+            match.Place(Unit, Assignment.SelectHex(match.GetMap()));
+        }
+
         public void SetAssignment(IAssignment assignment)
         {
             Assignment = assignment;
