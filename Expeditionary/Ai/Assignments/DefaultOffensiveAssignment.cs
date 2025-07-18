@@ -1,7 +1,6 @@
 ﻿using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
@@ -48,7 +47,7 @@ namespace Expeditionary.Ai.Assignments
             IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             var map = match.GetMap();
-            var region = new EdgeMapRegion(Facing, 0.33f);
+            var region = new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.33f);
             var origin =
                 region.Range(match.GetMap())
                     .MaxBy(x => TileConsiderations.Evaluate(
@@ -57,22 +56,15 @@ namespace Expeditionary.Ai.Assignments
                             (1, TileConsiderations.Roading)),
                         x,
                         map));
-            var exemplar =
-                formation.GetAllDiads()
-                    .GroupBy(x => x.Unit.Unit.Type)
-                    .ToDictionary(x => x.Key, x => x.Count()).MaxBy(x => x.Value).Key;
-            int distance = 16;
-            var extent =
-                Pathing.GetPathField(map, origin, exemplar.Movement, TileConsiderations.None, distance)
-                    .Where(x => region.Contains(map, x.Destination)).ToList();
-            var sdf = DenseSignedDistanceField.FromPathField(extent, distance >> 1);
             return PointAssignment.SelectFrom(
                 formation,
                 map,
-                new ExplicitMapRegion(extent.Select(x => x.Destination)),
-                MapDirectionUtils.Invert(Facing),
+                CompositeMapRegion.Intersect(
+                    region, new PointMapRegion(origin, 2 * PointAssignment.GetSpacing(formation.Echelon))),
+                Facing,
                 tileEvaluator,
-                TileConsiderations.Edge(sdf, 0));
+                TileConsiderations.None,
+                null);
         }
 
         private static bool IsDeployed(IAiHandler formation)

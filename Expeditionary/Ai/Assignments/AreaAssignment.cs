@@ -74,7 +74,8 @@ namespace Expeditionary.Ai.Assignments
                 Region,
                 Facing,
                 tileEvaluator,
-                TileConsiderations.Edge(DenseSignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing), 0));
+                TileConsiderations.Edge(DenseSignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing), 0),
+                null);
         }
 
         private static Vector2 GetKeyVector(MapDirection direction)

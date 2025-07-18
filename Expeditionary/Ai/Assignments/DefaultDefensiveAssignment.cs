@@ -11,10 +11,9 @@ using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
-    public record class DefaultDefensiveAssignment(MapDirection DefendingDirection, List<IMapRegion> DefenseRegions)
+    public record class DefaultDefensiveAssignment(MapDirection Facing, List<IMapRegion> DefenseRegions)
         : IAssignment
     {
-        public MapDirection Facing => MapDirectionUtils.Invert(DefendingDirection);
         public IMapRegion Region => CompositeMapRegion.Union(DefenseRegions);
 
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
@@ -24,7 +23,7 @@ namespace Expeditionary.Ai.Assignments
                 return new(
                     new()
                     {
-                        { root.Children.First(), new DefaultDefensiveAssignment(DefendingDirection, DefenseRegions) }
+                        { root.Children.First(), new DefaultDefensiveAssignment(Facing, DefenseRegions) }
                     },
                     new());
             }
@@ -53,7 +52,8 @@ namespace Expeditionary.Ai.Assignments
                 }
             }
             var currentAssignment = new AssignmentRealization(result, new());
-            var parentAssignment = new AreaAssignment(new EdgeMapRegion(DefendingDirection, 0.5f), Facing);
+            var parentAssignment =
+                new AreaAssignment(new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.5f), Facing);
             var defensiveAssignment =
                 parentAssignment.PartitionByFormations(eligibleOccupiers.Select(x => x.Key), map);
             var offensiveAssignment =

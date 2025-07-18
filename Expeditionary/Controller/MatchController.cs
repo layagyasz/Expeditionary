@@ -3,6 +3,7 @@ using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
@@ -21,6 +22,7 @@ namespace Expeditionary.Controller
 
         private readonly Match _match;
         private readonly Player _player;
+        private readonly TileEvaluator _tileEvaluator;
 
         private MatchScreen? _screen;
         private HighlightLayer? _highlightLayer;
@@ -30,10 +32,11 @@ namespace Expeditionary.Controller
         private Unit? _selectedUnit;
         private ButtonId _selectedOrder;
 
-        public MatchController(Match match, Player player)
+        public MatchController(Match match, Player player, TileEvaluator tileEvaluator)
         {
             _match = match;
             _player = player;
+            _tileEvaluator = tileEvaluator;
         }
 
         public void Bind(object @object)
@@ -155,7 +158,8 @@ namespace Expeditionary.Controller
                 _highlightLayer!.SetHighlight(
                     HighlightLayer.ForConsideration(
                         _match.GetMap(),
-                        TileConsiderations.Threat(_selectedUnit, _match.GetKnowledge(_player), _match)));
+                        _tileEvaluator.IsReachable(
+                            _selectedUnit.Type.Movement.GetMaxHindrance(), _selectedUnit.Position!.Value)));
                 /*
                 if (_selectedOrder == ButtonId.Attack)
                 {

@@ -96,6 +96,12 @@ namespace Expeditionary.Evaluation.Considerations
             return (hex, tileFn, edgesFn) => 1 - consideration(hex, tileFn, edgesFn);
         }
 
+        public static TileConsideration IsReachable(
+            PartitionCache cache, Movement.Hindrance maxHindrance, Vector3i origin)
+        {
+            return (hex, _, _) => cache.IsReachable(origin, hex, maxHindrance) ? 1 : 0;
+        }
+
         public static float Land(Vector3i _0, Func<Tile> tileFn, Func<IEnumerable<Edge>> _2)
         {
             return tileFn().Terrain.IsLiquid ? 0 : 1;

@@ -3,7 +3,6 @@ using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping.Regions;
 
 namespace Expeditionary.Ai
 {
@@ -42,6 +41,13 @@ namespace Expeditionary.Ai
             
             Unit.DoTurn(match, knowledge, tileEvaluator);
             Transport?.DoTurn(match, knowledge, tileEvaluator);
+        }
+
+        public Movement.Hindrance GetMaxHindrance()
+        {
+            return Transport == null || Transport.Unit.IsDestroyed 
+                ? Unit.GetMaxHindrance() 
+                : Transport.GetMaxHindrance();
         }
 
         public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)

@@ -22,6 +22,7 @@ using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -150,7 +151,8 @@ namespace Expeditionary
 
             ui.SetRoot(
                 new MatchScreen(
-                    new MatchController(match, player),
+                    new MatchController(
+                        match, player, new TileEvaluator(match.GetKnowledge(player), evaluationCache, random)),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
                     new UnitOverlay(uiElementFactory)));
             match.Step();

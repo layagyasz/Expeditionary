@@ -61,7 +61,12 @@ namespace Expeditionary.Model
                 + WaterDepth.GetCost(hindrance.WaterDepth);
         }
 
-        public static Movement.Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
+        public Hindrance GetMaxHindrance()
+        {
+            return new(Restriction.Cap, Roughness.Cap, Slope.Cap, Softness.Cap, WaterDepth.Cap);
+        }
+
+        public static Hindrance GetHindrance(Tile origin, Tile destination, Edge edge)
         {
             if (edge.Levels.ContainsKey(EdgeType.Road))
             {
@@ -71,7 +76,7 @@ namespace Expeditionary.Model
             {
                 return new(Restriction: 0, Roughness: 0, Slope: 0, Softness: 0, WaterDepth: 5);
             }
-            Movement.Hindrance h = destination.Hindrance;
+            Hindrance h = destination.Hindrance;
             if (edge.Levels.ContainsKey(EdgeType.River))
             {
                 h.WaterDepth = Math.Min(h.WaterDepth + 2, 5);
@@ -82,6 +87,16 @@ namespace Expeditionary.Model
             }
             h.Restriction = Math.Min(origin.Hindrance.Restriction, destination.Hindrance.Restriction);
             return h;
+        }
+
+        public static Hindrance Min(Hindrance left, Hindrance right)
+        {
+            return new(
+                Math.Min(left.Restriction, right.Restriction),
+                Math.Min(left.Roughness, right.Roughness), 
+                Math.Min(left.Slope, right.Slope),
+                Math.Min(left.Softness, right.Softness),
+                Math.Min(left.WaterDepth, right.WaterDepth));
         }
     }
 }

@@ -49,6 +49,12 @@ namespace Expeditionary.Ai
             }
         }
 
+        public Movement.Hindrance GetMaxHindrance()
+        {
+            return Enumerable.Concat(Children.Select(x => x.GetMaxHindrance()), Diads.Select(x => x.GetMaxHindrance()))
+                .Aggregate(Movement.Min);
+        }
+
         public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
         {
             s_Logger.With(Id).Log($"setup {Assignment}");

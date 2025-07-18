@@ -32,7 +32,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                             new(
                                 resources.FormationGenerator.Generate(attacker, resources.Random), 
                                 new DefaultOffensiveAssignment(
-                                    MapDirection.South,  new() { new TagMapRegion(MapTag.Control1)}))
+                                    MapDirection.North,  new() { new TagMapRegion(MapTag.Control1)}))
                         });
                 players.Add(setup);
             }
@@ -52,7 +52,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                             new(
                                 resources.FormationGenerator.Generate(defender, resources.Random),
                                 new DefaultDefensiveAssignment(
-                                    MapDirection.North, new() { new TagMapRegion(MapTag.Control1)}))
+                                    MapDirection.South, new() { new TagMapRegion(MapTag.Control1)}))
                         });
                 players.Add(setup);
             }

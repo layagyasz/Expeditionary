@@ -43,12 +43,6 @@ namespace Expeditionary.Model
 
         private static bool IsValidLineOfSightInternal(Map map, Vector3i position, Vector3i target)
         {
-            var distance = Geometry.GetCubicDistance(target, position);
-            if (distance < 2)
-            {
-                return true;
-            }
-
             var start = map.Get(position);
             if (start == null)
             {
@@ -60,7 +54,13 @@ namespace Expeditionary.Model
             {
                 return false;
             }
-            
+
+            var distance = Geometry.GetCubicDistance(target, position);
+            if (distance < 2)
+            {
+                return true;
+            }
+
             var step = (Vector3)(target - position) / distance;
             var slope = (end.Elevation - start.Elevation) / distance;
             for (int i=1; i<distance; ++i)

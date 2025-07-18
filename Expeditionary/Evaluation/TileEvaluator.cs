@@ -4,6 +4,7 @@ using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation
 {
@@ -41,6 +42,12 @@ namespace Expeditionary.Evaluation
         public UnitTileEvaluator GetEvaluatorFor(Unit unit, MapDirection facing)
         {
             return new UnitTileEvaluator(this, unit, facing, RangeBucketizer.ToBucket(unit.Type));
+        }
+
+        public TileConsideration IsReachable(Movement.Hindrance maxHindrance, Vector3i origin)
+        {
+            return TileConsiderations.Essential(
+                TileConsiderations.IsReachable(_evaluationCache.Partition, maxHindrance, origin));
         }
 
         public class UnitTileEvaluator

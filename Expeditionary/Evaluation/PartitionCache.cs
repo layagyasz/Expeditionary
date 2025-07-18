@@ -21,9 +21,9 @@ namespace Expeditionary.Evaluation
             private readonly Map _map;
             private readonly Dimension _dimension;
             private readonly int _limit;
-            private readonly DenseHexGrid<int> _partition;
+            private readonly DenseHexGrid<byte> _partition;
 
-            private int _partitionId = 0;
+            private byte _partitionId = 0;
 
             internal PartitionCacheLayer(Map map, Dimension dimension, int limit)
             {
@@ -33,13 +33,13 @@ namespace Expeditionary.Evaluation
                 _partition = new(map.Size);
             }
 
-            public int ComputePartition(Vector3i hex)
+            public byte ComputePartition(Vector3i hex)
             {
                 FindPartition(hex, ++_partitionId);
                 return _partitionId;
             }
 
-            public int GetOrComputeParition(Vector3i hex)
+            public byte GetOrComputeParition(Vector3i hex)
             {
                 var partition = GetPartition(hex);
                 if (partition == 0)
@@ -50,12 +50,12 @@ namespace Expeditionary.Evaluation
                 return partition;
             }
 
-            public int GetPartition(Vector3i hex)
+            public byte GetPartition(Vector3i hex)
             {
                 return _partition.Get(hex);
             }
 
-            private void FindPartition(Vector3i hex, int partitionId)
+            private void FindPartition(Vector3i hex, byte partitionId)
             {
                 Queue<Vector3i> open = new();
                 open.Enqueue(hex);
@@ -67,6 +67,10 @@ namespace Expeditionary.Evaluation
                         continue;
                     }
                     closed.Add(current);
+                    if (_partition.Get(current) != 0)
+                    {
+                        throw new InvalidProgramException();
+                    }
                     _partition.Set(current, partitionId);
                     var tile = _map.Get(current)!;
                     foreach (var neighbor in Geometry.GetNeighbors(current))
@@ -87,49 +91,47 @@ namespace Expeditionary.Evaluation
                     }
                 }
             }
-
-            private static int GetDimension(Dimension dimension, Movement.Hindrance hindrance)
-            {
-                return dimension switch
-                {
-                    Dimension.Restriction => hindrance.Restriction,
-                    Dimension.Roughness => hindrance.Roughness,
-                    Dimension.Slope => hindrance.Slope,
-                    Dimension.Softness => hindrance.Softness,
-                    Dimension.WaterDepth => hindrance.WaterDepth,
-                    _ => throw new ArgumentException($"Unsupported dimension {dimension}"),
-                };
-            }
         }
 
         private readonly Map _map;
 
-        private readonly PartitionCacheLayer?[] _restriction = new PartitionCacheLayer?[6];
-        private readonly PartitionCacheLayer?[] _roughness = new PartitionCacheLayer?[6];
-        private readonly PartitionCacheLayer?[] _slope = new PartitionCacheLayer?[6];
-        private readonly PartitionCacheLayer?[] _softness = new PartitionCacheLayer?[6];
-        private readonly PartitionCacheLayer?[] _waterDepth = new PartitionCacheLayer?[6];
+        private readonly PartitionCacheLayer?[] _restriction = new PartitionCacheLayer?[5];
+        private readonly PartitionCacheLayer?[] _roughness = new PartitionCacheLayer?[5];
+        private readonly PartitionCacheLayer?[] _slope = new PartitionCacheLayer?[5];
+        private readonly PartitionCacheLayer?[] _softness = new PartitionCacheLayer?[5];
+        private readonly PartitionCacheLayer?[] _waterDepth = new PartitionCacheLayer?[5];
 
         public PartitionCache(Map map)
         {
             _map = map;
         }
 
-        public bool IsReachable(Vector3i left, Vector3i right, Movement movement)
+        public bool IsReachable(Vector3i left, Vector3i right, Movement.Hindrance maxHindrance)
         {
-            return Enum.GetValues<Dimension>().All(x => IsReachable(left, right, movement, x));
+            return Enum.GetValues<Dimension>().All(x => IsReachable(left, right, maxHindrance, x));
         }
 
-        private bool IsReachable(Vector3i left, Vector3i right, Movement movement, Dimension dimension)
+        private bool IsReachable(Vector3i left, Vector3i right, Movement.Hindrance maxHindrance, Dimension dimension)
         {
+            var limit = GetDimension(dimension, maxHindrance);
+            if (limit >= 5)
+            {
+                return true;
+            }
             var layer = GetLayer(dimension);
-            var limit = GetDimension(dimension, movement);
             if (layer[limit] == null)
             {
                 layer[limit] = new(_map, dimension, limit);
             }
             var layerLimit = layer[limit]!;
-            return layerLimit.GetOrComputeParition(left) == layerLimit.GetOrComputeParition(right);
+            var leftPartition = layerLimit.GetPartition(left);
+            var rightPartition = layerLimit.GetPartition(right);
+            if (leftPartition == 0 && rightPartition == 0)
+            {
+                leftPartition = layerLimit.ComputePartition(left);
+                rightPartition = layerLimit.GetPartition(right);
+            }
+            return leftPartition == rightPartition;
         }
 
         private PartitionCacheLayer?[] GetLayer(Dimension dimension)
@@ -145,15 +147,15 @@ namespace Expeditionary.Evaluation
             };
         }
 
-        private static int GetDimension(Dimension dimension, Movement movement)
+        private static int GetDimension(Dimension dimension, Movement.Hindrance hindrance)
         {
             return dimension switch
             {
-                Dimension.Restriction => movement.Restriction.Cap,
-                Dimension.Roughness => movement.Roughness.Cap,
-                Dimension.Slope => movement.Slope.Cap,
-                Dimension.Softness => movement.Softness.Cap,
-                Dimension.WaterDepth => movement.WaterDepth.Cap,
+                Dimension.Restriction => hindrance.Restriction,
+                Dimension.Roughness => hindrance.Roughness,
+                Dimension.Slope => hindrance.Slope,
+                Dimension.Softness => hindrance.Softness,
+                Dimension.WaterDepth => hindrance.WaterDepth,
                 _ => throw new ArgumentException($"Unsupported dimension {dimension}"),
             };
         }

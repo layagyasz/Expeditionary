@@ -390,7 +390,6 @@ namespace Expeditionary.Model.Mapping.Generator
             GroundCover(map, parameters, soilData, elevation, slope);
             Brush(map, parameters, plantData);
             Foliage(map, parameters, plantData);
-            Hindrance(map);
         }
 
         private static LatticeNoiseNode.Parameters ToNoiseParameters(LatticeNoise.Settings settings, Random random)
@@ -619,38 +618,6 @@ namespace Expeditionary.Model.Mapping.Generator
         private static float EvaluateSoil(SoilParameters parameters, float elevation, float slope)
         {
             return parameters.ElevationWeight.Evaluate(elevation) + parameters.SlopeWeight.Evaluate(slope);
-        }
-
-        private static void Hindrance(Map map)
-        {
-            for (int i=0; i<map.Width; ++i)
-            {
-                for (int j=0; j<map.Height; ++j)
-                {
-                    var tile = map.Get(i, j)!;
-                    var hindrance = new Movement.Hindrance();
-                    if (tile.Terrain.Foliage != null)
-                    {
-                        hindrance.Roughness = 2;
-                        hindrance.Restriction = 3;
-                    } 
-                    else if (tile.Terrain.Soil != null)
-                    {
-                        hindrance.Roughness = 1;
-                    }
-                    else
-                    {
-                        hindrance.Roughness = 3;
-                    }
-                    hindrance.Softness = (int)(3 * tile.Moisture);
-                    if (tile.Terrain.HasGroundCover)
-                    {
-                        hindrance.Roughness = Math.Max(0, hindrance.Roughness - 1);
-                        hindrance.Softness = 3;
-                    }
-                    tile.Hindrance = hindrance;
-                }
-            }
         }
 
         private static float Distance(Vector3 left, Vector3 right)
