@@ -33,7 +33,7 @@
     "$id": "unit-overlay-order-container",
     "Parent": "base-block",
     "Default": {
-      "Size": [ 392, 28 ],
+      "Size": [ 392, "DynamicContents" ],
       "Margin": [ 2 ],
       "Padding": [ 1 ],
       "DisableScissor": true
@@ -51,6 +51,20 @@
     "Parent": "base-button-image",
     "Default": {
       "Texture": "button_move"
+    }
+  },
+  {
+    "$id": "unit-overlay-order-load",
+    "Parent": "base-button-image",
+    "Default": {
+      "Texture": "button_load"
+    }
+  },
+  {
+    "$id": "unit-overlay-order-unload",
+    "Parent": "base-button-image",
+    "Default": {
+      "Texture": "button_unload"
     }
   }
 ]

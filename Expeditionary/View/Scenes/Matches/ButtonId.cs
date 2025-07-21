@@ -3,6 +3,8 @@
     public enum ButtonId
     {
         Attack,
-        Move
+        Move,
+        Load,
+        Unload
     }
 }

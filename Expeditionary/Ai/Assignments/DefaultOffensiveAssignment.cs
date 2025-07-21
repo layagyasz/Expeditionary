@@ -49,13 +49,15 @@ namespace Expeditionary.Ai.Assignments
             var map = match.GetMap();
             var region = new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.33f);
             var origin =
-                region.Range(match.GetMap())
-                    .MaxBy(x => TileConsiderations.Evaluate(
-                        TileConsiderations.Combine(
-                            (0.1f, TileConsiderations.Noise(new())),
-                            (1, TileConsiderations.Roading)),
-                        x,
-                        map));
+                AssignmentHelper.GetBest(
+                    map, 
+                    region, 
+                    TileConsiderations.Combine(
+                        (1f, TileConsiderations.Essential(
+                            tileEvaluator.IsReachable(
+                                formation.GetMaxHindrance(), TargetRegions.First().Range(map).First()))),
+                        (0.1f, TileConsiderations.Noise(new())),
+                        (1, TileConsiderations.Roading)));
             return PointAssignment.SelectFrom(
                 formation,
                 map,

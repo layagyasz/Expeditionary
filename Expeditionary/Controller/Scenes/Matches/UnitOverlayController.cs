@@ -9,13 +9,13 @@ namespace Expeditionary.Controller.Scenes.Matches
         public EventHandler<EventArgs>? OrderChanged { get; set; }
 
         private UnitOverlay? _overlay;
-        private IFormFieldController<ButtonId>? _orderSelectController;
+        private IFormFieldController<OrderValue>? _orderSelectController;
 
         public void Bind(object @object)
         {
             _overlay = @object as UnitOverlay;
 
-            _orderSelectController = (IFormFieldController<ButtonId>)_overlay!.Orders.ComponentController;
+            _orderSelectController = (IFormFieldController<OrderValue>)_overlay!.Orders.ComponentController;
             _orderSelectController.ValueChanged += HandleOrderChanged;
         }
 
@@ -27,13 +27,14 @@ namespace Expeditionary.Controller.Scenes.Matches
             _orderSelectController = null;
         }
 
-        public ButtonId GetOrder()
+        public OrderValue? GetOrder()
         {
             return _orderSelectController!.GetValue();
         }
 
         public void SetUnit(Unit? unit)
         {
+            _overlay!.Orders.Clear(true);
             if (unit == null)
             {
                 _overlay!.Title.SetText(string.Empty);
@@ -41,17 +42,36 @@ namespace Expeditionary.Controller.Scenes.Matches
             else
             {
                 _overlay!.Title.SetText($"{unit.Type.Name} (#{unit.Id})");
+                foreach (var order in GetPossibleOrders(unit))
+                {
+                    _overlay.AddOrder(order);
+                }
             }
-        }
-
-        public void SetOrder(ButtonId order)
-        {
-            _orderSelectController!.Set(order);
         }
 
         private void HandleOrderChanged(object? sender, EventArgs e)
         {
             OrderChanged?.Invoke(this, e);
+        }
+
+        private static IEnumerable<OrderValue> GetPossibleOrders(Unit unit)
+        {
+            foreach (var weapon in unit.Type.Weapons)
+            {
+                foreach (var mode in weapon.Weapon.Modes)
+                {
+                    yield return new(FormatAttackName(weapon, mode), ButtonId.Attack, new object[] { weapon, mode });
+                }
+            }
+            if (unit.Type.Speed >= 1)
+            {
+                yield return new("Move", ButtonId.Move, Array.Empty<object>());
+            }
+        }
+
+        private static string FormatAttackName(UnitWeaponUsage weapon, UnitWeapon.Mode mode)
+        {
+            return $"{weapon.Weapon.Name}({mode.Condition}";
         }
     }
 }

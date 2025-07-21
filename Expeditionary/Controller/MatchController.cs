@@ -30,7 +30,7 @@ namespace Expeditionary.Controller
         private UnitOverlayController? _unitOverlayController;
 
         private Unit? _selectedUnit;
-        private ButtonId _selectedOrder;
+        private OrderValue? _selectedOrder;
 
         public MatchController(Match match, Player player, TileEvaluator tileEvaluator)
         {
@@ -96,12 +96,12 @@ namespace Expeditionary.Controller
                 UpdateOrder();
             }
             else if (e.Button.Button == MouseButton.Right 
-                && _selectedOrder == ButtonId.Attack 
+                && _selectedOrder?.ButtonId == ButtonId.Attack 
                 && _selectedUnit != null
                 && e.Assets.First() is Unit defender)
             {
-                var weapon = _selectedUnit.Type.Weapons.First();
-                var mode = weapon.Weapon!.Modes.First();
+                var weapon = (UnitWeaponUsage) _selectedOrder.Args![0];
+                var mode = (UnitWeapon.Mode) _selectedOrder.Args![1];
                 _match.DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
             }
         }
@@ -109,7 +109,9 @@ namespace Expeditionary.Controller
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
             s_Logger.Log(_match.GetMap().Get(e.Hex)?.ToString() ?? "off map");
-            if (e.Button.Button == MouseButton.Right && _selectedOrder == ButtonId.Move && _selectedUnit != null)
+            if (e.Button.Button == MouseButton.Right
+                && _selectedOrder?.ButtonId == ButtonId.Move
+                && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
                 if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
@@ -140,7 +142,6 @@ namespace Expeditionary.Controller
             {
                 _screen!.UnitOverlay!.Visible = true;
                 _unitOverlayController!.SetUnit(_selectedUnit);
-                _unitOverlayController!.SetOrder(ButtonId.Attack);
             }
             else
             {
@@ -155,37 +156,28 @@ namespace Expeditionary.Controller
             _selectedOrder = _unitOverlayController!.GetOrder();
             if (_selectedUnit != null)
             {
-                _highlightLayer!.SetHighlight(
-                    HighlightLayer.ForConsideration(
-                        _match.GetMap(),
-                        _tileEvaluator.IsReachable(
-                            _selectedUnit.Type.Movement.GetMaxHindrance(), _selectedUnit.Position!.Value)));
-                /*
-                if (_selectedOrder == ButtonId.Attack)
+                if (_selectedOrder?.ButtonId == ButtonId.Attack)
                 {
-                    var range = 
-                        (int)_selectedUnit.Type.Weapons
-                            .SelectMany(x => x.Weapon!.Modes).Select(x => x.Range.Get()).Max();
+                    var range = (int)((UnitWeapon.Mode)_selectedOrder.Args[1]).Range.Get();
                     _highlightLayer!.SetHighlight(
                         Sighting.GetUnblockedSightField(_match.GetMap(), _selectedUnit.Position!.Value, range)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
-                else if (_selectedOrder == ButtonId.Move)
+                else if (_selectedOrder?.ButtonId == ButtonId.Move)
                 {
                     var movement = (int)_selectedUnit.Type.Speed;
-                    var used = _selectedUnit.Type.Speed - _selectedUnit.Movement;
+                    var used = _selectedUnit.Type.Speed - _selectedUnit.Type.Speed;
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
                             _match.GetMap(), 
                             _selectedUnit.Position!.Value, 
                             _selectedUnit.Type.Movement, 
                             TileConsiderations.None,
-                            _selectedUnit.Movement)
+                            _selectedUnit.Type.Speed)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));
                 }
-                */
             }
         }
     }

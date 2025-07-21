@@ -18,9 +18,15 @@ namespace Expeditionary.View.Scenes.Matches
             new("base-button", "unit-overlay-order-attack", "base-button-text");
         private static readonly ButtonStyle s_MoveButton =
             new("base-button", "unit-overlay-order-move", "base-button-text");
+        private static readonly ButtonStyle s_LoadButton =
+            new("base-button", "unit-overlay-load-move", "base-button-text");
+        private static readonly ButtonStyle s_UnloadButton =
+            new("base-button", "unit-overlay-unload-move", "base-button-text");
 
         public TextUiElement Title { get; }
         public UiCompoundComponent Orders { get; }
+
+        private readonly UiElementFactory _uiElementFactory;
 
         public UnitOverlay(UiElementFactory uiElementFactory)
             : base(
@@ -30,19 +36,15 @@ namespace Expeditionary.View.Scenes.Matches
                       new NoOpElementController(),
                       UiSerialContainer.Orientation.Vertical))
         {
+            _uiElementFactory = uiElementFactory;
+
             Orders =
                 new UiCompoundComponent(
-                    new RadioController<ButtonId>(),
-                    uiElementFactory.CreateTableRow(
-                        s_OrderContainer, 
-                        new List<IUiElement>()
-                        {
-                            uiElementFactory.CreateButton(
-                                s_AttackButton, new OptionElementController<ButtonId>(ButtonId.Attack), "Attack"),
-                            uiElementFactory.CreateButton(
-                                s_MoveButton, new OptionElementController<ButtonId>(ButtonId.Move), "Move")
-                        },
-                        new InlayController()));
+                    new RadioController<OrderValue>(),
+                    new UiSerialContainer(
+                        uiElementFactory.GetClass(s_OrderContainer),
+                        new InlayController(), 
+                        UiSerialContainer.Orientation.Vertical));
             Title = new TextUiElement(uiElementFactory.GetClass(s_Title), new InlayController(), string.Empty);
             Add(
                 new UiSerialContainer(
@@ -55,10 +57,31 @@ namespace Expeditionary.View.Scenes.Matches
             Add(Orders);
         }
 
+        public void AddOrder(OrderValue order)
+        {
+            var element = 
+                _uiElementFactory.CreateButton(
+                    GetClass(order.ButtonId), new OptionElementController<OrderValue>(order), order.Name);
+            element.Initialize();
+            Orders.Add(element);
+        }
+
         public override void ResizeContext(Vector3 bounds)
         {
             base.ResizeContext(bounds);
             Position = new(bounds.X - Size.X, Position.Y, 0);
+        }
+
+        private static ButtonStyle GetClass(ButtonId buttonId)
+        {
+            return buttonId switch
+            {
+                ButtonId.Attack => s_AttackButton,
+                ButtonId.Move => s_MoveButton,
+                ButtonId.Load => s_LoadButton,
+                ButtonId.Unload => s_UnloadButton,
+                _ => throw new ArgumentException($"Unsupported ButtonId: {buttonId}"),
+            };
         }
     }
 }
