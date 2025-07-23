@@ -6,6 +6,7 @@ namespace Expeditionary.Model.Units
     public class Unit : IAsset
     {
         public int Id { get; }
+        public string Name => $"{Type.Name}(#{Id})";
         public Player Player { get; }
         public UnitType Type { get; }
         public string TypeKey => Type.Key;

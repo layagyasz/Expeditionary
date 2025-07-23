@@ -15,7 +15,7 @@ namespace Expeditionary.Model.Formations.Generator
             {
                 return false;
             }
-            var tags = unitUsage.Type!.GetTags();
+            var tags = unitUsage.Type!.Tags;
             if (RequiredTags.Any() && !RequiredTags.All(tags.Contains))
             {
                 return false;

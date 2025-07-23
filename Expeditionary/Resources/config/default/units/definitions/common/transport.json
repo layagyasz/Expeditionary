@@ -3,7 +3,7 @@
     "$id": "~unit-type-common-truck",
     "Name": "Truck",
     "Weapons": [],
-    "Tags": [ "Transport" ],
+    "Tags": [ "Tractor", "Transport" ],
     "Traits": [
       "trait-vehicle-base",
       "trait-vehicle-chassis-truck",

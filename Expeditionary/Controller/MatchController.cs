@@ -1,6 +1,7 @@
 ﻿using Cardamom.Logging;
 using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
+using Cardamom.Window;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Evaluation;
@@ -17,7 +18,7 @@ namespace Expeditionary.Controller
 {
     public class MatchController : IController
     {
-        private static readonly ILogger s_Logger = 
+        private static readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(MatchController));
 
         private readonly Match _match;
@@ -31,6 +32,7 @@ namespace Expeditionary.Controller
 
         private Unit? _selectedUnit;
         private OrderValue? _selectedOrder;
+        private IEnumerator<Unit>? _selectedUnitEnumerator;
 
         public MatchController(Match match, Player player, TileEvaluator tileEvaluator)
         {
@@ -43,15 +45,19 @@ namespace Expeditionary.Controller
         {
             _screen = (MatchScreen)@object;
 
+            _match.Stepped += HandleStep;
+
             _highlightLayer = _screen.Scene!.Highlight;
 
             _sceneController = (MatchSceneController)_screen.Scene!.Controller;
             _sceneController.AssetClicked += HandleAssetClicked;
             _sceneController.HexClicked += HandleHexClicked;
+            _sceneController.TextEntered += HandleTextEntered;
             _sceneController.SetPlayer(_player);
 
             _unitOverlayController = _screen.UnitOverlay!.ComponentController as UnitOverlayController;
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
+            _unitOverlayController.SetMatch(_match);
 
             _screen.UnitOverlay.Visible = false;
             _screen.Updated += HandleFrame;
@@ -59,8 +65,11 @@ namespace Expeditionary.Controller
 
         public void Unbind()
         {
+            _match.Stepped -= HandleStep;
+
             _sceneController!.AssetClicked -= HandleAssetClicked;
             _sceneController!.HexClicked -= HandleHexClicked;
+            _sceneController!.TextEntered -= HandleTextEntered;
             _sceneController = null;
 
             _unitOverlayController!.OrderChanged -= HandleOrderChanged;
@@ -78,6 +87,7 @@ namespace Expeditionary.Controller
         {
             if (e.Button.Button == MouseButton.Left)
             {
+                // TODO: Replace with targetted clicking and send warnings on attempts to select an already-moved unit.
                 var units = e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).ToList();
                 if (units.Count == 0)
                 {
@@ -92,17 +102,18 @@ namespace Expeditionary.Controller
                 {
                     _selectedUnit = units[(index + 1) % units.Count];
                 }
+                _selectedUnitEnumerator = null;
                 UpdateUnitOverlay();
                 UpdateOrder();
             }
-            else if (e.Button.Button == MouseButton.Right 
-                && _selectedOrder?.ButtonId == ButtonId.Attack 
+            else if (e.Button.Button == MouseButton.Right
+                && _selectedOrder?.OrderId == OrderId.Attack
                 && _selectedUnit != null
                 && e.Assets.First() is Unit defender)
             {
-                var weapon = (UnitWeaponUsage) _selectedOrder.Args![0];
-                var mode = (UnitWeapon.Mode) _selectedOrder.Args![1];
-                _match.DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
+                var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
+                var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
+                DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
             }
         }
 
@@ -110,15 +121,15 @@ namespace Expeditionary.Controller
         {
             s_Logger.Log(_match.GetMap().Get(e.Hex)?.ToString() ?? "off map");
             if (e.Button.Button == MouseButton.Right
-                && _selectedOrder?.ButtonId == ButtonId.Move
+                && _selectedOrder?.OrderId == OrderId.Move
                 && _selectedUnit != null)
             {
                 // Cheap check to make sure hex is reachable
                 if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
                 {
-                    _match.DoOrder(
+                    DoOrder(
                         new MoveOrder(
-                            _selectedUnit, 
+                            _selectedUnit,
                             Pathing.GetShortestPath(
                                 _match.GetMap(),
                                 _selectedUnit.Position.Value,
@@ -126,14 +137,63 @@ namespace Expeditionary.Controller
                                 _selectedUnit.Type.Movement,
                                 TileConsiderations.None,
                                 _selectedUnit.Type.Speed)));
-                    UpdateOrder();
                 }
+            }
+        }
+
+        private void HandleTextEntered(object? sender, TextEnteredEventArgs e)
+        {
+            if (e.Key == Keys.Space)
+            {
+                StepActiveUnit();
             }
         }
 
         private void HandleOrderChanged(object? sender, EventArgs e)
         {
             UpdateOrder();
+        }
+
+        private void HandleStep(object? sender, EventArgs e)
+        {
+            if (_player == _match.GetActivePlayer())
+            {
+                StepActiveUnit();
+            }
+        }
+
+        private void DoOrder(IOrder order)
+        {
+            if (_match.DoOrder(order))
+            {
+                StepActiveUnit();
+            }
+        }
+
+        private void StepActiveUnit()
+        {
+            if (_selectedUnitEnumerator == null)
+            {
+                _selectedUnitEnumerator = 
+                    _match.GetFormations(_player)
+                        .SelectMany(x => x.GetDiads())
+                        .SelectMany(x => x.GetUnits())
+                        .GetEnumerator();
+                if (_selectedUnit != null)
+                {
+                    while (_selectedUnitEnumerator.MoveNext() && _selectedUnit != _selectedUnitEnumerator.Current) ;
+                }
+            }
+            _selectedUnit = null;
+            while (_selectedUnitEnumerator.MoveNext())
+            {
+                if (_selectedUnitEnumerator.Current.IsActive() && _selectedUnitEnumerator.Current.Actions > 0)
+                {
+                    _selectedUnit = _selectedUnitEnumerator.Current;
+                    break;
+                }
+            }
+            UpdateUnitOverlay();
         }
 
         private void UpdateUnitOverlay()
@@ -156,7 +216,7 @@ namespace Expeditionary.Controller
             _selectedOrder = _unitOverlayController!.GetOrder();
             if (_selectedUnit != null)
             {
-                if (_selectedOrder?.ButtonId == ButtonId.Attack)
+                if (_selectedOrder?.OrderId == OrderId.Attack)
                 {
                     var range = (int)((UnitWeapon.Mode)_selectedOrder.Args[1]).Range.Get();
                     _highlightLayer!.SetHighlight(
@@ -164,19 +224,27 @@ namespace Expeditionary.Controller
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
-                else if (_selectedOrder?.ButtonId == ButtonId.Move)
+                else if (_selectedOrder?.OrderId == OrderId.Move)
                 {
                     var movement = (int)_selectedUnit.Type.Speed;
                     var used = _selectedUnit.Type.Speed - _selectedUnit.Type.Speed;
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
-                            _match.GetMap(), 
-                            _selectedUnit.Position!.Value, 
-                            _selectedUnit.Type.Movement, 
+                            _match.GetMap(),
+                            _selectedUnit.Position!.Value,
+                            _selectedUnit.Type.Movement,
                             TileConsiderations.None,
                             _selectedUnit.Type.Speed)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));
+                }
+                else if (_selectedOrder?.OrderId == OrderId.Load)
+                {
+                    DoOrder(new LoadOrder(_selectedUnit, (IAsset)_selectedOrder.Args[0]));
+                }
+                else if (_selectedOrder?.OrderId == OrderId.Unload) 
+                {
+                    DoOrder(new UnloadOrder(_selectedUnit));
                 }
             }
         }

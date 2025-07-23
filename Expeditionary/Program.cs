@@ -163,6 +163,7 @@ namespace Expeditionary
 
         private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
         {
+            File.Delete("units.json");
             using var stream = File.OpenWrite("units.json");
             var options = 
                 new JsonSerializerOptions() 

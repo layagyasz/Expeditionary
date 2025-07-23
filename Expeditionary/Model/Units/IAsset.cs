@@ -5,6 +5,7 @@ namespace Expeditionary.Model.Units
     public interface IAsset
     {
         int Id { get; }
+        string Name { get; }
         string TypeKey { get; }
         public Vector3i? Position { get; set; }
         public bool IsDestroyed { get; }

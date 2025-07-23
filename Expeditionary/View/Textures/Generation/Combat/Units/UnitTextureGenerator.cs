@@ -84,7 +84,7 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
         {
             var vertices = new ArrayList<Vertex3>();
             AddSegment(vertices, _settings.Images!.Get(_settings.BorderImage), Color4.White, new());
-            foreach (var tag in unit.GetTags())
+            foreach (var tag in unit.Tags)
             {
                 if (_settings.TagImages.TryGetValue(tag, out var textureId))
                 {

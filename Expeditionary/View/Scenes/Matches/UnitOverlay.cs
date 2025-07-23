@@ -19,9 +19,9 @@ namespace Expeditionary.View.Scenes.Matches
         private static readonly ButtonStyle s_MoveButton =
             new("base-button", "unit-overlay-order-move", "base-button-text");
         private static readonly ButtonStyle s_LoadButton =
-            new("base-button", "unit-overlay-load-move", "base-button-text");
+            new("base-button", "unit-overlay-order-load", "base-button-text");
         private static readonly ButtonStyle s_UnloadButton =
-            new("base-button", "unit-overlay-unload-move", "base-button-text");
+            new("base-button", "unit-overlay-order-unload", "base-button-text");
 
         public TextUiElement Title { get; }
         public UiCompoundComponent Orders { get; }
@@ -61,7 +61,7 @@ namespace Expeditionary.View.Scenes.Matches
         {
             var element = 
                 _uiElementFactory.CreateButton(
-                    GetClass(order.ButtonId), new OptionElementController<OrderValue>(order), order.Name);
+                    GetClass(order.OrderId), new OptionElementController<OrderValue>(order), order.Name);
             element.Initialize();
             Orders.Add(element);
         }
@@ -72,14 +72,14 @@ namespace Expeditionary.View.Scenes.Matches
             Position = new(bounds.X - Size.X, Position.Y, 0);
         }
 
-        private static ButtonStyle GetClass(ButtonId buttonId)
+        private static ButtonStyle GetClass(OrderId buttonId)
         {
             return buttonId switch
             {
-                ButtonId.Attack => s_AttackButton,
-                ButtonId.Move => s_MoveButton,
-                ButtonId.Load => s_LoadButton,
-                ButtonId.Unload => s_UnloadButton,
+                OrderId.Attack => s_AttackButton,
+                OrderId.Move => s_MoveButton,
+                OrderId.Load => s_LoadButton,
+                OrderId.Unload => s_UnloadButton,
                 _ => throw new ArgumentException($"Unsupported ButtonId: {buttonId}"),
             };
         }

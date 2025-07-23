@@ -10,9 +10,11 @@ namespace Expeditionary.Controller.Scenes
         public EventHandler<MouseButtonClickEventArgs>? Clicked { get; set; }
         public EventHandler<EventArgs>? Focused { get; set; }
         public EventHandler<EventArgs>? FocusLeft { get; set; }
+        public EventHandler<KeyDownEventArgs>? KeyDown { get; set; }
         public EventHandler<MouseButtonDragEventArgs>? MouseDragged { get; set; }
         public EventHandler<EventArgs>? MouseEntered { get; set; }
         public EventHandler<EventArgs>? MouseLeft { get; set; }
+        public EventHandler<TextEnteredEventArgs>? TextEntered { get; set; }
 
         private readonly IElementController _cameraController;
 
@@ -27,11 +29,14 @@ namespace Expeditionary.Controller.Scenes
 
         public bool HandleKeyDown(KeyDownEventArgs e)
         {
-            return _cameraController.HandleKeyDown(e);
+            KeyDown?.Invoke(this, e);
+            _cameraController.HandleKeyDown(e);
+            return true;
         }
 
         public bool HandleTextEntered(TextEnteredEventArgs e)
         {
+            TextEntered?.Invoke(this, e);
             return true;
         }
 

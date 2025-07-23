@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.View.Scenes.Matches
 {
-    public enum ButtonId
+    public enum OrderId
     {
         Attack,
         Move,

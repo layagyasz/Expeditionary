@@ -23,7 +23,7 @@ namespace Expeditionary.Evaluation
 
         public static Disposition Map(UnitType unitType)
         {
-            return unitType.GetTags().Any(s_DefensiveTags.Contains) ? Disposition.Defensive : Disposition.Offensive;
+            return unitType.Tags.Any(s_DefensiveTags.Contains) ? Disposition.Defensive : Disposition.Offensive;
         }
 
         private static readonly EnumSet<FormationRole> s_DefensiveRoles =

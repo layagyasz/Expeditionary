@@ -65,6 +65,7 @@ namespace Expeditionary.Model.Units
         Supply,
         Towed,
         Tracked,
+        Tractor,
         Transport,
         UAV,
         Wheeled,

@@ -10,7 +10,7 @@
     ],
     "Traits": [
       "trait-common-human",
-      "trait-artillery-platoon",
+      "trait-infantry-platoon-half",
       "trait-infantry-armor-2",
       "trait-infantry-recruitment-0"
     ]
@@ -26,7 +26,7 @@
     ],
     "Traits": [
       "trait-common-human",
-      "trait-artillery-platoon",
+      "trait-infantry-platoon-half",
       "trait-infantry-armor-2",
       "trait-infantry-recruitment-0"
     ]
@@ -42,7 +42,7 @@
     ],
     "Traits": [
       "trait-common-human",
-      "trait-artillery-platoon",
+      "trait-infantry-platoon-half",
       "trait-infantry-armor-2",
       "trait-infantry-recruitment-0"
     ]

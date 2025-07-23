@@ -5,7 +5,17 @@ namespace Expeditionary.Model.Formations
 {
     public class Formation
     {
-        public record class Diad(FormationRole Role, Unit Unit, Unit? Transport);
+        public record class Diad(FormationRole Role, Unit Unit, Unit? Transport)
+        {
+            public IEnumerable<Unit> GetUnits()
+            {
+                if (Transport != null)
+                {
+                    yield return Transport;
+                }
+                yield return Unit;
+            }
+        }
 
         public Player Player { get; }
         public string Name { get; }

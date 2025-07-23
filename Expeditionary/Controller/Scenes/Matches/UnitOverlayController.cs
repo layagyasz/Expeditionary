@@ -1,4 +1,5 @@
 ﻿using Cardamom.Ui.Controller;
+using Expeditionary.Model;
 using Expeditionary.Model.Units;
 using Expeditionary.View.Scenes.Matches;
 
@@ -7,6 +8,8 @@ namespace Expeditionary.Controller.Scenes.Matches
     public class UnitOverlayController : IController
     {
         public EventHandler<EventArgs>? OrderChanged { get; set; }
+
+        private Match? _match;
 
         private UnitOverlay? _overlay;
         private IFormFieldController<OrderValue>? _orderSelectController;
@@ -32,6 +35,11 @@ namespace Expeditionary.Controller.Scenes.Matches
             return _orderSelectController!.GetValue();
         }
 
+        public void SetMatch(Match match)
+        {
+            _match = match;
+        }
+
         public void SetUnit(Unit? unit)
         {
             _overlay!.Orders.Clear(true);
@@ -41,7 +49,7 @@ namespace Expeditionary.Controller.Scenes.Matches
             }
             else
             {
-                _overlay!.Title.SetText($"{unit.Type.Name} (#{unit.Id})");
+                _overlay!.Title.SetText(unit.Name);
                 foreach (var order in GetPossibleOrders(unit))
                 {
                     _overlay.AddOrder(order);
@@ -54,24 +62,33 @@ namespace Expeditionary.Controller.Scenes.Matches
             OrderChanged?.Invoke(this, e);
         }
 
-        private static IEnumerable<OrderValue> GetPossibleOrders(Unit unit)
+        private IEnumerable<OrderValue> GetPossibleOrders(Unit unit)
         {
             foreach (var weapon in unit.Type.Weapons)
             {
                 foreach (var mode in weapon.Weapon.Modes)
                 {
-                    yield return new(FormatAttackName(weapon, mode), ButtonId.Attack, new object[] { weapon, mode });
+                    yield return new(FormatAttackName(weapon, mode), OrderId.Attack, new object[] { weapon, mode });
                 }
             }
             if (unit.Type.Speed >= 1)
             {
-                yield return new("Move", ButtonId.Move, Array.Empty<object>());
+                yield return new("Move", OrderId.Move, Array.Empty<object>());
+            }
+            foreach (var passenger in _match!.GetAssetsAt(unit.Position!.Value)
+                .Where(x => OrderChecker.CanLoad(unit, x)))
+            {
+                yield return new($"Load {passenger.Name}", OrderId.Load, new object[] { passenger });
+            }
+            if (unit.Passenger != null)
+            {
+                yield return new($"Unload {unit.Passenger.Name}", OrderId.Unload, Array.Empty<object>());
             }
         }
 
         private static string FormatAttackName(UnitWeaponUsage weapon, UnitWeapon.Mode mode)
         {
-            return $"{weapon.Weapon.Name}({mode.Condition}";
+            return $"{weapon.Weapon.Name}({mode.Condition})";
         }
     }
 }

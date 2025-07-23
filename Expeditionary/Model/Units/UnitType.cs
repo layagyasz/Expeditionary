@@ -1,5 +1,4 @@
 ﻿using Cardamom;
-using Cardamom.Collections;
 using Cardamom.Json;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
@@ -16,6 +15,7 @@ namespace Expeditionary.Model.Units
         }
         public string Name => Definition.Name;
         public string? Symbol => Definition.Symbol;
+        public ImmutableList<UnitTag> Tags { get; }
         [JsonIgnore]
         public UnitTypeDefinition Definition { get; }
         public ImmutableList<UnitWeaponUsage> Weapons { get; }
@@ -35,6 +35,7 @@ namespace Expeditionary.Model.Units
             UnitIntrinsics intrinsics)
         {
             Definition = definition;
+            Tags = definition.GetTags().ToImmutableList();
             Weapons = ImmutableList.CreateRange(weapons);
             Defense = defense;
             Movement = movement;
@@ -45,14 +46,9 @@ namespace Expeditionary.Model.Units
             Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
         }
 
-        public EnumSet<UnitTag> GetTags()
-        {
-            return Definition.GetTags();
-        }
-
         public bool Validate()
         {
-            return Speed >= 1 && Intrinsics.Space.Available >= Intrinsics.Space.Used;
+            return Intrinsics.Space.Available >= Intrinsics.Space.Used;
         }
     }
 }

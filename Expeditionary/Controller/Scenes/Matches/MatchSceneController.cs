@@ -1,7 +1,6 @@
 ﻿using Cardamom.Graphics.Camera;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Model;
-using Expeditionary.Model.Combat;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.View.Scenes.Matches;
 

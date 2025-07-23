@@ -73,6 +73,7 @@
     "Supply": "icon_unit_main_supply",
     "Towed": "icon_unit_lower_towed",
     "Tracked": "icon_unit_lower_tracked",
+    "Tractor": "icon_unit_main_transport",
     "Transport": "icon_unit_main_transport",
     "UAV": "icon_unit_main_uav",
     "Wheeled": "icon_unit_lower_wheeled"

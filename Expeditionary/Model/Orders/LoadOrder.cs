@@ -6,24 +6,20 @@ namespace Expeditionary.Model.Orders
     {
         public bool Validate(Match match)
         {
-            // TODO: Check that Unit can carry and Target can be carried.
-            if (Target is Unit target)
+            if (!OrderChecker.CanLoad(Unit, Target))
             {
-                return Unit.Actions > 0
-                    && target.Actions > 0
-                    && Unit.Player == target.Player
-                    && Unit.Passenger == null
-                    && !Unit.IsPassenger
-                    && !Target.IsPassenger;
+                return false;
             }
-            // TODO: Implement for other asset classes.
-            return false;
+            return true;
         }
 
         public void Execute(Match match)
         {
             Unit.ConsumeAction();
-            ((Unit) Target).ConsumeAction();
+            if (Target is Unit targetUnit)
+            {
+                targetUnit.ConsumeAction();
+            }
             match.Load(Unit, Target);
         }
     }
