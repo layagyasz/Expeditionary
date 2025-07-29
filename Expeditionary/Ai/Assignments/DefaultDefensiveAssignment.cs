@@ -1,6 +1,7 @@
 ﻿using Cardamom.Trackers;
 using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
@@ -14,6 +15,7 @@ namespace Expeditionary.Ai.Assignments
     public record class DefaultDefensiveAssignment(MapDirection Facing, List<IMapRegion> DefenseRegions)
         : IAssignment
     {
+        public Vector3i Origin => default;
         public IMapRegion Region => CompositeMapRegion.Union(DefenseRegions);
 
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
@@ -28,6 +30,17 @@ namespace Expeditionary.Ai.Assignments
                     new());
             }
             var map = match.GetMap();
+            var edgeRegion = new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.5f);
+            var origin =
+                AssignmentHelper.GetBest(
+                    map,
+                    edgeRegion,
+                    TileConsiderations.Combine(
+                        (1f, TileConsiderations.Essential(
+                            tileEvaluator.IsReachable(
+                                formation.GetMaxHindrance(), DefenseRegions.First().Range(map).First()))),
+                        (0.1f, TileConsiderations.Noise(new())),
+                        (1, TileConsiderations.Roading)));
             var eligibleOccupiers =
                 new LinkedList<Quantity<FormationHandler>>(
                     formation.Children
@@ -48,12 +61,11 @@ namespace Expeditionary.Ai.Assignments
                 var assignments = Assign(eligibleOccupiers, region);
                 foreach (var f in assignments)
                 {
-                    result.Add(f, new AreaAssignment(region.Key, Facing));
+                    result.Add(f, new AreaAssignment(region.Key, origin, Facing));
                 }
             }
             var currentAssignment = new AssignmentRealization(result, new());
-            var parentAssignment =
-                new AreaAssignment(new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.5f), Facing);
+            var parentAssignment = new AreaAssignment(edgeRegion, origin, Facing);
             var defensiveAssignment =
                 parentAssignment.PartitionByFormations(eligibleOccupiers.Select(x => x.Key), map);
             var offensiveAssignment =

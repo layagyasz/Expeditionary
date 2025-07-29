@@ -12,7 +12,8 @@ using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
-    public record class PointAssignment(Vector3i Hex, IMapRegion Bounds, MapDirection Facing) : IAssignment
+    public record class PointAssignment(Vector3i Hex, Vector3i Origin, IMapRegion Bounds, MapDirection Facing) 
+        : IAssignment
     {
         private static readonly float s_Reward = 20f;
 
@@ -23,8 +24,7 @@ namespace Expeditionary.Ai.Assignments
             MapDirection facing,
             TileEvaluator tileEvaluator,
             TileConsideration extraConsideration,
-            // TODO: Require an origin in all cases
-            Vector3i? origin)
+            Vector3i origin)
         {
             var spacing = 2 * GetSpacing(formation.Echelon);
             return new AssignmentRealization.Builder()
@@ -51,7 +51,7 @@ namespace Expeditionary.Ai.Assignments
             MapDirection facing,
             TileEvaluator tileEvaluator,
             TileConsideration extraConsideration,
-            Vector3i? origin,
+            Vector3i origin,
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
@@ -60,14 +60,12 @@ namespace Expeditionary.Ai.Assignments
             {
                 var consideration =
                     TileConsiderations.Combine(
-                        origin.HasValue
-                            ? tileEvaluator.IsReachable(formation.GetMaxHindrance(), origin!.Value)
-                            : TileConsiderations.None,
+                        TileConsiderations.Essential(tileEvaluator.IsReachable(formation.GetMaxHindrance(), origin)),
                         tileEvaluator.GetConsiderationFor(formation.Formation, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
-                result.Add(formation, new PointAssignment(hex, region, facing));
+                result.Add(formation, new PointAssignment(hex, origin, region, facing));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
             }
             return new(result, new());
@@ -80,7 +78,7 @@ namespace Expeditionary.Ai.Assignments
             MapDirection facing,
             TileEvaluator tileEvaluator,
             TileConsideration extraConsideration,
-            Vector3i? origin,
+            Vector3i origin,
             int spacing)
         {
             var sdf = new CompositeSignedDistanceField();
@@ -89,14 +87,12 @@ namespace Expeditionary.Ai.Assignments
             {
                 var consideration =
                     TileConsiderations.Combine(
-                        origin.HasValue
-                            ? tileEvaluator.IsReachable(diad.GetMaxHindrance(), origin!.Value)
-                            : TileConsiderations.None,
+                        TileConsiderations.Essential(tileEvaluator.IsReachable(diad.GetMaxHindrance(), origin)),
                         tileEvaluator.GetConsiderationFor(diad.Role, diad.Unit.Unit.Type, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
                 var hex = AssignmentHelper.GetBest(map, region, consideration);
-                result.Add(diad, new PointAssignment(hex, region, facing));
+                result.Add(diad, new PointAssignment(hex, origin, region, facing));
                 sdf.Add(new SimpleSignedDistanceField(hex, 0, spacing));
             }
             return new(new(), result);
@@ -108,17 +104,21 @@ namespace Expeditionary.Ai.Assignments
             return new PointAssignment(
                 AssignmentHelper.GetBest(
                     match.GetMap(),
-                    new ExplicitMapRegion(
-                        Pathing.GetPathField(
-                            match.GetMap(),
-                            assignment.Hex,
-                            unit.Unit.Type.Movement, 
-                            TileConsiderations.None, 
-                            unit.Unit.Type.Speed)
-                        .Select(x => x.Destination)),
+                    CompositeMapRegion.Intersect(
+                        new PointMapRegion(assignment.Hex, 4),
+                        new ExplicitMapRegion(
+                            Pathing.GetPathField(
+                                match.GetMap(),
+                                assignment.Hex,
+                                unit.Unit.Type.Movement, 
+                                TileConsiderations.None, 
+                                unit.Unit.Type.Speed)
+                        .Select(x => x.Destination))),
                     TileConsiderations.Combine(
                         tileEvaluator.IsReachable(unit.GetMaxHindrance(), assignment.Hex),
-                        tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, assignment.Facing))), 
+                        tileEvaluator.GetConsiderationFor(unit.Role, unit.Unit.Type, assignment.Facing),
+                        TileConsiderations.Direction(assignment.Hex, MapDirectionUtils.Invert(assignment.Facing)))),
+                assignment.Origin,
                 assignment.Bounds, 
                 assignment.Facing);
         }
@@ -133,7 +133,7 @@ namespace Expeditionary.Ai.Assignments
             if (formation.Children.Any())
             {
                 var first = formation.Children.First();
-                result.Add(first, new PointAssignment(Hex, Bounds, Facing));
+                result.Add(first, new PointAssignment(Hex, Origin, Bounds, Facing));
                 result.AddAll(
                     SelectFrom(
                         formation.Children.Skip(1),
@@ -142,7 +142,7 @@ namespace Expeditionary.Ai.Assignments
                         Facing,
                         tileEvaluator,
                         TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
-                        Hex,
+                        Origin,
                         spacing));
             }
             if (formation.Diads.Any())
@@ -151,7 +151,7 @@ namespace Expeditionary.Ai.Assignments
                 {
                     var diads = formation.Diads.ToList();
                     var first = diads.First();
-                    result.Add(first, new PointAssignment(Hex, Bounds, Facing));
+                    result.Add(first, new PointAssignment(Hex, Origin, Bounds, Facing));
                     result.AddAll(
                         SelectFrom(
                             diads.Skip(1),
@@ -160,7 +160,7 @@ namespace Expeditionary.Ai.Assignments
                             Facing,
                             tileEvaluator,
                             TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
-                            Hex,
+                            Origin,
                             spacing));
                 }
                 else
@@ -173,7 +173,7 @@ namespace Expeditionary.Ai.Assignments
                             Facing,
                             tileEvaluator,
                             TileConsiderations.Exterior(new SimpleSignedDistanceField(Hex, 0, spacing), 0),
-                            Hex,
+                            Origin,
                             spacing));
                 }
             }

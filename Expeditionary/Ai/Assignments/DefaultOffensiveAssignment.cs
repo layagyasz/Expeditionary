@@ -13,6 +13,7 @@ namespace Expeditionary.Ai.Assignments
     public record class DefaultOffensiveAssignment(MapDirection Facing, List<IMapRegion> TargetRegions)
         : IAssignment
     {
+        public Vector3i Origin => default;
         public IMapRegion Region => CompositeMapRegion.Union(TargetRegions);
 
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
@@ -66,7 +67,7 @@ namespace Expeditionary.Ai.Assignments
                 Facing,
                 tileEvaluator,
                 TileConsiderations.None,
-                null);
+                origin);
         }
 
         private static bool IsDeployed(IAiHandler formation)

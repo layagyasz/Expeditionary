@@ -174,26 +174,32 @@ namespace Expeditionary.Controller
         {
             if (_selectedUnitEnumerator == null)
             {
-                _selectedUnitEnumerator = 
-                    _match.GetFormations(_player)
-                        .SelectMany(x => x.GetDiads())
-                        .SelectMany(x => x.GetUnits())
-                        .GetEnumerator();
+                _selectedUnitEnumerator = StepActiveUnitEnumerator();
                 if (_selectedUnit != null)
                 {
                     while (_selectedUnitEnumerator.MoveNext() && _selectedUnit != _selectedUnitEnumerator.Current) ;
                 }
             }
             _selectedUnit = null;
-            while (_selectedUnitEnumerator.MoveNext())
+            while (_selectedUnitEnumerator.MoveNext() && !IsUnitActionable(_selectedUnitEnumerator.Current)) ;
+            _selectedUnit = _selectedUnitEnumerator.Current;
+            // Could not find next unit. Reset enumerator and try again from the beginning.  If there is still no
+            // candidate unit found, then there are no more actions to be taken.
+            if (_selectedUnit == null)
             {
-                if (_selectedUnitEnumerator.Current.IsActive() && _selectedUnitEnumerator.Current.Actions > 0)
-                {
-                    _selectedUnit = _selectedUnitEnumerator.Current;
-                    break;
-                }
+                _selectedUnitEnumerator = StepActiveUnitEnumerator();
+                while (_selectedUnitEnumerator.MoveNext() && !IsUnitActionable(_selectedUnitEnumerator.Current)) ;
+                _selectedUnit = _selectedUnitEnumerator.Current;
             }
             UpdateUnitOverlay();
+        }
+
+        private IEnumerator<Unit> StepActiveUnitEnumerator()
+        {
+            return _match.GetFormations(_player)
+                .SelectMany(x => x.GetDiads())
+                .SelectMany(x => x.GetUnits())
+                .GetEnumerator();
         }
 
         private void UpdateUnitOverlay()
@@ -247,6 +253,11 @@ namespace Expeditionary.Controller
                     DoOrder(new UnloadOrder(_selectedUnit));
                 }
             }
+        }
+
+        private static bool IsUnitActionable(Unit? unit)
+        {
+            return unit != null && unit.IsActive() && unit.Actions > 0 && !unit.IsPassenger;
         }
     }
 }

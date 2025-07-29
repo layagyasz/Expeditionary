@@ -15,7 +15,7 @@ namespace Expeditionary.Ai
 
         public abstract string Id { get; }
         public abstract int Echelon { get; }
-        public IAssignment Assignment { get; private set; } = new NoAssignment();
+        public IAssignment Assignment { get; private set; } = new NoAssignment(default);
         public IEnumerable<FormationHandler> Children => _children;
         public abstract IEnumerable<DiadHandler> Diads { get; }
 

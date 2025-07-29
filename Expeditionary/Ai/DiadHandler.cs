@@ -11,7 +11,7 @@ namespace Expeditionary.Ai
         public FormationRole Role => Unit.Role;
         public UnitHandler Unit { get; }
         public UnitHandler? Transport { get; }
-        public IAssignment Assignment { get; private set; } = new NoAssignment();
+        public IAssignment Assignment { get; private set; } = new NoAssignment(default);
         public IEnumerable<FormationHandler> Children => Enumerable.Empty<FormationHandler>();
         public IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
         public string Id => $"diad-{Unit.Id}-{Transport?.Id ?? "NA"}";
@@ -71,7 +71,7 @@ namespace Expeditionary.Ai
             {
                 return PointAssignment.GetShadowPoint(pointAssignment, unit, match, tileEvaluator);
             }
-            return new NoAssignment();
+            return new NoAssignment(assignment.Origin);
         }
     }
 }

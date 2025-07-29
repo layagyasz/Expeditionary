@@ -11,7 +11,7 @@ using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
-    public record class AreaAssignment(IMapRegion Region, MapDirection Facing) : IAssignment
+    public record class AreaAssignment(IMapRegion Region, Vector3i Origin, MapDirection Facing) : IAssignment
     {
         public AssignmentRealization Assign(
             IAiHandler formation, Match match, TileEvaluator tileEvaluator)
@@ -56,7 +56,7 @@ namespace Expeditionary.Ai.Assignments
             return
                 new(
                     formations.Zip(Region.Partition(map, keyVector, formations.Count()))
-                        .ToDictionary(x => x.First, x => (IAssignment)new AreaAssignment(x.Second, Facing)),
+                        .ToDictionary(x => x.First, x => (IAssignment)new AreaAssignment(x.Second, Origin, Facing)),
                 new());
         }
 
@@ -75,7 +75,7 @@ namespace Expeditionary.Ai.Assignments
                 Facing,
                 tileEvaluator,
                 TileConsiderations.Edge(DenseSignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing), 0),
-                null);
+                Origin);
         }
 
         private static Vector2 GetKeyVector(MapDirection direction)

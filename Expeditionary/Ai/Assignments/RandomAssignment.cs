@@ -9,7 +9,7 @@ using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
-    public record class RandomAssignment(IMapRegion Region, MapDirection Facing) : IAssignment
+    public record class RandomAssignment(Vector3i Origin, IMapRegion Region, MapDirection Facing) : IAssignment
     {
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
@@ -24,7 +24,7 @@ namespace Expeditionary.Ai.Assignments
             }
             foreach (var diad in formation.Diads)
             {
-                diadResult.Add(diad, new PointAssignment(options[random.Next(options.Count)], Region, Facing));
+                diadResult.Add(diad, new PointAssignment(options[random.Next(options.Count)], Origin, Region, Facing));
             }
             return new(formationResult, diadResult);
         }

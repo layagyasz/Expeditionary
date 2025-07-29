@@ -8,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments
 {
-    public class NoAssignment : IAssignment
+    public record class NoAssignment(Vector3i Origin) : IAssignment
     {
         public MapDirection Facing => MapDirection.All;
         public IMapRegion Region => MapRegions.Empty;
@@ -16,8 +16,8 @@ namespace Expeditionary.Ai.Assignments
         public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
         {
             return new(
-                formation.Children.ToDictionary(x => x, x => (IAssignment)new NoAssignment()),
-                formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment()));
+                formation.Children.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)),
+                formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)));
         }
 
         public float EvaluateAction(

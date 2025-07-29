@@ -11,6 +11,7 @@ namespace Expeditionary.Ai.Assignments
 {
     public interface IAssignment
     {
+        Vector3i Origin { get; }
         MapDirection Facing { get; }
         IMapRegion Region { get; }
         AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator);

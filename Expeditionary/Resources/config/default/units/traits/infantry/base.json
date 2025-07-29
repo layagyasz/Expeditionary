@@ -28,8 +28,8 @@
     "Cost": 8,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",
-      "intrinsic.morale": "+8x0",
-      "intrinsic.number": "+8x0"
+      "intrinsic.morale": "+4x0",
+      "intrinsic.number": "+4x0"
     }
   }
 ]
