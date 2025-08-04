@@ -20,8 +20,8 @@ namespace Expeditionary.Ai.Assignments
                 formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)));
         }
 
-        public float EvaluateAction(
-            Unit unit, IUnitAction action, TileEvaluator.UnitTileEvaluator tileEvaluator, Match match)
+        public IEnumerable<(IUnitAction, float)> EvaluateActions(
+            IEnumerable<IUnitAction> action, Unit unit, TileEvaluator tileEvaluator, Match match)
         {
             throw new NotImplementedException();
         }

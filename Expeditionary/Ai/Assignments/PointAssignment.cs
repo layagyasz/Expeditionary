@@ -2,12 +2,12 @@
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
-using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
+using SharpFont.PostScript;
 using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
@@ -180,40 +180,16 @@ namespace Expeditionary.Ai.Assignments
             return result.Build();
         }
 
-        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
+        public IEnumerable<(IUnitAction, float)> EvaluateActions(
+            IEnumerable<IUnitAction> actions, Unit unit, TileEvaluator tileEvaluator, Match match)
         {
-            if (action is AttackAction attackAction)
-            {
-                return AttackEvaluation.Evaluate(
-                    unit, attackAction.Attack, attackAction.Mode, attackAction.Target, match.GetMap());
-            }
-            if (action is MoveAction moveAction)
-            {
-                var consideration =
-                    tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match);
-                var baseline = TileConsiderations.Evaluate(consideration, unit.Position!.Value, match.GetMap());
-                if (unit.Position != Hex)
-                {
-                    var inDirection =
-                        Geometry.GetCubicDistance(unit.Position!.Value, Hex)
-                        > Geometry.GetCubicDistance(moveAction.Path.Destination, Hex) ? 1 : 0;
-                    return unit.UnitQuantity.Points
-                        * (TileConsiderations.Evaluate(
-                            consideration, moveAction.Path.Destination, match.GetMap()) - baseline) +
-                            s_Reward * (moveAction.Path.Cost / unit.Type.Speed + inDirection);
-                }
-                else
-                {
-                    return unit.UnitQuantity.Points
-                        * (TileConsiderations.Evaluate(
-                            consideration, moveAction.Path.Destination, match.GetMap()) - baseline) - s_Reward;
-                }
-            }
-            if (action is IdleAction)
-            {
-                return unit.Position == Hex ? s_Reward : 0;
-            }
-            throw new ArgumentException($"Unsupported action {action}");
+            var evaluator = tileEvaluator.GetEvaluatorFor(unit, Facing);
+            var path = 
+                unit.Position!.Value == Hex 
+                ? null 
+                : Pathing.GetShortestPath(
+                    match.GetMap(), unit.Position!.Value, Hex, unit.Type.Movement, TileConsiderations.None);
+            return actions.Select(x => (x, EvaluateAction(x, unit, evaluator, match, path)));
         }
 
         public float EvaluateRealization(AssignmentRealization realization, Match match)
@@ -233,6 +209,28 @@ namespace Expeditionary.Ai.Assignments
                 return 1;
             }
             return (int)Math.Pow(3, echelon - 2);
+        }
+
+        private float EvaluateAction(
+            IUnitAction action, Unit unit, UnitTileEvaluator tileEvaluator, Match match, Pathing.Path? path)
+        {
+            if (action is MoveAction moveAction && path != null)
+            {
+                return ActionEvaluation.EvaluatePathMove(unit, moveAction.Path, path, tileEvaluator, match);
+            }
+            var defaultEval = UnitActionEvaluations.EvaluateDefault(action, unit, tileEvaluator, match);
+            if (unit.Position!.Value == Hex)
+            {
+                if (action is MoveAction)
+                {
+                    return defaultEval - s_Reward;
+                }
+                if (action is IdleAction)
+                {
+                    return defaultEval + s_Reward;
+                }
+            }
+            return 0;
         }
     }
 }

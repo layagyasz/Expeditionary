@@ -5,7 +5,6 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -15,7 +14,8 @@ namespace Expeditionary.Ai.Assignments
         MapDirection Facing { get; }
         IMapRegion Region { get; }
         AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator);
-        float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match);
+        IEnumerable<(IUnitAction, float)> EvaluateActions(
+            IEnumerable<IUnitAction> actions, Unit unit, TileEvaluator tileEvaluator, Match match);
         float EvaluateRealization(AssignmentRealization realization, Match match);
         Vector3i SelectHex(Map map);
     }

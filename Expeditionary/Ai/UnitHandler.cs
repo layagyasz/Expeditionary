@@ -42,11 +42,10 @@ namespace Expeditionary.Ai
             }
             var evaluator = tileEvaluator.GetEvaluatorFor(Unit, Assignment.Facing);
             var action =
-                GenerateActions(match, knowledge)
-                    .Select(Action => (Action, Value: Assignment.EvaluateAction(Unit, Action, evaluator, match)))
-                    .ArgMax(x => x.Value);
-            s_Logger.With(Unit.Id).Log($"action {action.Action} value {action.Value}");
-            action.Action?.Do(match, Unit);
+                Assignment.EvaluateActions(GenerateActions(match, knowledge), Unit, tileEvaluator, match)
+                    .ArgMax(x => x.Item2);
+            s_Logger.With(Unit.Id).Log($"action {action.Item1} value {action.Item2}");
+            action.Item1?.Do(match, Unit);
         }
 
         public Movement.Hindrance GetMaxHindrance()
@@ -67,15 +66,18 @@ namespace Expeditionary.Ai
 
         private IEnumerable<IUnitAction> GenerateActions(Match match, IPlayerKnowledge knowledge)
         {
-            foreach (var attack in AttackAction.GenerateValidAttacks(match, knowledge, Unit))
+            if (Unit.Actions > 0)
             {
-                yield return attack;
+                foreach (var attack in AttackAction.GenerateValidAttacks(match, knowledge, Unit))
+                {
+                    yield return attack;
+                }
+                foreach (var move in MoveAction.GenerateValidMoves(match, Unit))
+                {
+                    yield return move;
+                }
+                yield return new IdleAction();
             }
-            foreach (var move in MoveAction.GenerateValidMoves(match, Unit))
-            {
-                yield return move;
-            }
-            yield return new IdleAction();
         }
     }
 }

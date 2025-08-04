@@ -7,7 +7,6 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -26,7 +25,8 @@ namespace Expeditionary.Ai.Assignments
             }
         }
 
-        public float EvaluateAction(Unit unit, IUnitAction action, UnitTileEvaluator tileEvaluator, Match match)
+        public IEnumerable<(IUnitAction, float)> EvaluateActions(
+            IEnumerable<IUnitAction> action, Unit unit, TileEvaluator tileEvaluator, Match match)
         {
             throw new NotImplementedException();
         }
