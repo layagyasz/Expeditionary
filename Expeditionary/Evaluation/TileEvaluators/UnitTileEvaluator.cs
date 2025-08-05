@@ -27,12 +27,17 @@ namespace Expeditionary.Evaluation.TileEvaluators
             _range = range;
         }
 
+        public UnitTileEvaluator ForPassenger(Unit passenger)
+        {
+            return new(passenger, _facing, _range, _knowledge, _evaluationCache, _random);
+        }
+
         public TileConsideration GetThreatConsiderationFor(Disposition disposition, Match match)
         {
             return TileConsiderations.Subtract(
                 DefaultConsideration(
                     disposition, _facing, disposition == Disposition.Offensive ? _range : RangeBucket.Medium),
-                TileConsiderations.Threat(_unit, GetKnowledge(), match));
+                TileConsiderations.Threat(_unit, _knowledge, match));
         }
     }
 }

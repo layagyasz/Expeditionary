@@ -93,10 +93,10 @@ namespace Expeditionary.Model
                 Destroy(defender);
 
                 var attackerStats = _playerStatistics[attacker.Player];
-                attackerStats.Destroyed += defender.UnitQuantity;
+                attackerStats.Destroyed += defender.Value;
 
                 var defenderStats = _playerStatistics[defender.Player];
-                defenderStats.Lost += defender.UnitQuantity;
+                defenderStats.Lost += defender.Value;
             }
         }
 

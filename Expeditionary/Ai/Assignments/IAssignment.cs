@@ -15,6 +15,7 @@ namespace Expeditionary.Ai.Assignments
         AssignmentRealization Assign(IAiHandler formation, Match match);
         IEnumerable<(IUnitAction, float)> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match);
         float EvaluateRealization(AssignmentRealization realization, Match match);
+        bool NotifyAction(Unit unit, IUnitAction action, Match match);
         Vector3i SelectHex(Map map);
     }
 }

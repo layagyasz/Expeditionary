@@ -5,6 +5,6 @@ namespace Expeditionary.Ai.Actions
 {
     public interface IUnitAction
     {
-        void Do(Match match, Unit unit);
+        bool Do(Match match, Unit unit);
     }
 }

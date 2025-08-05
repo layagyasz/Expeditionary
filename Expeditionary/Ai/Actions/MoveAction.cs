@@ -7,7 +7,7 @@ namespace Expeditionary.Ai.Actions
 {
     public record class MoveAction(Pathing.PathOption Path) : IUnitAction
     {
-        public void Do(Match match, Unit unit)
+        public bool Do(Match match, Unit unit)
         {
             var realPath = 
                 Pathing.GetShortestPath(
@@ -16,7 +16,7 @@ namespace Expeditionary.Ai.Actions
                     Path.Destination,
                     unit.Type.Movement,
                     TileConsiderations.None);
-            match.DoOrder(new MoveOrder(unit, realPath));
+            return match.DoOrder(new MoveOrder(unit, realPath));
         }
 
         public static IEnumerable<IUnitAction> GenerateValidMoves(Match match, Unit unit)

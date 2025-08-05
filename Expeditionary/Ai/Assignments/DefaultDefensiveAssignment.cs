@@ -89,6 +89,11 @@ namespace Expeditionary.Ai.Assignments
             return DefenseRegions.Sum(x => EvaluateRegion(assignment, match, x));
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector3i SelectHex(Map map)
         {
             throw new NotImplementedException();

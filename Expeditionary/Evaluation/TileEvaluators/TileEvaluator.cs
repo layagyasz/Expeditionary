@@ -10,8 +10,8 @@ namespace Expeditionary.Evaluation.TileEvaluators
 {
     public class TileEvaluator
     {
-        private readonly EvaluationCache _evaluationCache;
-        private readonly Random _random;
+        protected readonly EvaluationCache _evaluationCache;
+        protected readonly Random _random;
 
         public TileEvaluator(EvaluationCache evaluationCache, Random random)
         {

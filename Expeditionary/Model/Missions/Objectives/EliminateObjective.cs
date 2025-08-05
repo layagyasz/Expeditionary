@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.Model.Missions.Objectives
 {
-    public record class EliminateObjective(UnitQuantity Quantity, bool Team) : IObjective
+    public record class EliminateObjective(AssetValue Quantity, bool Team) : IObjective
     {
         public ObjectiveStatus ComputeStatus(Player player, Match match)
         {

@@ -38,6 +38,11 @@ namespace Expeditionary.Ai.Assignments
             return new DefaultDefensiveAssignment(Facing, TargetRegions).EvaluateRealization(realization, match);
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector3i SelectHex(Map map)
         {
             throw new NotImplementedException();

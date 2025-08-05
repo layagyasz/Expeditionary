@@ -38,6 +38,11 @@ namespace Expeditionary.Ai.Assignments
             return 1f;
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            return true;
+        }
+
         public Vector3i SelectHex(Map map)
         {
             throw new NotImplementedException();

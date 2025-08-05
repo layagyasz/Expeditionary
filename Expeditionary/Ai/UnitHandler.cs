@@ -44,7 +44,14 @@ namespace Expeditionary.Ai
                 Assignment.EvaluateActions(GenerateActions(match, match.GetKnowledge(Unit.Player)), Unit, match)
                     .ArgMax(x => x.Item2);
             s_Logger.With(Unit.Id).Log($"action {action.Item1} value {action.Item2}");
-            action.Item1?.Do(match, Unit);
+            if (action.Item1?.Do(match, Unit) ?? false)
+            {
+                Assignment.NotifyAction(Unit, action.Item1!, match);
+            }
+            else
+            {
+                s_Logger.With(Unit.Id).AtError().Log($"action {action.Item1} failed");
+            }
         }
 
         public Movement.Hindrance GetMaxHindrance()

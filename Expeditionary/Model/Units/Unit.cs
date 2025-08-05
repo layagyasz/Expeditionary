@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Missions;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Units
 {
@@ -16,8 +15,7 @@ namespace Expeditionary.Model.Units
         public int Number { get; private set; }
         public int Actions { get; private set; }
         public IAsset? Passenger { get; set; }
-
-        public UnitQuantity UnitQuantity => new(1, Type.Points);
+        public AssetValue Value => new(1, Type.Points);
 
         public Unit(int id, Player player, UnitType type)
         {

@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Missions;
-using Expeditionary.Model.Units;
+﻿using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Formations
 {
@@ -48,12 +47,12 @@ namespace Expeditionary.Model.Formations
             return Enumerable.Concat(_diads, ComponentFormations.SelectMany(x => x.GetDiads()));
         }
 
-        public UnitQuantity GetAliveUnitQuantity()
+        public AssetValue GetAliveUnitQuantity()
         {
             return Enumerable.Concat(
                 _componentFormations.Select(x => x.GetAliveUnitQuantity()),
-                _diads.Select(x => x.Unit.UnitQuantity))
-                .Aggregate(UnitQuantity.None, (x, y) => x + y);
+                _diads.Select(x => x.Unit.Value))
+                .Aggregate(AssetValue.None, (x, y) => x + y);
         }
 
         public override string ToString()

@@ -4,7 +4,6 @@ using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
-using static Expeditionary.Evaluation.TileEvaluators.TileEvaluator;
 
 namespace Expeditionary.Evaluation
 {
@@ -27,7 +26,7 @@ namespace Expeditionary.Evaluation
             var consideration =
                     tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match);
             var baseline = TileConsiderations.Evaluate(consideration, unit.Position!.Value, match.GetMap());
-            return unit.UnitQuantity.Points 
+            return unit.Value.Points 
                 * (TileConsiderations.Evaluate(consideration, path.Destination, match.GetMap()) - baseline);
         }
 
@@ -40,6 +39,34 @@ namespace Expeditionary.Evaluation
                     + s_PathReward * (path.Cost / unit.Type.Speed);
             }
             return EvaluateFreeMove(unit, path, match, tileEvaluator);
+        }
+
+        public static float EvaluateUnload(Unit unit, Match match, UnitTileEvaluator tileEvaluator)
+        {
+            if (unit.Passenger == null)
+            {
+                return 0;
+            }
+            if (unit.Passenger is Unit passengerUnit)
+            {
+                var baselineConsideration = TileConsiderations.Evaluate(
+                    tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match),
+                    unit.Position!.Value,
+                    match.GetMap());
+                var baseline = (unit.Value.Points + unit.Passenger.Value.Points) * baselineConsideration;
+                var passenger = 
+                    TileConsiderations.Evaluate(
+                        tileEvaluator
+                            .ForPassenger(passengerUnit)
+                            .GetThreatConsiderationFor(Disposition.Defensive, match),
+                        unit.Position!.Value, 
+                        match.GetMap());
+                return passengerUnit.Value.Points * passenger + unit.Value.Points * baselineConsideration - baseline;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

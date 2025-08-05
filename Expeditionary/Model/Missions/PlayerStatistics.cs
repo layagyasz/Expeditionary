@@ -2,12 +2,12 @@
 {
     public record class PlayerStatistics
     {
-        public UnitQuantity Destroyed { get; set; }
-        public UnitQuantity Lost { get; set; }
+        public AssetValue Destroyed { get; set; }
+        public AssetValue Lost { get; set; }
 
         public PlayerStatistics() { }
 
-        public PlayerStatistics(UnitQuantity destroyed, UnitQuantity lost)
+        public PlayerStatistics(AssetValue destroyed, AssetValue lost)
         {
             Destroyed = destroyed;
             Lost = lost;

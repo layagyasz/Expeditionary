@@ -5,6 +5,9 @@ namespace Expeditionary.Ai.Actions
 {
     public record class IdleAction : IUnitAction
     {
-        public void Do(Match match, Unit unit) { }
+        public bool Do(Match match, Unit unit)
+        {
+            return true;
+        }
     }
 }

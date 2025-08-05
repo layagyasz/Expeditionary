@@ -31,6 +31,11 @@ namespace Expeditionary.Ai.Assignments
                 && realization.UnitAssignments.All(x => x.Value is NoAssignment) ? 1f : 0f;
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            return true;
+        }
+
         public Vector3i SelectHex(Map map)
         {
             throw new NotImplementedException();

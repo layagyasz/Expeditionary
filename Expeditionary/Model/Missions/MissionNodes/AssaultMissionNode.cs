@@ -25,7 +25,7 @@ namespace Expeditionary.Model.Missions.MissionTypes
                         new(
                             new List<IObjective>()
                             {
-                                new OccupyObjective(MapTag.Control1, new UnitQuantity(1, 1))
+                                new OccupyObjective(MapTag.Control1, new AssetValue(1, 1))
                             }),
                         new()
                         {

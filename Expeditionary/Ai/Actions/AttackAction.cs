@@ -9,9 +9,9 @@ namespace Expeditionary.Ai.Actions
 {
     public record class AttackAction(Unit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
     {
-        public void Do(Match match, Unit unit)
+        public bool Do(Match match, Unit unit)
         {
-            match.DoOrder(new AttackOrder(unit, Attack, Mode, Target));
+            return match.DoOrder(new AttackOrder(unit, Attack, Mode, Target));
         }
 
         public static IEnumerable<AttackAction> GenerateValidAttacks(

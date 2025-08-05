@@ -10,6 +10,7 @@ namespace Expeditionary.Model.Units
         public Vector3i? Position { get; set; }
         public bool IsDestroyed { get; }
         public bool IsPassenger { get; set; }
+        public AssetValue Value { get; }
         public void Reset();
 
         public string? ToString()

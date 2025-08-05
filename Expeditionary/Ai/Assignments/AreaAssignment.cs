@@ -37,6 +37,15 @@ namespace Expeditionary.Ai.Assignments
                 / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            if (action is MoveAction moveAction)
+            {
+                return Region.Contains(match.GetMap(), moveAction.Path.Destination);
+            }
+            return Region.Contains(match.GetMap(), unit.Position!.Value);
+        }
+
         public Vector3i SelectHex(Map map)
         {
             return Region.Range(map).First();

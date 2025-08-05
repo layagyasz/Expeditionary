@@ -197,6 +197,15 @@ namespace Expeditionary.Ai.Assignments
             return 0;
         }
 
+        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        {
+            if (action is MoveAction moveAction)
+            {
+                return moveAction.Path.Destination == Hex;
+            }
+            return unit.Position!.Value == Hex;
+        }
+
         public Vector3i SelectHex(Map map)
         {
             return Hex;
