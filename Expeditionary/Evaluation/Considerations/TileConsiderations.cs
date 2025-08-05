@@ -1,4 +1,5 @@
-﻿using Expeditionary.Evaluation.SignedDistanceFields;
+﻿using Expeditionary.Evaluation.Caches;
+using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;

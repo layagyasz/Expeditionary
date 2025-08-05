@@ -1,9 +1,10 @@
 ﻿using Expeditionary.Evaluation.Considerations;
+using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
-using static Expeditionary.Evaluation.TileEvaluator;
+using static Expeditionary.Evaluation.TileEvaluators.TileEvaluator;
 
 namespace Expeditionary.Evaluation
 {
@@ -21,7 +22,7 @@ namespace Expeditionary.Evaluation
         }
 
         public static float EvaluateFreeMove(
-            Unit unit, Pathing.PathOption path, UnitTileEvaluator tileEvaluator, Match match)
+            Unit unit, Pathing.PathOption path, Match match, UnitTileEvaluator tileEvaluator)
         {
             var consideration =
                     tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match);
@@ -31,14 +32,14 @@ namespace Expeditionary.Evaluation
         }
 
         public static float EvaluatePathMove(
-            Unit unit, Pathing.PathOption path, Pathing.Path goal, UnitTileEvaluator tileEvaluator, Match match)
+            Unit unit, Pathing.PathOption path, Pathing.Path goal, Match match, UnitTileEvaluator tileEvaluator)
         {
             if (goal.Steps.Contains(path.Destination))
             {
-                return EvaluateFreeMove(unit, path, tileEvaluator, match) 
+                return EvaluateFreeMove(unit, path, match, tileEvaluator) 
                     + s_PathReward * (path.Cost / unit.Type.Speed);
             }
-            return EvaluateFreeMove(unit, path, tileEvaluator, match);
+            return EvaluateFreeMove(unit, path, match, tileEvaluator);
         }
     }
 }

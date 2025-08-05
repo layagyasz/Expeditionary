@@ -1,10 +1,8 @@
 ﻿using Cardamom;
 using Cardamom.Logging;
 using Expeditionary.Ai.Assignments;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
-using Expeditionary.Model.Knowledge;
 
 namespace Expeditionary.Ai
 {
@@ -16,16 +14,12 @@ namespace Expeditionary.Ai
         public Player Player { get; }
 
         private readonly Match _match;
-        private readonly TileEvaluator _tileEvaluator;
-        private readonly IPlayerKnowledge _knowledge;
         private readonly RootHandler _rootFormationHandler;
 
-        public AiPlayerHandler(Player player, Match match, TileEvaluator tileEvaluator)
+        public AiPlayerHandler(Player player, Match match)
         {
             Player = player;
             _match = match;
-            _tileEvaluator = tileEvaluator;
-            _knowledge = match.GetKnowledge(Player);
             _rootFormationHandler = 
                 new RootHandler(player, match.GetFormations(Player).Select(FormationHandler.Create));
         }
@@ -47,7 +41,7 @@ namespace Expeditionary.Ai
         public void DoTurn()
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
-            _rootFormationHandler.DoTurn(_match, _knowledge, _tileEvaluator);
+            _rootFormationHandler.DoTurn(_match);
             foreach (var formation in _rootFormationHandler.Children)
             {
                 DoFormationTurn(formation);
@@ -66,7 +60,7 @@ namespace Expeditionary.Ai
         public void Setup()
         {
             s_Logger.With(Player.Id).Log("Setup formations");
-            _rootFormationHandler.Setup(_match, _knowledge, _tileEvaluator);
+            _rootFormationHandler.Setup(_match);
             foreach (var formationHandler in _rootFormationHandler.Children)
             {
                 SetupFormation(formationHandler);
@@ -75,10 +69,10 @@ namespace Expeditionary.Ai
 
         private void DoFormationTurn(FormationHandler formation)
         {
-            formation.DoTurn(_match, _knowledge, _tileEvaluator);
+            formation.DoTurn(_match);
             foreach (var diad in formation.Diads)
             {
-                diad.DoTurn(_match, _knowledge, _tileEvaluator);
+                diad.DoTurn(_match);
             }
             foreach (var child in formation.Children)
             {
@@ -88,10 +82,10 @@ namespace Expeditionary.Ai
 
         private void SetupFormation(FormationHandler formation)
         {
-            formation.Setup(_match, _knowledge, _tileEvaluator);
+            formation.Setup(_match);
             foreach (var diad in formation.Diads)
             {
-                diad.Setup(_match, _knowledge, _tileEvaluator);
+                diad.Setup(_match);
             }
             foreach (var child in formation.Children)
             {

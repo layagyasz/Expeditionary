@@ -2,7 +2,6 @@
 using Cardamom.Logging;
 using Expeditionary.Ai.Actions;
 using Expeditionary.Ai.Assignments;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
@@ -34,15 +33,15 @@ namespace Expeditionary.Ai
             throw new NotImplementedException();
         }
 
-        public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        public void DoTurn(Match match)
         {
             if (!Unit.IsActive())
             {
                 return;
             }
-            var evaluator = tileEvaluator.GetEvaluatorFor(Unit, Assignment.Facing);
+            var evaluator = match.GetEvaluatorFor(Unit, Assignment.Facing);
             var action =
-                Assignment.EvaluateActions(GenerateActions(match, knowledge), Unit, tileEvaluator, match)
+                Assignment.EvaluateActions(GenerateActions(match, match.GetKnowledge(Unit.Player)), Unit, match)
                     .ArgMax(x => x.Item2);
             s_Logger.With(Unit.Id).Log($"action {action.Item1} value {action.Item2}");
             action.Item1?.Do(match, Unit);
@@ -53,7 +52,7 @@ namespace Expeditionary.Ai
             return Unit.Type.Movement.GetMaxHindrance();
         }
 
-        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        public void Setup(Match match)
         {
             match.Place(Unit, Assignment.SelectHex(match.GetMap()));
         }

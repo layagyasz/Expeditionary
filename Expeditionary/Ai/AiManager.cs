@@ -1,6 +1,5 @@
 ﻿using Cardamom;
 using Cardamom.Logging;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
 
 namespace Expeditionary.Ai
@@ -11,21 +10,17 @@ namespace Expeditionary.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiManager));
 
         private readonly Match _match;
-        private readonly EvaluationCache _evaluationCache;
-        private readonly Random _random;
         private readonly Dictionary<Player, AiPlayerHandler> _handlers;
 
-        public AiManager(Match match, EvaluationCache evaluationCache, Random random, IEnumerable<Player> players)
+        public AiManager(Match match, IEnumerable<Player> players)
         {
             _match = match;
-            _evaluationCache = evaluationCache;
-            _random = random;
             _handlers = players.ToDictionary(x => x, CreateHandler);
         }
 
         public AiPlayerHandler CreateHandler(Player player)
         {
-            return new(player, _match, new(_match.GetKnowledge(player), _evaluationCache, _random));
+            return new(player, _match);
         }
 
         public void Dispose()

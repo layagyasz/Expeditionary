@@ -1,6 +1,5 @@
 ﻿using Cardamom.Trackers;
 using Expeditionary.Ai.Actions;
-using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
@@ -17,7 +16,7 @@ namespace Expeditionary.Ai.Assignments
         public Vector3i Origin => default;
         public IMapRegion Region => CompositeMapRegion.Union(DefenseRegions);
 
-        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match)
         {
             if (formation is RootHandler root)
             {
@@ -28,6 +27,7 @@ namespace Expeditionary.Ai.Assignments
                     },
                     new());
             }
+            var tileEvaluator = match.GetEvaluator();
             var map = match.GetMap();
             var edgeRegion = new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.5f);
             var origin =
@@ -79,7 +79,7 @@ namespace Expeditionary.Ai.Assignments
         }
 
         public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> action, Unit unit, TileEvaluator tileEvaluator, Match match)
+            IEnumerable<IUnitAction> action, Unit unit, Match match)
         {
             throw new NotImplementedException();
         }

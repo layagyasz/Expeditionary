@@ -1,5 +1,8 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Logging;
+using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.Caches;
+using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
@@ -28,6 +31,8 @@ namespace Expeditionary.Model
         private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
         private readonly Map _map;
+        private readonly EvaluationCache _evaluationCache;
+        private readonly TileEvaluator _tileEvaluator;
 
         private readonly List<Player> _players = new();
         private readonly Dictionary<Player, ObjectiveSet> _playerObjectives = new();
@@ -44,6 +49,8 @@ namespace Expeditionary.Model
             _random = random;
             _idGenerator = idGenerator;
             _map = map;
+            _evaluationCache = new EvaluationCache(new ExposureCache(_map), new PartitionCache(_map));
+            _tileEvaluator = new TileEvaluator(_evaluationCache, random);
 
             _assetKnowledgeChanged =
                 new EventBuffer<AssetKnowledgeChangedEventArgs>((s, e) => AssetKnowledgeChanged?.Invoke(s, e));
@@ -145,6 +152,22 @@ namespace Expeditionary.Model
         public IEnumerable<IAsset> GetAssetsIn(MapTag tag)
         {
             return _map.GetArea(tag).SelectMany(x => _positions[x]);
+        }
+
+        public TileEvaluator GetEvaluator()
+        {
+            return _tileEvaluator;
+        }
+
+        public UnitTileEvaluator GetEvaluatorFor(Unit unit, MapDirection facing)
+        {
+            return new UnitTileEvaluator(
+                unit,
+                facing,
+                RangeBucketizer.ToBucket(unit.Type), 
+                GetKnowledge(unit.Player), 
+                _evaluationCache, 
+                _random);
         }
 
         public IEnumerable<Formation> GetFormations(Player player)

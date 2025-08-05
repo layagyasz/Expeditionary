@@ -3,7 +3,7 @@ using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Evaluation
+namespace Expeditionary.Evaluation.Caches
 {
     public class PartitionCache
     {

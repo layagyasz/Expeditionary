@@ -1,7 +1,5 @@
 ﻿using Expeditionary.Ai.Assignments;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
-using Expeditionary.Model.Knowledge;
 
 namespace Expeditionary.Ai
 {
@@ -13,9 +11,9 @@ namespace Expeditionary.Ai
         public string Id { get; }
         public int Echelon { get; }
         public void Add(FormationHandler handler);
-        public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator);
+        public void DoTurn(Match match);
         public Movement.Hindrance GetMaxHindrance();
-        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator);
+        public void Setup(Match match);
         public void SetAssignment(IAssignment assignment);
     }
 }

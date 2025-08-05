@@ -1,21 +1,21 @@
 ﻿using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model;
 using Expeditionary.Model.Units;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
     public static class UnitActionEvaluations
     {
         public static IEnumerable<(IUnitAction, float)> EvaluateDefault(
-            IEnumerable<IUnitAction> actions, Unit unit, UnitTileEvaluator tileEvaluator, Match match)
+            IEnumerable<IUnitAction> actions, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
-            return actions.Select(x => (x, EvaluateDefault(x, unit, tileEvaluator, match)));
+            return actions.Select(x => (x, EvaluateDefault(x, unit, match, tileEvaluator)));
         }
 
         public static float EvaluateDefault(
-            IUnitAction action, Unit unit, UnitTileEvaluator tileEvaluator, Match match)
+            IUnitAction action, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
             if (action is AttackAction attackAction)
             {
@@ -24,7 +24,7 @@ namespace Expeditionary.Ai.Assignments
             }
             if (action is MoveAction moveAction)
             {
-                return ActionEvaluation.EvaluateFreeMove(unit, moveAction.Path, tileEvaluator, match);
+                return ActionEvaluation.EvaluateFreeMove(unit, moveAction.Path, match, tileEvaluator);
             }
             return 0;
         }

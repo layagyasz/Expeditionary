@@ -4,7 +4,6 @@ using Cardamom.Ui.Controller;
 using Cardamom.Window;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
-using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
@@ -23,7 +22,6 @@ namespace Expeditionary.Controller
 
         private readonly Match _match;
         private readonly Player _player;
-        private readonly TileEvaluator _tileEvaluator;
 
         private MatchScreen? _screen;
         private HighlightLayer? _highlightLayer;
@@ -34,11 +32,10 @@ namespace Expeditionary.Controller
         private OrderValue? _selectedOrder;
         private IEnumerator<Unit>? _selectedUnitEnumerator;
 
-        public MatchController(Match match, Player player, TileEvaluator tileEvaluator)
+        public MatchController(Match match, Player player)
         {
             _match = match;
             _player = player;
-            _tileEvaluator = tileEvaluator;
         }
 
         public void Bind(object @object)

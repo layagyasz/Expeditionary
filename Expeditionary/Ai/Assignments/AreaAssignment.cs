@@ -1,5 +1,4 @@
 ﻿using Expeditionary.Ai.Actions;
-using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Model;
@@ -12,12 +11,11 @@ namespace Expeditionary.Ai.Assignments
 {
     public record class AreaAssignment(IMapRegion Region, Vector3i Origin, MapDirection Facing) : IAssignment
     {
-        public AssignmentRealization Assign(
-            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match)
         {
             if (formation.Echelon <= 3)
             {
-                return AssignLowEchelon(formation, match, tileEvaluator);
+                return AssignLowEchelon(formation, match);
             }
             else
             {
@@ -26,7 +24,7 @@ namespace Expeditionary.Ai.Assignments
         }
 
         public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> action, Unit unit, TileEvaluator tileEvaluator, Match match)
+            IEnumerable<IUnitAction> action, Unit unit, Match match)
         {
             throw new NotImplementedException();
         }
@@ -65,15 +63,14 @@ namespace Expeditionary.Ai.Assignments
             return PartitionByChildren(formation, match.GetMap());
         }
 
-        private AssignmentRealization AssignLowEchelon(
-            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+        private AssignmentRealization AssignLowEchelon(IAiHandler formation, Match match)
         {
             return PointAssignment.SelectFrom(
                 formation,
                 match.GetMap(),
                 Region,
                 Facing,
-                tileEvaluator,
+                match.GetEvaluator(),
                 TileConsiderations.Edge(DenseSignedDistanceField.FromRegion(match.GetMap(), Region, 0, Facing), 0),
                 Origin);
         }

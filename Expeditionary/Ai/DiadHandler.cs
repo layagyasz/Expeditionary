@@ -1,8 +1,6 @@
 ﻿using Expeditionary.Ai.Assignments;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
-using Expeditionary.Model.Knowledge;
 
 namespace Expeditionary.Ai
 {
@@ -30,17 +28,17 @@ namespace Expeditionary.Ai
             throw new InvalidOperationException();
         }
 
-        public void DoTurn(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        public void DoTurn(Match match)
         { 
             if (_isDirty)
             {
                 Unit.SetAssignment(Assignment);
-                Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match, tileEvaluator));
+                Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match));
                 _isDirty = false;
             }
             
-            Unit.DoTurn(match, knowledge, tileEvaluator);
-            Transport?.DoTurn(match, knowledge, tileEvaluator);
+            Unit.DoTurn(match);
+            Transport?.DoTurn(match);
         }
 
         public Movement.Hindrance GetMaxHindrance()
@@ -50,12 +48,12 @@ namespace Expeditionary.Ai
                 : Transport.GetMaxHindrance();
         }
 
-        public void Setup(Match match, IPlayerKnowledge knowledge, TileEvaluator tileEvaluator)
+        public void Setup(Match match)
         {
             Unit.SetAssignment(Assignment);
-            Unit.Setup(match, knowledge, tileEvaluator);
-            Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match, tileEvaluator));
-            Transport?.Setup(match, knowledge, tileEvaluator);
+            Unit.Setup(match);
+            Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match));
+            Transport?.Setup(match);
         }
 
         public void SetAssignment(IAssignment assignment)
@@ -64,12 +62,11 @@ namespace Expeditionary.Ai
             _isDirty = true;
         }
 
-        private static IAssignment GetShadowAssignment(
-            UnitHandler unit, IAssignment assignment, Match match, TileEvaluator tileEvaluator)
+        private static IAssignment GetShadowAssignment(UnitHandler unit, IAssignment assignment, Match match)
         {
             if (assignment is PointAssignment pointAssignment)
             {
-                return PointAssignment.GetShadowPoint(pointAssignment, unit, match, tileEvaluator);
+                return PointAssignment.GetShadowPoint(pointAssignment, unit, match);
             }
             return new NoAssignment(assignment.Origin);
         }

@@ -1,5 +1,4 @@
 ﻿using Expeditionary.Ai.Actions;
-using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
@@ -13,9 +12,8 @@ namespace Expeditionary.Ai.Assignments
         Vector3i Origin { get; }
         MapDirection Facing { get; }
         IMapRegion Region { get; }
-        AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator);
-        IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, TileEvaluator tileEvaluator, Match match);
+        AssignmentRealization Assign(IAiHandler formation, Match match);
+        IEnumerable<(IUnitAction, float)> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match);
         float EvaluateRealization(AssignmentRealization realization, Match match);
         Vector3i SelectHex(Map map);
     }

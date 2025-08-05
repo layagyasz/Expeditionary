@@ -1,10 +1,9 @@
-﻿using Expeditionary.Hexagons;
-using Expeditionary.Model;
+﻿using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Evaluation
+namespace Expeditionary.Evaluation.Caches
 {
     public class ExposureCache
     {

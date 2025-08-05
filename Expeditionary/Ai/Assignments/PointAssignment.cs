@@ -2,13 +2,12 @@
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
+using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using SharpFont.PostScript;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -98,9 +97,9 @@ namespace Expeditionary.Ai.Assignments
             return new(new(), result);
         }
 
-        public static PointAssignment GetShadowPoint(
-            PointAssignment assignment, UnitHandler unit, Match match, TileEvaluator tileEvaluator)
+        public static PointAssignment GetShadowPoint(PointAssignment assignment, UnitHandler unit, Match match)
         {
+            var tileEvaluator = match.GetEvaluator();
             return new PointAssignment(
                 AssignmentHelper.GetBest(
                     match.GetMap(),
@@ -125,10 +124,11 @@ namespace Expeditionary.Ai.Assignments
 
         public IMapRegion Region => Bounds;
 
-        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match)
         {
             int spacing = GetSpacing(formation.Echelon);
             var supportRegion = CompositeMapRegion.Intersect(new PointMapRegion(Hex, 2 * spacing), Bounds);
+            var tileEvaluator = match.GetEvaluator();
             var result = new AssignmentRealization.Builder();
             if (formation.Children.Any())
             {
@@ -181,9 +181,9 @@ namespace Expeditionary.Ai.Assignments
         }
 
         public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, TileEvaluator tileEvaluator, Match match)
+            IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
-            var evaluator = tileEvaluator.GetEvaluatorFor(unit, Facing);
+            var evaluator = match.GetEvaluatorFor(unit, Facing);
             var path = 
                 unit.Position!.Value == Hex 
                 ? null 
@@ -216,9 +216,9 @@ namespace Expeditionary.Ai.Assignments
         {
             if (action is MoveAction moveAction && path != null)
             {
-                return ActionEvaluation.EvaluatePathMove(unit, moveAction.Path, path, tileEvaluator, match);
+                return ActionEvaluation.EvaluatePathMove(unit, moveAction.Path, path, match, tileEvaluator);
             }
-            var defaultEval = UnitActionEvaluations.EvaluateDefault(action, unit, tileEvaluator, match);
+            var defaultEval = UnitActionEvaluations.EvaluateDefault(action, unit, match, tileEvaluator);
             if (unit.Position!.Value == Hex)
             {
                 if (action is MoveAction)

@@ -1,12 +1,10 @@
 ﻿using Expeditionary.Ai.Actions;
-using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using static Expeditionary.Evaluation.TileEvaluator;
 
 namespace Expeditionary.Ai.Assignments
 {
@@ -16,21 +14,21 @@ namespace Expeditionary.Ai.Assignments
         public Vector3i Origin => default;
         public IMapRegion Region => CompositeMapRegion.Union(TargetRegions);
 
-        public AssignmentRealization Assign(IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+        public AssignmentRealization Assign(IAiHandler formation, Match match)
         {
             if (IsDeployed(formation))
             {
                 return new DefaultDefensiveAssignment(Facing, TargetRegions)
-                    .Assign(formation, match, tileEvaluator);
+                    .Assign(formation, match);
             }
             else
             {
-                return AssignDeployment(formation, match, tileEvaluator);
+                return AssignDeployment(formation, match);
             }
         }
 
         public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> action, Unit unit, TileEvaluator tileEvaluator, Match match)
+            IEnumerable<IUnitAction> action, Unit unit, Match match)
         {
             throw new NotImplementedException();
         }
@@ -46,8 +44,9 @@ namespace Expeditionary.Ai.Assignments
         }
 
         private AssignmentRealization AssignDeployment(
-            IAiHandler formation, Match match, TileEvaluator tileEvaluator)
+            IAiHandler formation, Match match)
         {
+            var tileEvaluator = match.GetEvaluator();
             var map = match.GetMap();
             var region = new EdgeMapRegion(MapDirectionUtils.Invert(Facing), 0.33f);
             var origin =
