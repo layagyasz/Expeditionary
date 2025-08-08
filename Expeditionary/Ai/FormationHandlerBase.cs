@@ -32,7 +32,7 @@ namespace Expeditionary.Ai
             _children.Add(handler);
         }
 
-        public void DoTurn(Match match)
+        public AiHandlerStatus DoTurn(Match match)
         {
             var newRealization = Assignment.Assign(this, match);
             if (_assignmentRealization == null
@@ -45,6 +45,17 @@ namespace Expeditionary.Ai
                 DoAssignment(_assignmentRealization);
                 _isDirty = false;
             }
+
+            var statuses = new List<(IAiHandler, AiHandlerStatus)>();
+            foreach (var child in Children)
+            {
+                statuses.Add((child, child.DoTurn(match)));
+            }
+            foreach (var diad in Diads)
+            {
+                statuses.Add((diad, diad.DoTurn(match)));
+            }
+            return AggregateStatus(statuses);
         }
 
         public Movement.Hindrance GetMaxHindrance()
@@ -60,6 +71,15 @@ namespace Expeditionary.Ai
             _assignmentRealization = newRealization;
             DoAssignment(_assignmentRealization);
             _isDirty = false;
+
+            foreach (var child in Children)
+            {
+                child.Setup(match);
+            }
+            foreach (var diad in Diads)
+            {
+                diad.Setup(match);
+            }
         }
 
         public void SetAssignment(IAssignment assignment)
@@ -79,6 +99,12 @@ namespace Expeditionary.Ai
             {
                 u.SetAssignment(a);
             }
+        }
+
+        private AiHandlerStatus AggregateStatus(IEnumerable<(IAiHandler, AiHandlerStatus)> childStatuses)
+        {
+            // TODO: Implement
+            return AiHandlerStatus.Done;
         }
     }
 }

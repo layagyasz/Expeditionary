@@ -1,5 +1,4 @@
 ﻿using Expeditionary.Ai.Actions;
-using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Evaluation;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
@@ -22,12 +21,10 @@ namespace Expeditionary.Ai.Assignments
             throw new NotImplementedException();
         }
 
-        public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
-            var evaluator = match.GetEvaluatorFor(unit, Facing);
             var path = GetPath(unit, match);
-            return actions.Select(x => (x, EvaluateAction(x, unit, evaluator, match, path)));
+            return actions.Select(x => EvaluateAction(x, unit, path));
         }
 
         public float EvaluateRealization(AssignmentRealization realization, Match match)
@@ -68,28 +65,26 @@ namespace Expeditionary.Ai.Assignments
             return null;
         }
 
-        private float EvaluateAction(
-            IUnitAction action, Unit unit, UnitTileEvaluator tileEvaluator, Match match, Pathing.Path? path)
+        private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
         {
             if (action is MoveAction moveAction && path != null)
             {
-                return ActionEvaluation.EvaluatePathMove(unit, moveAction.Path, path, match, tileEvaluator);
+                return ActionEvaluation.EvaluationMovePathBonus(unit, moveAction.Path, path);
             }
-            var defaultEval = UnitActionEvaluations.EvaluateDefault(action, unit, match, tileEvaluator);
             if (unit.Passenger != Unit && unit.Position!.Value == Unit.Position!.Value)
             {
                 if (action is LoadAction)
                 {
-                    return defaultEval + s_Reward;
+                    return s_Reward;
                 }
             }
             if (unit.Passenger == Unit && unit.Position!.Value == Hex)
             {
                 if (action is UnloadAction)
                 {
-                    return defaultEval + s_Reward;
+                    return s_Reward;
                 }
-                return defaultEval - s_Reward;
+                return -s_Reward;
             }
             return 0;
         }

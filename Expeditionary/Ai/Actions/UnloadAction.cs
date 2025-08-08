@@ -11,7 +11,7 @@ namespace Expeditionary.Ai.Actions
             return match.DoOrder(new UnloadOrder(unit));
         }
 
-        public static IEnumerable<IUnitAction> GenerateValidLoads(Match match, Unit unit)
+        public static IEnumerable<IUnitAction> GenerateValidUnloads(Unit unit)
         {
             if (unit.Passenger != null)
             {

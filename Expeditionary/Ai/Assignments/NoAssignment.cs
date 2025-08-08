@@ -19,10 +19,9 @@ namespace Expeditionary.Ai.Assignments
                 formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)));
         }
 
-        public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
-            return UnitActionEvaluations.EvaluateDefault(actions, unit, match, match.GetEvaluatorFor(unit, Facing));
+            return Enumerable.Repeat(0f, actions.Count());
         }
 
         public float EvaluateRealization(AssignmentRealization realization, Match match)

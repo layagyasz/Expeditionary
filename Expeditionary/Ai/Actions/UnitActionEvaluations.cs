@@ -7,10 +7,10 @@ namespace Expeditionary.Ai.Actions
 {
     public static class UnitActionEvaluations
     {
-        public static IEnumerable<(IUnitAction, float)> EvaluateDefault(
+        public static IEnumerable<float> EvaluateDefault(
             IEnumerable<IUnitAction> actions, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
-            return actions.Select(x => (x, EvaluateDefault(x, unit, match, tileEvaluator)));
+            return actions.Select(x => EvaluateDefault(x, unit, match, tileEvaluator));
         }
 
         public static float EvaluateDefault(
@@ -27,9 +27,9 @@ namespace Expeditionary.Ai.Actions
             }
             if (action is MoveAction moveAction)
             {
-                return ActionEvaluation.EvaluateFreeMove(unit, moveAction.Path, match, tileEvaluator);
+                return ActionEvaluation.EvaluateMove(unit, moveAction.Path, match, tileEvaluator);
             }
-            if (action is UnloadAction unloadAction)
+            if (action is UnloadAction)
             {
                 return ActionEvaluation.EvaluateUnload(unit, match, tileEvaluator);
             }

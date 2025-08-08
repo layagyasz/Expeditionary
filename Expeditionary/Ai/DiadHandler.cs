@@ -28,7 +28,7 @@ namespace Expeditionary.Ai
             throw new InvalidOperationException();
         }
 
-        public void DoTurn(Match match)
+        public AiHandlerStatus DoTurn(Match match)
         { 
             if (_isDirty)
             {
@@ -37,8 +37,8 @@ namespace Expeditionary.Ai
                 _isDirty = false;
             }
             
-            Unit.DoTurn(match);
             Transport?.DoTurn(match);
+            return Unit.DoTurn(match);
         }
 
         public Movement.Hindrance GetMaxHindrance()

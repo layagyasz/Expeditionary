@@ -20,7 +20,7 @@ namespace Expeditionary.Evaluation
             return defender.Type.Points * Math.Min(1, preview.Result / defender.Number);
         }
 
-        public static float EvaluateFreeMove(
+        public static float EvaluateMove(
             Unit unit, Pathing.PathOption path, Match match, UnitTileEvaluator tileEvaluator)
         {
             var consideration =
@@ -30,15 +30,13 @@ namespace Expeditionary.Evaluation
                 * (TileConsiderations.Evaluate(consideration, path.Destination, match.GetMap()) - baseline);
         }
 
-        public static float EvaluatePathMove(
-            Unit unit, Pathing.PathOption path, Pathing.Path goal, Match match, UnitTileEvaluator tileEvaluator)
+        public static float EvaluationMovePathBonus(Unit unit, Pathing.PathOption path, Pathing.Path goal)
         {
             if (goal.Steps.Contains(path.Destination))
             {
-                return EvaluateFreeMove(unit, path, match, tileEvaluator) 
-                    + s_PathReward * (path.Cost / unit.Type.Speed);
+                return s_PathReward * (path.Cost / unit.Type.Speed);
             }
-            return EvaluateFreeMove(unit, path, match, tileEvaluator);
+            return 0;
         }
 
         public static float EvaluateUnload(Unit unit, Match match, UnitTileEvaluator tileEvaluator)

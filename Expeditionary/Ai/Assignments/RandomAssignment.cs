@@ -27,10 +27,9 @@ namespace Expeditionary.Ai.Assignments
             return new(formationResult, diadResult);
         }
 
-        public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
-            return UnitActionEvaluations.EvaluateDefault(actions, unit, match, match.GetEvaluatorFor(unit, Facing));
+            return Enumerable.Repeat(0f, actions.Count());
         }
 
         public float EvaluateRealization(AssignmentRealization realization, Match match)

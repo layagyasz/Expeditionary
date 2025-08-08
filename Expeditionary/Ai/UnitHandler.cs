@@ -33,24 +33,28 @@ namespace Expeditionary.Ai
             throw new NotImplementedException();
         }
 
-        public void DoTurn(Match match)
+        public AiHandlerStatus DoTurn(Match match)
         {
             if (!Unit.IsActive())
             {
-                return;
+                return AiHandlerStatus.Inactive;
             }
             var evaluator = match.GetEvaluatorFor(Unit, Assignment.Facing);
-            var action =
-                Assignment.EvaluateActions(GenerateActions(match, match.GetKnowledge(Unit.Player)), Unit, match)
-                    .ArgMax(x => x.Item2);
-            s_Logger.With(Unit.Id).Log($"action {action.Item1} value {action.Item2}");
-            if (action.Item1?.Do(match, Unit) ?? false)
+            var actions = GenerateActions(match, match.GetKnowledge(Unit.Player)).ToArray();
+            var evaluations = new float[actions.Length];
+            CombineEvaluations(evaluations, UnitActionEvaluations.EvaluateDefault(actions, Unit, match, evaluator));
+            CombineEvaluations(evaluations, Assignment.EvaluateActions(actions, Unit, match));
+            var action = actions[Enumerable.Range(0, actions.Length).MaxBy(x => evaluations[x])];
+            s_Logger.With(Unit.Id).Log($"action {action} value {action}");
+            if (action.Do(match, Unit))
             {
-                Assignment.NotifyAction(Unit, action.Item1!, match);
+                return Assignment.NotifyAction(Unit, action, match) 
+                    ? AiHandlerStatus.Done : AiHandlerStatus.InProgress;
             }
             else
             {
-                s_Logger.With(Unit.Id).AtError().Log($"action {action.Item1} failed");
+                s_Logger.With(Unit.Id).AtError().Log($"action {action} failed");
+                return AiHandlerStatus.Done;
             }
         }
 
@@ -78,11 +82,28 @@ namespace Expeditionary.Ai
                 {
                     yield return attack;
                 }
+                foreach (var load in LoadAction.GenerateValidLoads(match, Unit))
+                {
+                    yield return load;
+                }
                 foreach (var move in MoveAction.GenerateValidMoves(match, Unit))
                 {
                     yield return move;
                 }
-                yield return new IdleAction();
+                foreach (var unload in UnloadAction.GenerateValidUnloads(Unit))
+                {
+                    yield return unload;
+                }
+            }
+            yield return new IdleAction();
+        }
+
+        private static void CombineEvaluations(float[] currentEvaluations, IEnumerable<float> newEvaluations)
+        {
+            int i = 0;
+            foreach (var evaluation in newEvaluations)
+            {
+                currentEvaluations[i++] += evaluation;
             }
         }
     }

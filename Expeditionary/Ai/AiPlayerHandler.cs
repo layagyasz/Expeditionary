@@ -42,10 +42,6 @@ namespace Expeditionary.Ai
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
             _rootFormationHandler.DoTurn(_match);
-            foreach (var formation in _rootFormationHandler.Children)
-            {
-                DoFormationTurn(formation);
-            }
             Thread.Sleep(1000);
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
@@ -61,36 +57,6 @@ namespace Expeditionary.Ai
         {
             s_Logger.With(Player.Id).Log("Setup formations");
             _rootFormationHandler.Setup(_match);
-            foreach (var formationHandler in _rootFormationHandler.Children)
-            {
-                SetupFormation(formationHandler);
-            }
-        }
-
-        private void DoFormationTurn(FormationHandler formation)
-        {
-            formation.DoTurn(_match);
-            foreach (var diad in formation.Diads)
-            {
-                diad.DoTurn(_match);
-            }
-            foreach (var child in formation.Children)
-            {
-                DoFormationTurn(child);
-            }
-        }
-
-        private void SetupFormation(FormationHandler formation)
-        {
-            formation.Setup(_match);
-            foreach (var diad in formation.Diads)
-            {
-                diad.Setup(_match);
-            }
-            foreach (var child in formation.Children)
-            {
-                SetupFormation(child);
-            }
         }
 
         private void HandleFormationAdded(object? sender, Formation formation)

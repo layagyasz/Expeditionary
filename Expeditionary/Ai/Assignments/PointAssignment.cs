@@ -180,16 +180,14 @@ namespace Expeditionary.Ai.Assignments
             return result.Build();
         }
 
-        public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
-            var evaluator = match.GetEvaluatorFor(unit, Facing);
             var path = 
                 unit.Position!.Value == Hex 
                 ? null 
                 : Pathing.GetShortestPath(
                     match.GetMap(), unit.Position!.Value, Hex, unit.Type.Movement, TileConsiderations.None);
-            return actions.Select(x => (x, EvaluateAction(x, unit, evaluator, match, path)));
+            return actions.Select(x => EvaluateAction(x, unit, path));
         }
 
         public float EvaluateRealization(AssignmentRealization realization, Match match)
@@ -220,23 +218,21 @@ namespace Expeditionary.Ai.Assignments
             return (int)Math.Pow(3, echelon - 2);
         }
 
-        private float EvaluateAction(
-            IUnitAction action, Unit unit, UnitTileEvaluator tileEvaluator, Match match, Pathing.Path? path)
+        private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
         {
             if (action is MoveAction moveAction && path != null)
             {
-                return ActionEvaluation.EvaluatePathMove(unit, moveAction.Path, path, match, tileEvaluator);
+                return ActionEvaluation.EvaluationMovePathBonus(unit, moveAction.Path, path);
             }
-            var defaultEval = UnitActionEvaluations.EvaluateDefault(action, unit, match, tileEvaluator);
             if (unit.Position!.Value == Hex)
             {
                 if (action is MoveAction)
                 {
-                    return defaultEval - s_Reward;
+                    return -s_Reward;
                 }
                 if (action is IdleAction)
                 {
-                    return defaultEval + s_Reward;
+                    return s_Reward;
                 }
             }
             return 0;

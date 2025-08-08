@@ -27,8 +27,7 @@ namespace Expeditionary.Ai.Assignments
             }
         }
 
-        public IEnumerable<(IUnitAction, float)> EvaluateActions(
-            IEnumerable<IUnitAction> action, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> action, Unit unit, Match match)
         {
             throw new NotImplementedException();
         }

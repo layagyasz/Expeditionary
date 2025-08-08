@@ -11,7 +11,7 @@ namespace Expeditionary.Ai
         public string Id { get; }
         public int Echelon { get; }
         public void Add(FormationHandler handler);
-        public void DoTurn(Match match);
+        public AiHandlerStatus DoTurn(Match match);
         public Movement.Hindrance GetMaxHindrance();
         public void Setup(Match match);
         public void SetAssignment(IAssignment assignment);
