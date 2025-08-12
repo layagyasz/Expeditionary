@@ -1,5 +1,4 @@
-﻿using Cardamom.Collections;
-using Cardamom.Ui;
+﻿using Cardamom.Ui;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
@@ -10,7 +9,6 @@ using Expeditionary.Model.Units;
 using Expeditionary.View;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using static Expeditionary.Model.Combat.CombatPreview;
 
 namespace Expeditionary.Controller
 {

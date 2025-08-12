@@ -17,6 +17,7 @@ using Expeditionary.Model.Missions.MissionTypes;
 using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
 using Expeditionary.View;
+using Expeditionary.View.Common;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Matches;
@@ -151,7 +152,8 @@ namespace Expeditionary
                 new MatchScreen(
                     new MatchController(match, player),
                     sceneFactory.Create(match, terrainParameters, seed: 0),
-                    new UnitOverlay(uiElementFactory)));
+                    new UnitOverlay(uiElementFactory),
+                    RightClickMenu.Create(uiElementFactory)));
             match.Step();
             ui.Start();
         }

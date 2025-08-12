@@ -1,6 +1,7 @@
 ﻿using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
+using Expeditionary.View.Common;
 using Expeditionary.View.Scenes.Matches;
 using OpenTK.Mathematics;
 
@@ -13,12 +14,15 @@ namespace Expeditionary.View
         public IController Controller { get; }
         public MatchScene? Scene { get; private set; }
         public UnitOverlay? UnitOverlay { get; private set; }
+        public RightClickMenu? UnitSelect { get; private set; }
 
-        public MatchScreen(IController controller, MatchScene scene, UnitOverlay unitOverlay)
+        public MatchScreen(
+            IController controller, MatchScene scene, UnitOverlay unitOverlay, RightClickMenu unitSelect)
         {
             Controller = controller;
             Scene = scene;
             UnitOverlay = unitOverlay;
+            UnitSelect = unitSelect;
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
@@ -26,12 +30,14 @@ namespace Expeditionary.View
             Scene!.Draw(target, context);
             context.Flatten();
             UnitOverlay!.Draw(target, context);
+            UnitSelect!.Draw(target, context);
         }
 
         public void Initialize()
         {
             Scene!.Initialize();
             UnitOverlay!.Initialize();
+            UnitSelect!.Initialize();
             Controller.Bind(this);
         }
 
@@ -39,6 +45,7 @@ namespace Expeditionary.View
         {
             Scene!.ResizeContext(bounds);
             UnitOverlay!.ResizeContext(bounds);
+            UnitSelect!.ResizeContext(bounds);
         }
 
         public void Update(long delta)
@@ -46,6 +53,7 @@ namespace Expeditionary.View
             Updated?.Invoke(this, EventArgs.Empty);
             Scene!.Update(delta);
             UnitOverlay!.Update(delta);
+            UnitSelect!.Update(delta);
         }
 
         protected override void DisposeImpl()
@@ -54,6 +62,8 @@ namespace Expeditionary.View
             Scene = null;
             UnitOverlay!.Dispose();
             UnitOverlay = null;
+            UnitSelect!.Dispose();
+            UnitSelect = null;
         }
     }
 }

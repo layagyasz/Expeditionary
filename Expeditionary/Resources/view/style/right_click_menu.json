@@ -1,0 +1,41 @@
+[
+  {
+    "$id": "right-click-menu-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 200, "DynamicContents" ],
+      "CornerRadius": [ [ 0, 0 ] ],
+      "Margin": [ 0 ],
+      "Padding": [ 0 ],
+      "DisableScissor": true
+    }
+  },
+  {
+    "$id": "right-click-menu-option",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 200, 20 ],
+      "FontFace": "font-syne-mono",
+      "Color": "#ffffffdf",
+      "Shader": "shader-default",
+      "FontSize": 10,
+      "CornerRadius": [ [ 0, 0 ] ],
+      "Margin": [ 0 ],
+      "Padding": [ 2 ]
+    },
+    "States": [
+      {
+        "State": [ "Hover" ],
+        "Attributes": {
+          "BackgroundColor": [ "#ffb74dff" ]
+        }
+      },
+      {
+        "State": [ "Disable" ],
+        "Attributes": {
+          "BorderColor": [ "#ffffff1c" ]
+        }
+      }
+    ]
+  }
+]

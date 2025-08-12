@@ -11,6 +11,7 @@ using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 using Expeditionary.View;
 using Expeditionary.View.Scenes.Matches;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Expeditionary.Controller
@@ -27,6 +28,7 @@ namespace Expeditionary.Controller
         private HighlightLayer? _highlightLayer;
         private MatchSceneController? _sceneController;
         private UnitOverlayController? _unitOverlayController;
+        private IFormFieldController<object>? _unitSelectController;
 
         private Unit? _selectedUnit;
         private OrderValue? _selectedOrder;
@@ -56,6 +58,9 @@ namespace Expeditionary.Controller
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
             _unitOverlayController.SetMatch(_match);
 
+            _unitSelectController = _screen.UnitSelect!.ComponentController as IFormFieldController<object>;
+            _unitSelectController!.ValueChanged += HandleUnitSelected;
+
             _screen.UnitOverlay.Visible = false;
             _screen.Updated += HandleFrame;
         }
@@ -72,6 +77,9 @@ namespace Expeditionary.Controller
             _unitOverlayController!.OrderChanged -= HandleOrderChanged;
             _unitOverlayController = null;
 
+            _unitSelectController!.ValueChanged -= HandleUnitSelected;
+            _unitSelectController = null;
+
             _screen!.Updated -= HandleFrame;
         }
 
@@ -82,41 +90,35 @@ namespace Expeditionary.Controller
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)
         {
+            CloseRightClickMenu();
             if (e.Button.Button == MouseButton.Left)
             {
-                // TODO: Replace with targetted clicking and send warnings on attempts to select an already-moved unit.
-                var units = e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).ToList();
-                if (units.Count == 0)
+                SetSelectedUnit(
+                    e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).FirstOrDefault());
+            }
+            else if (e.Button.Button == MouseButton.Right)
+            {
+                if (_selectedOrder?.OrderId == OrderId.Attack
+                    && _selectedUnit != null
+                    && e.Assets.First() is Unit defender)
                 {
-                    return;
-                }
-                int index = _selectedUnit == null ? -1 : units.IndexOf(_selectedUnit);
-                if (index == -1)
-                {
-                    _selectedUnit = units.First();
+                    var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
+                    var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
+                    DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
                 }
                 else
                 {
-                    _selectedUnit = units[(index + 1) % units.Count];
+                    OpenRightClickMenu(
+                        e.Button.ScreenPosition, 
+                        e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player));
                 }
-                _selectedUnitEnumerator = null;
-                UpdateUnitOverlay();
-                UpdateOrder();
-            }
-            else if (e.Button.Button == MouseButton.Right
-                && _selectedOrder?.OrderId == OrderId.Attack
-                && _selectedUnit != null
-                && e.Assets.First() is Unit defender)
-            {
-                var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
-                var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
-                DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
             }
         }
 
         private void HandleHexClicked(object? sender, HexClickedEventArgs e)
         {
             s_Logger.Log(_match.GetMap().Get(e.Hex)?.ToString() ?? "off map");
+            CloseRightClickMenu();
             if (e.Button.Button == MouseButton.Right
                 && _selectedOrder?.OrderId == OrderId.Move
                 && _selectedUnit != null)
@@ -142,7 +144,7 @@ namespace Expeditionary.Controller
         {
             if (e.Key == Keys.Space)
             {
-                StepActiveUnit();
+                StepSelectedUnit();
             }
         }
 
@@ -155,19 +157,48 @@ namespace Expeditionary.Controller
         {
             if (_player == _match.GetActivePlayer())
             {
-                StepActiveUnit();
+                StepSelectedUnit();
             }
+        }
+        
+        private void HandleUnitSelected(object? sender, EventArgs e)
+        {
+            if (_unitSelectController!.GetValue() is Unit unit)
+            {
+                SetSelectedUnit(unit);
+            }
+            CloseRightClickMenu();
         }
 
         private void DoOrder(IOrder order)
         {
             if (_match.DoOrder(order))
             {
-                StepActiveUnit();
+                StepSelectedUnit();
             }
         }
 
-        private void StepActiveUnit()
+        private void CloseRightClickMenu()
+        {
+            _screen!.UnitSelect!.Visible = false;
+        }
+
+        private void OpenRightClickMenu(Vector2 position, IEnumerable<object> options)
+        {
+            _screen!.UnitSelect!.Set(options.Select(x => SelectOption<object>.Create(x, GetObjectName(x))));
+            _screen!.UnitSelect!.Position = new(position.X, position.Y, 0);
+            _screen!.UnitSelect!.Visible = true;
+        }
+
+        private void SetSelectedUnit(Unit? unit)
+        {
+            _selectedUnit = unit;
+            _selectedUnitEnumerator = null;
+            UpdateUnitOverlay();
+            UpdateOrder();
+        }
+
+        private void StepSelectedUnit()
         {
             if (_selectedUnitEnumerator == null)
             {
@@ -250,6 +281,15 @@ namespace Expeditionary.Controller
                     DoOrder(new UnloadOrder(_selectedUnit));
                 }
             }
+        }
+
+        private static string GetObjectName(object @object)
+        {
+            if (@object is Unit unit)
+            {
+                return unit.Name;
+            }
+            return @object?.ToString() ?? string.Empty;
         }
 
         private static bool IsUnitActionable(Unit? unit)

@@ -315,6 +315,9 @@
     <None Update="Resources\view\style\base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\style\right_click_menu.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\style\unit_overlay.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
