@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom.Collections;
+using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
@@ -12,6 +13,26 @@ namespace Expeditionary.View
 {
     public class AssetLayer : GraphicsResource, IRenderable
     {
+        private class AssetComparator : IComparer<(IAsset, SingleAssetKnowledge)>
+        {
+            public int Compare((IAsset, SingleAssetKnowledge) left, (IAsset, SingleAssetKnowledge) right)
+            {
+                (var leftAsset, var leftKnowledge) = left;
+                (var rightAsset, var rightKnowledge) = right;
+                var visible = leftKnowledge.IsVisible.CompareTo(rightKnowledge.IsVisible);
+                if (visible == 0)
+                {
+                    var points = leftAsset.Value.Points.CompareTo(rightAsset.Value.Points);
+                    if (points == 0)
+                    {
+                        return leftAsset.Id.CompareTo(rightAsset.Id);
+                    }
+                    return points;
+                }
+                return visible;
+            }
+        }
+
         private static readonly Color4 s_Invisible = new(2, 2, 2, 0.25f);
         private static readonly string s_BackgroundKey = "icon_unit_background";
         private static readonly float s_Sqrt3_2 = 0.5f * MathF.Sqrt(3);
@@ -29,7 +50,11 @@ namespace Expeditionary.View
         private readonly ITextureVolume _textures;
 
         private SegmentedVertexBuffer<Vertex3>? _vertices;
-        private readonly Dictionary<int, int> _addressMap = new();
+        private readonly Dictionary<Vector3i, int> _addressMap = new();
+        private readonly Dictionary<IAsset, Vector3i> _positionMap = new();
+        private readonly MultiMap<Vector3i, IAsset> _assetMap = new();
+
+        private IPlayerKnowledge? _knowledge;
 
         public AssetLayer(RenderShader shader, ITextureVolume textures)
         {
@@ -38,16 +63,19 @@ namespace Expeditionary.View
             _vertices = new(512, 12, GetRenderResources);
         }
 
-        public void Add(IAsset asset, SingleAssetKnowledge knowledge)
-        {
-            int block = _vertices!.Reserve();
-            _addressMap.Add(asset.Id, block);
-            Place(asset, knowledge.LastSeen!.Value, block, knowledge.IsVisible ? Color4.White : s_Invisible);
-        }
-
         public void Draw(IRenderTarget target, IUiContext context)
         {
             _vertices!.Draw(target, context);
+        }
+
+        public IEnumerable<IAsset> GetAssetsAt(Vector3i hex)
+        {
+            if (_assetMap.TryGetValue(hex, out var assets))
+            {
+                return assets
+                    .Select(x => (x, _knowledge!.GetAsset(x))).Order(new AssetComparator()).Select(x => x.Item1);
+            }
+            return Enumerable.Empty<IAsset>();
         }
 
         public void Initialize()
@@ -57,34 +85,34 @@ namespace Expeditionary.View
 
         public void SetAll(Match match, IPlayerKnowledge knowledge)
         {
+            _knowledge = knowledge;
             _addressMap.Clear();
+            _positionMap.Clear();
+            _assetMap.Clear();
             _vertices!.Clear();
             foreach (var asset in match.GetAssets())
             {
-                var k = knowledge.GetAsset(asset);
+                var k = _knowledge.GetAsset(asset);
                 if (k.IsVisible || k.LastSeen != null)
                 {
-                    Add(asset, k);
+                    _positionMap.Add(asset, k.LastSeen!.Value);
+                    _assetMap.Add(k.LastSeen!.Value, asset);
                 }
+            }
+            foreach (var hex in _assetMap.Keys)
+            {
+                Update(hex);
             }
         }
 
-        public void Set(IPlayerKnowledge knowledge, IEnumerable<IAsset> delta)
+        public void Set(IEnumerable<IAsset> delta)
         {
             foreach (var asset in delta)
             {
-                var k = knowledge.GetAsset(asset);
+                var k = _knowledge!.GetAsset(asset);
                 if (k.IsVisible || k.LastSeen != null)
                 {
-                    if (!_addressMap.ContainsKey(asset.Id))
-                    {
-                        Add(asset, k);
-                    } 
-                    else
-                    {
-                        Place(
-                            asset, k.LastSeen!.Value, _addressMap[asset.Id], k.IsVisible ? Color4.White : s_Invisible);
-                    }
+                    Place(asset, k.LastSeen!.Value);
                 }
                 else
                 {
@@ -95,12 +123,12 @@ namespace Expeditionary.View
 
         public void Remove(IAsset asset)
         {
-            if (_addressMap.TryGetValue(asset.Id, out var block))
+            if (_positionMap.TryGetValue(asset, out var lastPosition))
             {
-                _addressMap.Remove(asset.Id);
-                _vertices!.Set(block, new Vertex3[12]);
-                _vertices!.Free(block);
+                _assetMap.Remove(lastPosition, asset);
+                Update(lastPosition);
             }
+            _positionMap.Remove(asset);
         }
 
         public void ResizeContext(Vector3 context) { }
@@ -116,15 +144,62 @@ namespace Expeditionary.View
             _vertices = null;
         }
 
-        private void Place(IAsset asset, Vector3i position, int block, Color4 filter)
+        private int Add(Vector3i hex)
         {
-            var vertices = new Vertex3[12];
-            var p = ToVector3(Cubic.Cartesian.Instance.Project(position));
-            SetVertices(
-                vertices, 0, p, Combine(filter, GetBackground(asset)), _textures.Get(s_BackgroundKey).TextureView);
-            SetVertices(
-                vertices, 6, p, Combine(filter, GetForeground(asset)), _textures.Get(asset.TypeKey).TextureView);
-            _vertices!.Set(block, vertices);
+            var block = _vertices!.Reserve();
+            _addressMap.Add(hex, block);
+            return block;
+        }
+
+        private int GetOrAdd(Vector3i hex)
+        {
+            if (_addressMap.TryGetValue(hex, out var block))
+            {
+                return block;
+            }
+            return Add(hex);
+        }
+
+        private void Place(IAsset asset, Vector3i position)
+        {
+            if (_positionMap.TryGetValue(asset, out var lastPosition))
+            {
+                _assetMap.Remove(lastPosition, asset);
+                Update(lastPosition);
+            }
+            _positionMap[asset] = position;
+            _assetMap.Add(position, asset);
+            Update(position);
+        }
+
+        private void Return(Vector3i hex)
+        {
+            if (_addressMap.TryGetValue(hex, out var block))
+            {
+                _vertices!.Free(block);
+            }
+            _addressMap.Remove(hex);
+        }
+
+        private void Update(Vector3i hex)
+        {
+            if (_assetMap.TryGetValue(hex, out var assets))
+            {
+                var block = GetOrAdd(hex);
+                var vertices = new Vertex3[12];
+                var p = ToVector3(Cubic.Cartesian.Instance.Project(hex));
+                (var asset, var k) = GetTopAsset(assets, _knowledge!);
+                var filter = k.IsVisible ? Color4.White : s_Invisible;
+                SetVertices(
+                    vertices, 0, p, Combine(filter, GetBackground(asset)), _textures.Get(s_BackgroundKey).TextureView);
+                SetVertices(
+                    vertices, 6, p, Combine(filter, GetForeground(asset)), _textures.Get(asset.TypeKey).TextureView);
+                _vertices!.Set(block, vertices);
+            }
+            else
+            {
+                Return(hex);
+            }
         }
 
         private RenderResources GetRenderResources()
@@ -148,6 +223,21 @@ namespace Expeditionary.View
                 return unit.Player.Faction.ColorScheme.Foreground;
             }
             return Color4.Black;
+        }
+
+        private static (IAsset, SingleAssetKnowledge) GetTopAsset(
+            IEnumerable<IAsset> assets, IPlayerKnowledge knowledge)
+        {
+            if (!assets.Any())
+            {
+                throw new IndexOutOfRangeException();
+            }
+            if (assets.Count() == 1)
+            {
+                var asset = assets.First();
+                return (asset, knowledge.GetAsset(asset));
+            }
+            return assets.Select(x => (x, knowledge.GetAsset(x))).Max(new AssetComparator());
         }
 
         private static void SetVertices(

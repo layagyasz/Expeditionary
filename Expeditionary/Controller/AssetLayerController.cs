@@ -48,9 +48,9 @@ namespace Expeditionary.Controller
             _layer!.SetAll(_match, knowledge);
         }
 
-        public void UpdateKnowledge(IPlayerKnowledge knowledge, IEnumerable<IAsset> delta)
+        public void UpdateKnowledge(IEnumerable<IAsset> delta)
         {
-            _layer!.Set(knowledge, delta);
+            _layer!.Set(delta);
         }
 
         public bool HandleKeyDown(KeyDownEventArgs e)
@@ -77,7 +77,7 @@ namespace Expeditionary.Controller
         {
             var hex = Geometry.SnapToHex(Cubic.Cartesian.Instance.Wrap(e.Position.Xz));
             var coord = e.Position.Xz - Cubic.Cartesian.Instance.Project(hex);
-            var assets = _match.GetAssetsAt(hex).ToList();
+            var assets = _layer!.GetAssetsAt(hex).ToList();
             if (s_Bounds.ContainsInclusive(coord) && assets.Any())
             {
                 AssetClicked?.Invoke(this, new(assets, e));

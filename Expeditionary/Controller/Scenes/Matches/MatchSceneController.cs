@@ -90,7 +90,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         {
             if (e.Player == _player)
             {
-                _assetLayerController!.UpdateKnowledge(_match.GetKnowledge(_player), e.Delta);
+                _assetLayerController!.UpdateKnowledge(e.Delta);
             }
         }
 
