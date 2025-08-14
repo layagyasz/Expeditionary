@@ -1,6 +1,8 @@
 ﻿using Expeditionary.Ai.Assignments;
+using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
 {
@@ -32,12 +34,26 @@ namespace Expeditionary.Ai
         { 
             if (_isDirty)
             {
-                Unit.SetAssignment(Assignment);
-                Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match));
+                if (Assignment is PointAssignment pointAssignment 
+                    && ShouldUseTransport(Transport?.Unit, Unit.Unit, pointAssignment, match.GetEvaluator()))
+                {
+                    Unit.SetAssignment(new NoAssignment(pointAssignment.Origin));
+                    Transport!.SetAssignment(
+                        new TransportAssignment(
+                            Unit.Unit, pointAssignment.Hex, pointAssignment.Origin, pointAssignment.Facing));
+                }
+                else
+                {
+                    Unit.SetAssignment(Assignment);
+                    Transport?.SetAssignment(GetShadowAssignment(Transport, Assignment, match));
+                } 
                 _isDirty = false;
             }
-            
-            Transport?.DoTurn(match);
+
+            if (Transport?.DoTurn(match) == AiHandlerStatus.Done && Unit.Assignment != Assignment)
+            {
+                Unit.SetAssignment(Assignment);
+            }
             return Unit.DoTurn(match);
         }
 
@@ -60,6 +76,22 @@ namespace Expeditionary.Ai
         {
             Assignment = assignment;
             _isDirty = true;
+        }
+
+        private static bool ShouldUseTransport(
+            Unit? transport, Unit passenger, PointAssignment assignment, TileEvaluator evaluator)
+        {
+            if (transport == null || !transport.IsActive() || !passenger.IsActive())
+            {
+                return false;
+            }
+            if (!OrderChecker.CanLoad(transport.Type, passenger.Type))
+            {
+                return false;
+            }
+            var hindrance = transport.Type.Movement.GetMaxHindrance();
+            return evaluator.IsReachable(hindrance, transport.Position!.Value, assignment.Hex)
+                && evaluator.IsReachable(hindrance, transport.Position!.Value, passenger.Position!.Value);
         }
 
         private static IAssignment GetShadowAssignment(UnitHandler unit, IAssignment assignment, Match match)

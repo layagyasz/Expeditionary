@@ -34,7 +34,8 @@ namespace Expeditionary.Model.Knowledge
                     _spotters[hex]
                         .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
                             >= Geometry.GetCubicDistance(x.Position!.Value, hex)
-                            && Sighting.IsValidLineOfSight(_map, x.Position!.Value, hex)));
+                            && x.Position != null 
+                            && Sighting.IsValidLineOfSight(_map, x.Position.Value, hex)));
             }
         }
 
@@ -52,7 +53,11 @@ namespace Expeditionary.Model.Knowledge
                 var result = new EnumMap<UnitDetectionBand, float>();
                 foreach (var spotter in _spotters[hex])
                 {
-                    var los = Sighting.GetLineOfSight(_map, spotter.Position!.Value, hex);
+                    if (spotter.Position == null)
+                    {
+                        continue;
+                    }
+                    var los = Sighting.GetLineOfSight(_map, spotter.Position.Value, hex);
                     foreach (var band in Enum.GetValues<UnitDetectionBand>())
                     {
                         result[band] =

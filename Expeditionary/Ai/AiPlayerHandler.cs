@@ -42,7 +42,7 @@ namespace Expeditionary.Ai
         {
             s_Logger.With(Player.Id).Log($"started automated turn");
             _rootFormationHandler.DoTurn(_match);
-            Thread.Sleep(1000);
+            Console.ReadLine();
             _match.Step();
             s_Logger.With(Player.Id).Log($"finished automated turn");
         }

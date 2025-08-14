@@ -108,6 +108,10 @@ namespace Expeditionary.Model
                 knowledge.Destroy(unit, _positions);
             }
             unit.Destroy();
+            if (unit.Passenger != null && unit.Passenger is Unit passenger)
+            {
+                Destroy(passenger);
+            }
         }
 
         public void DispatchEvents()
@@ -242,6 +246,11 @@ namespace Expeditionary.Model
             foreach (var knowledge in _playerKnowledge.Values)
             {
                 knowledge.Move(asset, path, _positions);
+            }
+
+            if (asset is Unit unit && unit.Passenger != null)
+            {
+                Move(unit.Passenger, path);
             }
         }
 

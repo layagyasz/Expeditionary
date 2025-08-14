@@ -45,7 +45,6 @@ namespace Expeditionary.Ai
             CombineEvaluations(evaluations, UnitActionEvaluations.EvaluateDefault(actions, Unit, match, evaluator));
             CombineEvaluations(evaluations, Assignment.EvaluateActions(actions, Unit, match));
             var action = actions[Enumerable.Range(0, actions.Length).MaxBy(x => evaluations[x])];
-            s_Logger.With(Unit.Id).Log($"action {action} value {action}");
             if (action.Do(match, Unit))
             {
                 return Assignment.NotifyAction(Unit, action, match) 
@@ -53,7 +52,6 @@ namespace Expeditionary.Ai
             }
             else
             {
-                s_Logger.With(Unit.Id).AtError().Log($"action {action} failed");
                 return AiHandlerStatus.Done;
             }
         }
@@ -76,7 +74,7 @@ namespace Expeditionary.Ai
 
         private IEnumerable<IUnitAction> GenerateActions(Match match, IPlayerKnowledge knowledge)
         {
-            if (Unit.Actions > 0)
+            if (Unit.Actions > 0 && !Unit.IsPassenger)
             {
                 foreach (var attack in AttackAction.GenerateValidAttacks(match, knowledge, Unit))
                 {

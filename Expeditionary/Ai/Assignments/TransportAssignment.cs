@@ -12,7 +12,7 @@ namespace Expeditionary.Ai.Assignments
     public record class TransportAssignment(Unit Unit, Vector3i Hex, Vector3i Origin, MapDirection Facing) 
         : IAssignment
     {
-        private static readonly float s_Reward = 20f;
+        private static readonly float s_Reward = 2f;
 
         public IMapRegion Region => new PointMapRegion(Hex, 0);
 
@@ -34,7 +34,7 @@ namespace Expeditionary.Ai.Assignments
 
         public bool NotifyAction(Unit unit, IUnitAction action, Match match)
         {
-            return action is UnloadAction;
+            return action is UnloadAction || !Unit.IsActive();
         }
 
         public Vector3i SelectHex(Map map)
@@ -44,6 +44,10 @@ namespace Expeditionary.Ai.Assignments
 
         private Pathing.Path? GetPath(Unit unit, Match match)
         {
+            if (Unit.Position == null)
+            {
+                return null;
+            }
             if (unit.Passenger != Unit && unit.Position!.Value != Unit.Position!.Value)
             {
                 return Pathing.GetShortestPath(
@@ -67,24 +71,25 @@ namespace Expeditionary.Ai.Assignments
 
         private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
         {
+            var reward = s_Reward * Unit.Value.Points;
             if (action is MoveAction moveAction && path != null)
             {
-                return ActionEvaluation.EvaluationMovePathBonus(unit, moveAction.Path, path);
+                return ActionEvaluation.EvaluateMovePathBonus(unit, moveAction.Path, path);
             }
             if (unit.Passenger != Unit && unit.Position!.Value == Unit.Position!.Value)
             {
                 if (action is LoadAction)
                 {
-                    return s_Reward;
+                    return reward;
                 }
             }
             if (unit.Passenger == Unit && unit.Position!.Value == Hex)
             {
                 if (action is UnloadAction)
                 {
-                    return s_Reward;
+                    return reward;
                 }
-                return -s_Reward;
+                return -reward;
             }
             return 0;
         }

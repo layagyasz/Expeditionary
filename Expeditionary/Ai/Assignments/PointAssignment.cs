@@ -222,7 +222,7 @@ namespace Expeditionary.Ai.Assignments
         {
             if (action is MoveAction moveAction && path != null)
             {
-                return ActionEvaluation.EvaluationMovePathBonus(unit, moveAction.Path, path);
+                return ActionEvaluation.EvaluateMovePathBonus(unit, moveAction.Path, path);
             }
             if (unit.Position!.Value == Hex)
             {

@@ -40,6 +40,10 @@ namespace Expeditionary.Model.Knowledge
         public List<IAsset> AddOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Vector3i position)
         {
             var result = new List<IAsset>();
+            if (asset.IsPassenger)
+            {
+                return result;
+            }
             var current = new SingleAssetKnowledge();
 
             var detection = mapKnowledge.GetDetection(position);
@@ -51,7 +55,7 @@ namespace Expeditionary.Model.Knowledge
                 current.LastSeen = position;
                 result.Add(asset);
             }
-            _assets.Add(asset, current);
+            _assets[asset] = current;
             return result;
         }
         
@@ -106,6 +110,10 @@ namespace Expeditionary.Model.Knowledge
 
         public List<IAsset> MoveOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Pathing.Path path)
         {
+            if (asset.IsPassenger)
+            {
+                return new();
+            }
             var current = _assets[asset];
             for (int i=path.Steps.Count - 1; i>=0; --i)
             {

@@ -19,6 +19,14 @@ namespace Expeditionary.View
             {
                 (var leftAsset, var leftKnowledge) = left;
                 (var rightAsset, var rightKnowledge) = right;
+                if (leftAsset is Unit leftUnit && leftUnit.Passenger == rightAsset)
+                {
+                    return 1;
+                }
+                if (rightAsset is Unit rightUnit && rightUnit.Passenger == leftAsset)
+                {
+                    return -1;
+                }
                 var visible = leftKnowledge.IsVisible.CompareTo(rightKnowledge.IsVisible);
                 if (visible == 0)
                 {
@@ -73,7 +81,10 @@ namespace Expeditionary.View
             if (_assetMap.TryGetValue(hex, out var assets))
             {
                 return assets
-                    .Select(x => (x, _knowledge!.GetAsset(x))).Order(new AssetComparator()).Select(x => x.Item1);
+                    .Select(x => (x, _knowledge!.GetAsset(x)))
+                    .Order(new AssetComparator())
+                    .Reverse()
+                    .Select(x => x.Item1);
             }
             return Enumerable.Empty<IAsset>();
         }

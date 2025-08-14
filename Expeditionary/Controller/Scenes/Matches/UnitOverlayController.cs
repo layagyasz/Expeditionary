@@ -64,6 +64,10 @@ namespace Expeditionary.Controller.Scenes.Matches
 
         private IEnumerable<OrderValue> GetPossibleOrders(Unit unit)
         {
+            if (unit.Actions == 0 || !unit.IsActive())
+            {
+                yield break;
+            }
             foreach (var weapon in unit.Type.Weapons)
             {
                 foreach (var mode in weapon.Weapon.Modes)

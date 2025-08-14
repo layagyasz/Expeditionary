@@ -37,6 +37,11 @@ namespace Expeditionary.Evaluation.TileEvaluators
                 DefaultDispositionMapper.Map(unitType), facing, RangeBucketizer.ToBucket(unitType));
         }
 
+        public bool IsReachable(Movement.Hindrance maxHindrance, Vector3i origin, Vector3i hex)
+        {
+            return _evaluationCache.Partition.IsReachable(origin, hex, maxHindrance);
+        }
+
         public TileConsideration IsReachable(Movement.Hindrance maxHindrance, Vector3i origin)
         {
             return TileConsiderations.Essential(

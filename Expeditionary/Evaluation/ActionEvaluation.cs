@@ -30,7 +30,7 @@ namespace Expeditionary.Evaluation
                 * (TileConsiderations.Evaluate(consideration, path.Destination, match.GetMap()) - baseline);
         }
 
-        public static float EvaluationMovePathBonus(Unit unit, Pathing.PathOption path, Pathing.Path goal)
+        public static float EvaluateMovePathBonus(Unit unit, Pathing.PathOption path, Pathing.Path goal)
         {
             if (goal.Steps.Contains(path.Destination))
             {
