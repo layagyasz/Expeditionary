@@ -59,7 +59,7 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
                 foreach (var unit in units)
                 {
                     RenderUnit(unit, text, renderTexture);
-                    volume.Add(unit.Definition.Key, renderTexture.GetTexture());
+                    volume.Add(unit.Key, renderTexture.GetTexture());
                 }
             }
 
@@ -103,7 +103,7 @@ namespace Expeditionary.View.Textures.Generation.Combat.Units
                 vertices.Count,
                 new(BlendMode.Alpha, _settings.Shader!, _settings.Images.GetTextures().First()));
 
-            text.SetText(unit.Definition.Symbol ?? unit.Definition.Name);
+            text.SetText(unit.Symbol ?? unit.Name);
             var size = 0.01f * text.Size;
 
             target.PushModelMatrix(

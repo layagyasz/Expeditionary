@@ -18,12 +18,17 @@ namespace Expeditionary.Model.Units
         public List<UnitTrait> Traits { get; set; } = new();
         public EnumSet<UnitTag> Tags { get; set; } = new();
 
+        public int GetPoints(int number)
+        {
+            return number * (Traits.Sum(x => x.Cost) + Weapons.Sum(x => x.Number * x.Weapon.Points));
+        }
+
         public EnumSet<UnitTag> GetTags()
         {
             if (Tags.Count == 0)
             {
                 return Enumerable.Concat(
-                    Weapons.SelectMany(x => x.Weapon!.GetTags()), Traits.SelectMany(x => x.Tags)).ToEnumSet();
+                    Weapons.SelectMany(x => x.Weapon!.Tags), Traits.SelectMany(x => x.Tags)).ToEnumSet();
             }
             return Tags;
         }
@@ -31,13 +36,18 @@ namespace Expeditionary.Model.Units
         public UnitType Build()
         {
             var attributes = UnitTrait.Combine(Traits);
+            var intrinsics = BuildIntrinsics(attributes, Weapons);
             return new(
-                this,
+                Key,
+                Name,
+                Symbol,
+                GetTags(),
                 Weapons,
                 BuildDefenseEnvelope(attributes),
                 BuildMovement(attributes),
                 BuildCapabilities(attributes),
-                BuildIntrinsics(attributes, Weapons));
+                BuildIntrinsics(attributes, Weapons),
+                GetPoints((int) intrinsics.Number.GetValue()));
         }
 
         private static UnitCapabilities BuildCapabilities(IDictionary<string, Modifier> attributes)

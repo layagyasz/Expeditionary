@@ -1,4 +1,5 @@
 ﻿using Cardamom;
+using Cardamom.Collections;
 using Cardamom.Json;
 using Cardamom.Json.Collections;
 using Expeditionary.Model.Combat;
@@ -30,10 +31,21 @@ namespace Expeditionary.Model.Units
             return new(
                 Key,
                 Name,
-                this,
+                GetTags(),
                 Modes.Select(x => BuildMode(x, Enumerable.Concat(extraTraits, Traits))),
                 UnitTrait.GetOrDefault(baseAttributes, "mass", Modifier.None), 
-                UnitTrait.GetOrDefault(baseAttributes, "size", Modifier.None));
+                UnitTrait.GetOrDefault(baseAttributes, "size", Modifier.None),
+                GetPoints());
+        }
+
+        public int GetPoints()
+        {
+            return Traits.Sum(x => x.Cost);
+        }
+
+        public IEnumerable<UnitTag> GetTags()
+        {
+            return Enumerable.Concat(Traits, Modes.SelectMany(x => x.Traits)).SelectMany(x => x.Tags);
         }
 
         private static UnitWeapon.Mode BuildMode(Mode definition, IEnumerable<UnitTrait> baseTraits)

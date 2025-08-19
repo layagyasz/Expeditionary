@@ -1,23 +1,16 @@
 ﻿using Cardamom;
 using Cardamom.Json;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Units
 {
     [BuilderClass(typeof(UnitTypeDefinition))]
     public class UnitType : IKeyed
     {
-        public string Key
-        {
-            get => Definition.Key; 
-            set => Definition.Key = value;
-        }
-        public string Name => Definition.Name;
-        public string? Symbol => Definition.Symbol;
+        public string Key { get; set; }
+        public string Name { get; }
+        public string? Symbol { get; }
         public ImmutableList<UnitTag> Tags { get; }
-        [JsonIgnore]
-        public UnitTypeDefinition Definition { get; }
         public ImmutableList<UnitWeaponUsage> Weapons { get; }
         public UnitDefense Defense { get; }
         public Movement Movement { get; }
@@ -27,22 +20,27 @@ namespace Expeditionary.Model.Units
         public float Speed { get; }
 
         public UnitType(
-            UnitTypeDefinition definition,
+            string key,
+            string name,
+            string? symbol,
+            IEnumerable<UnitTag> tags,
             IEnumerable<UnitWeaponUsage> weapons,
             UnitDefense defense,
             Movement movement,
             UnitCapabilities capabilities,
-            UnitIntrinsics intrinsics)
+            UnitIntrinsics intrinsics,
+            int points)
         {
-            Definition = definition;
-            Tags = definition.GetTags().ToImmutableList();
+            Key = key;
+            Name = name;
+            Symbol = symbol;
+            Tags = tags.Distinct().ToImmutableList();
             Weapons = ImmutableList.CreateRange(weapons);
             Defense = defense;
             Movement = movement;
             Capabilities = capabilities;
             Intrinsics = intrinsics;
-            Points = Definition.Traits.Sum(x => x.Cost)
-                + Definition.Weapons.SelectMany(x => x.Weapon.Definition.Traits).Sum(x => x.Cost);
+            Points = points;
             Speed = intrinsics.Power.GetValue() / intrinsics.Mass;
         }
 

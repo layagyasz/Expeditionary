@@ -2,7 +2,6 @@
 using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Units
 {
@@ -27,33 +26,28 @@ namespace Expeditionary.Model.Units
 
         public string Key { get; set; }
         public string Name { get; }
-        [JsonIgnore]
-        public UnitWeaponDefinition Definition { get; }
+        public ImmutableList<UnitTag> Tags { get; }
         public ImmutableList<Mode> Modes { get; }
         public Modifier Size { get; }
         public Modifier Mass { get; }
+        public int Points { get; }
 
         public UnitWeapon(
             string key, 
             string name,
-            UnitWeaponDefinition definition,
+            IEnumerable<UnitTag> tags,
             IEnumerable<Mode> modes, 
             Modifier mass,
-            Modifier size)
+            Modifier size,
+            int points)
         {
             Key = key;
             Name = name;
-            Definition = definition;
+            Tags = tags.Distinct().ToImmutableList();
             Modes = modes.ToImmutableList();
             Mass = mass;
             Size = size;
-        }
-
-        public EnumSet<UnitTag> GetTags()
-        {
-            return Enumerable.Concat(Definition.Traits, Definition.Modes.SelectMany(x => x.Traits))
-                .SelectMany(x => x.Tags)
-                .ToEnumSet();
+            Points = points;
         }
     }
 }

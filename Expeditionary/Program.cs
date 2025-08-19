@@ -160,15 +160,26 @@ namespace Expeditionary
 
         private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
         {
-            File.Delete("units.json");
-            using var stream = File.OpenWrite("units.json");
-            var options = 
-                new JsonSerializerOptions() 
+            var dir = "units";
+            Directory.CreateDirectory(dir);
+            foreach (var unitType in unitTypes)
+            {
+                RecordUnitType(unitType, dir);
+            }
+        }
+
+        private static void RecordUnitType(UnitType unitType, string path)
+        {
+            string file = $"{path}/{unitType.Key}.json";
+            File.Delete(file);
+            using var stream = File.OpenWrite(file);
+            var options =
+                new JsonSerializerOptions()
                 {
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                     WriteIndented = true
                 };
-            JsonSerializer.Serialize(stream, unitTypes, typeof(IEnumerable<UnitType>), options);
+            JsonSerializer.Serialize(stream, unitType, typeof(UnitType), options);
         }
 
         private static void RecordPalette(TerrainViewParameters parameters)
