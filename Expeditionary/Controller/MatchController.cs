@@ -7,6 +7,7 @@ using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
+using Expeditionary.Model.Combat;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 using Expeditionary.View;
@@ -252,9 +253,10 @@ namespace Expeditionary.Controller
             {
                 if (_selectedOrder?.OrderId == OrderId.Attack)
                 {
-                    var range = (int)((UnitWeapon.Mode)_selectedOrder.Args[1]).Range.Get();
+                    var mode = (UnitWeapon.Mode)_selectedOrder.Args[1];
+                    var range = (int)mode.Range.Get();
                     _highlightLayer!.SetHighlight(
-                        Sighting.GetUnblockedSightField(_match.GetMap(), _selectedUnit.Position!.Value, range)
+                        CombatCalculator.GetValidAttackHexes(mode, _match.GetMap(), _selectedUnit.Position!.Value)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }

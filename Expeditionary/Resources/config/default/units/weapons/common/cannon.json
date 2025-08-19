@@ -11,7 +11,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   }

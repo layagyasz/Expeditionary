@@ -8,7 +8,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   },
@@ -21,7 +21,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   },
@@ -34,7 +34,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   },
@@ -47,7 +47,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   },
@@ -60,7 +60,7 @@
     ],
     "Modes": [
       {
-        "Condition": "Ranged"
+        "Condition": [ "Direct", "Ranged" ]
       }
     ]
   }

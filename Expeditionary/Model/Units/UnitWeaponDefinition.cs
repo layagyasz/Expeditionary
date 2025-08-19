@@ -1,4 +1,5 @@
 ﻿using Cardamom;
+using Cardamom.Json;
 using Cardamom.Json.Collections;
 using Expeditionary.Model.Combat;
 using System.Text.Json.Serialization;
@@ -9,6 +10,7 @@ namespace Expeditionary.Model.Units
     {
         public record class Mode
         {
+            [JsonConverter(typeof(FlagJsonConverter<CombatCondition>))]
             public CombatCondition Condition { get; set; }
 
             [JsonConverter(typeof(ReferenceCollectionJsonConverter))]

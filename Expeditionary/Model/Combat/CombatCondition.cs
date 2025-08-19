@@ -6,12 +6,15 @@ namespace Expeditionary.Model.Combat
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CombatCondition
     {
-        None, 
+        None = 0,
+        
+        Direct = 1,
+        Indirect = 2,
 
-        Close,
-        Dark,
-        Melee,
-        Ranged,
-        Urban
+        Close = 4,
+        Dark = 8,
+        Melee = 16,
+        Ranged = 32,
+        Urban = 64
     }
 }

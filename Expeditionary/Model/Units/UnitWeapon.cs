@@ -18,6 +18,11 @@ namespace Expeditionary.Model.Units
             public Modifier Penetration { get; init; }
             public Modifier Lethality { get; init; }
             public EnumMap<UnitDetectionBand, Modifier> Signature { get; init; } = new();
+
+            public bool IsIndirect()
+            {
+                return Condition.HasFlag(CombatCondition.Indirect);
+            }
         }
 
         public string Key { get; set; }

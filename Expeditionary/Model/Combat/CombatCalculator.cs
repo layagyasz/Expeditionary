@@ -7,6 +7,19 @@ namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
+        public static bool IsValidLineOfSight(UnitWeapon.Mode mode, Map map, Vector3i position, Vector3i target)
+        {
+            return mode.IsIndirect() || Sighting.IsValidLineOfSight(map, position, target);
+        }
+
+        public static IEnumerable<Sighting.LineOfSight> GetValidAttackHexes(
+            UnitWeapon.Mode mode, Map map, Vector3i position)
+        {
+            return mode.IsIndirect()
+                ? Sighting.GetSightField(map, position, (int)mode.Range.Get()) 
+                : Sighting.GetUnblockedSightField(map, position, (int)mode.Range.Get());
+        }
+
         public static bool IsValidTarget(Unit attacker, Unit target)
         {
             if (target.IsDestroyed)
@@ -53,7 +66,7 @@ namespace Expeditionary.Model.Combat
             {
                 return false;
             }
-            if (!Sighting.IsValidLineOfSight(map, attackerPosition, targetPosition))
+            if (!IsValidLineOfSight(mode, map, attackerPosition, targetPosition))
             {
                 return false;
             }
