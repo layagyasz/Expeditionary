@@ -153,7 +153,7 @@ namespace Expeditionary.Evaluation.Considerations
                             .Where(x => 
                                 CombatCalculator.IsValidTarget(attacker, attackerPosition, x.Mode, unit, hex, map))
                             .Select(x => 
-                                CombatCalculator.GetPreview(
+                                CombatCalculator.GetDirectPreview(
                                     attacker, attackerPosition, x.Weapon, x.Mode, unit, hex, map).Result)
                             .DefaultIfEmpty(0)
                             .Max();

@@ -10,7 +10,8 @@ namespace Expeditionary.Evaluation
             {
                 return RangeBucket.Short;
             }
-            return ToBucket(unitType.Weapons.Select(x => x.Weapon).SelectMany(x => x.Modes).Max(x => x.Range.Get()));
+            return ToBucket(
+                unitType.Weapons.Select(x => x.Weapon).SelectMany(x => x.Modes).Max(x => x.Range.GetMaximum()));
         }
 
         public static RangeBucket ToBucket(float range)

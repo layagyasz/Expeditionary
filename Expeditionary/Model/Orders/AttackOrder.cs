@@ -22,7 +22,7 @@ namespace Expeditionary.Model.Orders
         public void Execute(Match match)
         {
             Unit.ConsumeAction();
-            var preview = CombatCalculator.GetPreview(Unit, Weapon, Mode, Target, match.GetMap());
+            var preview = CombatCalculator.GetDirectPreview(Unit, Weapon, Mode, Target, match.GetMap());
             int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
             match.Damage(Unit, Target, kills);
         }

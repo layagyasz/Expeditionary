@@ -15,9 +15,11 @@ namespace Expeditionary.Model.Combat
         public static IEnumerable<Sighting.LineOfSight> GetValidAttackHexes(
             UnitWeapon.Mode mode, Map map, Vector3i position)
         {
-            return mode.IsIndirect()
-                ? Sighting.GetSightField(map, position, (int)mode.Range.Get()) 
-                : Sighting.GetUnblockedSightField(map, position, (int)mode.Range.Get());
+            var range = mode.IsIndirect()
+                ? Sighting.GetSightField(map, position, (int)mode.Range.GetMaximum()) 
+                : Sighting.GetUnblockedSightField(map, position, (int)mode.Range.GetMaximum());
+            var min = mode.Range.GetMinimum();
+            return min > 0 ? range.Where(x => x.Distance >= min) : range;
         }
 
         public static bool IsValidTarget(Unit attacker, Unit target)
@@ -62,7 +64,8 @@ namespace Expeditionary.Model.Combat
             {
                 return false;
             }
-            if (Geometry.GetCubicDistance(attackerPosition, targetPosition) > mode.Range.Get())
+            var distance = Geometry.GetCubicDistance(attackerPosition, targetPosition);
+            if (distance > mode.Range.GetMaximum() || distance < mode.Range.GetMinimum())
             {
                 return false;
             }
@@ -73,14 +76,14 @@ namespace Expeditionary.Model.Combat
             return true;
         }
 
-        public static CombatPreview GetPreview(
+        public static CombatPreview GetDirectPreview(
             Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            return GetPreview(
+            return GetDirectPreview(
                 attacker, attacker.Position!.Value, weapon, mode, target, target.Position!.Value, map);
         }
 
-        public static CombatPreview GetPreview(
+        public static CombatPreview GetDirectPreview(
             Unit attacker, 
             Vector3i attackerPosition,
             UnitWeaponUsage attack,
@@ -90,11 +93,7 @@ namespace Expeditionary.Model.Combat
             Map map)
         {
             float range = Geometry.GetCubicDistance(attackerPosition, defenderPosition);
-            if (range > mode.Range.Get())
-            {
-                return new();
-            }
-            return GetPreview(
+            return GetDirectPreview(
                 attacker.Type,
                 mode,
                 defender.Type,
@@ -103,7 +102,7 @@ namespace Expeditionary.Model.Combat
                 attacker.Number * attack.Number);
         }
 
-        private static CombatPreview GetPreview(
+        private static CombatPreview GetDirectPreview(
             UnitType attacker, 
             UnitWeapon.Mode mode,
             UnitType defender, 

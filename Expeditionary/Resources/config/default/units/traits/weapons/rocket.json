@@ -9,6 +9,7 @@
       "volume": "+12x0",
       "range": "+50x0",
       "range/cap": "+50x0",
+      "range/min": "+15x0",
       "accuracy": "+4x0",
       "tracking": "+1x0",
       "penetration": "+12.5x0",
@@ -27,6 +28,7 @@
       "volume": "+12x0",
       "range": "+50x0",
       "range/cap": "+50x0",
+      "range/min": "+15x0",
       "accuracy": "+4x0",
       "tracking": "+1x0",
       "penetration": "+30x0",
@@ -49,6 +51,7 @@
     "Family": "trait-rocket-rack",
     "Cost": 4,
     "Modifiers": {
+      "volume": "+0x1.25",
       "mass": "+0x1.25",
       "size": "+0x1.25"
     }
@@ -89,7 +92,8 @@
     "Cost": -2,
     "Tags": [ "RangeShort" ],
     "Modifiers": {
-      "range/cap": "+0x-0.75"
+      "range/cap": "+0x-0.75",
+      "range/min": "+0x-0.75"
     }
   },
   {
@@ -107,7 +111,8 @@
     "Cost": 12,
     "Tags": [ "RangeLong" ],
     "Modifiers": {
-      "range/cap": "+0x1.5"
+      "range/cap": "+0x1.5",
+      "range/min": "+0x1.5"
     }
   }
 ]

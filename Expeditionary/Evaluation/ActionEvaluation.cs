@@ -15,7 +15,7 @@ namespace Expeditionary.Evaluation
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
             var preview =
-                CombatCalculator.GetPreview(
+                CombatCalculator.GetDirectPreview(
                     attacker, attacker.Position!.Value, attack, mode, defender, defender.Position!.Value, map);
             return defender.Type.Points * Math.Min(1, preview.Result / defender.Number);
         }

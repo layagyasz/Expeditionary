@@ -254,7 +254,7 @@ namespace Expeditionary.Controller
                 if (_selectedOrder?.OrderId == OrderId.Attack)
                 {
                     var mode = (UnitWeapon.Mode)_selectedOrder.Args[1];
-                    var range = (int)mode.Range.Get();
+                    var range = (int)mode.Range.GetMaximum();
                     _highlightLayer!.SetHighlight(
                         CombatCalculator.GetValidAttackHexes(mode, _match.GetMap(), _selectedUnit.Position!.Value)
                             .Select(x => new HighlightLayer.HexHighlight(

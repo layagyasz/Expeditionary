@@ -1,5 +1,4 @@
 ﻿using Cardamom;
-using Cardamom.Collections;
 using Cardamom.Json;
 using Cardamom.Json.Collections;
 using Expeditionary.Model.Combat;
@@ -69,7 +68,8 @@ namespace Expeditionary.Model.Units
         {
             return new(
                 UnitTrait.GetOrDefault(attributes, prefix, Modifier.None), 
-                UnitTrait.GetOrDefault(attributes, prefix + "/cap", Modifier.None));
+                UnitTrait.GetOrDefault(attributes, prefix + "/cap", Modifier.None),
+                UnitTrait.GetOrDefault(attributes, prefix + "/min", Modifier.None));
         }
     }
 }
