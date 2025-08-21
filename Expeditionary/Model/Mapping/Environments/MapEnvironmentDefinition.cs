@@ -2,7 +2,7 @@
 using Cardamom.Json.Collections;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Mapping
+namespace Expeditionary.Model.Mapping.Environments
 {
     public class MapEnvironmentDefinition : IKeyed
     {
@@ -10,14 +10,14 @@ namespace Expeditionary.Model.Mapping
         public string Name { get; set; } = string.Empty;
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
-        public List<MapEnvironmentModifier> Modifiers { get; set; } = new();
+        public List<MapEnvironmentTrait> Traits { get; set; } = new();
 
         public MapEnvironment GetEnvironment()
         {
-            var env = new MapEnvironment();
-            foreach (var modifier in Modifiers)
+            var env = new MapEnvironment(Name);
+            foreach (var trait in Traits)
             {
-                modifier.Apply!.Call(modifier, env);
+                trait.Apply!.Call(trait, env);
             }
             return env;
         }

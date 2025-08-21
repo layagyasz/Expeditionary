@@ -2,26 +2,26 @@
   {
     "$id": "environment-kwajalein",
     "Name": "Kwajalein",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-k",
-      "environment-modifier-landform-lithic-b",
-      "environment-modifier-composition-carbide",
-      "environment-modifier-liquid-carbide",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-ancient",
-      "environment-modifier-habitability-fertile",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-aquifer",
-      "environment-modifier-climate-hot",
-      "environment-modifier-terrain-rugged",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-lush",
-      "environment-modifier-flora-fungal",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-1",
-      "environment-modifier-structure-mine-1",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-k",
+      "environment-trait-landform-lithic-b",
+      "environment-trait-composition-carbide",
+      "environment-trait-liquid-carbide",
+      "environment-trait-liquid-level-lakes",
+      "environment-trait-erosion-ancient",
+      "environment-trait-habitability-fertile",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-aquifer",
+      "environment-trait-climate-hot",
+      "environment-trait-terrain-rugged",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-lush",
+      "environment-trait-flora-fungal",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-1",
+      "environment-trait-structure-mine-1",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

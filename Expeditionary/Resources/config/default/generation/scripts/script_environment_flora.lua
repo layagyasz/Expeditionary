@@ -2,12 +2,12 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 Color4=luanet.import_type('OpenTK.Mathematics.Color4')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 SolarOutputOffsetColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+SolarOutputOffsetColoring')
 StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 
-Native = MapEnvironmentModifier()
-Native.Key = "environment-modifier-flora-native"
+Native = MapEnvironmentTrait()
+Native.Key = "environment-trait-flora-native"
 Native.Name = "Native"
 function Native:Apply(environment)
 	local appearance = environment.Appearance;
@@ -23,8 +23,8 @@ function Native:Apply(environment)
 	appearance.Foliage.ColdWet = SolarOutputOffsetColoring(Color4(0.03, 0.8, 0.3, 1))
 end
 
-Terran = MapEnvironmentModifier()
-Terran.Key = "environment-modifier-flora-terran"
+Terran = MapEnvironmentTrait()
+Terran.Key = "environment-trait-flora-terran"
 Terran.Name = "Terran"
 function Terran:Apply(environment)
 	local appearance = environment.Appearance;
@@ -40,8 +40,8 @@ function Terran:Apply(environment)
 	appearance.Foliage.ColdWet = StaticColoring(Color4(0.13, 0.22, 0.2, 1))
 end
 
-Exotic = MapEnvironmentModifier()
-Exotic.Key = "environment-modifier-flora-exotic"
+Exotic = MapEnvironmentTrait()
+Exotic.Key = "environment-trait-flora-exotic"
 Exotic.Name = "Exotic"
 function Exotic:Apply(environment)
 	local appearance = environment.Appearance;
@@ -57,8 +57,8 @@ function Exotic:Apply(environment)
 	appearance.Foliage.ColdWet = StaticColoring(Color4(0.25, 0.21, 0.3, 1))
 end
 
-Fungal = MapEnvironmentModifier()
-Fungal.Key = "environment-modifier-flora-fungal"
+Fungal = MapEnvironmentTrait()
+Fungal.Key = "environment-trait-flora-fungal"
 Fungal.Name = "Fungal"
 function Fungal:Apply(environment)
 	local appearance = environment.Appearance;
@@ -74,8 +74,8 @@ function Fungal:Apply(environment)
 	appearance.Foliage.ColdWet = StaticColoring(Color4(0.7, 0.14, 0.14, 1))
 end
 
-Crystalline = MapEnvironmentModifier()
-Crystalline.Key = "environment-modifier-flora-crystalline"
+Crystalline = MapEnvironmentTrait()
+Crystalline.Key = "environment-trait-flora-crystalline"
 Crystalline.Name = "Crystalline"
 function Crystalline:Apply(environment)
 	local appearance = environment.Appearance;

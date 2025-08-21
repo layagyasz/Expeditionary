@@ -2,11 +2,17 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 Color4=luanet.import_type('OpenTK.Mathematics.Color4')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 
-Volcanic = MapEnvironmentModifier()
-Volcanic.Key = "environment-modifier-special-volcanic"
+NoOp = MapEnvironmentTrait()
+NoOp.Key = "environment-trait-special-noop"
+NoOp.Name = "NA"
+function NoOp:Apply(environment)
+end
+
+Volcanic = MapEnvironmentTrait()
+Volcanic.Key = "environment-trait-special-volcanic"
 Volcanic.Name = "Volcanic"
 function Volcanic:Apply(environment)
 	local appearance = environment.Appearance
@@ -19,5 +25,5 @@ function Volcanic:Apply(environment)
 end
 
 function Load()
-	return { Volcanic }
+	return { NoOp, Volcanic }
 end

@@ -1,30 +1,30 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 
-Bare = MapEnvironmentModifier()
-Bare.Key = "environment-modifier-groundcover-bare"
+Bare = MapEnvironmentTrait()
+Bare.Key = "environment-trait-groundcover-bare"
 Bare.Name = "Bare"
 function Bare:Apply(environment)
 	environment.Parameters.Terrain.GroundCoverCover = 0
 end
 
-Sparse = MapEnvironmentModifier()
-Sparse.Key = "environment-modifier-groundcover-sparse"
+Sparse = MapEnvironmentTrait()
+Sparse.Key = "environment-trait-groundcover-sparse"
 Sparse.Name = "Sparse"
 function Sparse:Apply(environment)
 	environment.Parameters.Terrain.GroundCoverCover = 0.25
 end
 
-Balanced = MapEnvironmentModifier()
-Balanced.Key = "environment-modifier-groundcover-balanced"
+Balanced = MapEnvironmentTrait()
+Balanced.Key = "environment-trait-groundcover-balanced"
 Balanced.Name = "Balanced"
 function Balanced:Apply(environment)
 	environment.Parameters.Terrain.GroundCoverCover = 0.5
 end
 
-Blanket = MapEnvironmentModifier()
-Blanket.Key = "environment-modifier-groundcover-blanket"
+Blanket = MapEnvironmentTrait()
+Blanket.Key = "environment-trait-groundcover-blanket"
 Blanket.Name = "Blanket"
 function Blanket:Apply(environment)
 	environment.Parameters.Terrain.GroundCoverCover = 0.9

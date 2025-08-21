@@ -1,15 +1,15 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 
-Forest = MapEnvironmentModifier()
-Forest.Key = "environment-modifier-biome-forest"
+Forest = MapEnvironmentTrait()
+Forest.Key = "environment-trait-biome-forest"
 Forest.Name = "Forest"
 function Forest:Apply(environment)
 end
 
-Lush = MapEnvironmentModifier()
-Lush.Key = "environment-modifier-biome-lush"
+Lush = MapEnvironmentTrait()
+Lush.Key = "environment-trait-biome-lush"
 Lush.Name = "Lush"
 function Lush:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -21,8 +21,8 @@ function Lush:Apply(environment)
 	terrain.SoilC.Weight = terrain.SoilC.Weight * 2
 end
 
-Field = MapEnvironmentModifier()
-Field.Key = "environment-modifier-biome-field"
+Field = MapEnvironmentTrait()
+Field.Key = "environment-trait-biome-field"
 Field.Name = "Field"
 function Field:Apply(environment)
 	local terrain = environment.Parameters.Terrain

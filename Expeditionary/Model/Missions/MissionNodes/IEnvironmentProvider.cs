@@ -1,9 +1,9 @@
-﻿using Expeditionary.Model.Mapping;
+﻿using Expeditionary.Model.Mapping.Environments;
 
 namespace Expeditionary.Model.Missions.MissionNodes
 {
     public interface IEnvironmentProvider
     {
-        MapEnvironmentDefinition Get(Random random);
+        MapEnvironmentDefinition Get(MissionGenerationResources resources);
     }
 }

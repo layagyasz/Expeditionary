@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Appearance;
+using Expeditionary.Model.Mapping.Environments;
 using Expeditionary.Model.Mapping.Generator;
 using OpenTK.Mathematics;
 

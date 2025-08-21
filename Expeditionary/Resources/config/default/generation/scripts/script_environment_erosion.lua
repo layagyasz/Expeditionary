@@ -1,9 +1,9 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 
-None = MapEnvironmentModifier()
-None.Key = "environment-modifier-erosion-none"
+None = MapEnvironmentTrait()
+None.Key = "environment-trait-erosion-none"
 None.Name = "No Erosion"
 function None:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -11,8 +11,8 @@ function None:Apply(environment)
 	terrain.ElevationLayer.Noise.Persistence = 0.7
 end
 
-Young = MapEnvironmentModifier()
-Young.Key = "environment-modifier-erosion-young"
+Young = MapEnvironmentTrait()
+Young.Key = "environment-trait-erosion-young"
 Young.Name = "Young"
 function Young:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -20,8 +20,8 @@ function Young:Apply(environment)
 	terrain.ElevationLayer.Noise.Persistence = 0.6
 end
 
-Old = MapEnvironmentModifier()
-Old.Key = "environment-modifier-erosion-old"
+Old = MapEnvironmentTrait()
+Old.Key = "environment-trait-erosion-old"
 Old.Name = "Old"
 function Old:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -30,8 +30,8 @@ function Old:Apply(environment)
 end
 
 
-Ancient = MapEnvironmentModifier()
-Ancient.Key = "environment-modifier-erosion-ancient"
+Ancient = MapEnvironmentTrait()
+Ancient.Key = "environment-trait-erosion-ancient"
 Ancient.Name = "Ancient"
 function Ancient:Apply(environment)
 	local terrain = environment.Parameters.Terrain

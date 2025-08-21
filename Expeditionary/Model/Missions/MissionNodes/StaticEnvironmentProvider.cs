@@ -1,12 +1,17 @@
-﻿using Expeditionary.Model.Mapping;
+﻿using Cardamom.Json;
+using Expeditionary.Model.Mapping.Environments;
+using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Missions.MissionNodes
 {
-    public record class StaticEnvironmentProvider(MapEnvironmentDefinition environment) : IEnvironmentProvider
+    public record class StaticEnvironmentProvider : IEnvironmentProvider
     {
-        public MapEnvironmentDefinition Get(Random random)
+        [JsonConverter(typeof(ReferenceJsonConverter))]
+        public MapEnvironmentDefinition Environment { get; set; } = new();
+
+        public MapEnvironmentDefinition Get(MissionGenerationResources resources)
         {
-            return environment;
+            return Environment;
         }
     }
 }

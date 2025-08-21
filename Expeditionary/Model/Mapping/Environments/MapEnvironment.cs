@@ -1,9 +1,9 @@
 ﻿using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Mapping.Generator;
 
-namespace Expeditionary.Model.Mapping
+namespace Expeditionary.Model.Mapping.Environments
 {
-    public record class MapEnvironment
+    public record class MapEnvironment(string Name)
     {
         public MapAppearance Appearance { get; set; } = new();
         public MapGenerator.Parameters Parameters { get; set; } = new();

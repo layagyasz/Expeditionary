@@ -2,26 +2,26 @@
   {
     "$id": "environment-hellespont",
     "Name": "Hellespont",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-m",
-      "environment-modifier-landform-lithic-c",
-      "environment-modifier-composition-silicous-terran",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-inland",
-      "environment-modifier-erosion-ancient",
-      "environment-modifier-habitability-nominal",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-desert",
-      "environment-modifier-climate-hot",
-      "environment-modifier-terrain-rugged",
-      "environment-modifier-terrain-very-smooth",
-      "environment-modifier-biome-field",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-0",
-      "environment-modifier-structure-mine-1",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-m",
+      "environment-trait-landform-lithic-c",
+      "environment-trait-composition-silicous-terran",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-inland",
+      "environment-trait-erosion-ancient",
+      "environment-trait-habitability-nominal",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-desert",
+      "environment-trait-climate-hot",
+      "environment-trait-terrain-rugged",
+      "environment-trait-terrain-very-smooth",
+      "environment-trait-biome-field",
+      "environment-trait-flora-native",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-0",
+      "environment-trait-structure-mine-1",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

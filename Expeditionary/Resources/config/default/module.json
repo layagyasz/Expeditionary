@@ -1,5 +1,5 @@
 {
-  "MapEnvironmentModifiers": [ "resources/config/default/generation/scripts::*.lua" ],
+  "MapEnvironmentTraits": [ "resources/config/default/generation/scripts::*.lua" ],
   "Environments": [ "resources/config/default/generation/environments::*json" ],
   "UnitTraits": [ "resources/config/default/units/traits::*.json" ],
   "UnitWeapons": [ "resources/config/default/units/weapons::*.json" ],
@@ -7,5 +7,6 @@
   "Formations": [ "resources/config/default/formations::*.json" ],
   "Factions": [ "resources/config/default/factions::*.json" ],
   "FactionFormations": [ "resources/config/default/factionformations::*.json" ],
-  "SectorNamings": [ "resources/config/default/languages/sectors::*.json" ]
+  "SectorNamings": [ "resources/config/default/languages/sectors::*.json" ],
+  "MapEnvironmentGenerator": "resources/config/default/generation/map_environment_generator.json"
 }

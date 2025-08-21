@@ -2,26 +2,26 @@
   {
     "$id": "environment-jasper",
     "Name": "Jasper",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-k",
-      "environment-modifier-landform-lithic-c",
-      "environment-modifier-composition-ferrous",
-      "environment-modifier-liquid-ferrous",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-young",
-      "environment-modifier-habitability-nominal",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-temperate",
-      "environment-modifier-climate-average",
-      "environment-modifier-terrain-very-rough",
-      "environment-modifier-terrain-plateau",
-      "environment-modifier-biome-forest",
-      "environment-modifier-flora-crystalline",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-0",
-      "environment-modifier-structure-mine-2",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-k",
+      "environment-trait-landform-lithic-c",
+      "environment-trait-composition-ferrous",
+      "environment-trait-liquid-ferrous",
+      "environment-trait-liquid-level-lakes",
+      "environment-trait-erosion-young",
+      "environment-trait-habitability-nominal",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-temperate",
+      "environment-trait-climate-average",
+      "environment-trait-terrain-very-rough",
+      "environment-trait-terrain-plateau",
+      "environment-trait-biome-forest",
+      "environment-trait-flora-crystalline",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-0",
+      "environment-trait-structure-mine-2",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

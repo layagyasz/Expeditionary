@@ -2,26 +2,26 @@
   {
     "$id": "environment-archangel",
     "Name": "Archangel",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-white-dwarf",
-      "environment-modifier-landform-lithic-a",
-      "environment-modifier-composition-silicous-telluric",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-young",
-      "environment-modifier-habitability-habitable",
-      "environment-modifier-groundcover-blanket",
-      "environment-modifier-climate-cold",
-      "environment-modifier-climate-average",
-      "environment-modifier-terrain-rough",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-forest",
-      "environment-modifier-flora-terran",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-1",
-      "environment-modifier-structure-mine-1",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-white-dwarf",
+      "environment-trait-landform-lithic-a",
+      "environment-trait-composition-silicous-telluric",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-lakes",
+      "environment-trait-erosion-young",
+      "environment-trait-habitability-habitable",
+      "environment-trait-groundcover-blanket",
+      "environment-trait-climate-cold",
+      "environment-trait-climate-average",
+      "environment-trait-terrain-rough",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-forest",
+      "environment-trait-flora-terran",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-1",
+      "environment-trait-structure-mine-1",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

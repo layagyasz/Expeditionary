@@ -3,21 +3,21 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
 CityGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.CityGenerator+LayerParameters')
 EdgeType=luanet.import_type('Expeditionary.Model.Mapping.EdgeType')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampler')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
 
 
-Habitation0 = MapEnvironmentModifier()
-Habitation0.Key = "environment-modifier-structure-habitation-0"
+Habitation0 = MapEnvironmentTrait()
+Habitation0.Key = "environment-trait-structure-habitation-0"
 Habitation0.Name = "Uninhabited"
 function Habitation0:Apply(environment)
 end
 
-Habitation1 = MapEnvironmentModifier()
-Habitation1.Key = "environment-modifier-structure-habitation-1"
+Habitation1 = MapEnvironmentTrait()
+Habitation1.Key = "environment-trait-structure-habitation-1"
 Habitation1.Name = "Villages"
 function Habitation1:Apply(environment)
 	local parameters = environment.Parameters
@@ -45,8 +45,8 @@ function Habitation1:Apply(environment)
 	parameters.Cities.Layers:Add(industrial)
 end
 
-Habitation2 = MapEnvironmentModifier()
-Habitation2.Key = "environment-modifier-structure-habitation-2"
+Habitation2 = MapEnvironmentTrait()
+Habitation2.Key = "environment-trait-structure-habitation-2"
 Habitation2.Name = "Small Towns"
 function Habitation2:Apply(environment)
 	local parameters = environment.Parameters
@@ -74,8 +74,8 @@ function Habitation2:Apply(environment)
 	parameters.Cities.Layers:Add(industrial)
 end
 
-Habitation3 = MapEnvironmentModifier()
-Habitation3.Key = "environment-modifier-structure-habitation-3"
+Habitation3 = MapEnvironmentTrait()
+Habitation3.Key = "environment-trait-structure-habitation-3"
 Habitation3.Name = "Big Towns"
 function Habitation3:Apply(environment)
 	local parameters = environment.Parameters
@@ -103,8 +103,8 @@ function Habitation3:Apply(environment)
 	parameters.Cities.Layers:Add(industrial)
 end
 
-Habitation4 = MapEnvironmentModifier()
-Habitation4.Key = "environment-modifier-structure-habitation-4"
+Habitation4 = MapEnvironmentTrait()
+Habitation4.Key = "environment-trait-structure-habitation-4"
 Habitation4.Name = "City"
 function Habitation4:Apply(environment)
 	local parameters = environment.Parameters
@@ -132,8 +132,8 @@ function Habitation4:Apply(environment)
 	parameters.Cities.Layers:Add(industrial)
 end
 
-Habitation5 = MapEnvironmentModifier()
-Habitation5.Key = "environment-modifier-structure-habitation-5"
+Habitation5 = MapEnvironmentTrait()
+Habitation5.Key = "environment-trait-structure-habitation-5"
 Habitation5.Name = "Metro"
 function Habitation5:Apply(environment)
 	local parameters = environment.Parameters
@@ -161,14 +161,14 @@ function Habitation5:Apply(environment)
 	parameters.Cities.Layers:Add(industrial)
 end
 
-Farm0 = MapEnvironmentModifier()
-Farm0.Key = "environment-modifier-structure-farm-0"
+Farm0 = MapEnvironmentTrait()
+Farm0.Key = "environment-trait-structure-farm-0"
 Farm0.Name = "Unfarmed"
 function Farm0:Apply(environment)
 end
 
-Farm1 = MapEnvironmentModifier()
-Farm1.Key = "environment-modifier-structure-farm-1"
+Farm1 = MapEnvironmentTrait()
+Farm1.Key = "environment-trait-structure-farm-1"
 Farm1.Name = "Sparsely Farmed"
 function Farm1:Apply(environment)
 	local parameters = environment.Parameters
@@ -185,8 +185,8 @@ function Farm1:Apply(environment)
 	parameters.Cities.Layers:Add(farming)
 end
 
-Farm2 = MapEnvironmentModifier()
-Farm2.Key = "environment-modifier-structure-farm-2"
+Farm2 = MapEnvironmentTrait()
+Farm2.Key = "environment-trait-structure-farm-2"
 Farm2.Name = "Moderately Farmed"
 function Farm2:Apply(environment)
 	local parameters = environment.Parameters
@@ -203,8 +203,8 @@ function Farm2:Apply(environment)
 	parameters.Cities.Layers:Add(farming)
 end
 
-Farm3 = MapEnvironmentModifier()
-Farm3.Key = "environment-modifier-structure-farm-3"
+Farm3 = MapEnvironmentTrait()
+Farm3.Key = "environment-trait-structure-farm-3"
 Farm3.Name = "Densely Farmed"
 function Farm3:Apply(environment)
 	local parameters = environment.Parameters
@@ -221,14 +221,14 @@ function Farm3:Apply(environment)
 	parameters.Cities.Layers:Add(farming)
 end
 
-Mine0 = MapEnvironmentModifier()
-Mine0.Key = "environment-modifier-structure-mine-0"
+Mine0 = MapEnvironmentTrait()
+Mine0.Key = "environment-trait-structure-mine-0"
 Mine0.Name = "Unmined"
 function Mine0:Apply(environment)
 end
 
-Mine1 = MapEnvironmentModifier()
-Mine1.Key = "environment-modifier-structure-mine-1"
+Mine1 = MapEnvironmentTrait()
+Mine1.Key = "environment-trait-structure-mine-1"
 Mine1.Name = "Sparsely Mined"
 function Mine1:Apply(environment)
 	local parameters = environment.Parameters
@@ -246,8 +246,8 @@ function Mine1:Apply(environment)
 	parameters.Cities.Layers:Add(mining)
 end
 
-Mine2 = MapEnvironmentModifier()
-Mine2.Key = "environment-modifier-structure-mine-2"
+Mine2 = MapEnvironmentTrait()
+Mine2.Key = "environment-trait-structure-mine-2"
 Mine2.Name = "Moderately Mined"
 function Mine2:Apply(environment)
 	local parameters = environment.Parameters
@@ -265,8 +265,8 @@ function Mine2:Apply(environment)
 	parameters.Cities.Layers:Add(mining)
 end
 
-Mine3 = MapEnvironmentModifier()
-Mine3.Key = "environment-modifier-structure-mine-3"
+Mine3 = MapEnvironmentTrait()
+Mine3.Key = "environment-trait-structure-mine-3"
 Mine3.Name = "Densely Mined"
 function Mine3:Apply(environment)
 	local parameters = environment.Parameters
@@ -284,8 +284,8 @@ function Mine3:Apply(environment)
 	parameters.Cities.Layers:Add(mining)
 end
 
-Infrastructure1 = MapEnvironmentModifier()
-Infrastructure1.Key = "environment-modifier-structure-infrastructure-1"
+Infrastructure1 = MapEnvironmentTrait()
+Infrastructure1.Key = "environment-trait-structure-infrastructure-1"
 Infrastructure1.Name = "Basic Infrastructure"
 function Infrastructure1:Apply(environment)
 	local parameters = environment.Parameters

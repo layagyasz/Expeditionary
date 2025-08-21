@@ -57,10 +57,11 @@ namespace Expeditionary.Model.Missions.MissionTypes
                 players.Add(setup);
             }
             var zoneChoice = ZoneOptions[resources.Random.Next(ZoneOptions.Count)];
+            var environment = Environment!.Get(resources);
             return
                 new Mission(
                     new MapSetup(
-                        Environment!.Get(resources.Random),
+                        environment,
                         new Vector2i(100, 100),
                         new List<CityGenerator.LayerParameters>()
                         { 

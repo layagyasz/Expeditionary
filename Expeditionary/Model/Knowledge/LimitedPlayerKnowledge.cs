@@ -1,5 +1,4 @@
-﻿using Cardamom;
-using Cardamom.Collections;
+﻿using Cardamom.Collections;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;

@@ -2,27 +2,27 @@
   {
     "$id": "environment-kedromon-yer",
     "Name": "Kedromon Yer",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-g",
-      "environment-modifier-landform-lithic-a",
-      "environment-modifier-composition-silicous-terran",
-      "environment-modifier-special-volcanic",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-lakes",
-      "environment-modifier-erosion-old",
-      "environment-modifier-habitability-fertile",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-cold",
-      "environment-modifier-climate-semiarid",
-      "environment-modifier-terrain-flat",
-      "environment-modifier-terrain-plateau",
-      "environment-modifier-biome-lush",
-      "environment-modifier-flora-terran",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-2",
-      "environment-modifier-structure-mine-0",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-g",
+      "environment-trait-landform-lithic-a",
+      "environment-trait-composition-silicous-terran",
+      "environment-trait-special-volcanic",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-lakes",
+      "environment-trait-erosion-old",
+      "environment-trait-habitability-fertile",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-cold",
+      "environment-trait-climate-semiarid",
+      "environment-trait-terrain-flat",
+      "environment-trait-terrain-plateau",
+      "environment-trait-biome-lush",
+      "environment-trait-flora-terran",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-2",
+      "environment-trait-structure-mine-0",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

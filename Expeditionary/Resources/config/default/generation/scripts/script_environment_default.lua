@@ -1,12 +1,12 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
-Default = MapEnvironmentModifier()
-Default.Key = "environment-modifier-default"
+Default = MapEnvironmentTrait()
+Default.Key = "environment-trait-default"
 Default.Name = "Default"
 function Default:Apply(environment)
 	local parameters = environment.Parameters

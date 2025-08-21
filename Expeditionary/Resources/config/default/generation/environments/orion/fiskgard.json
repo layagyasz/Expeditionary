@@ -2,26 +2,26 @@
   {
     "$id": "environment-fiskgard",
     "Name": "Fiskgard",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-f",
-      "environment-modifier-landform-lithic-c",
-      "environment-modifier-composition-silicous-terran",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-islands",
-      "environment-modifier-erosion-young",
-      "environment-modifier-habitability-habitable",
-      "environment-modifier-climate-wet",
-      "environment-modifier-groundcover-sparse",
-      "environment-modifier-climate-cool",
-      "environment-modifier-terrain-very-rough",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-forest",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-2",
-      "environment-modifier-structure-farm-2",
-      "environment-modifier-structure-mine-0",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-f",
+      "environment-trait-landform-lithic-c",
+      "environment-trait-composition-silicous-terran",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-islands",
+      "environment-trait-erosion-young",
+      "environment-trait-habitability-habitable",
+      "environment-trait-climate-wet",
+      "environment-trait-groundcover-sparse",
+      "environment-trait-climate-cool",
+      "environment-trait-terrain-very-rough",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-forest",
+      "environment-trait-flora-native",
+      "environment-trait-structure-habitation-2",
+      "environment-trait-structure-farm-2",
+      "environment-trait-structure-mine-0",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

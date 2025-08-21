@@ -1,9 +1,9 @@
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 
-Dead = MapEnvironmentModifier()
-Dead.Key = "environment-modifier-habitability-dead"
+Dead = MapEnvironmentTrait()
+Dead.Key = "environment-trait-habitability-dead"
 Dead.Name = "Dead"
 function Dead:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -15,8 +15,8 @@ function Dead:Apply(environment)
 	terrain.SoilC.Weight = 0
 end
 
-Nominal = MapEnvironmentModifier()
-Nominal.Key = "environment-modifier-habitability-nominal"
+Nominal = MapEnvironmentTrait()
+Nominal.Key = "environment-trait-habitability-nominal"
 Nominal.Name = "Nominal"
 function Nominal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -28,8 +28,8 @@ function Nominal:Apply(environment)
 	terrain.SoilC.Weight = 0.5
 end
 
-Marginal = MapEnvironmentModifier()
-Marginal.Key = "environment-modifier-habitability-marginal"
+Marginal = MapEnvironmentTrait()
+Marginal.Key = "environment-trait-habitability-marginal"
 Marginal.Name = "Marginal"
 function Marginal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -41,8 +41,8 @@ function Marginal:Apply(environment)
 	terrain.SoilC.Weight = 0.2
 end
 
-Habitable = MapEnvironmentModifier()
-Habitable.Key = "environment-modifier-habitability-habitable"
+Habitable = MapEnvironmentTrait()
+Habitable.Key = "environment-trait-habitability-habitable"
 Habitable.Name = "Habitable"
 function Habitable:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -54,8 +54,8 @@ function Habitable:Apply(environment)
 	terrain.SoilC.Weight = 1
 end
 
-Fertile = MapEnvironmentModifier()
-Fertile.Key = "environment-modifier-habitability-fertile"
+Fertile = MapEnvironmentTrait()
+Fertile.Key = "environment-trait-habitability-fertile"
 Fertile.Name = "Fertile"
 function Fertile:Apply(environment)
 	local terrain = environment.Parameters.Terrain

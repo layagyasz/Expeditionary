@@ -2,12 +2,12 @@ luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 luanet.load_assembly('OpenTK.Mathematics', 'OpenTK.Mathematics')
 
 Color4=luanet.import_type('OpenTK.Mathematics.Color4')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColoring+StaticColoring')
 Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
-Carbide = MapEnvironmentModifier()
-Carbide.Key = "environment-modifier-composition-carbide"
+Carbide = MapEnvironmentTrait()
+Carbide.Key = "environment-trait-composition-carbide"
 Carbide.Name = "Carbide"
 function Carbide:Apply(environment)
 	local appearance = environment.Appearance;
@@ -23,8 +23,8 @@ function Carbide:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.21, 0.21, 1))
 end
 
-Cupric = MapEnvironmentModifier()
-Cupric.Key = "environment-modifier-composition-cupric"
+Cupric = MapEnvironmentTrait()
+Cupric.Key = "environment-trait-composition-cupric"
 Cupric.Name = "Cupric"
 function Cupric:Apply(environment)
 	local appearance = environment.Appearance;
@@ -40,8 +40,8 @@ function Cupric:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.18, 0.23, 0.18, 1))
 end
 
-Ferrous = MapEnvironmentModifier()
-Ferrous.Key = "environment-modifier-composition-ferrous"
+Ferrous = MapEnvironmentTrait()
+Ferrous.Key = "environment-trait-composition-ferrous"
 Ferrous.Name = "Ferrous"
 function Ferrous:Apply(environment)
 	local appearance = environment.Appearance;
@@ -59,8 +59,8 @@ function Ferrous:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
 end
 
-SilicousFerrous = MapEnvironmentModifier()
-SilicousFerrous.Key = "environment-modifier-composition-silicous-ferrous"
+SilicousFerrous = MapEnvironmentTrait()
+SilicousFerrous.Key = "environment-trait-composition-silicous-ferrous"
 SilicousFerrous.Name = "Silicous Ferrous"
 function SilicousFerrous:Apply(environment)
 	local appearance = environment.Appearance;
@@ -76,8 +76,8 @@ function SilicousFerrous:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
 end
 
-SilicousMixed = MapEnvironmentModifier()
-SilicousMixed.Key = "environment-modifier-composition-silicous-mixed"
+SilicousMixed = MapEnvironmentTrait()
+SilicousMixed.Key = "environment-trait-composition-silicous-mixed"
 SilicousMixed.Name = "Silicous Mixed"
 function SilicousMixed:Apply(environment)
 	local appearance = environment.Appearance;
@@ -94,8 +94,8 @@ function SilicousMixed:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
 end
 
-SilicousTelluric = MapEnvironmentModifier()
-SilicousTelluric.Key = "environment-modifier-composition-silicous-telluric"
+SilicousTelluric = MapEnvironmentTrait()
+SilicousTelluric.Key = "environment-trait-composition-silicous-telluric"
 SilicousTelluric.Name = "Silicous Telluric"
 function SilicousTelluric:Apply(environment)
 	local appearance = environment.Appearance;
@@ -111,8 +111,8 @@ function SilicousTelluric:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.21, 0.21, 1))
 end
 
-SilicousTerran = MapEnvironmentModifier()
-SilicousTerran.Key = "environment-modifier-composition-silicous-terran"
+SilicousTerran = MapEnvironmentTrait()
+SilicousTerran.Key = "environment-trait-composition-silicous-terran"
 SilicousTerran.Name = "Silicous Terran"
 function SilicousTerran:Apply(environment)
 	local appearance = environment.Appearance;
@@ -130,8 +130,8 @@ function SilicousTerran:Apply(environment)
 	appearance.Soil.C = StaticColoring(Color4(0.23, 0.19, 0.18, 1))
 end
 
-Sulfurous = MapEnvironmentModifier()
-Sulfurous.Key = "environment-modifier-composition-sulfurous"
+Sulfurous = MapEnvironmentTrait()
+Sulfurous.Key = "environment-trait-composition-sulfurous"
 Sulfurous.Name = "Sulfurous"
 function Sulfurous:Apply(environment)
 	local appearance = environment.Appearance;

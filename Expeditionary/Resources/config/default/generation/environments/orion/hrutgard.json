@@ -2,26 +2,26 @@
   {
     "$id": "environment-hrutgard",
     "Name": "Hrutgard",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-k",
-      "environment-modifier-landform-lithic-b",
-      "environment-modifier-composition-silicous-ferrous",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-inland",
-      "environment-modifier-erosion-none",
-      "environment-modifier-habitability-marginal",
-      "environment-modifier-groundcover-sparse",
-      "environment-modifier-climate-cold",
-      "environment-modifier-climate-arid",
-      "environment-modifier-terrain-rough",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-field",
-      "environment-modifier-flora-terran",
-      "environment-modifier-structure-habitation-1",
-      "environment-modifier-structure-farm-1",
-      "environment-modifier-structure-mine-3",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-k",
+      "environment-trait-landform-lithic-b",
+      "environment-trait-composition-silicous-ferrous",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-inland",
+      "environment-trait-erosion-none",
+      "environment-trait-habitability-marginal",
+      "environment-trait-groundcover-sparse",
+      "environment-trait-climate-cold",
+      "environment-trait-climate-arid",
+      "environment-trait-terrain-rough",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-field",
+      "environment-trait-flora-terran",
+      "environment-trait-structure-habitation-1",
+      "environment-trait-structure-farm-1",
+      "environment-trait-structure-mine-3",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

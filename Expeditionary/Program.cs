@@ -22,6 +22,7 @@ using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Textures.Generation;
 using Expeditionary.View.Textures.Generation.Combat.Units;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -103,13 +104,17 @@ namespace Expeditionary
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
 
             var random = new Random();
-            var environmentDefinition = module.Environments.Values.ToList()[random.Next(module.Environments.Count)];
-            Console.WriteLine(environmentDefinition.Key);
-
+            var missionResources = 
+                new MissionGenerationResources(
+                    module.MapEnvironmentGenerator, new(module.FactionFormations, module.Formations), random);
             var missionNode =
                 new AssaultMissionNode()
                 {
-                    Environment = new StaticEnvironmentProvider(environmentDefinition),
+                    Environment = new RandomEnvironmentProvider()
+                    {
+                        SectorNaming = module.SectorNamings["sector-naming-default"],
+                        Sectors = ImmutableList.Create(1, 2, 3, 4, 5)
+                    },
                     Difficulty = new() { MissionDifficulty.Medium },
                     Scale = new() { MissionScale.Medium },
                     Attackers = new() { module.Factions["faction-hyacinth"] },
@@ -131,7 +136,8 @@ namespace Expeditionary
                             }
                         }
                 };
-            var mission = missionNode.Create(new(new(module.FactionFormations, module.Formations), random));
+            var mission = missionNode.Create(missionResources);
+            Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
             var player = mission.Players.First().Player;
             var creationContext = new CreationContext(player, IsTest: true);
             (var match, var appearance) = mission.Create(random, creationContext);

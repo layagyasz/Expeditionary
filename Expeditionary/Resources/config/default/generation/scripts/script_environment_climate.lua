@@ -2,10 +2,10 @@ luanet.load_assembly('Cardamom', 'Cardamom.Mathematics')
 luanet.load_assembly('Expeditionary', 'Expeditionary.Model')
 
 Interval=luanet.import_type('Cardamom.Mathematics.Interval')
-MapEnvironmentModifier=luanet.import_type('Expeditionary.Model.Mapping.MapEnvironmentModifier')
+MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments.MapEnvironmentTrait')
 
-Desert = MapEnvironmentModifier()
-Desert.Key = "environment-modifier-climate-desert"
+Desert = MapEnvironmentTrait()
+Desert.Key = "environment-trait-climate-desert"
 Desert.Name = "Desert"
 function Desert:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -18,8 +18,8 @@ function Desert:Apply(environment)
 	terrain.MoistureRange = Interval(0, 0.2)
 end
 
-Arid = MapEnvironmentModifier()
-Arid.Key = "environment-modifier-climate-arid"
+Arid = MapEnvironmentTrait()
+Arid.Key = "environment-trait-climate-arid"
 Arid.Name = "Arid"
 function Arid:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -27,48 +27,48 @@ function Arid:Apply(environment)
 	terrain.MoistureRange = Interval(0.0, 0.2)
 end
 
-SemiArid = MapEnvironmentModifier()
-SemiArid.Key = "environment-modifier-climate-semiarid"
+SemiArid = MapEnvironmentTrait()
+SemiArid.Key = "environment-trait-climate-semiarid"
 SemiArid.Name = "Semi Arid"
 function SemiArid:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.MoistureRange = Interval(0.2, 0.4)
 end
 
-Average = MapEnvironmentModifier()
-Average.Key = "environment-modifier-climate-average"
+Average = MapEnvironmentTrait()
+Average.Key = "environment-trait-climate-average"
 Average.Name = "Average"
 function Average:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.MoistureRange = Interval(0.4, 0.6)
 end
 
-SemiWet = MapEnvironmentModifier()
-SemiWet.Key = "environment-modifier-climate-semiwet"
+SemiWet = MapEnvironmentTrait()
+SemiWet.Key = "environment-trait-climate-semiwet"
 SemiWet.Name = "Semi Wet"
 function SemiWet:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.MoistureRange = Interval(0.6, 0.8)
 end
 
-Wet = MapEnvironmentModifier()
-Wet.Key = "environment-modifier-climate-wet"
+Wet = MapEnvironmentTrait()
+Wet.Key = "environment-trait-climate-wet"
 Wet.Name = "Wet"
 function Wet:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.MoistureRange = Interval(0.8, 1.0)
 end
 
-Aquifer = MapEnvironmentModifier()
-Aquifer.Key = "environment-modifier-climate-aquifer"
+Aquifer = MapEnvironmentTrait()
+Aquifer.Key = "environment-trait-climate-aquifer"
 Aquifer.Name = "Aquifer"
 function Aquifer:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.MoistureRange = Interval(0.0, 1.0)
 end
 
-Cold = MapEnvironmentModifier()
-Cold.Key = "environment-modifier-climate-cold"
+Cold = MapEnvironmentTrait()
+Cold.Key = "environment-trait-climate-cold"
 Cold.Name = "Cold"
 function Cold:Apply(environment)
 	local terrain = environment.Parameters.Terrain
@@ -76,32 +76,32 @@ function Cold:Apply(environment)
 	terrain.GroundCoverCover = 0.2
 end
 
-Cool = MapEnvironmentModifier()
-Cool.Key = "environment-modifier-climate-cool"
+Cool = MapEnvironmentTrait()
+Cool.Key = "environment-trait-climate-cool"
 Cool.Name = "Cool"
 function Cool:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.TemperatureRange = Interval(0.2, 0.4)
 end
 
-Temperate = MapEnvironmentModifier()
-Temperate.Key = "environment-modifier-climate-temperate"
+Temperate = MapEnvironmentTrait()
+Temperate.Key = "environment-trait-climate-temperate"
 Temperate.Name = "Temperate"
 function Temperate:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.TemperatureRange = Interval(0.4, 0.6)
 end
 
-Warm = MapEnvironmentModifier()
-Warm.Key = "environment-modifier-climate-warm"
+Warm = MapEnvironmentTrait()
+Warm.Key = "environment-trait-climate-warm"
 Warm.Name = "Warm"
 function Warm:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.TemperatureRange = Interval(0.6, 0.8)
 end
 
-Hot = MapEnvironmentModifier()
-Hot.Key = "environment-modifier-climate-hot"
+Hot = MapEnvironmentTrait()
+Hot.Key = "environment-trait-climate-hot"
 Hot.Name = "Hot"
 function Hot:Apply(environment)
 	local terrain = environment.Parameters.Terrain

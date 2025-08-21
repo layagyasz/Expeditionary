@@ -2,26 +2,26 @@
   {
     "$id": "environment-gorrgard",
     "Name": "Gorrgard",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-class-a",
-      "environment-modifier-landform-lithic-a",
-      "environment-modifier-composition-silicous-telluric",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-inland",
-      "environment-modifier-erosion-none",
-      "environment-modifier-habitability-nominal",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-cold",
-      "environment-modifier-climate-arid",
-      "environment-modifier-terrain-rough",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-forest",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-0",
-      "environment-modifier-structure-farm-0",
-      "environment-modifier-structure-mine-3",
-      "environment-modifier-structure-infrastructure-1"
+    "Traits": [
+      "environment-trait-default",
+      "environment-trait-star-class-a",
+      "environment-trait-landform-lithic-a",
+      "environment-trait-composition-silicous-telluric",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-inland",
+      "environment-trait-erosion-none",
+      "environment-trait-habitability-nominal",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-cold",
+      "environment-trait-climate-arid",
+      "environment-trait-terrain-rough",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-forest",
+      "environment-trait-flora-native",
+      "environment-trait-structure-habitation-0",
+      "environment-trait-structure-farm-0",
+      "environment-trait-structure-mine-3",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]

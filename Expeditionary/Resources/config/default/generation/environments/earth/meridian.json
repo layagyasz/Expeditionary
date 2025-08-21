@@ -2,26 +2,26 @@
   {
     "$id": "environment-meridian",
     "Name": "Meridian",
-    "Modifiers": [
-      "environment-modifier-default",
-      "environment-modifier-star-sol",
-      "environment-modifier-landform-lithic-a",
-      "environment-modifier-composition-silicous-terran",
-      "environment-modifier-liquid-water",
-      "environment-modifier-liquid-level-coast",
-      "environment-modifier-erosion-old",
-      "environment-modifier-habitability-habitable",
-      "environment-modifier-groundcover-bare",
-      "environment-modifier-climate-temperate",
-      "environment-modifier-climate-average",
-      "environment-modifier-terrain-flat",
-      "environment-modifier-terrain-rolling",
-      "environment-modifier-biome-forest",
-      "environment-modifier-flora-native",
-      "environment-modifier-structure-habitation-5",
-      "environment-modifier-structure-farm-2",
-      "environment-modifier-structure-mine-0",
-      "environment-modifier-structure-infrastructure-1"
+    "Trait": [
+      "environment-trait-default",
+      "environment-trait-star-sol",
+      "environment-trait-landform-lithic-a",
+      "environment-trait-composition-silicous-terran",
+      "environment-trait-liquid-water",
+      "environment-trait-liquid-level-coast",
+      "environment-trait-erosion-old",
+      "environment-trait-habitability-habitable",
+      "environment-trait-groundcover-bare",
+      "environment-trait-climate-temperate",
+      "environment-trait-climate-average",
+      "environment-trait-terrain-flat",
+      "environment-trait-terrain-rolling",
+      "environment-trait-biome-forest",
+      "environment-trait-flora-native",
+      "environment-trait-structure-habitation-5",
+      "environment-trait-structure-farm-2",
+      "environment-trait-structure-mine-0",
+      "environment-trait-structure-infrastructure-1"
     ]
   }
 ]
