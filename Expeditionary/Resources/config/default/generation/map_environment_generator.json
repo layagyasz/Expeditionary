@@ -2,47 +2,47 @@
   "Groups": [
     {
       "Traits": {
-        "environment-trait-default": 100
+        "environment-trait-default": 1
       }
     },
     {
       "Traits": {
         "environment-trait-star-class-o": 0,
-        "environment-trait-star-class-b": 0.1,
-        "environment-trait-star-class-a": 0.5,
-        "environment-trait-star-class-f": 2.6,
-        "environment-trait-star-class-g": 3.6,
-        "environment-trait-star-class-k": 10.6,
-        "environment-trait-star-class-m": 66,
-        "environment-trait-star-blue-giant": 0.4,
-        "environment-trait-star-red-giant": 0.4,
-        "environment-trait-star-brown-dwarf": 5.3,
-        "environment-trait-star-white-dwarf": 7,
-        "environment-trait-star-sol": 3.5
+        "environment-trait-star-class-b": 0.001,
+        "environment-trait-star-class-a": 0.005,
+        "environment-trait-star-class-f": 0.026,
+        "environment-trait-star-class-g": 0.036,
+        "environment-trait-star-class-k": 0.106,
+        "environment-trait-star-class-m": 0.66,
+        "environment-trait-star-blue-giant": 0.004,
+        "environment-trait-star-red-giant": 0.004,
+        "environment-trait-star-brown-dwarf": 0.053,
+        "environment-trait-star-white-dwarf": 0.07,
+        "environment-trait-star-sol": 0.035
       }
     },
     {
       "Traits": {
-        "environment-trait-landform-crystalline-a": 0,
-        "environment-trait-landform-crystalline-b": 0,
-        "environment-trait-landform-crystalline-c": 0,
-        "environment-trait-landform-crystalline-d": 0,
-        "environment-trait-landform-lithic-a": 0,
-        "environment-trait-landform-lithic-b": 0,
-        "environment-trait-landform-lithic-c": 0,
-        "environment-trait-landform-lithic-d": 0
+        "environment-trait-landform-crystalline-a": 0.05,
+        "environment-trait-landform-crystalline-b": 0.05,
+        "environment-trait-landform-crystalline-c": 0.05,
+        "environment-trait-landform-crystalline-d": 0.05,
+        "environment-trait-landform-lithic-a": 0.2,
+        "environment-trait-landform-lithic-b": 0.2,
+        "environment-trait-landform-lithic-c": 0.2,
+        "environment-trait-landform-lithic-d": 0.2
       }
     },
     {
       "Traits": {
-        "environment-trait-composition-carbide": 3.333,
-        "environment-trait-composition-cupric": 3.333,
-        "environment-trait-composition-ferrous": 3.337,
-        "environment-trait-composition-silicous-ferrous": 15,
-        "environment-trait-composition-silicous-mixed": 15,
-        "environment-trait-composition-silicous-telluric": 15,
-        "environment-trait-composition-silicous-terran": 30,
-        "environment-trait-composition-sulfurous": 15
+        "environment-trait-composition-carbide": 0.03333,
+        "environment-trait-composition-cupric": 0.03333,
+        "environment-trait-composition-ferrous": 0.03337,
+        "environment-trait-composition-silicous-ferrous": 0.15,
+        "environment-trait-composition-silicous-mixed": 0.15,
+        "environment-trait-composition-silicous-telluric": 0.15,
+        "environment-trait-composition-silicous-terran": 0.30,
+        "environment-trait-composition-sulfurous": 0.15
       }
     },
     {
@@ -51,37 +51,57 @@
         "environment-trait-liquid-ferrous": 0,
         "environment-trait-liquid-lava": 0,
         "environment-trait-liquid-sulfurous": 0,
-        "environment-trait-liquid-water": 100
+        "environment-trait-liquid-water": 1
       }
     },
     {
       "Traits": {
-        "environment-trait-liquid-level-islands": 10,
-        "environment-trait-liquid-level-coast": 35,
-        "environment-trait-liquid-level-lakes": 45,
-        "environment-trait-liquid-level-inland": 10
+        "environment-trait-liquid-level-islands": 0.1,
+        "environment-trait-liquid-level-coast": 0.35,
+        "environment-trait-liquid-level-lakes": 0.45,
+        "environment-trait-liquid-level-inland": 0.1
       }
     },
     {
       "Traits": {
-        "environment-trait-erosion-none": 25,
-        "environment-trait-erosion-young": 25,
-        "environment-trait-erosion-old": 25,
-        "environment-trait-erosion-ancient": 25
+        "environment-trait-erosion-none": 0.25,
+        "environment-trait-erosion-young": 0.25,
+        "environment-trait-erosion-old": 0.25,
+        "environment-trait-erosion-ancient": 0.25
       }
     },
     {
       "Traits": {
-        "environment-trait-habitability-dead": 23,
-        "environment-trait-habitability-nominal": 23,
-        "environment-trait-habitability-marginal": 23,
-        "environment-trait-habitability-habitable": 23,
-        "environment-trait-habitability-fertile": 8
+        "environment-trait-habitability-dead": 0.23,
+        "environment-trait-habitability-nominal": 0.23,
+        "environment-trait-habitability-marginal": 0.23,
+        "environment-trait-habitability-habitable": 0.23,
+        "environment-trait-habitability-fertile": 0.8
       }
     },
     {
       "Traits": {
-        "environment-trait-groundcover-bare": 100,
+        "environment-trait-climate-desert": 0.175,
+        "environment-trait-climate-arid": 0.175,
+        "environment-trait-climate-semiarid": 0.175,
+        "environment-trait-climate-average": 0.175,
+        "environment-trait-climate-semiwet": 0.1,
+        "environment-trait-climate-wet": 0.1,
+        "environment-trait-climate-aquifer": 0.1
+      }
+    },
+    {
+      "Traits": {
+        "environment-trait-climate-cold": 0.2,
+        "environment-trait-climate-cool": 0.2,
+        "environment-trait-climate-temperate": 0.2,
+        "environment-trait-climate-warm": 0.2,
+        "environment-trait-climate-hot": 0.2
+      }
+    },
+    {
+      "Traits": {
+        "environment-trait-groundcover-bare": 1,
         "environment-trait-groundcover-sparse": 0,
         "environment-trait-groundcover-balanced": 0,
         "environment-trait-groundcover-blanket": 0
@@ -89,93 +109,136 @@
     },
     {
       "Traits": {
-        "environment-trait-climate-desert": 17.5,
-        "environment-trait-climate-arid": 17.5,
-        "environment-trait-climate-semiarid": 17.5,
-        "environment-trait-climate-average": 17.5,
-        "environment-trait-climate-semiwet": 10,
-        "environment-trait-climate-wet": 10,
-        "environment-trait-climate-aquifer": 10
+        "environment-trait-terrain-very-rough": 0.2,
+        "environment-trait-terrain-rough": 0.2,
+        "environment-trait-terrain-rugged": 0.2,
+        "environment-trait-terrain-flat": 0.2,
+        "environment-trait-terrain-very-flat": 0.2
       }
     },
     {
       "Traits": {
-        "environment-trait-climate-cold": 20,
-        "environment-trait-climate-cool": 20,
-        "environment-trait-climate-temperate": 20,
-        "environment-trait-climate-warm": 20,
-        "environment-trait-climate-hot": 20
+        "environment-trait-terrain-steep-plateau": 0.2,
+        "environment-trait-terrain-plateau": 0.2,
+        "environment-trait-terrain-rolling": 0.2,
+        "environment-trait-terrain-smooth": 0.2,
+        "environment-trait-terrain-very-smooth": 0.2
       }
     },
     {
       "Traits": {
-        "environment-trait-terrain-very-rough": 20,
-        "environment-trait-terrain-rough": 20,
-        "environment-trait-terrain-rugged": 20,
-        "environment-trait-terrain-flat": 20,
-        "environment-trait-terrain-very-flat": 20
+        "environment-trait-biome-forest": 0.4,
+        "environment-trait-biome-field": 0.4,
+        "environment-trait-biome-lush": 0.2
       }
     },
     {
       "Traits": {
-        "environment-trait-terrain-steep-plateau": 20,
-        "environment-trait-terrain-plateau": 20,
-        "environment-trait-terrain-rolling": 20,
-        "environment-trait-terrain-smooth": 20,
-        "environment-trait-terrain-very-smooth": 20
+        "environment-trait-flora-native": 0.8,
+        "environment-trait-flora-terran": 0,
+        "environment-trait-flora-exotic": 0.1,
+        "environment-trait-flora-fungal": 0.05,
+        "environment-trait-flora-crystalline": 0.05
       }
     },
     {
       "Traits": {
-        "environment-trait-biome-forest": 40,
-        "environment-trait-biome-field": 40,
-        "environment-trait-biome-lush": 20
+        "environment-trait-structure-habitation-0": 0.6,
+        "environment-trait-structure-habitation-1": 0.15,
+        "environment-trait-structure-habitation-2": 0.1,
+        "environment-trait-structure-habitation-3": 0.05,
+        "environment-trait-structure-habitation-4": 0.05,
+        "environment-trait-structure-habitation-5": 0.05
       }
     },
     {
       "Traits": {
-        "environment-trait-flora-native": 40,
-        "environment-trait-flora-terran": 40,
-        "environment-trait-flora-exotic": 5,
-        "environment-trait-flora-fungal": 10,
-        "environment-trait-flora-crystalline": 5
+        "environment-trait-structure-farm-0": 1,
+        "environment-trait-structure-farm-1": 0,
+        "environment-trait-structure-farm-2": 0,
+        "environment-trait-structure-farm-3": 0
       }
     },
     {
       "Traits": {
-        "environment-trait-structure-habitation-0": 60,
-        "environment-trait-structure-habitation-1": 15,
-        "environment-trait-structure-habitation-2": 10,
-        "environment-trait-structure-habitation-3": 5,
-        "environment-trait-structure-habitation-4": 5,
-        "environment-trait-structure-habitation-5": 5
+        "environment-trait-structure-mine-0": 0.4,
+        "environment-trait-structure-mine-1": 0.3,
+        "environment-trait-structure-mine-2": 0.2,
+        "environment-trait-structure-mine-3": 0.1
       }
     },
     {
       "Traits": {
-        "environment-trait-structure-farm-0": 40,
-        "environment-trait-structure-farm-1": 30,
-        "environment-trait-structure-farm-2": 20,
-        "environment-trait-structure-farm-3": 10
+        "environment-trait-structure-infrastructure-1": 1
       }
     },
     {
       "Traits": {
-        "environment-trait-structure-mine-0": 40,
-        "environment-trait-structure-mine-1": 30,
-        "environment-trait-structure-mine-2": 20,
-        "environment-trait-structure-mine-3": 10
+        "environment-trait-special-noop": 0.9,
+        "environment-trait-special-volcanic": 0.1
+      }
+    }
+  ],
+  "Rules": [
+    {
+      "Traits": [ "environment-trait-composition-carbide" ],
+      "Links": {
+        "environment-trait-liquid-carbide": 0.6
       }
     },
     {
-      "Traits": {
-        "environment-trait-structure-infrastructure-1": 100
+      "Traits": [ "environment-trait-composition-ferrous" ],
+      "Links": {
+        "environment-trait-liquid-ferrous": 0.6
       }
     },
     {
-      "Traits": {
-        "environment-trait-special-noop": 90,
-        "environment-trait-special-volcanic": 10
+      "Traits": [ "environment-trait-composition-sulfurous" ],
+      "Links": {
+        "environment-trait-liquid-sulfurous": 0.6
+      }
+    },
+    {
+      "Traits": [ "environment-trait-special-volcanic", "environment-trait-composition-sulfurous" ],
+      "Links": {
+        "environment-trait-liquid-lava": 0.5
+      }
+    },
+    {
+      "Traits": [ "environment-trait-liquid-water", "environment-trait-climate-cool" ],
+      "Links": {
+        "environment-trait-groundcover-sparse": 0.5
+      }
+    },
+    {
+      "Traits": [ "environment-trait-liquid-water", "environment-trait-climate-cold" ],
+      "Links": {
+        "environment-trait-groundcover-sparse": 0.2,
+        "environment-trait-groundcover-balanced": 0.3,
+        "environment-trait-groundcover-blanket": 0.4
+      }
+    },
+    {
+      "Traits": [ "environment-trait-special-volcanic" ],
+      "Links": {
+        "environment-trait-groundcover-sparse": 0.4,
+        "environment-trait-groundcover-balanced": 0.3,
+        "environment-trait-groundcover-blanket": 0.2
+      }
+    },
+    {
+      "Traits": [ "environment-trait-liquid-water" ],
+      "Links": {
+        "environment-trait-flora-terran": 0.5
+      }
+    },
+    {
+      "Traits": [ "environment-trait-liquid-water" ],
+      "Links": {
+        "environment-trait-structure-farm-0": 0,
+        "environment-trait-structure-farm-1": 0.4,
+        "environment-trait-structure-farm-2": 0.3,
+        "environment-trait-structure-farm-3": 0.3
       }
     }
   ]
