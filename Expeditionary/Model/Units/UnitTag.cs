@@ -16,6 +16,7 @@ namespace Expeditionary.Model.Units
         Armor,
         Artillery,
         Assault,
+        Autonomous,
         Cavalry,
         CBRN,
         Empyrean,

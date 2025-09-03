@@ -3,7 +3,7 @@
     "$id": "trait-vehicle-base",
     "Name": "Vehicle",
     "Tags": [ "Platoon" ],
-    "Cost": 8,
+    "Cost": 32,
     "Modifiers": {
       "defense.vitality": "+24x0",
       "defense.vitality/min": "+4x0",

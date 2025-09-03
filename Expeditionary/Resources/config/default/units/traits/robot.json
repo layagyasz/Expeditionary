@@ -1,0 +1,90 @@
+[
+  {
+    "$id": "trait-robot-vision-1",
+    "Name": "Basic Vision",
+    "Family": "trait-robot-vision",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability.detection[visual]": "+8x0",
+      "capability.range[visual]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-robot-vision-2",
+    "Name": "Vision 2",
+    "Family": "trait-robot-vision",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability.detection[visual]": "+12x0",
+      "capability.range[visual]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-robot-vision-3",
+    "Name": "Vision 3",
+    "Family": "trait-robot-vision",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "capability.detection[visual]": "+16x0",
+      "capability.range[visual]": "+5x0"
+    }
+  },
+  {
+    "$id": "trait-robot-vision-4",
+    "Name": "Advanced Vision",
+    "Family": "trait-robot-vision",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "capability.detection[visual]": "+20x0",
+      "capability.range[visual]": "+6x0"
+    }
+  },
+  {
+    "$id": "trait-robot-hearing-1",
+    "Name": "Basic Hearing",
+    "Family": "trait-robot-hearing",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability.detection[audio]": "+8x0",
+      "capability.range[audio]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-robot-hearing-2",
+    "Name": "Hearing 2",
+    "Family": "trait-robot-hearing",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability.detection[audio]": "+12x0",
+      "capability.range[audio]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-robot-hearing-3",
+    "Name": "Hearing 3",
+    "Family": "trait-robot-hearing",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "capability.detection[audio]": "+16x0",
+      "capability.range[audio]": "+1x0"
+    }
+  },
+  {
+    "$id": "trait-robot-hearing-4",
+    "Name": "Advanced Hearing",
+    "Family": "trait-robot-hearing",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "capability.detection[audio]": "+20x0",
+      "capability.range[audio]": "+2x0"
+    }
+  }
+]

@@ -6,6 +6,7 @@
     "Cost": 8,
     "Modifiers": {
       "capability.signature[audio]": "+16x0",
+      "capability.signature[electronic]": "+4x0",
       "capability.signature[thermal]": "+4x0",
       "intrinsic.power": "+900x0",
       "intrinsic.mass:equipment/amount": "+1x0",
@@ -19,6 +20,7 @@
     "Cost": 6,
     "Modifiers": {
       "capability.signature[audio]": "+12x0",
+      "capability.signature[electronic]": "+3x0",
       "capability.signature[thermal]": "+3x0",
       "intrinsic.power": "+600x0",
       "intrinsic.mass:equipment/amount": "+1x0",
@@ -32,6 +34,7 @@
     "Cost": 4,
     "Modifiers": {
       "capability.signature[audio]": "+8x0",
+      "capability.signature[electronic]": "+2x0",
       "capability.signature[thermal]": "+2x0",
       "intrinsic.power": "+300x0",
       "intrinsic.mass:equipment/amount": "+1x0",
@@ -131,6 +134,7 @@
     "Level": 1,
     "Modifiers": {
       "capability.signature[audio]": "+0x-0.75",
+      "capability.signature[electronic]": "+0x1",
       "capability.signature[thermal]": "+0x-1",
       "intrinsic.power": "+0x0",
       "intrinsic.mass:equipment/amount": "+0x-0.9",
@@ -145,6 +149,7 @@
     "Level": 2,
     "Modifiers": {
       "capability.signature[audio]": "+0x-0.75",
+      "capability.signature[electronic]": "+0x1",
       "capability.signature[thermal]": "+0x-1",
       "intrinsic.power": "+0x0.15",
       "intrinsic.mass:equipment/amount": "+0x-0.9",
@@ -159,6 +164,7 @@
     "Level": 3,
     "Modifiers": {
       "capability.signature[audio]": "+0x-0.75",
+      "capability.signature[electronic]": "+0x1",
       "capability.signature[thermal]": "+0x-1",
       "intrinsic.power": "+0x0.3",
       "intrinsic.mass:equipment/amount": "+0x-0.9",
@@ -173,6 +179,7 @@
     "Level": 4,
     "Modifiers": {
       "capability.signature[audio]": "+0x-0.75",
+      "capability.signature[electronic]": "+0x1",
       "capability.signature[thermal]": "+0x-1",
       "intrinsic.power": "+0x0.45",
       "intrinsic.mass:equipment/amount": "+0x-0.9",

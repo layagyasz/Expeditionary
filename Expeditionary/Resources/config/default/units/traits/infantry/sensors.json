@@ -1,0 +1,46 @@
+[
+  {
+    "$id": "trait-infantry-sensor-thermal-1",
+    "Name": "Basic Thermal Vision",
+    "Family": "trait-infantry-sensor-thermal",
+    "Cost": 2,
+    "Level": 1,
+    "Modifiers": {
+      "capability.detection[thermal]": "+8x0",
+      "capability.range[thermal]": "+2x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-sensor-thermal-2",
+    "Name": "Thermal Vision 2",
+    "Family": "trait-infantry-sensor-thermal",
+    "Cost": 4,
+    "Level": 2,
+    "Modifiers": {
+      "capability.detection[thermal]": "+10x0",
+      "capability.range[thermal]": "+3x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-sensor-thermal-3",
+    "Name": "Basic Thermal Vision",
+    "Family": "trait-infantry-sensor-thermal",
+    "Cost": 6,
+    "Level": 3,
+    "Modifiers": {
+      "capability.detection[thermal]": "+12x0",
+      "capability.range[thermal]": "+4x0"
+    }
+  },
+  {
+    "$id": "trait-infantry-sensor-thermal-4",
+    "Name": "Advanced Thermal Vision",
+    "Family": "trait-infantry-sensor-thermal",
+    "Cost": 8,
+    "Level": 4,
+    "Modifiers": {
+      "capability.detection[thermal]": "+14x0",
+      "capability.range[thermal]": "+5x0"
+    }
+  }
+]

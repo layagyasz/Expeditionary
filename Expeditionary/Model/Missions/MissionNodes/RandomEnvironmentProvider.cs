@@ -24,7 +24,7 @@ namespace Expeditionary.Model.Missions.MissionNodes
             var sector = Sectors[random.Next(Sectors.Count)];
             var star = random.Next(SectorNaming!.StarPrefixes.Count);
             // TODO: Configure cap and toString() implementation
-            var body = random.Next(10);
+            var body = random.Next(10) + 1;
             return $"{SectorNaming.StarPrefixes[star]} {SectorNaming.Sectors[sector].StarName} {body}";
         }
     }

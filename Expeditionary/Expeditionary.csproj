@@ -198,10 +198,19 @@
     <None Update="Resources\config\default\units\definitions\common\transport.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\units\definitions\sm\infantry.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\units\traits\artillery\base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\common.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\infantry\sensors.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\config\default\units\traits\robot.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\vehicle\armor.json">
@@ -216,7 +225,7 @@
     <None Update="Resources\config\default\units\traits\infantry\base.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\config\default\units\traits\infantry\equipment.json">
+    <None Update="Resources\config\default\units\traits\infantry\armor.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\units\traits\infantry\training.json">
@@ -367,6 +376,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\units\icon_unit_lower_arctic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\units\icon_unit_lower_autonomous.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\units\icon_unit_lower_hover.png">
@@ -566,6 +578,7 @@
     <Folder Include="Resources\config\default\generation\environments\orion\" />
     <Folder Include="Resources\config\default\factionformations\" />
     <Folder Include="Resources\config\default\languages\sectors\" />
+    <Folder Include="Resources\config\default\units\definitions\sm\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\style\" />
   </ItemGroup>

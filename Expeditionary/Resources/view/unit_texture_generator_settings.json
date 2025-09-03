@@ -25,6 +25,7 @@
     "Armor": "icon_unit_main_armor",
     "Artillery": "icon_unit_main_artillery",
     "Assault": "icon_unit_main_assault",
+    "Autonomous": "icon_unit_lower_autonomous",
     "Cavalry": "icon_unit_main_cavalry",
     "CBRN": "icon_unit_lower_cbrn",
     "Empyrean": "icon_unit_lower_empyrean",

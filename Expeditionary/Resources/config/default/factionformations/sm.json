@@ -5,7 +5,7 @@
     "Units": [
       {
         "Role": "Infantry",
-        "Type": "unit-type-common-infantry-rifle"
+        "Type": "unit-type-sm-infantry-rifle"
       },
       {
         "Role": "Support1",

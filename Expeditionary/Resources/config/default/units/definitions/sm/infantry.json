@@ -1,0 +1,19 @@
+[
+  {
+    "$id": "~unit-type-sm-infantry-rifle",
+    "Name": "Autocom",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-rifle"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-infantry-platoon",
+      "trait-infantry-armor-1",
+      "trait-robot-hearing-2",
+      "trait-robot-vision-2"
+    ]
+  }
+]
