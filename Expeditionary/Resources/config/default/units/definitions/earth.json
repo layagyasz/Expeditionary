@@ -1,0 +1,90 @@
+[
+  {
+    "$id": "~unit-type-earth-howitzer-155mm",
+    "Name": "155mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-howitzer-155mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-section",
+      "trait-infantry-armor-1",
+      "trait-infantry-camo-urban-1",
+      "trait-infantry-recruitment-n1"
+    ]
+  },
+  {
+    "$id": "~unit-type-earth-infantry-conscript",
+    "Name": "Conscript",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-rifle"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-infantry-platoon",
+      "trait-infantry-armor-2",
+      "trait-infantry-camo-urban-1",
+      "trait-infantry-recruitment-0",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~unit-type-earth-infantry-hmg",
+    "Name": "HMG",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-hmg"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-infantry-section",
+      "trait-infantry-armor-2",
+      "trait-infantry-camo-urban-1",
+      "trait-infantry-recruitment-n1",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~unit-type-earth-infantry-iat",
+    "Name": "Anti-Tank",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-antitank-iat"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-infantry-section",
+      "trait-infantry-armor-1",
+      "trait-infantry-camo-urban-1",
+      "trait-infantry-recruitment-n1",
+      "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~unit-type-earth-mortar-120mm",
+    "Name": "120mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-120mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-artillery-platoon",
+      "trait-infantry-armor-1",
+      "trait-infantry-camo-urban-1",
+      "trait-infantry-recruitment-n1"
+    ]
+  }
+]

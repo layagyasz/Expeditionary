@@ -1,0 +1,83 @@
+[
+  {
+    "$id": "~unit-type-sm-howitzer-105mm",
+    "Name": "105mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-howitzer-105mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-artillery-section",
+      "trait-robot-hearing-1",
+      "trait-robot-vision-1"
+    ]
+  },
+  {
+    "$id": "~unit-type-sm-infantry-atgm",
+    "Name": "ATGM",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-antitank-atgm"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-infantry-section",
+      "trait-robot-hearing-3",
+      "trait-robot-vision-3"
+    ]
+  },
+  {
+    "$id": "~unit-type-sm-infantry-lmg",
+    "Name": "LMG",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-lmg"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-infantry-section",
+      "trait-robot-hearing-2",
+      "trait-robot-vision-2"
+    ]
+  },
+  {
+    "$id": "~unit-type-sm-infantry-rifle",
+    "Name": "Autocom",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-rifle"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-infantry-platoon",
+      "trait-infantry-armor-1",
+      "trait-robot-hearing-2",
+      "trait-robot-vision-2"
+    ]
+  },
+  {
+    "$id": "~unit-type-sm-mortar-72mm",
+    "Name": "72mm",
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-mortar-72mm"
+      }
+    ],
+    "Traits": [
+      "trait-common-robot",
+      "trait-artillery-platoon",
+      "trait-robot-hearing-1",
+      "trait-robot-vision-1"
+    ]
+  }
+]

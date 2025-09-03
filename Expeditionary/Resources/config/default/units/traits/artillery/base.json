@@ -3,7 +3,7 @@
     "$id": "trait-artillery-section",
     "Name": "Section",
     "Tags": [ "Section" ],
-    "Cost": 4,
+    "Cost": 0,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",
       "intrinsic.morale": "+2x0",
@@ -14,7 +14,7 @@
     "$id": "trait-artillery-platoon",
     "Name": "Platoon",
     "Tags": [ "Platoon" ],
-    "Cost": 4,
+    "Cost": 0,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",
       "intrinsic.morale": "+4x0",

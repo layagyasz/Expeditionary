@@ -14,7 +14,7 @@
     "$id": "trait-infantry-platoon",
     "Name": "Platoon",
     "Tags": [ "Infantry", "Platoon" ],
-    "Cost": 8,
+    "Cost": 0,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",
       "intrinsic.morale": "+8x0",
@@ -25,7 +25,7 @@
     "$id": "trait-infantry-platoon-half",
     "Name": "Platoon",
     "Tags": [ "Infantry", "Platoon" ],
-    "Cost": 8,
+    "Cost": 0,
     "Modifiers": {
       "intrinsic.manpower": "+5x0",
       "intrinsic.morale": "+4x0",

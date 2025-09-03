@@ -118,7 +118,7 @@ namespace Expeditionary
                     Difficulty = new() { MissionDifficulty.Medium },
                     Scale = new() { MissionScale.Medium },
                     Attackers = new() { module.Factions["faction-sm"] },
-                    Defenders = new() { module.Factions["faction-poticas"] },
+                    Defenders = new() { module.Factions["faction-earth"] },
                     ZoneOptions =
                         new()
                         {
