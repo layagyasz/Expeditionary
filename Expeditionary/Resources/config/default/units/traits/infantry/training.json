@@ -171,5 +171,45 @@
       "movement.roughness/cap": "+1x0",
       "movement.slope/cap": "+1x0"
     }
+  },
+  {
+    "$id": "trait-infantry-training-urban-1",
+    "Name": "Basic Urban Training",
+    "Family": "trait-infantry-training-urban",
+    "Cost": 1,
+    "Level": 1,
+    "Modifiers": {
+      "capability.volume[urban]": "+0x0.25"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-urban-2",
+    "Name": "Urban Training 2",
+    "Family": "trait-infantry-training-urban",
+    "Cost": 2,
+    "Level": 2,
+    "Modifiers": {
+      "capability.volume[urban]": "+0x0.5"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-urban-3",
+    "Name": "Urban Training 3",
+    "Family": "trait-infantry-training-urban",
+    "Cost": 3,
+    "Level": 3,
+    "Modifiers": {
+      "capability.volume[urban]": "+0x0.75"
+    }
+  },
+  {
+    "$id": "trait-infantry-training-urban-4",
+    "Name": "Urban Training 4",
+    "Family": "trait-infantry-training-urban",
+    "Cost": 4,
+    "Level": 4,
+    "Modifiers": {
+      "capability.volume[urban]": "+0x1"
+    }
   }
 ]

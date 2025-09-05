@@ -1,0 +1,16 @@
+[
+  {
+    "$id": "trait-weapon-melee-sword",
+    "Name": "Sword",
+    "Cost": 2,
+    "Modifiers": {
+      "volume": "+12x0",
+      "range": "+0x0",
+      "range/cap": "+0x0",
+      "accuracy": "+12x0",
+      "tracking": "+12x0",
+      "penetration": "+0.75x0",
+      "lethality": "+2.5x0"
+    }
+  }
+]

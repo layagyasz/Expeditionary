@@ -46,6 +46,8 @@
       "capability.signature[electronic]": "+1x0",
       "capability.signature[thermal]": "+1x0",
       "capability.signature[visual]": "+3x0",
+      "defense.armor": "+0.5x0",
+      "defense.armor/min": "+0.1x0",
       "defense.maneuver": "+6x0",
       "defense.vitality": "+4x0",
       "defense.vitality/min": "+0.5x0",

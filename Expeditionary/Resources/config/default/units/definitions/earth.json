@@ -30,8 +30,32 @@
       "trait-infantry-platoon",
       "trait-infantry-armor-2",
       "trait-infantry-camo-urban-1",
-      "trait-infantry-recruitment-0",
+      "trait-infantry-recruitment-n1",
       "trait-infantry-training-marksman-1"
+    ]
+  },
+  {
+    "$id": "~unit-type-earth-infantry-enforcer",
+    "Name": "Enforcer",
+    "Tags": [ "Heavy", "Infantry", "Platoon" ],
+    "Weapons": [
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-small-rifle"
+      },
+      {
+        "Number": 1,
+        "Weapon": "weapon-common-melee-sword"
+      }
+    ],
+    "Traits": [
+      "trait-common-human",
+      "trait-infantry-platoon",
+      "trait-infantry-armor-4",
+      "trait-infantry-camo-urban-2",
+      "trait-infantry-recruitment-2",
+      "trait-infantry-training-marksman-2",
+      "trait-infantry-training-urban-4"
     ]
   },
   {

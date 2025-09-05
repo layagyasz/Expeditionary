@@ -64,7 +64,7 @@
     "Cost": 4,
     "Tags": [ "Sniper" ],
     "Modifiers": {
-      "volume": "+12x0",
+      "volume": "+120x0",
       "range": "+1x0",
       "range/cap": "+4x0",
       "accuracy": "+12x0",

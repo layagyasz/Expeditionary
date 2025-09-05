@@ -3,7 +3,7 @@
     "$id": "trait-vehicle-chassis-truck",
     "Family": "trait-vehicle-chassis",
     "Name": "Truck",
-    "Cost": 8,
+    "Cost": 32,
     "Modifiers": {
       "capability.detection[audio]": "+3x0",
       "capability.range[audio]": "+1x0",
@@ -24,7 +24,7 @@
     "$id": "trait-vehicle-chassis-super-light",
     "Family": "trait-vehicle-chassis",
     "Name": "Super Light",
-    "Cost": 4,
+    "Cost": 16,
     "Modifiers": {
       "capability.detection[audio]": "+0x0",
       "capability.range[audio]": "+0x0",
@@ -45,7 +45,7 @@
     "$id": "trait-vehicle-chassis-light",
     "Family": "trait-vehicle-chassis",
     "Name": "Light",
-    "Cost": 8,
+    "Cost": 32,
     "Modifiers": {
       "capability.detection[audio]": "+0x0",
       "capability.range[audio]": "+0x0",
@@ -66,7 +66,7 @@
     "$id": "trait-vehicle-chassis-medium",
     "Family": "trait-vehicle-chassis",
     "Name": "Medium",
-    "Cost": 12,
+    "Cost": 48,
     "Modifiers": {
       "capability.detection[audio]": "+0x0",
       "capability.range[audio]": "+0x0",
@@ -87,7 +87,7 @@
     "$id": "trait-vehicle-chassis-heavy",
     "Family": "trait-vehicle-chassis",
     "Name": "Heavy",
-    "Cost": 16,
+    "Cost": 64,
     "Modifiers": {
       "capability.detection[audio]": "+0x0",
       "capability.range[audio]": "+0x0",

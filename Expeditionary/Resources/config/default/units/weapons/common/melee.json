@@ -1,0 +1,12 @@
+[
+  {
+    "$id": "weapon-common-melee-sword",
+    "Name": "Sword",
+    "Traits": [ "trait-weapon-melee-sword" ],
+    "Modes": [
+      {
+        "Condition": [ "Direct", "Melee" ]
+      }
+    ]
+  }
+]
