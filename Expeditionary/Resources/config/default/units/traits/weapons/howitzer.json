@@ -14,6 +14,7 @@
       "tracking": "+3x0",
       "penetration": "+26x0",
       "lethality": "+16x0",
+      "radius": "+15x0",
       "mass": "+2x0",
       "size": "+8x0"
     }
@@ -33,6 +34,7 @@
       "tracking": "+2x0",
       "penetration": "+40x0",
       "lethality": "+32x0",
+      "radius": "+30x0",
       "mass": "+2x0",
       "size": "+8x0"
     }
@@ -52,6 +54,7 @@
       "tracking": "+1x0",
       "penetration": "+54x0",
       "lethality": "+48x0",
+      "radius": "+50x0",
       "mass": "+3x0",
       "size": "+12x0"
     }

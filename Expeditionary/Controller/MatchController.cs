@@ -99,19 +99,24 @@ namespace Expeditionary.Controller
             }
             else if (e.Button.Button == MouseButton.Right)
             {
-                if (_selectedOrder?.OrderId == OrderId.Attack
-                    && _selectedUnit != null
-                    && e.Assets.First() is Unit defender)
+                if (_selectedOrder?.OrderId == OrderId.Attack && _selectedUnit != null)
                 {
                     var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
                     var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
-                    DoOrder(new AttackOrder(_selectedUnit, weapon, mode, defender));
-                }
-                else
-                {
-                    OpenRightClickMenu(
-                        e.Button.ScreenPosition, 
-                        e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player));
+                    if (mode.IsIndirect())
+                    {
+                        DoOrder(new IndirectAttackOrder(_selectedUnit, weapon, mode, e.Position));
+                    }
+                    else if (e.Assets.First() is Unit defender)
+                    {
+                        DoOrder(new DirectAttackOrder(_selectedUnit, weapon, mode, defender));
+                    }
+                    else
+                    {
+                        OpenRightClickMenu(
+                            e.Button.ScreenPosition,
+                            e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player));
+                    }
                 }
             }
         }
@@ -120,23 +125,38 @@ namespace Expeditionary.Controller
         {
             s_Logger.Log(_match.GetMap().Get(e.Hex)?.ToString() ?? "off map");
             CloseRightClickMenu();
-            if (e.Button.Button == MouseButton.Right
-                && _selectedOrder?.OrderId == OrderId.Move
-                && _selectedUnit != null)
+            if (_selectedUnit == null)
             {
-                // Cheap check to make sure hex is reachable
-                if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
+                return;
+            }
+
+            if (e.Button.Button == MouseButton.Right)
+            {
+                if (_selectedOrder?.OrderId == OrderId.Move)
                 {
-                    DoOrder(
-                        new MoveOrder(
-                            _selectedUnit,
-                            Pathing.GetShortestPath(
-                                _match.GetMap(),
-                                _selectedUnit.Position.Value,
-                                e.Hex,
-                                _selectedUnit.Type.Movement,
-                                TileConsiderations.None,
-                                _selectedUnit.Type.Speed)));
+                    // Cheap check to make sure hex is reachable
+                    if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
+                    {
+                        DoOrder(
+                            new MoveOrder(
+                                _selectedUnit,
+                                Pathing.GetShortestPath(
+                                    _match.GetMap(),
+                                    _selectedUnit.Position.Value,
+                                    e.Hex,
+                                    _selectedUnit.Type.Movement,
+                                    TileConsiderations.None,
+                                    _selectedUnit.Type.Speed)));
+                    }
+                }
+                else if (_selectedOrder?.OrderId == OrderId.Attack)
+                {
+                    var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
+                    var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
+                    if (mode.IsIndirect())
+                    {
+                        DoOrder(new IndirectAttackOrder(_selectedUnit, weapon, mode, e.Hex));
+                    }
                 }
             }
         }

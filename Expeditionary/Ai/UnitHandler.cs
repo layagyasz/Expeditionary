@@ -76,7 +76,11 @@ namespace Expeditionary.Ai
         {
             if (Unit.Actions > 0 && !Unit.IsPassenger)
             {
-                foreach (var attack in AttackAction.GenerateValidAttacks(match, knowledge, Unit))
+                foreach (var attack in DirectAttackAction.GenerateValidAttacks(match, knowledge, Unit))
+                {
+                    yield return attack;
+                }
+                foreach (var attack in IndirectAttackAction.GenerateValidAttacks(match, Unit))
                 {
                     yield return attack;
                 }

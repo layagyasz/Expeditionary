@@ -4,6 +4,7 @@ using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation
 {
@@ -11,13 +12,32 @@ namespace Expeditionary.Evaluation
     {
         private static readonly float s_PathReward = 20f;
 
-        public static float EvaluateAttack(
+        public static float EvaluateDirectAttack(
             Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Unit defender, Map map)
         {
             var preview =
                 CombatCalculator.GetDirectPreview(
                     attacker, attacker.Position!.Value, attack, mode, defender, defender.Position!.Value, map);
             return defender.Type.Points * Math.Min(1, preview.Result / defender.Number);
+        }
+
+        public static float EvaluateIndirectAttack(
+            Unit attacker, UnitWeaponUsage attack, UnitWeapon.Mode mode, Vector3i target, Match match)
+        {
+            float result = 0f;
+            var map = match.GetMap();
+            foreach (var targetAsset in match.GetAssetsAt(target))
+            {
+                if (targetAsset is Unit targetUnit)
+                {
+                    var preview =
+                        CombatCalculator.GetIndirectPreview(
+                            attacker, attacker.Position!.Value, attack, mode, targetUnit, target, map);
+                    result += (targetUnit.Player.Team == targetUnit.Player.Team ? -1 : 1) 
+                        * targetUnit.Type.Points * Math.Min(1, preview.Result / targetUnit.Number);
+                }
+            }
+            return result;
         }
 
         public static float EvaluateMove(

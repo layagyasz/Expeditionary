@@ -1,11 +1,11 @@
 [
   {
-    "$id": "~unit-type-common-mortar-72mm",
-    "Name": "72mm",
+    "$id": "~unit-type-common-mortar-60mm",
+    "Name": "60mm",
     "Weapons": [
       {
         "Number": 1,
-        "Weapon": "weapon-common-mortar-72mm"
+        "Weapon": "weapon-common-mortar-60mm"
       }
     ],
     "Traits": [

@@ -80,7 +80,7 @@ namespace Expeditionary.Controller
             var assets = _layer!.GetAssetsAt(hex).ToList();
             if (s_Bounds.ContainsInclusive(coord) && assets.Any())
             {
-                AssetClicked?.Invoke(this, new(assets, e));
+                AssetClicked?.Invoke(this, new(hex, assets, e));
                 return true;
             }
             return false;

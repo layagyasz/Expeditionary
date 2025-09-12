@@ -4,8 +4,11 @@
     {
         public record struct Layer(float Attack, float Defense, float DefenseMin, float Probability);
 
+        public static readonly Layer Ignore = new(0f, 0f, 0f, 1f);
+
         public CombatCondition Condition { get; init; }
         public float Volume { get; init; }
+        public float Saturation { get; init; }
         public Layer Target { get; init; }
         public Layer Hit { get; init; }
         public Layer Penetrate { get; init; }
@@ -17,6 +20,7 @@
         public CombatPreview(
             CombatCondition condition, 
             float volume,
+            float saturation,
             Layer target,
             Layer hit,
             Layer penetrate,
@@ -25,6 +29,7 @@
         {
             Condition = condition;
             Volume = volume;
+            Saturation = saturation;
             Target = target;
             Hit = hit;
             Penetrate = penetrate;

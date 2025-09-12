@@ -16,10 +16,15 @@ namespace Expeditionary.Ai.Actions
         public static float EvaluateDefault(
             IUnitAction action, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
-            if (action is AttackAction attackAction)
+            if (action is DirectAttackAction directAttack)
             {
-                return ActionEvaluation.EvaluateAttack(
-                    unit, attackAction.Attack, attackAction.Mode, attackAction.Target, match.GetMap());
+                return ActionEvaluation.EvaluateDirectAttack(
+                    unit, directAttack.Attack, directAttack.Mode, directAttack.Target, match.GetMap());
+            }
+            if (action is IndirectAttackAction indirectAttack)
+            {
+                return ActionEvaluation.EvaluateIndirectAttack(
+                    unit, indirectAttack.Attack, indirectAttack.Mode, indirectAttack.Target, match);
             }
             if (action is LoadAction)
             {

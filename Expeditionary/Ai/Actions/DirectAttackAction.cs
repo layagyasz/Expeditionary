@@ -7,14 +7,14 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai.Actions
 {
-    public record class AttackAction(Unit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
+    public record class DirectAttackAction(Unit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
     {
         public bool Do(Match match, Unit unit)
         {
-            return match.DoOrder(new AttackOrder(unit, Attack, Mode, Target));
+            return match.DoOrder(new DirectAttackOrder(unit, Attack, Mode, Target));
         }
 
-        public static IEnumerable<AttackAction> GenerateValidAttacks(
+        public static IEnumerable<DirectAttackAction> GenerateValidAttacks(
             Match match, IPlayerKnowledge knowledge, Unit unit)
         {
             var map = match.GetMap();
@@ -22,9 +22,12 @@ namespace Expeditionary.Ai.Actions
             {
                 foreach (var mode in attack.Weapon!.Modes)
                 {
-                    foreach (var target in FindValidTargets(match, knowledge, unit, mode, map))
+                    if (!mode.IsIndirect())
                     {
-                        yield return new AttackAction(target, attack, mode);
+                        foreach (var target in FindValidTargets(match, knowledge, unit, mode, map))
+                        {
+                            yield return new DirectAttackAction(target, attack, mode);
+                        }
                     }
                 }
             }

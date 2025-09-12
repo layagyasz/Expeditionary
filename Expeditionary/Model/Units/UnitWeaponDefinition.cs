@@ -56,6 +56,7 @@ namespace Expeditionary.Model.Units
                 Volume = UnitTrait.GetOrDefault(attributes, "volume", Modifier.None),
                 Range = BuildRange("range", attributes),
                 Accuracy = UnitTrait.GetOrDefault(attributes, "accuracy", Modifier.None),
+                Radius = UnitTrait.GetOrDefault(attributes, "radius", Modifier.None),
                 Tracking = UnitTrait.GetOrDefault(attributes, "tracking", Modifier.None),
                 Penetration = UnitTrait.GetOrDefault(attributes, "penetration", Modifier.None),
                 Lethality = UnitTrait.GetOrDefault(attributes, "lethality", Modifier.None),

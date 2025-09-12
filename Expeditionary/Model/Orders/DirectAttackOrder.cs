@@ -4,7 +4,8 @@ using MathNet.Numerics.Distributions;
 
 namespace Expeditionary.Model.Orders
 {
-    public record class AttackOrder(Unit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Unit Target) : IOrder
+    public record class DirectAttackOrder(Unit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Unit Target) 
+        : IOrder
     {
         public bool Validate(Match match)
         {

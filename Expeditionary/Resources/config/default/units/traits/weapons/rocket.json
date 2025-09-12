@@ -14,6 +14,7 @@
       "tracking": "+1x0",
       "penetration": "+12.5x0",
       "lethality": "+6x0",
+      "radius": "+15x0",
       "mass": "+4x0",
       "size": "+12x0"
     }
@@ -33,6 +34,7 @@
       "tracking": "+1x0",
       "penetration": "+30x0",
       "lethality": "+15x0",
+      "radius": "+30x0",
       "mass": "+6x0",
       "size": "+16x0"
     }
@@ -64,7 +66,8 @@
     "Cost": -2,
     "Modifiers": {
       "penetration": "+0x-0.5",
-      "lethality": "+0x-0.5"
+      "lethality": "+0x-0.5",
+      "radius": "+0x-0.5"
     }
   },
   {
@@ -81,7 +84,8 @@
     "Cost": 18,
     "Modifiers": {
       "penetration": "+0x5",
-      "lethality": "+0x5"
+      "lethality": "+0x5",
+      "radius": "+0x5"
     }
   },
 

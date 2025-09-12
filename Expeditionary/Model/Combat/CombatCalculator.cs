@@ -7,6 +7,8 @@ namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
+        private static readonly float s_InvTileArea = 1.8475e-5f;
+
         public static bool IsValidLineOfSight(UnitWeapon.Mode mode, Map map, Vector3i position, Vector3i target)
         {
             return mode.IsIndirect() || Sighting.IsValidLineOfSight(map, position, target);
@@ -97,12 +99,12 @@ namespace Expeditionary.Model.Combat
                 attacker.Type,
                 mode,
                 defender.Type,
-                GetConditions(mode, range, map.Get(defenderPosition)!),
+                GetConditions(range, map.Get(defenderPosition)!),
                 range,
                 attacker.Number * attack.Number);
         }
 
-        private static CombatPreview GetDirectPreview(
+        public static CombatPreview GetDirectPreview(
             UnitType attacker, 
             UnitWeapon.Mode mode,
             UnitType defender, 
@@ -110,6 +112,7 @@ namespace Expeditionary.Model.Combat
             float range,
             float number)
         {
+            condition |= mode.Condition;
             var volume = number * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
             var target =
                 GetPreviewLayer(
@@ -141,6 +144,7 @@ namespace Expeditionary.Model.Combat
             return new(
                 condition,
                 volume,
+                saturation: 1f,
                 target, 
                 hit, 
                 pen, 
@@ -148,9 +152,63 @@ namespace Expeditionary.Model.Combat
                 volume * target.Probability * hit.Probability * pen.Probability * kill.Probability);
         }
 
-        private static CombatCondition GetConditions(UnitWeapon.Mode mode, float range, Tile defender)
+        public static CombatPreview GetIndirectPreview(
+            Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            CombatCondition condition = mode.Condition;
+            return GetIndirectPreview(
+                attacker, attacker.Position!.Value, weapon, mode, target, target.Position!.Value, map);
+        }
+
+        public static CombatPreview GetIndirectPreview(
+            Unit attacker,
+            Vector3i attackerPosition,
+            UnitWeaponUsage attack,
+            UnitWeapon.Mode mode,
+            Unit defender,
+            Vector3i defenderPosition,
+            Map map)
+        {
+            float range = Geometry.GetCubicDistance(attackerPosition, defenderPosition);
+            return GetIndirectPreview(
+                attacker.Type,
+                mode,
+                defender.Type,
+                GetConditions(range, map.Get(defenderPosition)!),
+                attacker.Number * attack.Number);
+        }
+
+        public static CombatPreview GetIndirectPreview(
+            UnitType attacker, UnitWeapon.Mode mode, UnitType defender, CombatCondition condition, float number)
+        {
+            var volume = number * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
+            var radius = mode.Radius.GetValue();
+            var saturation = s_InvTileArea * MathF.PI * radius * radius;
+            var pen =
+                GetPreviewLayer(
+                    mode.Penetration.GetValue(),
+                    defender.Defense.Armor.Value.GetValue(),
+                    defender.Defense.Armor.Minimum.GetValue(),
+                    scale: 2);
+            var kill =
+                GetPreviewLayer(
+                    (mode.Lethality + attacker.Capabilities.GetLethality(condition)).GetValue(),
+                    defender.Defense.Vitality.Value.GetValue(),
+                    defender.Defense.Vitality.Minimum.GetValue(),
+                    scale: 1);
+            return new(
+                condition, 
+                volume, 
+                saturation,
+                target: CombatPreview.Ignore, 
+                hit: CombatPreview.Ignore,
+                pen,
+                kill, 
+                volume * saturation * pen.Probability * kill.Probability);
+        }
+
+        private static CombatCondition GetConditions(float range, Tile defender)
+        {
+            CombatCondition condition = CombatCondition.None;
             if (range < 1)
             {
                 condition |= CombatCondition.Close;

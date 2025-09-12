@@ -14,6 +14,7 @@ namespace Expeditionary.Model.Units
             public UnitWeaponRange Range { get; init; }
             public Modifier Accuracy { get; init; }
             public Modifier Tracking { get; init; }
+            public Modifier Radius { get; init; }
             public Modifier Penetration { get; init; }
             public Modifier Lethality { get; init; }
             public EnumMap<UnitDetectionBand, Modifier> Signature { get; init; } = new();
