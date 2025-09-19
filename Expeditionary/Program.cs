@@ -12,7 +12,6 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.MissionTypes;
-using Expeditionary.Model.Units;
 using Expeditionary.Spectra;
 using Expeditionary.View;
 using Expeditionary.View.Common;
@@ -54,6 +53,9 @@ namespace Expeditionary
             var module =
                 JsonSerializer.Deserialize<GameModule>(
                     File.ReadAllText("resources/config/default/module.json"), options)!;
+            UnitTypeRecorder.Record("units", module);
+            BalanceRecorder.Record("balance", module);
+
             var unitTextureGeneratorSettings =
                 JsonSerializer.Deserialize<UnitTextureGeneratorSettings>(
                     File.ReadAllText("resources/view/unit_texture_generator_settings.json"), options)!;
@@ -148,8 +150,6 @@ namespace Expeditionary
             aiManager.Initialize();
 
             var terrainParameters = appearance.Materialize(sensitivity);
-            RecordPalette(terrainParameters);
-            RecordUnitTypes(module.UnitTypes.Values);
 
             ui.SetRoot(
                 new MatchScreen(
@@ -159,51 +159,6 @@ namespace Expeditionary
                     RightClickMenu.Create(uiElementFactory)));
             match.Step();
             ui.Start();
-        }
-
-        private static void RecordUnitTypes(IEnumerable<UnitType> unitTypes)
-        {
-            var dir = "units";
-            Directory.CreateDirectory(dir);
-            foreach (var unitType in unitTypes)
-            {
-                RecordUnitType(unitType, dir);
-            }
-        }
-
-        private static void RecordUnitType(UnitType unitType, string path)
-        {
-            string file = $"{path}/{unitType.Key}.json";
-            File.Delete(file);
-            using var stream = File.OpenWrite(file);
-            var options =
-                new JsonSerializerOptions()
-                {
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                    WriteIndented = true
-                };
-            JsonSerializer.Serialize(stream, unitType, typeof(UnitType), options);
-        }
-
-        private static void RecordPalette(TerrainViewParameters parameters)
-        {
-            var palette = new Cardamom.Graphics.Image(7, 3);
-            palette.Set(0, 0, parameters.Liquid);
-            palette.Set(1, 0, parameters.Stone.A);
-            palette.Set(1, 1, parameters.Stone.B);
-            palette.Set(1, 2, parameters.Stone.C);
-            palette.Set(2, 0, parameters.Soil.A);
-            palette.Set(2, 1, parameters.Soil.B);
-            palette.Set(2, 2, parameters.Soil.C);
-            palette.Set(3, 0, parameters.Brush.TopLeft);
-            palette.Set(3, 1, parameters.Brush.BottomLeft);
-            palette.Set(4, 0, parameters.Brush.TopRight);
-            palette.Set(4, 1, parameters.Brush.BottomRight);
-            palette.Set(5, 0, parameters.Foliage.TopLeft);
-            palette.Set(5, 1, parameters.Foliage.BottomLeft);
-            palette.Set(6, 0, parameters.Foliage.TopRight);
-            palette.Set(6, 1, parameters.Foliage.BottomRight);
-            palette.SaveToFile("palette.bmp");
         }
     }
 }
