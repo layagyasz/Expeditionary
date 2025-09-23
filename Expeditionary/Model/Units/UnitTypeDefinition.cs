@@ -78,6 +78,7 @@ namespace Expeditionary.Model.Units
         {
             return new()
             {
+                Diffusion = UnitTrait.GetOrDefault(attributes, "defense.diffusion", Modifier.None),
                 Maneuver = BuildBounded(attributes, "defense.maneuver"),
                 Armor = BuildBounded(attributes, "defense.armor"),
                 Vitality = BuildBounded(attributes, "defense.vitality")

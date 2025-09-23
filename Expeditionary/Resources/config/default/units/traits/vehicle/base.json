@@ -5,7 +5,8 @@
     "Tags": [ "Platoon" ],
     "Cost": 0,
     "Modifiers": {
-      "defense.vitality": "+24x0",
+      "defense.diffusion": "+1x0",
+      "defense.vitality": "+12x0",
       "defense.vitality/min": "+1x0",
       "intrinsic.manpower": "+2x0",
       "intrinsic.mass:equipment/amount": "+0x0",

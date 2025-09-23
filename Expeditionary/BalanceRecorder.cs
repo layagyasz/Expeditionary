@@ -88,10 +88,10 @@ namespace Expeditionary
             return $"{range}" 
                 + $"\t{preview.Volume:N2}" 
                 + $"\t{preview.Saturation:N2} " 
-                + $"\t{preview.Target.Probability:N2}" 
+                + $"\t\t{preview.Target.Probability:N2}" 
                 + $"\t{preview.Hit.Probability:N2}" 
                 + $"\t{preview.Penetrate.Probability:N2}" 
-                + $"\t{preview.Kill.Probability:N2}" 
+                + $"\t\t{preview.Kill.Probability:N2}" 
                 + $"\t{preview.Result:N2}";
         }
 

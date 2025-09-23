@@ -2,6 +2,8 @@
 {
     public record class CombatPreview
     {
+        private static readonly float s_CombatConstant = 0.1f;
+
         public record struct Layer(float Attack, float Defense, float DefenseMin, float Probability);
 
         public static readonly Layer Ignore = new(0f, 0f, 0f, 1f);
@@ -24,8 +26,7 @@
             Layer target,
             Layer hit,
             Layer penetrate,
-            Layer kill,
-            float result)
+            Layer kill)
         {
             Condition = condition;
             Volume = volume;
@@ -34,7 +35,14 @@
             Hit = hit;
             Penetrate = penetrate;
             Kill = kill;
-            Result = result;
+            Result =
+                s_CombatConstant
+                * volume 
+                * saturation 
+                * target.Probability 
+                * hit.Probability 
+                * penetrate.Probability 
+                * kill.Probability;
         }
     }
 }
