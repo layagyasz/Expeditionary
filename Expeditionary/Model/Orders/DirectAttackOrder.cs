@@ -1,6 +1,5 @@
 ﻿using Expeditionary.Model.Combat;
 using Expeditionary.Model.Units;
-using MathNet.Numerics.Distributions;
 
 namespace Expeditionary.Model.Orders
 {
@@ -24,7 +23,7 @@ namespace Expeditionary.Model.Orders
         {
             Unit.ConsumeAction();
             var preview = CombatCalculator.GetDirectPreview(Unit, Weapon, Mode, Target, match.GetMap());
-            int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
+            int kills = CombatCalculator.RollKills(preview, match.GetRandom());
             match.Damage(Unit, Target, kills);
         }
     }

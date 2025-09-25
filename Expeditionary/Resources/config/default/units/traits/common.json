@@ -50,7 +50,7 @@
       "defense.armor/min": "+0.1x0",
       "defense.maneuver": "+6x0",
       "defense.vitality": "+4x0",
-      "defense.vitality/min": "+0.5x0",
+      "defense.vitality/min": "+0x0",
       "intrinsic.mass:body/amount": "+1x0",
       "intrinsic.mass:body/density": "+1x0",
       "intrinsic.morale": "+Infinityx0",

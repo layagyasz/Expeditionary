@@ -1,13 +1,23 @@
 ﻿using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
+using MathNet.Numerics.Distributions;
 using OpenTK.Mathematics;
+using System.Text.RegularExpressions;
 
 namespace Expeditionary.Model.Combat
 {
     public static class CombatCalculator
     {
         private static readonly float s_InvTileArea = 1.8475e-5f;
+        private static readonly float s_SaturationConstant = 4 * MathF.PI;
+        private static readonly float s_VolumeConstant = 0.1f;
+
+        public static int RollKills(CombatPreview preview, Random random)
+        {
+            var r = 0.5f * (random.NextSingle() + random.NextSingle()) * preview.Result;
+            return (int)r + Bernoulli.Sample(random, r % 1);
+        }
 
         public static bool IsValidLineOfSight(UnitWeapon.Mode mode, Map map, Vector3i position, Vector3i target)
         {
@@ -114,9 +124,9 @@ namespace Expeditionary.Model.Combat
         {
             condition |= mode.Condition;
             var volume =
-                number * SkillCalculator.VolumeAttenuate(
-                    (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue())
-                / defender.Defense.Diffusion.GetValue();
+                s_VolumeConstant * number * SkillCalculator.VolumeAttenuate(
+                    (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue() 
+                    / defender.Defense.Diffusion.GetValue());
             var target =
                 GetPreviewLayer(
                     SkillCalculator.RangeAttenuate(
@@ -183,10 +193,9 @@ namespace Expeditionary.Model.Combat
             UnitType attacker, UnitWeapon.Mode mode, UnitType defender, CombatCondition condition, float number)
         {
             var volume =
-                number * SkillCalculator.VolumeAttenuate(
-                    (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue());
+                s_VolumeConstant * number * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
             var radius = mode.Radius.GetValue();
-            var saturation = s_InvTileArea * MathF.PI * radius * radius;
+            var saturation = s_InvTileArea * s_SaturationConstant * radius * radius;
             var pen =
                 GetPreviewLayer(
                     mode.Penetration.GetValue(),

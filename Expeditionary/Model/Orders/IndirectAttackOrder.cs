@@ -1,6 +1,5 @@
 ﻿using Expeditionary.Model.Combat;
 using Expeditionary.Model.Units;
-using MathNet.Numerics.Distributions;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Orders
@@ -29,7 +28,7 @@ namespace Expeditionary.Model.Orders
                 if (targetAsset is Unit targetUnit)
                 {
                     var preview = CombatCalculator.GetDirectPreview(Unit, Weapon, Mode, targetUnit, match.GetMap());
-                    int kills = (int)preview.Result + Bernoulli.Sample(match.GetRandom(), preview.Result % 1);
+                    int kills = CombatCalculator.RollKills(preview, match.GetRandom());
                     match.Damage(Unit, targetUnit, kills);
                 }
             }
