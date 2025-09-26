@@ -18,9 +18,9 @@ namespace Expeditionary.Model.Units
         public List<UnitTrait> Traits { get; set; } = new();
         public EnumSet<UnitTag> Tags { get; set; } = new();
 
-        public int GetPoints(int number)
+        public int GetPoints(int number, int armament)
         {
-            return number * (Traits.Sum(x => x.Cost) + Weapons.Sum(x => x.Number * x.Weapon.Points));
+            return number * (Traits.Sum(x => x.Cost) + armament * Weapons.Sum(x => x.Number * x.Weapon.Points));
         }
 
         public EnumSet<UnitTag> GetTags()
@@ -47,7 +47,7 @@ namespace Expeditionary.Model.Units
                 BuildMovement(attributes),
                 BuildCapabilities(attributes),
                 BuildIntrinsics(attributes, Weapons),
-                GetPoints((int) intrinsics.Number.GetValue()));
+                GetPoints((int) intrinsics.Number.GetValue(), (int) intrinsics.Armament.GetValue()));
         }
 
         private static UnitCapabilities BuildCapabilities(IDictionary<string, Modifier> attributes)
@@ -107,11 +107,14 @@ namespace Expeditionary.Model.Units
             IDictionary<string, Modifier> attributes, IEnumerable<UnitWeaponUsage> weapons)
         {
             var space = BuildSpace("intrinsic.space", attributes);
+            var armament = UnitTrait.GetOrDefault(attributes, "intrinsic.armament", Modifier.None);
             space.Used += weapons.Sum(x => x.Number * x.Weapon.Size.GetValue());
             return new()
             {
+                Armament = armament,
                 Manpower = UnitTrait.GetOrDefault(attributes, "intrinsic.manpower", Modifier.None),
-                Mass = BuildMass("intrinsic.mass", attributes) + weapons.Sum(x => x.Number * x.Weapon.Mass.GetValue()),
+                Mass = BuildMass("intrinsic.mass", attributes) 
+                    + armament.GetValue() * weapons.Sum(x => x.Number * x.Weapon.Mass.GetValue()),
                 Morale = UnitTrait.GetOrDefault(attributes, "intrinsic.morale", Modifier.None),
                 Number = UnitTrait.GetOrDefault(attributes, "intrinsic.number", Modifier.None),
                 Power = UnitTrait.GetOrDefault(attributes, "intrinsic.power", Modifier.None),

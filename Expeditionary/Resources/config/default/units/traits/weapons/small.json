@@ -4,7 +4,7 @@
     "Name": "Rifle",
     "Cost": 0,
     "Modifiers": {
-      "volume": "+900x0",
+      "volume": "+360x0",
       "range": "+1x0",
       "range/cap": "+1x0",
       "accuracy": "+4x0",
@@ -19,10 +19,10 @@
     "Cost": 3,
     "Tags": [ "Light", "MG" ],
     "Modifiers": {
-      "volume": "+3000x0",
+      "volume": "+600x0",
       "range": "+1x0",
       "range/cap": "+6x0",
-      "accuracy": "+2x0",
+      "accuracy": "+4x0",
       "tracking": "+12x0",
       "penetration": "+2x0",
       "lethality": "+1.5x0"
@@ -34,10 +34,10 @@
     "Cost": 4,
     "Tags": [ "Medium", "MG" ],
     "Modifiers": {
-      "volume": "+3000x0",
+      "volume": "+600x0",
       "range": "+1x0",
       "range/cap": "+6x0",
-      "accuracy": "+2x0",
+      "accuracy": "+4x0",
       "tracking": "+12x0",
       "penetration": "+3x0",
       "lethality": "+2x0"
@@ -49,10 +49,10 @@
     "Cost": 4,
     "Tags": [ "Heavy", "MG" ],
     "Modifiers": {
-      "volume": "+3000x0",
+      "volume": "+600x0",
       "range": "+1x0",
       "range/cap": "+6x0",
-      "accuracy": "+2x0",
+      "accuracy": "+4x0",
       "tracking": "+12x0",
       "penetration": "+4x0",
       "lethality": "+2.5x0"
@@ -64,10 +64,10 @@
     "Cost": 4,
     "Tags": [ "Sniper" ],
     "Modifiers": {
-      "volume": "+120x0",
+      "volume": "+24x0",
       "range": "+1x0",
       "range/cap": "+4x0",
-      "accuracy": "+12x0",
+      "accuracy": "+24x0",
       "tracking": "+3x0",
       "penetration": "+2x0",
       "lethality": "+1.5x0"

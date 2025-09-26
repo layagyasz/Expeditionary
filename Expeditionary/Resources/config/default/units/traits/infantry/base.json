@@ -6,9 +6,10 @@
     "Cost": 0,
     "Modifiers": {
       "defense.diffusion": "+2x0",
+      "intrinsic.armament": "+1x0",
       "intrinsic.manpower": "+2x0",
-      "intrinsic.morale": "+4x0",
-      "intrinsic.number": "+4x0"
+      "intrinsic.morale": "+2x0",
+      "intrinsic.number": "+2x0"
     }
   },
   {
@@ -18,18 +19,7 @@
     "Cost": 0,
     "Modifiers": {
       "defense.diffusion": "+5x0",
-      "intrinsic.manpower": "+5x0",
-      "intrinsic.morale": "+8x0",
-      "intrinsic.number": "+8x0"
-    }
-  },
-  {
-    "$id": "trait-infantry-platoon-half",
-    "Name": "Platoon",
-    "Tags": [ "Infantry", "Platoon" ],
-    "Cost": 0,
-    "Modifiers": {
-      "defense.diffusion": "+5x0",
+      "intrinsic.armament": "+5x0",
       "intrinsic.manpower": "+5x0",
       "intrinsic.morale": "+4x0",
       "intrinsic.number": "+4x0"

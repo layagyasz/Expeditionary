@@ -6,7 +6,7 @@
     "Tags": [ "AntiTank", "Missile" ],
     "Modifiers": {
       "volume": "+36x0",
-      "accuracy": "+4x0",
+      "accuracy": "+8x0",
       "tracking": "+3x0",
       "range": "+2x3",
       "range/cap": "+16x0",
@@ -21,7 +21,7 @@
     "Tags": [ "AntiTank" ],
     "Modifiers": {
       "volume": "+36x0",
-      "accuracy": "+4x0",
+      "accuracy": "+8x0",
       "tracking": "+3x0",
       "range": "+1x0",
       "range/cap": "+4x0",

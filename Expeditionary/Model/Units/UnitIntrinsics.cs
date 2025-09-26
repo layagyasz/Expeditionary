@@ -2,6 +2,7 @@
 {
     public record class UnitIntrinsics
     {
+        public Modifier Armament { get; set; }
         public Modifier Manpower { get; set; }
         public float Mass { get; set; }
         public Modifier Morale { get; set; }

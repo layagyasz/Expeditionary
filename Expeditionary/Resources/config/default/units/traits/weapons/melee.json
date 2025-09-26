@@ -4,7 +4,7 @@
     "Name": "Sword",
     "Cost": 2,
     "Modifiers": {
-      "volume": "+12x0",
+      "volume": "+360x0",
       "range": "+0x0",
       "range/cap": "+0x0",
       "accuracy": "+12x0",

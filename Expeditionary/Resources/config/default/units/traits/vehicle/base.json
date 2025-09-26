@@ -8,6 +8,7 @@
       "defense.diffusion": "+1x0",
       "defense.vitality": "+12x0",
       "defense.vitality/min": "+1x0",
+      "intrinsic.armament": "+1x0",
       "intrinsic.manpower": "+2x0",
       "intrinsic.mass:equipment/amount": "+0x0",
       "intrinsic.mass:equipment/density": "+1x0",

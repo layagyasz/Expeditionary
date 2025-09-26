@@ -124,9 +124,11 @@ namespace Expeditionary.Model.Combat
         {
             condition |= mode.Condition;
             var volume =
-                s_VolumeConstant * number * SkillCalculator.VolumeAttenuate(
-                    (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue() 
-                    / defender.Defense.Diffusion.GetValue());
+                s_VolumeConstant 
+                * SkillCalculator.NumberAttenuate(number, attacker.Intrinsics.Number.GetValue()) 
+                * SkillCalculator.ArmamentAttenuate((int) attacker.Intrinsics.Armament.GetValue()) 
+                * SkillCalculator.VolumeAttenuate((mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue() 
+                / defender.Defense.Diffusion.GetValue());
             var target =
                 GetPreviewLayer(
                     SkillCalculator.RangeAttenuate(
@@ -193,7 +195,8 @@ namespace Expeditionary.Model.Combat
             UnitType attacker, UnitWeapon.Mode mode, UnitType defender, CombatCondition condition, float number)
         {
             var volume =
-                s_VolumeConstant * number * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
+                s_VolumeConstant * number * attacker.Intrinsics.Armament.GetValue() 
+                * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
             var radius = mode.Radius.GetValue();
             var saturation = s_InvTileArea * s_SaturationConstant * radius * radius;
             var pen =
