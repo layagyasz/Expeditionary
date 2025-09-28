@@ -15,17 +15,14 @@ namespace Expeditionary.Model.Missions.MissionNodes
 
         public MapEnvironmentDefinition Get(MissionGenerationResources resources)
         {
-            var name = GenerateName(resources.Random);
-            return resources.EnvironmentGenerator.Generate(name, resources.Random.Next());
-        }
-
-        private string GenerateName(Random random)
-        {
-            var sector = Sectors[random.Next(Sectors.Count)];
-            var star = random.Next(SectorNaming!.StarPrefixes.Count);
+            var random = resources.Random;
             // TODO: Configure cap and toString() implementation
-            var body = random.Next(10) + 1;
-            return $"{SectorNaming.StarPrefixes[star]} {SectorNaming.Sectors[sector].StarName} {body}";
+            var key = 
+                new PlanetKey(
+                    Sectors[random.Next(Sectors.Count)],
+                    random.Next(SectorNaming!.StarPrefixes.Count), 
+                    random.Next(10) + 1);
+            return resources.EnvironmentGenerator.Generate(key, environment: 0, SectorNaming!);
         }
     }
 }

@@ -6,6 +6,7 @@
       }
     },
     {
+      "Seed": "System",
       "Traits": {
         "environment-trait-star-class-o": 0,
         "environment-trait-star-class-b": 0.001,
@@ -22,6 +23,7 @@
       }
     },
     {
+      "Seed": "Planet",
       "Traits": {
         "environment-trait-landform-crystalline-a": 0.05,
         "environment-trait-landform-crystalline-b": 0.05,
@@ -34,6 +36,7 @@
       }
     },
     {
+      "Seed": "Planet",
       "Traits": {
         "environment-trait-composition-carbide": 0.03333,
         "environment-trait-composition-cupric": 0.03333,
@@ -46,6 +49,7 @@
       }
     },
     {
+      "Seed": "Planet",
       "Traits": {
         "environment-trait-liquid-carbide": 0,
         "environment-trait-liquid-ferrous": 0,
@@ -207,22 +211,24 @@
     {
       "Traits": [ "environment-trait-liquid-water", "environment-trait-climate-cool" ],
       "Links": {
-        "environment-trait-groundcover-sparse": 0.5
+        "environment-trait-groundcover-sparse": 0.1,
+        "environment-trait-groundcover-balanced": 0.05,
+        "environment-trait-groundcover-blanket": 0.05
       }
     },
     {
       "Traits": [ "environment-trait-liquid-water", "environment-trait-climate-cold" ],
       "Links": {
-        "environment-trait-groundcover-sparse": 0.2,
-        "environment-trait-groundcover-balanced": 0.3,
-        "environment-trait-groundcover-blanket": 0.4
+        "environment-trait-groundcover-sparse": 0.1,
+        "environment-trait-groundcover-balanced": 0.25,
+        "environment-trait-groundcover-blanket": 0.6
       }
     },
     {
       "Traits": [ "environment-trait-special-volcanic" ],
       "Links": {
-        "environment-trait-groundcover-sparse": 0.4,
-        "environment-trait-groundcover-balanced": 0.3,
+        "environment-trait-groundcover-sparse": 0.2,
+        "environment-trait-groundcover-balanced": 0.4,
         "environment-trait-groundcover-blanket": 0.2
       }
     },

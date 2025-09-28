@@ -2,6 +2,7 @@
   {
     "$id": "trait-weapon-small-rifle",
     "Name": "Rifle",
+    "Tags": [ "Rifle" ],
     "Cost": 0,
     "Modifiers": {
       "volume": "+360x0",
@@ -62,7 +63,7 @@
     "$id": "trait-weapon-small-sniper",
     "Name": "Sniper",
     "Cost": 4,
-    "Tags": [ "Sniper" ],
+    "Tags": [ "Sniper", "Rifle" ],
     "Modifiers": {
       "volume": "+24x0",
       "range": "+1x0",

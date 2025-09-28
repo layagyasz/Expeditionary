@@ -140,6 +140,10 @@ namespace Expeditionary
                 };
             var mission = missionNode.Create(missionResources);
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
+            foreach (var trait in mission.Map.Environment.Traits)
+            {
+                Console.WriteLine(trait.Key);
+            }
             var player = mission.Players.First().Player;
             var creationContext = new CreationContext(player, IsTest: true);
             (var match, var appearance) = mission.Create(random, creationContext);

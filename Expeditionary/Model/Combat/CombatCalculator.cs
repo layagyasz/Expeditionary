@@ -3,7 +3,6 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Units;
 using MathNet.Numerics.Distributions;
 using OpenTK.Mathematics;
-using System.Text.RegularExpressions;
 
 namespace Expeditionary.Model.Combat
 {
@@ -15,7 +14,7 @@ namespace Expeditionary.Model.Combat
 
         public static int RollKills(CombatPreview preview, Random random)
         {
-            var r = 0.5f * (random.NextSingle() + random.NextSingle()) * preview.Result;
+            var r = (random.NextSingle() + random.NextSingle()) * preview.Result;
             return (int)r + Bernoulli.Sample(random, r % 1);
         }
 

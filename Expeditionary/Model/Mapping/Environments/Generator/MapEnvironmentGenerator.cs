@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
+using Expeditionary.Model.Sectors;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
@@ -7,8 +8,19 @@ namespace Expeditionary.Model.Mapping.Environments.Generator
 {
     public class MapEnvironmentGenerator
     {
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public enum Seed
+        {
+            Sector,
+            System,
+            Planet,
+            Environment
+        }
+
         public class TraitGroup
         {
+            public Seed Seed { get; set; } = Seed.Planet;
+
             [JsonConverter(typeof(ReferenceDictionaryJsonConverter))]
             public WeightedVector<MapEnvironmentTrait> Traits { get; set; } = new();
         }
@@ -25,19 +37,37 @@ namespace Expeditionary.Model.Mapping.Environments.Generator
         public ImmutableList<TraitGroup> Groups { get; set; } = ImmutableList.Create<TraitGroup>();
         public ImmutableList<TraitRule> Rules { get; set; } = ImmutableList.Create<TraitRule>();
 
-        public MapEnvironmentDefinition Generate(string name, int seed)
+        public MapEnvironmentDefinition Generate(PlanetKey key, int environment, SectorNaming naming)
         {
-            var random = new Random(seed);
+            var sectorSeed = new Random(key.SectorSeed());
+            var systemSeed = new Random(key.SystemSeed());
+            var planetSeed = new Random(key.PlanetSeed());
+            var environmentSeed = new Random(key.EnvironmentSeed(environment));
+
             var result = new HashSet<MapEnvironmentTrait>();
             foreach (var group in Groups)
             {
+                var random = environmentSeed;
+                if (group.Seed == Seed.Sector)
+                {
+                    random = sectorSeed;
+                }
+                else if (group.Seed == Seed.System)
+                {
+                    random = systemSeed;
+                }
+                else if (group.Seed == Seed.Planet)
+                {
+                    random = planetSeed;
+                }
+
                 var adjusted = GetAdjustedTraits(group.Traits, Rules, result);
                 result.Add(adjusted.Get(random.NextSingle()));
             }
             return new MapEnvironmentDefinition()
             {
-                Key = $"map-environment-{seed}",
-                Name = name,
+                Key = $"map-environment-{key.EnvironmentSeed(environment)}",
+                Name = naming.Name(key),
                 Traits = result.ToList()
             };
         }

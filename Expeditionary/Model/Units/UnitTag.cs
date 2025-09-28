@@ -55,6 +55,7 @@ namespace Expeditionary.Model.Units
         RangeOrbital,
         RangeShort,
         Recovery,
+        Rifle,
         Rocket,
         Section,
         Security,
