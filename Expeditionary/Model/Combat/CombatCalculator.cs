@@ -9,8 +9,7 @@ namespace Expeditionary.Model.Combat
     public static class CombatCalculator
     {
         private static readonly float s_InvTileArea = 1.8475e-5f;
-        private static readonly float s_SaturationConstant = 4 * MathF.PI;
-        private static readonly float s_VolumeConstant = 0.1f;
+        private static readonly float s_SaturationConstant = 0.4f * MathF.PI;
 
         public static int RollKills(CombatPreview preview, Random random)
         {
@@ -123,11 +122,10 @@ namespace Expeditionary.Model.Combat
         {
             condition |= mode.Condition;
             var volume =
-                s_VolumeConstant 
-                * SkillCalculator.NumberAttenuate(number, attacker.Intrinsics.Number.GetValue()) 
-                * SkillCalculator.ArmamentAttenuate((int) attacker.Intrinsics.Armament.GetValue()) 
-                * SkillCalculator.VolumeAttenuate((mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue() 
-                / defender.Defense.Diffusion.GetValue());
+                SkillCalculator.NumberAttenuate(number, attacker.Intrinsics.Number.GetValue())
+                * SkillCalculator.ArmamentAttenuate((int)attacker.Intrinsics.Armament.GetValue())
+                * SkillCalculator.VolumeAttenuate(
+                    (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue());
             var target =
                 GetPreviewLayer(
                     SkillCalculator.RangeAttenuate(
@@ -158,11 +156,12 @@ namespace Expeditionary.Model.Combat
             return new(
                 condition,
                 volume,
-                saturation: 1f,
+                Saturation: 1f,
                 target, 
                 hit, 
                 pen, 
-                kill);
+                kill,
+                1f / MathF.Sqrt(defender.Defense.Diffusion.GetValue()));
         }
 
         public static CombatPreview GetIndirectPreview(
@@ -194,7 +193,8 @@ namespace Expeditionary.Model.Combat
             UnitType attacker, UnitWeapon.Mode mode, UnitType defender, CombatCondition condition, float number)
         {
             var volume =
-                s_VolumeConstant * number * attacker.Intrinsics.Armament.GetValue() 
+                SkillCalculator.NumberAttenuate(number, attacker.Intrinsics.Number.GetValue())
+                * SkillCalculator.ArmamentAttenuate((int)attacker.Intrinsics.Armament.GetValue())
                 * (mode.Volume + attacker.Capabilities.GetVolume(condition)).GetValue();
             var radius = mode.Radius.GetValue();
             var saturation = s_InvTileArea * s_SaturationConstant * radius * radius;
@@ -214,10 +214,11 @@ namespace Expeditionary.Model.Combat
                 condition, 
                 volume, 
                 saturation,
-                target: CombatPreview.Ignore, 
-                hit: CombatPreview.Ignore,
+                Target: CombatPreview.Ignore, 
+                Hit: CombatPreview.Ignore,
                 pen,
-                kill);
+                kill,
+                Diffusion: 1f);
         }
 
         private static CombatCondition GetConditions(float range, Tile defender)

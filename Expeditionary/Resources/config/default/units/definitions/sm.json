@@ -10,7 +10,7 @@
     ],
     "Traits": [
       "trait-common-robot",
-      "trait-artillery-section",
+      "trait-artillery-platoon",
       "trait-robot-hearing-1",
       "trait-robot-vision-1"
     ]
@@ -26,7 +26,7 @@
     ],
     "Traits": [
       "trait-common-robot",
-      "trait-infantry-section",
+      "trait-infantry-platoon",
       "trait-robot-hearing-3",
       "trait-robot-vision-3"
     ]
@@ -42,7 +42,7 @@
     ],
     "Traits": [
       "trait-common-robot",
-      "trait-infantry-section",
+      "trait-infantry-platoon",
       "trait-robot-hearing-2",
       "trait-robot-vision-2"
     ]

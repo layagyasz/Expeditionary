@@ -37,7 +37,7 @@
   {
     "$id": "~unit-type-earth-infantry-enforcer",
     "Name": "Enforcer",
-    "Tags": [ "Heavy", "Infantry", "Platoon" ],
+    "Tags": [ "Heavy", "Rifle", "Infantry", "Platoon" ],
     "Weapons": [
       {
         "Number": 1,
@@ -69,7 +69,7 @@
     ],
     "Traits": [
       "trait-common-human",
-      "trait-infantry-section",
+      "trait-infantry-platoon",
       "trait-infantry-armor-2",
       "trait-infantry-camo-urban-1",
       "trait-infantry-recruitment-n1",
@@ -87,7 +87,7 @@
     ],
     "Traits": [
       "trait-common-human",
-      "trait-infantry-section",
+      "trait-infantry-platoon",
       "trait-infantry-armor-1",
       "trait-infantry-camo-urban-1",
       "trait-infantry-recruitment-n1",

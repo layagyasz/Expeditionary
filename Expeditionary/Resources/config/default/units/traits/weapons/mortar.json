@@ -2,7 +2,7 @@
   {
     "$id": "trait-mortar-caliber-light",
     "Name": "Light Mortar",
-    "Family": "trait-vehicle-mortar-caliber",
+    "Family": "trait-mortar-caliber",
     "Cost": 4,
     "Tags": [ "Mortar", "Light" ],
     "Modifiers": {
@@ -10,8 +10,8 @@
       "range": "+6x1",
       "range/cap": "+14x0",
       "range/min": "+1x0",
-      "accuracy": "+4x0",
-      "tracking": "+3x0",
+      "accuracy": "+0x0",
+      "tracking": "+0x0",
       "penetration": "+12x0",
       "lethality": "+10x0",
       "radius": "+15x0",
@@ -22,7 +22,7 @@
   {
     "$id": "trait-mortar-caliber-medium",
     "Name": "Medium Mortar",
-    "Family": "trait-vehicle-mortar-caliber",
+    "Family": "trait-mortar-caliber",
     "Cost": 8,
     "Tags": [ "Mortar", "Medium" ],
     "Modifiers": {
@@ -30,8 +30,8 @@
       "range": "+8x1",
       "range/cap": "+20x0",
       "range/min": "+1x0",
-      "accuracy": "+4x0",
-      "tracking": "+2x0",
+      "accuracy": "+0x0",
+      "tracking": "+0x0",
       "penetration": "+20x0",
       "lethality": "+16x0",
       "radius": "+30x0",
@@ -42,7 +42,7 @@
   {
     "$id": "trait-mortar-caliber-heavy",
     "Name": "Heavy Mortar",
-    "Family": "trait-vehicle-mortar-caliber",
+    "Family": "trait-mortar-caliber",
     "Cost": 12,
     "Tags": [ "Mortar", "Heavy" ],
     "Modifiers": {
@@ -50,8 +50,8 @@
       "range": "+12x1",
       "range/cap": "+28x0",
       "range/min": "+1x0",
-      "accuracy": "+4x0",
-      "tracking": "+1x0",
+      "accuracy": "+0x0",
+      "tracking": "+0x0",
       "penetration": "+40x0",
       "lethality": "+32x0",
       "radius": "+50x0",

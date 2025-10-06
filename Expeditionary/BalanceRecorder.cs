@@ -75,7 +75,7 @@ namespace Expeditionary
 
         private static string WriteHeader()
         {
-            return "Range\tVolume\tSaturation\tTarget\tHit\tPenetrate\tKill\tResult";
+            return "Range\tVolume\tSaturation\tTarget\tHit\tPenetrate\tKill\tDiffusion\tResult";
         }
 
         private static string WriteMode(UnitWeapon weapon, UnitWeapon.Mode mode)
@@ -92,7 +92,8 @@ namespace Expeditionary
                 + $"\t{preview.Hit.Probability:N2}" 
                 + $"\t{preview.Penetrate.Probability:N2}" 
                 + $"\t\t{preview.Kill.Probability:N2}" 
-                + $"\t{preview.Result:N2}";
+                + $"\t{preview.Diffusion:N2}"
+                + $"\t\t{preview.Result:N2}";
         }
 
         private static string WriteUnitType(UnitType unitType)

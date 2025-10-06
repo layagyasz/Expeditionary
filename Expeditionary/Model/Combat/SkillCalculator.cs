@@ -2,7 +2,7 @@
 {
     public static class SkillCalculator
     {
-        private static readonly float s_VolumeConstant = 8f;
+        private static readonly float s_VolumeConstant = 0.0027778f;
 
         public static float ArmamentAttenuate(float value)
         {
@@ -20,6 +20,10 @@
 
         public static float RangeAttenuate(float value, float range, float distance)
         {
+            if (range < float.Epsilon)
+            {
+                return value;
+            }
             return Math.Max(0, value * (1f - distance * distance / (range * (range + 1))));
         }
 
@@ -30,7 +34,7 @@
 
         public static float VolumeAttenuate(float value)
         {
-            return Math.Min(value, s_VolumeConstant * MathF.Sqrt(value));
+            return Math.Min(value, 60f * MathF.Sqrt(1 + s_VolumeConstant * value));
         }
     }
 }
