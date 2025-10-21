@@ -2,7 +2,7 @@
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Units;
 
-namespace Expeditionary
+namespace Expeditionary.Runners.Recorders
 {
     public static class BalanceRecorder
     {
@@ -46,12 +46,12 @@ namespace Expeditionary
             stream.WriteLine(WriteHeader());
             if (mode.IsIndirect())
             {
-                var preview = 
+                var preview =
                     CombatCalculator.GetIndirectPreview(
-                        unitType, 
-                        mode, 
+                        unitType,
+                        mode,
                         defender,
-                        CombatCondition.None, 
+                        CombatCondition.None,
                         unitType.Intrinsics.Number.GetValue() * weapon.Number);
                 stream.WriteLine(WritePreview(0, preview));
             }
@@ -59,7 +59,7 @@ namespace Expeditionary
             {
                 for (int range = (int)mode.Range.GetMinimum(); range <= (int)mode.Range.GetMaximum(); ++range)
                 {
-                    var preview = 
+                    var preview =
                         CombatCalculator.GetDirectPreview(
                             unitType,
                             mode,
@@ -85,13 +85,13 @@ namespace Expeditionary
 
         private static string WritePreview(int range, CombatPreview preview)
         {
-            return $"{range}" 
-                + $"\t{preview.Volume:N2}" 
-                + $"\t{preview.Saturation:N2} " 
-                + $"\t\t{preview.Target.Probability:N2}" 
-                + $"\t{preview.Hit.Probability:N2}" 
-                + $"\t{preview.Penetrate.Probability:N2}" 
-                + $"\t\t{preview.Kill.Probability:N2}" 
+            return $"{range}"
+                + $"\t{preview.Volume:N2}"
+                + $"\t{preview.Saturation:N2} "
+                + $"\t\t{preview.Target.Probability:N2}"
+                + $"\t{preview.Hit.Probability:N2}"
+                + $"\t{preview.Penetrate.Probability:N2}"
+                + $"\t\t{preview.Kill.Probability:N2}"
                 + $"\t{preview.Diffusion:N2}"
                 + $"\t\t{preview.Result:N2}";
         }

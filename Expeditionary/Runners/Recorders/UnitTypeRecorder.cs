@@ -2,7 +2,7 @@
 using Expeditionary.Model.Units;
 using System.Text.Json;
 
-namespace Expeditionary
+namespace Expeditionary.Runners.Recorders
 {
     public static class UnitTypeRecorder
     {
