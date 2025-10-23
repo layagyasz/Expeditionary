@@ -1,44 +1,31 @@
 ﻿using Cardamom.Ui;
-using Cardamom.Window;
 using Expeditionary.Ai;
-using Expeditionary.Controller;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.MissionTypes;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model;
-using Expeditionary.View.Common;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Scenes;
-using Expeditionary.View;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Immutable;
-using Expeditionary.Runners.Loaders;
 using Cardamom.Utils.Generators.Samplers;
+using Expeditionary.View.Screens;
+using Expeditionary.Controller.Screens;
+using Expeditionary.View.Scenes.Matches.Layers;
+using Expeditionary.View.Common.Components;
+using Cardamom.Graphics;
 
 namespace Expeditionary.Runners
 {
-    public class RandomMissionRunner : IProgramRunner
+    public class RandomMissionRunner : UiRunner
     {
-        private readonly ProgramConfig _config;
-
         public RandomMissionRunner(ProgramConfig config)
-        {
-            _config = config;
-        }
+            : base(config) { }
 
-        public void Run()
+        protected override IRenderable MakeRoot(ProgramData data)
         {
-            var window = new RenderWindow("Expeditionary", new(512, 512));
-            var ui = new UiWindow(window);
-            ui.Bind(new MouseListener());
-            ui.Bind(
-                new KeyboardListener(SimpleKeyMapper.Us, new Keys[] { Keys.Left, Keys.Right, Keys.Up, Keys.Down }));
-
-            var data = new ProgramDataLoader(_config).Load();
             var resources = data.Resources;
-
             var uiElementFactory = new UiElementFactory(resources);
 
             var sceneFactory =
@@ -110,14 +97,12 @@ namespace Expeditionary.Runners
 
             var terrainParameters = appearance.Materialize(data.SpectrumSensitivity);
 
-            ui.SetRoot(
-                new MatchScreen(
-                    new MatchController(match, player),
-                    sceneFactory.Create(match, terrainParameters, seed: 0),
-                    new UnitOverlay(uiElementFactory),
-                    RightClickMenu.Create(uiElementFactory)));
             match.Step();
-            ui.Start();
+            return new MatchScreen(
+                new MatchController(match, player),
+                sceneFactory.Create(match, terrainParameters, seed: 0),
+                new UnitOverlay(uiElementFactory),
+                RightClickMenu.Create(uiElementFactory));
         }
     }
 }

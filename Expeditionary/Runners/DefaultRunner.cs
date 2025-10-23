@@ -1,7 +1,17 @@
-﻿namespace Expeditionary.Runners
+﻿using Cardamom.Graphics;
+using Cardamom.Ui;
+using Expeditionary.View.Screens;
+
+namespace Expeditionary.Runners
 {
-    public class DefaultRunner : RandomMissionRunner
+    public class DefaultRunner : UiRunner
     {
-        public DefaultRunner(ProgramConfig config) : base(config) { }
+        public DefaultRunner(ProgramConfig config) 
+            : base(config) { }
+
+        protected override IRenderable MakeRoot(ProgramData data)
+        {
+            return MainMenuScreen.Create(new UiElementFactory(data.Resources));
+        }
     }
 }

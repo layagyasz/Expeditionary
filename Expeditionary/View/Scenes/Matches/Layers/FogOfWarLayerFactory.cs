@@ -4,7 +4,7 @@ using Expeditionary.Model.Mapping;
 using Expeditionary.View.Textures;
 using OpenTK.Graphics.OpenGL4;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class FogOfWarLayerFactory
     {

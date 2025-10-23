@@ -2,7 +2,7 @@
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Scenes.Matches.Layers
 {
     public record class AssetClickedEventArgs(
         Vector3i Position, IList<IAsset> Assets, MouseButtonClickEventArgs Button);

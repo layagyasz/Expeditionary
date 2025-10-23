@@ -5,6 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 using Cardamom.Collections;
 using Cardamom.Mathematics.Geometry;
 using Expeditionary.Model.Mapping;
+using Expeditionary.View.Common;
 
 namespace Expeditionary.View.Textures.Generation
 {

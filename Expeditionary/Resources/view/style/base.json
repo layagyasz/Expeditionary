@@ -28,6 +28,7 @@
   },
   {
     "$id": "base-button",
+    "Parent": "base-span",
     "Default": {
       "Size": [ 388, 28 ],
       "Margin": [ 2 ],
@@ -37,7 +38,10 @@
       "BorderWidth": [ 1 ],
       "BorderColor": [ "#ffffff00" ],
       "BackgroundShader": "shader-ui",
-      "DisableScissor": true
+      "DisableScissor": true,
+      "FontSize": 12,
+      "Color": "#121212ff",
+      "Align": "Center"
     },
     "States": [
       {

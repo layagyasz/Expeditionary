@@ -4,9 +4,11 @@ using Cardamom.Ui.Elements;
 using Expeditionary.Controller;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Model;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes.Matches;
+using Expeditionary.View.Scenes.Matches.Layers;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes

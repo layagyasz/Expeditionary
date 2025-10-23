@@ -4,11 +4,11 @@ using Cardamom.Ui.Elements;
 using Cardamom.Window;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
-using Expeditionary.View;
+using Expeditionary.View.Scenes.Matches.Layers;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Scenes.Matches.Layers
 {
     public class FogOfWarLayerController : IElementController
     {
@@ -65,7 +65,7 @@ namespace Expeditionary.Controller
 
         public bool HandleMouseButtonClicked(MouseButtonClickEventArgs e)
         {
-            
+
             return false;
         }
 

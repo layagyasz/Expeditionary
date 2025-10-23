@@ -1,5 +1,6 @@
 ﻿using Cardamom.Graphics.Camera;
 using Expeditionary.Controller.Mapping;
+using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Model;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.View.Scenes.Matches;

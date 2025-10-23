@@ -5,7 +5,7 @@ using Expeditionary.Model.Knowledge;
 using Expeditionary.View.Textures;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class FogOfWarLayer : GraphicsResource, IRenderable
     {

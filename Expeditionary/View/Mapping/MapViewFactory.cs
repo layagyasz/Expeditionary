@@ -3,6 +3,7 @@ using Cardamom.Graphics;
 using Cardamom.Mathematics.Geometry;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
+using Expeditionary.View.Common;
 using Expeditionary.View.Common.Buffers;
 using Expeditionary.View.Textures;
 using OpenTK.Graphics.OpenGL4;

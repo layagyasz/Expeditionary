@@ -9,7 +9,7 @@ using Expeditionary.Model.Units;
 using Expeditionary.View.Common.Buffers;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class AssetLayer : GraphicsResource, IRenderable
     {

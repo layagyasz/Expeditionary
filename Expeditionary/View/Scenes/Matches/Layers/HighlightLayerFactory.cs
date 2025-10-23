@@ -1,6 +1,6 @@
 ﻿using Cardamom.Graphics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class HighlightLayerFactory
     {

@@ -1,11 +1,11 @@
 ﻿using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
-using Expeditionary.View.Common;
+using Expeditionary.View.Common.Components;
 using Expeditionary.View.Scenes.Matches;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Screens
 {
     public class MatchScreen : GraphicsResource, IRenderable
     {
@@ -58,6 +58,7 @@ namespace Expeditionary.View
 
         protected override void DisposeImpl()
         {
+            Controller.Unbind();
             Scene!.Dispose();
             Scene = null;
             UnitOverlay!.Dispose();

@@ -1,7 +1,7 @@
 ﻿using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class AssetLayerFactory
     {

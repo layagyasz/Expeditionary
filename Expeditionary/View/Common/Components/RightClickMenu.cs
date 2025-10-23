@@ -3,7 +3,7 @@ using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 
-namespace Expeditionary.View.Common
+namespace Expeditionary.View.Common.Components
 {
     public class RightClickMenu : Radio
     {
@@ -21,9 +21,9 @@ namespace Expeditionary.View.Common
         public static RightClickMenu Create(UiElementFactory uiElementFactory)
         {
             return new RightClickMenu(
-                new RadioController<object>(/* isNullable=*/ true), 
+                new RadioController<object>(/* isNullable=*/ true),
                 new UiSerialContainer(
-                    uiElementFactory.GetClass(s_Container), 
+                    uiElementFactory.GetClass(s_Container),
                     new InlayController(),
                     UiSerialContainer.Orientation.Vertical),
                 uiElementFactory.GetClass(s_Option));

@@ -4,18 +4,20 @@ using Cardamom.Ui.Controller;
 using Cardamom.Window;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
-using Expeditionary.View;
 using Expeditionary.View.Scenes.Matches;
+using Expeditionary.View.Scenes.Matches.Layers;
+using Expeditionary.View.Screens;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Screens
 {
     public class MatchController : IController
     {
@@ -181,7 +183,7 @@ namespace Expeditionary.Controller
                 StepSelectedUnit();
             }
         }
-        
+
         private void HandleUnitSelected(object? sender, EventArgs e)
         {
             if (_unitSelectController!.GetValue() is Unit unit)
@@ -298,7 +300,7 @@ namespace Expeditionary.Controller
                 {
                     DoOrder(new LoadOrder(_selectedUnit, (IAsset)_selectedOrder.Args[0]));
                 }
-                else if (_selectedOrder?.OrderId == OrderId.Unload) 
+                else if (_selectedOrder?.OrderId == OrderId.Unload)
                 {
                     DoOrder(new UnloadOrder(_selectedUnit));
                 }

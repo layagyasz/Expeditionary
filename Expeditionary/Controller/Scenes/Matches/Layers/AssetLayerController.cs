@@ -6,11 +6,11 @@ using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Units;
-using Expeditionary.View;
+using Expeditionary.View.Scenes.Matches.Layers;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
-namespace Expeditionary.Controller
+namespace Expeditionary.Controller.Scenes.Matches.Layers
 {
     public class AssetLayerController : IElementController
     {

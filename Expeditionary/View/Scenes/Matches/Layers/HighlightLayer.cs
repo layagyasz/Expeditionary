@@ -7,7 +7,7 @@ using Expeditionary.Model.Mapping;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class HighlightLayer : GraphicsResource, IRenderable
     {
@@ -61,12 +61,12 @@ namespace Expeditionary.View
             var hexes = highlight.ToArray();
             var vertices = new Vertex3[18 * hexes.Length];
             int v = 0;
-            for (int i=0; i<hexes.Length; ++i)
+            for (int i = 0; i < hexes.Length; ++i)
             {
                 var hex = hexes[i];
                 var color = s_Levels[hex.Level];
                 var center = Cubic.Cartesian.Instance.Project(hex.Hex);
-                for (int j=0; j<6; ++j)
+                for (int j = 0; j < 6; ++j)
                 {
                     vertices[v++] = new(ToVector3(center), color, new());
                     vertices[v++] = new(ToVector3(center) + s_Scale * s_Corners[j], color, new());

@@ -5,7 +5,7 @@ using Cardamom.Graphics;
 using Cardamom.Mathematics.Geometry;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View
+namespace Expeditionary.View.Common
 {
     public static class Shapes
     {
@@ -117,7 +117,7 @@ namespace Expeditionary.View
         }
 
         private static bool IsZero(Vector3 v)
-        { 
+        {
             return Math.Abs(v.X) < Epsilon && Math.Abs(v.Y) < Epsilon && Math.Abs(v.Z) < Epsilon;
         }
     }
