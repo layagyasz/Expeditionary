@@ -4,7 +4,6 @@
     "Parent": "base-container",
     "Default": {
       "Size": [ 200, "DynamicContents" ],
-      "CornerRadius": [ [ 0, 0 ] ],
       "Margin": [ 0 ],
       "Padding": [ 0 ],
       "DisableScissor": true
@@ -16,10 +15,9 @@
     "Default": {
       "Size": [ 200, 20 ],
       "FontFace": "font-syne-mono",
-      "Color": "#ffffffdf",
+      "Color": "#c08b57c1",
       "Shader": "shader-default",
       "FontSize": 10,
-      "CornerRadius": [ [ 0, 0 ] ],
       "Margin": [ 0 ],
       "Padding": [ 2 ]
     },
@@ -27,13 +25,13 @@
       {
         "State": [ "Hover" ],
         "Attributes": {
-          "BackgroundColor": [ "#ffb74dff" ]
+          "BackgroundColor": [ "#c08b57ff" ]
         }
       },
       {
         "State": [ "Disable" ],
         "Attributes": {
-          "BorderColor": [ "#ffffff1c" ]
+          "BorderColor": [ "#c08b57c1" ]
         }
       }
     ]

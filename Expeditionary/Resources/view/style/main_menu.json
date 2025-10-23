@@ -5,7 +5,7 @@
     "Default": {
       "Size": [ 512, "DynamicContents" ],
       "Margin": [ 8 ],
-      "Padding": [ 2 ],
+      "Padding": [ 4 ],
       "DisableScissor": true
     }
   },
@@ -13,9 +13,10 @@
     "$id": "main-menu-option",
     "Parent": "base-button",
     "Default": {
-      "Size": [ 508, 64 ],
-      "Padding": [ 16 ],
-      "FontSize": 32
+      "Size": [ 496, 48 ],
+      "Margin": [ 4 ],
+      "Padding": [ 12 ],
+      "FontSize": 24
     }
   }
 ]

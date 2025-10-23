@@ -2,26 +2,26 @@
   {
     "$id": "base-container",
     "Default": {
-      "BackgroundColor": [ "#121212ff" ],
+      "BackgroundColor": [ "#26333bdf" ],
       "BackgroundShader": "shader-ui",
-      "CornerRadius": [ [ 8, 8 ] ]
+      "BorderWidth": [ 0, 2, 0, 2 ],
+      "BorderColor": [ "#5e7d78c1" ]
     }
   },
   {
     "$id": "base-block",
     "Default": {
-      "BackgroundColor": [ "#ffffff1c" ],
-      "BackgroundShader": "shader-ui",
-      "CornerRadius": [ [ 8, 8 ] ]
+      "BackgroundColor": [ "#26333b00" ],
+      "BackgroundShader": "shader-ui"
     }
   },
   {
     "$id": "base-span",
     "Default": {
-      "BackgroundColor": [ "#ffffff00" ],
+      "BackgroundColor": [ "#26333b00" ],
       "BackgroundShader": "shader-ui",
       "FontFace": "font-syne-mono",
-      "Color": "#ffffffdf",
+      "Color": "#c08b57c1",
       "Shader": "shader-default",
       "DisableScissor": true
     }
@@ -30,36 +30,37 @@
     "$id": "base-button",
     "Parent": "base-span",
     "Default": {
-      "Size": [ 388, 28 ],
+      "Size": [ 388, 36 ],
       "Margin": [ 2 ],
       "Padding": [ 2 ],
-      "CornerRadius": [ [ 12, 12 ] ],
-      "BackgroundColor": [ "#ffa726ff" ],
-      "BorderWidth": [ 1 ],
-      "BorderColor": [ "#ffffff00" ],
+      "BackgroundColor": [ "#26333b00" ],
+      "BorderWidth": [ 2 ],
+      "BorderColor": [ "#c08b57c1" ],
       "BackgroundShader": "shader-ui",
       "DisableScissor": true,
       "FontSize": 12,
-      "Color": "#121212ff",
+      "Color": "#c08b57c1",
       "Align": "Center"
     },
     "States": [
       {
         "State": [ "Hover" ],
         "Attributes": {
-          "BackgroundColor": [ "#ffb74dff" ]
+          "BorderColor": [ "#c08b57ff" ],
+          "Color": "#c08b57ff"
         }
       },
       {
         "State": [ "Toggle" ],
         "Attributes": {
-          "BorderColor": [ "#ffffffff" ]
+          "BackgroundColor": [ "#5e7d78c1" ]
         }
       },
       {
         "State": [ "Disable" ],
         "Attributes": {
-          "BorderColor": [ "#ffffff1c" ]
+          "BorderColor": [ "#c08b5788" ],
+          "Color": "#c08b5788"
         }
       }
     ]
@@ -67,21 +68,21 @@
   {
     "$id": "base-button-image",
     "Default": {
-      "Size": [ 20, 20 ],
+      "Size": [ 32, 32 ],
       "BackgroundColor": [ "#ffffff00" ],
       "BackgroundShader": "shader-ui",
-      "ForegroundColor": "#121212ff"
+      "ForegroundColor": "#c08b57c1"
     }
   },
   {
     "$id": "base-button-text",
     "Parent": "base-span",
     "Default": {
-      "Size": [ 364, 28 ],
-      "FontSize": 12,
-      "Padding": [ 4 ],
-      "Color": "#121212ff",
-      "Align": "Center"
+      "Size": [ 332, 32 ],
+      "FontSize": 16,
+      "Padding": [ 8 ],
+      "Color": "#c08b57c1",
+      "Align": "Left"
     }
   }
 ]

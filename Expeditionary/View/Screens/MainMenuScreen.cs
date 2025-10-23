@@ -32,7 +32,7 @@ namespace Expeditionary.View.Screens
                 new ButtonMenu.Builder(s_Container)
                     .Add(s_Option, "New Game", NewGame)
                     .Add(s_Option, "Load Game", LoadGame)
-                    .Add(s_Option, "Option", Options)
+                    .Add(s_Option, "Options", Options)
                     .Build(uiElementFactory));
         }
 
