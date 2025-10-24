@@ -20,9 +20,9 @@ namespace Expeditionary.Runners
         public void Run()
         {
             var monitor = Monitors.GetPrimaryMonitor();
-            var window = 
+            var window =
                 new RenderWindow(
-                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution));
+                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), true);
             var ui = new UiWindow(window);
             ui.Bind(new MouseListener());
             ui.Bind(

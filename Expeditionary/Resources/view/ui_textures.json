@@ -6,5 +6,16 @@
       "Prefix": "",
       "Implicit": [ "Resources/view/textures/buttons/*.png" ]
     }
+  },
+  {
+    "$type": "Static",
+    "TexturePath": "Resources/view/textures/backgrounds/main_menu.png",
+    "Segments": [
+      {
+        "Key": "background_main_menu",
+        "TopLeft": [ 0, 0 ],
+        "Size": [ 2560, 1440 ]
+      }
+    ]
   }
 ]

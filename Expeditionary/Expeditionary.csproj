@@ -345,6 +345,9 @@
     <None Update="Resources\view\style\unit_overlay.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\backgrounds\main_menu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\buttons\button_load.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
