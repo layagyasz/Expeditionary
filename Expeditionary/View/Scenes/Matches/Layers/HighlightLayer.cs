@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Mathematics;
 using Cardamom.Ui;
 using Expeditionary.Evaluation.Considerations;
@@ -9,7 +10,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Matches.Layers
 {
-    public class HighlightLayer : GraphicsResource, IRenderable
+    public class HighlightLayer : ManagedResource, IRenderable
     {
         public record struct HexHighlight(Vector3i Hex, int Level);
 

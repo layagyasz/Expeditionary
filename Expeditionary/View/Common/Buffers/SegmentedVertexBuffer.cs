@@ -6,7 +6,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Common.Buffers
 {
-    public class SegmentedVertexBuffer<T> : GraphicsResource, IRenderable where T : struct
+    public class SegmentedVertexBuffer<T> : ManagedResource, IRenderable where T : struct
     {
         private readonly int _blocks;
         private readonly int _blockSize;

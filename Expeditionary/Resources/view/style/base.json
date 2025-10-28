@@ -40,7 +40,9 @@
       "DisableScissor": true,
       "FontSize": 12,
       "Color": "#c08b57c1",
-      "Align": "Center"
+      "Align": "Center",
+      "SfxMouseOver": "sfx-button-mouseover",
+      "SfxClick": "sfx-button-click"
     },
     "States": [
       {

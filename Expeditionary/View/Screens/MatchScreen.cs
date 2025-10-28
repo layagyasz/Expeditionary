@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Expeditionary.View.Common.Components;
@@ -7,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class MatchScreen : GraphicsResource, IRenderable
+    public class MatchScreen : ManagedResource, IRenderable
     {
         public event EventHandler<EventArgs>? Updated;
 

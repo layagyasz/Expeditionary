@@ -1,4 +1,6 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom.Audio;
+using Cardamom.Graphics;
+using Cardamom.Json;
 using Cardamom.Ui;
 using Cardamom.Window;
 using Expeditionary.Runners.Loaders;
@@ -22,13 +24,16 @@ namespace Expeditionary.Runners
             var monitor = Monitors.GetPrimaryMonitor();
             var window =
                 new RenderWindow(
-                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), true);
+                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), false);
             var ui = new UiWindow(window);
             ui.Bind(new MouseListener());
             ui.Bind(
                 new KeyboardListener(SimpleKeyMapper.Us, new Keys[] { Keys.Left, Keys.Right, Keys.Up, Keys.Down }));
 
             var data = new ProgramDataLoader(_config).Load();
+            AudioPlayer audioPlayer = new();
+            audioPlayer.Play(
+                FileStreamSound.FromFile("Resources/audio/tracks/lost-place-atmospheres-001.ogg").GetSampleProvider());
             ui.SetRoot(MakeRoot(data));
             ui.Start();
         }

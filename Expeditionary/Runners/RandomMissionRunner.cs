@@ -15,6 +15,7 @@ using Expeditionary.Controller.Screens;
 using Expeditionary.View.Scenes.Matches.Layers;
 using Expeditionary.View.Common.Components;
 using Cardamom.Graphics;
+using Cardamom.Audio;
 
 namespace Expeditionary.Runners
 {
@@ -26,7 +27,7 @@ namespace Expeditionary.Runners
         protected override IRenderable MakeRoot(ProgramData data)
         {
             var resources = data.Resources;
-            var uiElementFactory = new UiElementFactory(resources);
+            var uiElementFactory = new UiElementFactory(new AudioPlayer(), resources);
 
             var sceneFactory =
                 new SceneFactory(

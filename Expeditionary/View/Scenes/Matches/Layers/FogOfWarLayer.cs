@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Knowledge;
@@ -7,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Matches.Layers
 {
-    public class FogOfWarLayer : GraphicsResource, IRenderable
+    public class FogOfWarLayer : ManagedResource, IRenderable
     {
         private static readonly Color4 s_Undiscovered = new(0, 0, 0, 1f);
         private static readonly Color4 s_Hidden = new(0, 0, 0, 0.75f);

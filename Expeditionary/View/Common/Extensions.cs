@@ -14,8 +14,12 @@ namespace Expeditionary.View.Common
                 controller,
                 UiSerialContainer.Orientation.Horizontal)
             {
-                new SimpleUiElement(uiElementFactory.GetClass(style.Image), new InlayController()),
-                new TextUiElement(uiElementFactory.GetClass(style.Text), new InlayController(), Text)
+                new SimpleUiElement(
+                    uiElementFactory.GetClass(style.Image), new InlayController(uiElementFactory.GetAudioPlayer())),
+                new TextUiElement(
+                    uiElementFactory.GetClass(style.Text), 
+                    new InlayController(uiElementFactory.GetAudioPlayer()), 
+                    Text)
             };
         }
     }

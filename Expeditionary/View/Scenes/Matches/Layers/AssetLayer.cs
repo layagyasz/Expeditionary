@@ -1,4 +1,5 @@
-﻿using Cardamom.Collections;
+﻿using Cardamom;
+using Cardamom.Collections;
 using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 using Cardamom.Ui;
@@ -11,7 +12,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Matches.Layers
 {
-    public class AssetLayer : GraphicsResource, IRenderable
+    public class AssetLayer : ManagedResource, IRenderable
     {
         private class AssetComparator : IComparer<(IAsset, SingleAssetKnowledge)>
         {

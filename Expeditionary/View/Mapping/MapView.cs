@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Ui;
 using Expeditionary.View.Common.Buffers;
 using Expeditionary.View.Textures;
@@ -6,7 +7,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Mapping
 {
-    public class MapView : GraphicsResource, IRenderable
+    public class MapView : ManagedResource, IRenderable
     {
         private VertexBuffer<Vertex3>? _grid;
         private LayeredVertexBuffer? _terrain;

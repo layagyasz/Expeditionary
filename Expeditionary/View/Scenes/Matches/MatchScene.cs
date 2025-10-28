@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Graphics.Camera;
 using Cardamom.Mathematics.Geometry;
 using Cardamom.Ui;
@@ -9,7 +10,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Matches
 {
-    public class MatchScene : GraphicsResource, IScene
+    public class MatchScene : ManagedResource, IScene
     {
         public IElementController Controller { get; }
         public IControlledElement? Parent { get; set; }

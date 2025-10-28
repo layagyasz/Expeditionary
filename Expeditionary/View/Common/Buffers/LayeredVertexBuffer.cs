@@ -1,9 +1,10 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Expeditionary.View.Common.Buffers
 {
-    public class LayeredVertexBuffer : GraphicsResource
+    public class LayeredVertexBuffer : ManagedResource
     {
         public class Builder
         {
@@ -31,7 +32,7 @@ namespace Expeditionary.View.Common.Buffers
             }
         }
 
-        public class Layer : GraphicsResource
+        public class Layer : ManagedResource
         {
             private VertexBuffer<Vertex3>? _vertices;
 

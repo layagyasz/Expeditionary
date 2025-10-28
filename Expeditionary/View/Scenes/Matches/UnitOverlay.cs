@@ -43,13 +43,17 @@ namespace Expeditionary.View.Scenes.Matches
                     new RadioController<OrderValue>(),
                     new UiSerialContainer(
                         uiElementFactory.GetClass(s_OrderContainer),
-                        new InlayController(), 
+                        new InlayController(uiElementFactory.GetAudioPlayer()), 
                         UiSerialContainer.Orientation.Vertical));
-            Title = new TextUiElement(uiElementFactory.GetClass(s_Title), new InlayController(), string.Empty);
+            Title = 
+                new TextUiElement(
+                    uiElementFactory.GetClass(s_Title),
+                    new InlayController(uiElementFactory.GetAudioPlayer()),
+                    string.Empty);
             Add(
                 new UiSerialContainer(
                     uiElementFactory.GetClass(s_TitleContainer),
-                    new InlayController(),
+                    new InlayController(uiElementFactory.GetAudioPlayer()),
                     UiSerialContainer.Orientation.Horizontal)
                 {
                     Title
@@ -61,7 +65,9 @@ namespace Expeditionary.View.Scenes.Matches
         {
             var element = 
                 _uiElementFactory.CreateButton(
-                    GetClass(order.OrderId), new OptionElementController<OrderValue>(order), order.Name);
+                    GetClass(order.OrderId),
+                    new OptionElementController<OrderValue>(_uiElementFactory.GetAudioPlayer(), order), 
+                    order.Name);
             element.Initialize();
             Orders.Add(element);
         }

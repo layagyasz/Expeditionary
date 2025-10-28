@@ -38,13 +38,15 @@ namespace Expeditionary.View.Common.Components
             {
                 var container = 
                     new UiSerialContainer(
-                        uiElementFactory.GetClass(_containerClass), new TableController(0f), _orientation);
+                        uiElementFactory.GetClass(_containerClass), 
+                        new TableController(uiElementFactory.GetAudioPlayer(), 0f), 
+                        _orientation);
                 foreach ((var @class, var option) in _options)
                 {
                     container.Add(
                         new TextUiElement(
                             uiElementFactory.GetClass(@class),
-                            new OptionElementController<object>(option.Value),
+                            new OptionElementController<object>(uiElementFactory.GetAudioPlayer(), option.Value),
                             option.Text));
                 }
                 return new(new ButtonMenuController(), container);

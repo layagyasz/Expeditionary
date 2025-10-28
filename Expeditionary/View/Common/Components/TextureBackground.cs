@@ -54,8 +54,7 @@ namespace Expeditionary.View.Common.Components
 
         public void ResizeContext(Vector3 context)
         {
-            var ratio = context / _textureBox.Size.X;
-            var scale = Math.Max(ratio.X, ratio.Y);
+            var scale = Math.Max(context.X / _textureBox.Size.X, context.Y / _textureBox.Size.Y);
             _matrix = Matrix4.CreateScale(scale * context) * Matrix4.CreateTranslation(0.5f * context * (1 - scale));
         }
 

@@ -1,4 +1,5 @@
-﻿using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Screens;
@@ -7,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class MainMenuScreen : GraphicsResource, IRenderable
+    public class MainMenuScreen : ManagedResource, IRenderable
     {
         public static readonly object NewGame = new();
         public static readonly object LoadGame = new();

@@ -1,5 +1,5 @@
-﻿using Cardamom.Collections;
-using Cardamom.Graphics;
+﻿using Cardamom;
+using Cardamom.Collections;
 using Cardamom.Logging;
 using Cardamom.Utils.Suppliers.Promises;
 using Cardamom.Window;
@@ -8,7 +8,7 @@ using OpenTK.Windowing.Desktop;
 
 namespace Expeditionary.Loader
 {
-    public class ThreadedLoader : GraphicsResource
+    public class ThreadedLoader : ManagedResource
     {
         delegate void QueueCallback(ILoaderTask task);
 
