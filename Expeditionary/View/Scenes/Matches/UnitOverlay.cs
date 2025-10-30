@@ -15,13 +15,13 @@ namespace Expeditionary.View.Scenes.Matches
         private static readonly string s_Title = "unit-overlay-title";
         private static readonly string s_OrderContainer = "unit-overlay-order-container";
         private static readonly ButtonStyle s_AttackButton = 
-            new("base-button", "unit-overlay-order-attack", "base-button-text");
+            new("unit-overlay-order-button", "unit-overlay-order-attack", "base-button-text");
         private static readonly ButtonStyle s_MoveButton =
-            new("base-button", "unit-overlay-order-move", "base-button-text");
+            new("unit-overlay-order-button", "unit-overlay-order-move", "base-button-text");
         private static readonly ButtonStyle s_LoadButton =
-            new("base-button", "unit-overlay-order-load", "base-button-text");
+            new("unit-overlay-order-button", "unit-overlay-order-load", "base-button-text");
         private static readonly ButtonStyle s_UnloadButton =
-            new("base-button", "unit-overlay-order-unload", "base-button-text");
+            new("unit-overlay-order-button", "unit-overlay-order-unload", "base-button-text");
 
         public TextUiElement Title { get; }
         public UiCompoundComponent Orders { get; }

@@ -1,0 +1,56 @@
+{
+  "Tracks": [
+    {
+      "Name": "Lost Place Atmospheres 1",
+      "Track": "Resources/audio/tracks/lost-place-atmospheres-001.ogg"
+    },
+    {
+      "Name": "Lost Place Atmospheres 2",
+      "Track": "Resources/audio/tracks/lost-place-atmospheres-002.ogg"
+    },
+    {
+      "Name": "Lost Place Atmospheres 3",
+      "Track": "Resources/audio/tracks/lost-place-atmospheres-003.ogg"
+    },
+    {
+      "Name": "Lost Place Atmospheres 4",
+      "Track": "Resources/audio/tracks/lost-place-atmospheres-004.ogg"
+    },
+    {
+      "Name": "Stalker Heart of Chornobyl Atmosphere 1",
+      "Track": "Resources/audio/tracks/stalker-heart-of-chornobyl-atmosphere-1.ogg"
+    },
+    {
+      "Name": "Stalker Heart of Chornobyl Atmosphere 21",
+      "Track": "Resources/audio/tracks/stalker-heart-of-chornobyl-atmosphere-21.ogg"
+    },
+    {
+      "Name": "Stalker Heart of Chornobyl Atmosphere 7",
+      "Track": "Resources/audio/tracks/stalker-heart-of-chornobyl-atmosphere-7.ogg"
+    },
+    {
+      "Name": "Stalker Heart of Chornobyl Atmosphere 8",
+      "Track": "Resources/audio/tracks/stalker-heart-of-chornobyl-atmosphere-8.ogg"
+    },
+    {
+      "Name": "The Backrooms Music Vol. 10",
+      "Track": "Resources/audio/tracks/the-backrooms-music-vol-10.ogg"
+    },
+    {
+      "Name": "The Backrooms Music Vol. 11",
+      "Track": "Resources/audio/tracks/the-backrooms-music-vol-11.ogg"
+    },
+    {
+      "Name": "The Backrooms Music Vol. 2",
+      "Track": "Resources/audio/tracks/the-backrooms-music-vol-2.ogg"
+    },
+    {
+      "Name": "The Backrooms Music Vol. 6",
+      "Track": "Resources/audio/tracks/the-backrooms-music-vol-6.ogg"
+    },
+    {
+      "Name": "The Backrooms Music Vol. 8",
+      "Track": "Resources/audio/tracks/the-backrooms-music-vol-8.ogg"
+    }
+  ]
+}

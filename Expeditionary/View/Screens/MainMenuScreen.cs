@@ -15,6 +15,7 @@ namespace Expeditionary.View.Screens
         public static readonly object Options = new();
 
         private static readonly string s_Container = "main-menu-container";
+        private static readonly string s_Title = "main-menu-title";
         private static readonly string s_Option = "main-menu-option";
 
         public IController Controller { get; }
@@ -38,6 +39,7 @@ namespace Expeditionary.View.Screens
                 new TextureBackground(
                     segment.Texture!, segment.TextureView, uiElementFactory.GetShader("shader-default")),
                 new ButtonMenu.Builder(s_Container)
+                    .SetTitle("Main Menu", s_Title)
                     .Add(s_Option, "New Game", NewGame)
                     .Add(s_Option, "Load Game", LoadGame)
                     .Add(s_Option, "Options", Options)

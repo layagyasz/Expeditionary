@@ -1,0 +1,10 @@
+[
+  {
+    "$id": "sfx-button-mouseover",
+    "Element": "Resources/audio/sfx/button-mouseover.ogg"
+  },
+  {
+    "$id": "sfx-button-click",
+    "Element": "Resources/audio/sfx/button-click.ogg"
+  }
+]

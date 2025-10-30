@@ -16,6 +16,7 @@
             return new(
                 resources, 
                 module, 
+                new PlaylistLoader(_config.Playlist).Load(),
                 new SpectrumSensitivityLoader(_config.SpectrumSensitivity).Load(), 
                 new RuntimeTextureLibraryLoader(resources).Load(),
                 new RuntimeUnitTextureLoader(module, _config.UnitTextureSettings).Load());

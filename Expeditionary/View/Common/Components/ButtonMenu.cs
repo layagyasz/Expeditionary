@@ -15,6 +15,8 @@ namespace Expeditionary.View.Common.Components
         {
             private readonly string _containerClass;
             private UiSerialContainer.Orientation _orientation = UiSerialContainer.Orientation.Vertical;
+            private string? _title;
+            private string? _titleClass;
             private readonly List<(string, SelectOption<object>)> _options = new();
 
             public Builder(string containerClass)
@@ -34,6 +36,13 @@ namespace Expeditionary.View.Common.Components
                 return this;
             }
 
+            public Builder SetTitle(string title, string @class)
+            {
+                _title = title;
+                _titleClass = @class;
+                return this;
+            }
+
             public ButtonMenu Build(UiElementFactory uiElementFactory)
             {
                 var container = 
@@ -41,6 +50,14 @@ namespace Expeditionary.View.Common.Components
                         uiElementFactory.GetClass(_containerClass), 
                         new TableController(uiElementFactory.GetAudioPlayer(), 0f), 
                         _orientation);
+                if (_title != null && _titleClass != null)
+                {
+                    container.Add(
+                        new TextUiElement(
+                            uiElementFactory.GetClass(_titleClass),
+                            new InlayController(uiElementFactory.GetAudioPlayer()),
+                            _title));
+                }
                 foreach ((var @class, var option) in _options)
                 {
                     container.Add(

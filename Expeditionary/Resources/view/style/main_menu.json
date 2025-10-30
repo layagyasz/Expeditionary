@@ -4,17 +4,26 @@
     "Parent": "base-container",
     "Default": {
       "Size": [ 512, "DynamicContents" ],
-      "Margin": [ 8 ],
-      "Padding": [ 4 ],
-      "DisableScissor": true
+      "Margin": [ 0 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "main-menu-title",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
     }
   },
   {
     "$id": "main-menu-option",
     "Parent": "base-button",
     "Default": {
-      "Size": [ 496, 48 ],
-      "Margin": [ 4 ],
+      "Size": [ 504, 48 ],
+      "Margin": [ 2 ],
       "Padding": [ 12 ],
       "FontSize": 24
     }

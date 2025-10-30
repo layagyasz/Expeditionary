@@ -32,8 +32,8 @@ namespace Expeditionary.Runners
 
             var data = new ProgramDataLoader(_config).Load();
             AudioPlayer audioPlayer = new();
-            audioPlayer.Play(
-                FileStreamSound.FromFile("Resources/audio/tracks/lost-place-atmospheres-001.ogg").GetSampleProvider());
+            SoundtrackPlayer soundtrack = new(audioPlayer, data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
+            soundtrack.Initialize();
             ui.SetRoot(MakeRoot(data));
             ui.Start();
         }

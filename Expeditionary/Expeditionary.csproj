@@ -28,7 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\audio\audio.json">
+    <None Update="Resources\audio\playlist.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\sfx.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\audio\sfx\button-click.ogg">
@@ -38,6 +41,42 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\audio\tracks\lost-place-atmospheres-001.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\lost-place-atmospheres-002.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\lost-place-atmospheres-003.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\lost-place-atmospheres-004.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\stalker-heart-of-chornobyl-atmosphere-1.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\stalker-heart-of-chornobyl-atmosphere-21.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\stalker-heart-of-chornobyl-atmosphere-7.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\stalker-heart-of-chornobyl-atmosphere-8.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\the-backrooms-music-vol-10.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\the-backrooms-music-vol-11.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\the-backrooms-music-vol-2.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\the-backrooms-music-vol-6.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\audio\tracks\the-backrooms-music-vol-8.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\config\default\factionformations\hyacinth.json">

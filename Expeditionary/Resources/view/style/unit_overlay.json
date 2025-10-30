@@ -5,38 +5,44 @@
     "Default": {
       "Size": [ 400, "DynamicContents" ],
       "Margin": [ 8 ],
-      "Padding": [ 2 ],
-      "DisableScissor": true
+      "Padding": [ 2 ]
     }
   },
   {
     "$id": "unit-overlay-title-container",
     "Parent": "base-block",
     "Default": {
-      "Size": [ 392, 52 ],
-      "Margin": [ 2 ],
-      "Padding": [ 2 ],
-      "DisableScissor": true
+      "Size": [ 396, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 0 ]
     }
   },
   {
     "$id": "unit-overlay-title",
     "Parent": "base-span",
     "Default": {
-      "Size": [ 392, 44 ],
-      "Margin": [ 2 ],
-      "Padding": [ 13 ],
-      "FontSize": 18
+      "Size": [ 396, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
     }
   },
   {
     "$id": "unit-overlay-order-container",
-    "Parent": "base-block",
+    "Parent": "base-span",
     "Default": {
-      "Size": [ 392, "DynamicContents" ],
+      "Size": [ 396, "DynamicContents" ],
+      "Margin": [ 0 ],
+      "Padding": [ 4 ]
+    }
+  },
+  {
+    "$id": "unit-overlay-order-button",
+    "Parent": "base-button",
+    "Default": {
+      "Size": [ 384, 36 ],
       "Margin": [ 2 ],
-      "Padding": [ 1 ],
-      "DisableScissor": true
+      "Padding": [ 2 ]
     }
   },
   {
