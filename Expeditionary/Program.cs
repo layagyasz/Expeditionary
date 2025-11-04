@@ -14,7 +14,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new DefaultRunner(Config).Run();
+            new GalaxyRunner(Config).Run();
         }
     }
 }

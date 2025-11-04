@@ -21,6 +21,13 @@
     }
   },
   {
+    "$id": "shader-galaxy",
+    "Element": {
+      "Vertex": "Resources/view/textures/generation/default.vert",
+      "Fragment": "Resources/view/shaders/galaxy.frag"
+    }
+  },
+  {
     "$id": "shader-generate-mask",
     "Element": {
       "Vertex": "Resources/view/textures/generation/default.vert",

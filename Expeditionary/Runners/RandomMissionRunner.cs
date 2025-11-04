@@ -1,21 +1,18 @@
-﻿using Cardamom.Ui;
+﻿using Cardamom.Graphics;
+using Cardamom.Ui;
+using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Ai;
+using Expeditionary.Controller.Screens;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.MissionNodes;
 using Expeditionary.Model.Missions.MissionTypes;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model;
-using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Scenes;
-using System.Collections.Immutable;
-using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.View.Screens;
-using Expeditionary.Controller.Screens;
-using Expeditionary.View.Scenes.Matches.Layers;
 using Expeditionary.View.Common.Components;
-using Cardamom.Graphics;
-using Cardamom.Audio;
+using System.Collections.Immutable;
 
 namespace Expeditionary.Runners
 {
@@ -24,29 +21,9 @@ namespace Expeditionary.Runners
         public RandomMissionRunner(ProgramConfig config)
             : base(config) { }
 
-        protected override IRenderable MakeRoot(ProgramData data)
+        protected override IRenderable MakeRoot(
+           ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory)
         {
-            var resources = data.Resources;
-            var uiElementFactory = new UiElementFactory(new AudioPlayer(), resources);
-
-            var sceneFactory =
-                new SceneFactory(
-                    new MapViewFactory(
-                        new()
-                        {
-                            ElevationGradient = new(0.9f, 1.25f),
-                            RidgeShift = new(0f, 0.5f, 0.5f, 1)
-                        },
-                        data.TextureLibrary,
-                        resources.GetShader("shader-filter-no-tex"),
-                        resources.GetShader("shader-mask"),
-                        resources.GetShader("shader-default")),
-                    new FogOfWarLayerFactory(resources.GetShader("shader-default"), data.TextureLibrary.Partitions),
-                    new AssetLayerFactory(
-                        resources.GetShader("shader-default"),
-                        data.UnitTextures),
-                    new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
-
             var module = data.Module;
             var random = new Random();
             var missionResources =

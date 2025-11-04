@@ -1,5 +1,4 @@
 ﻿using Cardamom.Graphics;
-using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using Expeditionary.View.Textures;
 using OpenTK.Graphics.OpenGL4;

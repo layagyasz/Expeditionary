@@ -37,10 +37,6 @@
       "Track": "Resources/audio/tracks/the-backrooms-music-vol-10.ogg"
     },
     {
-      "Name": "The Backrooms Music Vol. 11",
-      "Track": "Resources/audio/tracks/the-backrooms-music-vol-11.ogg"
-    },
-    {
       "Name": "The Backrooms Music Vol. 2",
       "Track": "Resources/audio/tracks/the-backrooms-music-vol-2.ogg"
     },
@@ -48,7 +44,7 @@
       "Name": "The Backrooms Music Vol. 6",
       "Track": "Resources/audio/tracks/the-backrooms-music-vol-6.ogg"
     },
-    {
+    { 
       "Name": "The Backrooms Music Vol. 8",
       "Track": "Resources/audio/tracks/the-backrooms-music-vol-8.ogg"
     }
