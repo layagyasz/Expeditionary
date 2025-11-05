@@ -1,6 +1,6 @@
 ﻿using Cardamom.Json;
+using Expeditionary.Model.Galaxies;
 using Expeditionary.Model.Mapping.Environments;
-using Expeditionary.Model.Sectors;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
@@ -18,11 +18,12 @@ namespace Expeditionary.Model.Missions.MissionNodes
             var random = resources.Random;
             // TODO: Configure cap and toString() implementation
             var key = 
-                new PlanetKey(
+                new MapEnvironmentKey(
                     Sectors[random.Next(Sectors.Count)],
                     random.Next(SectorNaming!.StarPrefixes.Count), 
-                    random.Next(10) + 1);
-            return resources.EnvironmentGenerator.Generate(key, environment: 0, SectorNaming!);
+                    random.Next(10) + 1,
+                    Environment: 0);
+            return resources.EnvironmentGenerator.Generate(key, SectorNaming!);
         }
     }
 }

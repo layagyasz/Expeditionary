@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-hrutgard",
-    "Name": "Hrutgard",
+    "Name": {
+      "FixedName": "Hrutgard"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-k",

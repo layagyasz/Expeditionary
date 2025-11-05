@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-kedromon-yer",
-    "Name": "Kedromon Yer",
+    "Name": {
+      "FixedName": "Kedromon Yer"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-g",

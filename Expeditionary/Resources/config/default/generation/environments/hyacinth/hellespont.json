@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-hellespont",
-    "Name": "Hellespont",
+    "Name": {
+      "FixedName": "Hellespont"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-m",

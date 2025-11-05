@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-kokudo",
-    "Name": "Kokudo",
+    "Name": {
+      "FixedName": "Kokudo"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-g",

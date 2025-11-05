@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-fiskgard",
-    "Name": "Fiskgard",
+    "Name": {
+      "FixedName": "Fiskgard"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-f",

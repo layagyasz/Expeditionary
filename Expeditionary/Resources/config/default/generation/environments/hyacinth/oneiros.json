@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-oneiros",
-    "Name": "Oneiros",
+    "Name": {
+      "FixedName": "Oneiros"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-a",

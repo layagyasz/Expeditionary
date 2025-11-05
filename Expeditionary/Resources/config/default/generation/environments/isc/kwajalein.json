@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-kwajalein",
-    "Name": "Kwajalein",
+    "Name": {
+      "FixedName": "Kwajalein"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-k",

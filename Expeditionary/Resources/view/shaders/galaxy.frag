@@ -102,5 +102,6 @@ void main()
 	vec3 pos = vec3(vert_tex_coord, time);
 	float noise_x = noise(pos, SEED_X);
 	float noise_y = noise(pos, SEED_Y);
-    out_color = BRIGHTNESS * texture(texture0, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y));
+	float value = BRIGHTNESS * texture(texture0, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y)).x;
+    out_color = vert_color * vec4(1f, 1f, 1f, value);
 }

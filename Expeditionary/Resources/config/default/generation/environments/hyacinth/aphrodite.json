@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-aphrodite",
-    "Name": "Aphrodite",
+    "Name": {
+      "FixedName": "Aphrodite"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-g",

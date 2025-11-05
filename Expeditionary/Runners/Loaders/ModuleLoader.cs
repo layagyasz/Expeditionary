@@ -25,6 +25,7 @@ namespace Expeditionary.Runners.Loaders
                 ReferenceHandler = new KeyedReferenceHandler()
             };
             options.Converters.Add(new ColorJsonConverter());
+            options.Converters.Add(new Vector2JsonConverter());
             options.Converters.Add(new Vector2iJsonConverter());
             options.Converters.Add(new TextureVolumeJsonConverter());
             options.Converters.Add(new BuilderJsonConverter());

@@ -7,7 +7,7 @@ namespace Expeditionary.Model.Mapping.Environments
     public class MapEnvironmentDefinition : IKeyed
     {
         public string Key { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
+        public MapEnvironmentName Name { get; set; } = new();
 
         [JsonConverter(typeof(ReferenceCollectionJsonConverter))]
         public List<MapEnvironmentTrait> Traits { get; set; } = new();

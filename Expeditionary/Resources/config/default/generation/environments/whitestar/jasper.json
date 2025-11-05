@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-jasper",
-    "Name": "Jasper",
+    "Name": {
+      "FixedName": "Jasper"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-k",

@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-meridian",
-    "Name": "Meridian",
+    "Name": {
+      "FixedName": "Meridian"
+    },
     "Trait": [
       "environment-trait-default",
       "environment-trait-star-sol",

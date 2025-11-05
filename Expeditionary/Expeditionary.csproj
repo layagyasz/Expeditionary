@@ -139,6 +139,9 @@
     <None Update="Resources\config\default\formations\e2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\galaxy.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\generation\environments\earth\meridian.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

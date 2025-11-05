@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-hladolet",
-    "Name": "Hladolet",
+    "Name": {
+      "FixedName": "Hladolet"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-brown-dwarf",

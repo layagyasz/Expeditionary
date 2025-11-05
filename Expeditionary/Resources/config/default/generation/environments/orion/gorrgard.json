@@ -1,7 +1,9 @@
 [
   {
     "$id": "environment-gorrgard",
-    "Name": "Gorrgard",
+    "Name": {
+      "FixedName": "Gorrgard"
+    },
     "Traits": [
       "environment-trait-default",
       "environment-trait-star-class-a",
