@@ -412,6 +412,9 @@
     <None Update="Resources\view\textures\buttons\button_unload.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\generation\galaxy.comp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\generation\mask.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

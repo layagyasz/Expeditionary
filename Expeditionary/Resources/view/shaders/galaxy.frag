@@ -1,27 +1,25 @@
 #version 430 core
 
-#define ARMS 4
-#define ROTATION 16
-#define SHARPEN 4
-#define TAPER 3
-
 #define AMPLITUDE 1
 #define FREQUENCY vec3(10f, 10f, 10f)
-#define LACUNARITY 2
+#define LACUNARITY 2f
 #define OCTAVES 8
-#define OFFSET vec3(2f, 2f, 2f)
-#define PERSISTENCE 0.6f
+#define PERSISTENCE 0.8f
 
 #define SEED_X 1234
 #define SEED_Y 5678
 
-#define BRIGHTNESS 0.5f
+#define BRIGHTNESS 0.8f
 #define DISTORTION vec2(0.2f, 0.2f)
 
 out vec4 out_color;
 
 in vec4 vert_color;
 in vec2 vert_tex_coord;
+
+layout(binding = 0) uniform sampler2D texture0;
+
+uniform float time;
 
 const vec3 kernel[] = vec3[]
 (
@@ -99,19 +97,10 @@ float noise(vec3 position, int seed) {
     return total / max;
 }
 
-float galaxy_density(vec2 position)
-{
-    float radius = length(position);
-    float angle = atan(position.y, position.x);
-	float s = SHARPEN * pow(radius, TAPER);
-    return (1f - radius * radius) * max(s * cos(ARMS * angle + ROTATION * radius) - s + 1f, 0.5f);
-}
-
 void main()
 {
-	vec3 pos = vec3(vert_tex_coord, 0f);
-	float noise_x = noise(OFFSET + pos, SEED_X);
-	float noise_y = noise(OFFSET + pos, SEED_Y);
-    float density = BRIGHTNESS * galaxy_density(pos.xy + DISTORTION * vec2(noise_x, noise_y));
-    out_color = vec4(density, density, density, 1);
+	vec3 pos = vec3(vert_tex_coord, time);
+	float noise_x = noise(pos, SEED_X);
+	float noise_y = noise(pos, SEED_Y);
+    out_color = BRIGHTNESS * texture(texture0, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y));
 }

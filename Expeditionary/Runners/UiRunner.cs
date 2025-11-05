@@ -41,7 +41,9 @@ namespace Expeditionary.Runners
 
             var sceneFactory =
                 new SceneFactory(
-                    new GalaxyViewFactory(resources.GetShader("shader-galaxy")),
+                    new GalaxyViewFactory(
+                        ComputeShader.FromFile("resources/view/textures/generation/galaxy.comp", new(32, 32)),
+                        resources.GetShader("shader-galaxy")),
                     new MapViewFactory(
                         new()
                         {

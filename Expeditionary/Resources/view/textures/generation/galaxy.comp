@@ -1,0 +1,27 @@
+#version 430 core
+
+#define ARMS 4
+#define ROTATION 16
+#define SHARPEN 1
+#define TAPER 2
+
+layout(local_size_x = 32, local_size_y = 32, local_size_z = 1) in;
+layout(rgba32f, binding = 0) uniform image2D texture;
+
+layout(location=0) uniform mat4 transform;
+
+float density(vec2 position)
+{
+    float radius = length(position);
+    float angle = atan(position.y, position.x);
+	float s = SHARPEN * pow(radius, TAPER);
+    return (1f - radius * radius) * max(s * cos(ARMS * angle + ROTATION * radius) - s + 1f, 0.5f);
+}
+
+void main()
+{
+    vec4 p = vec4(gl_GlobalInvocationID.xy, 0, 1) * transform;
+    ivec2 position = ivec2(gl_GlobalInvocationID.xy);
+    float d = density(p.xy);
+    imageStore(texture, position, vec4(d, d, d, 1));
+}
