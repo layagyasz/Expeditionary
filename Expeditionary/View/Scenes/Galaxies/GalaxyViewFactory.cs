@@ -25,14 +25,13 @@ namespace Expeditionary.View.Scenes.Galaxies
                 * Matrix4.CreateTranslation(-1, -1, 0);
             _lookupShader.SetMatrix4(s_TransformLocation, transform);
 
-            var tex = Texture.Create(s_LookupSize, new() { WrapMode = TextureWrapMode.ClampToEdge });
+            var p = new Texture.Parameters() { WrapMode = TextureWrapMode.ClampToEdge };
+            var tex = Texture.Create(s_LookupSize, p);
             tex.BindImage(0);
             _lookupShader.DoCompute(s_LookupSize);
             Texture.UnbindImage(0);
 
-            tex.CopyToImage().SaveToFile("out.png");
-
-            return new(tex, _shader);
+            return new(tex, Texture.FromFile("resources/view/textures/luts/lut_galaxy.png", p), _shader);
         }
     }
 }

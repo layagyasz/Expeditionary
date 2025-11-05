@@ -2,7 +2,6 @@
 using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Window;
-using Expeditionary.Model;
 using Expeditionary.Runners.Loaders;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
@@ -63,7 +62,6 @@ namespace Expeditionary.Runners
             SoundtrackPlayer soundtrack = 
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
             soundtrack.Initialize();
-
 
             ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory));
             ui.Start();

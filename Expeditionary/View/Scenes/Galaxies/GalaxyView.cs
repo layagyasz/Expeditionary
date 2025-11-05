@@ -19,19 +19,22 @@ namespace Expeditionary.View.Scenes.Galaxies
             new(new(2f, 0f, 2f), Color4.White, new(2f, 2f))
         };
 
+        private readonly Texture _shape;
         private readonly Texture _lookup;
         private readonly RenderShader _shader;
 
         private long _time;
 
-        public GalaxyView(Texture lookup, RenderShader shader)
+        public GalaxyView(Texture shape, Texture lookup, RenderShader shader)
         {
+            _shape = shape;
             _lookup = lookup;
             _shader = shader;
         }
 
         protected override void DisposeImpl() 
         {
+            _shape.Dispose();
             _lookup.Dispose();
         }
 
@@ -39,7 +42,11 @@ namespace Expeditionary.View.Scenes.Galaxies
         {
             _shader.SetFloat("time", s_Distortion * _time);
             target.Draw(
-                s_Vertices, PrimitiveType.Triangles, 0, s_Vertices.Length, new(BlendMode.Alpha, _shader, _lookup));
+                s_Vertices, 
+                PrimitiveType.Triangles, 
+                0,
+                s_Vertices.Length,
+                new(BlendMode.Alpha, _shader, _shape, _lookup));
         }
 
         public void Initialize() { }

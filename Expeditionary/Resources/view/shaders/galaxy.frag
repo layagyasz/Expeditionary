@@ -17,7 +17,8 @@ out vec4 out_color;
 in vec4 vert_color;
 in vec2 vert_tex_coord;
 
-layout(binding = 0) uniform sampler2D texture0;
+layout(binding = 0) uniform sampler2D tex_shape;
+layout(binding = 1) uniform sampler2D tex_lut;
 
 uniform float time;
 
@@ -102,6 +103,9 @@ void main()
 	vec3 pos = vec3(vert_tex_coord, time);
 	float noise_x = noise(pos, SEED_X);
 	float noise_y = noise(pos, SEED_Y);
-	float value = BRIGHTNESS * texture(texture0, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y)).x;
-    out_color = vert_color * vec4(1f, 1f, 1f, value);
+	float value = texture(tex_shape, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y)).x;
+    out_color = 
+		BRIGHTNESS
+		* vert_color
+		* vec4(texture(tex_lut, vec2(value, clamp(length(vert_tex_coord), 0f, 1f))).rgb, value);
 }
