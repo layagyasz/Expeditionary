@@ -4,8 +4,7 @@ using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Ai;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Missions.MissionNodes;
-using Expeditionary.Model.Missions.MissionTypes;
+using Expeditionary.Model.Missions.Generator;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model;
 using Expeditionary.View.Scenes.Matches;
@@ -28,37 +27,45 @@ namespace Expeditionary.Runners
             var random = new Random();
             var missionResources =
                 new MissionGenerationResources(
-                    module.MapEnvironmentGenerator, new(module.FactionFormations, module.Formations), random);
+                    data.Module.Galaxy, 
+                    module.MapEnvironmentGenerator,
+                    new(module.FactionFormations, module.Formations), 
+                    random);
             var missionNode =
-                new AssaultMissionNode()
+                new MissionNode()
                 {
                     Environment = new RandomEnvironmentProvider()
                     {
-                        SectorNaming = module.SectorNamings["sector-naming-default"],
                         Sectors = ImmutableList.Create(1, 2, 3, 4, 5)
                     },
                     Difficulty = new() { MissionDifficulty.Medium },
                     Scale = new() { MissionScale.Medium },
                     Attackers = new() { module.Factions["faction-sm"] },
                     Defenders = new() { module.Factions["faction-earth"] },
-                    ZoneOptions =
-                        new()
+                    Frequency = 1f,
+                    Duration = new NormalSampler(1, 0),
+                    Content = 
+                        new AssaultMissionGenerator()
                         {
+                            ZoneOptions =
                             new()
                             {
-                                CoreCount = 1,
-                                CandidateDensity = .005f,
-                                Type = StructureType.Mining,
-                                Level = 1,
-                                Size = new NormalSampler(2, 1),
-                                RiverPenalty = new(),
-                                CoastPenalty = new(),
-                                SlopePenalty = new(0, -1, 1),
-                                ElevationPenalty = new(0, -1, 1),
+                                new()
+                                {
+                                    CoreCount = 1,
+                                    CandidateDensity = .005f,
+                                    Type = StructureType.Mining,
+                                    Level = 1,
+                                    Size = new NormalSampler(2, 1),
+                                    RiverPenalty = new(),
+                                    CoastPenalty = new(),
+                                    SlopePenalty = new(0, -1, 1),
+                                    ElevationPenalty = new(0, -1, 1),
+                                }
                             }
                         }
                 };
-            var mission = missionNode.Create(missionResources);
+            var mission = missionNode.Create(missionResources).Content;
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
             foreach (var trait in mission.Map.Environment.Traits)
             {

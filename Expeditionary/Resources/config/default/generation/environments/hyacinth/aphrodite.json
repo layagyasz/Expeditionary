@@ -1,8 +1,12 @@
 [
   {
     "$id": "environment-aphrodite",
-    "Name": {
-      "FixedName": "Aphrodite"
+    "Name": "Aphrodite",
+    "Location": {
+      "Sector": 0,
+      "System": 0,
+      "Planet": 0,
+      "Environment": 0
     },
     "Traits": [
       "environment-trait-default",

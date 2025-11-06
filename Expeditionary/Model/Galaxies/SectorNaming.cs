@@ -6,17 +6,17 @@ namespace Expeditionary.Model.Galaxies
     public class SectorNaming : IKeyed
     {
         public string Key { get; set; } = string.Empty;
-        public List<string> StarPrefixes { get; set; } = new();
-        public List<SectorName> Sectors { get; set; } = new();
+        public required List<string> StarPrefixes { get; set; }
+        public required List<SectorName> Sectors { get; set; }
 
-        public string Name(MapEnvironmentName name)
+        public string Name(MapEnvironment environment)
         {
-            if (name.KeyedName != null)
+            if (environment.Name != null)
             {
-                var key = name.KeyedName.Value;
-                return $"{StarPrefixes[key.System]} {Sectors[key.Sector].StarName} {key.Planet}";
+                return environment.Name;
             }
-            return name.FixedName!;
+            var key = environment.Location;
+            return $"{StarPrefixes[key.System]} {Sectors[key.Sector].StarName} {key.Planet}";
         }
     }
 }

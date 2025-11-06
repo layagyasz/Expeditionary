@@ -3,9 +3,11 @@ using Expeditionary.Model.Mapping.Generator;
 
 namespace Expeditionary.Model.Mapping.Environments
 {
-    public record class MapEnvironment(MapEnvironmentName Name)
+    public record class MapEnvironment
     {
-        public MapAppearance Appearance { get; set; } = new();
-        public MapGenerator.Parameters Parameters { get; set; } = new();
+        public required MapEnvironmentKey Location { get; set; }
+        public string? Name { get; set; }
+        public required MapAppearance Appearance { get; set; }
+        public required MapGenerator.Parameters Parameters { get; set; }
     }
 }

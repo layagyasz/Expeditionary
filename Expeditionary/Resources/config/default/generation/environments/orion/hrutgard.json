@@ -1,8 +1,12 @@
 [
   {
     "$id": "environment-hrutgard",
-    "Name": {
-      "FixedName": "Hrutgard"
+    "Name": "Hrutgard",
+    "Location": {
+      "Sector": 0,
+      "System": 0,
+      "Planet": 0,
+      "Environment": 0
     },
     "Traits": [
       "environment-trait-default",

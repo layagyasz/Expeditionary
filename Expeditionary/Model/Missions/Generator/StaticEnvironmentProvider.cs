@@ -2,12 +2,12 @@
 using Expeditionary.Model.Mapping.Environments;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Missions.MissionNodes
+namespace Expeditionary.Model.Missions.Generator
 {
     public record class StaticEnvironmentProvider : IEnvironmentProvider
     {
         [JsonConverter(typeof(ReferenceJsonConverter))]
-        public MapEnvironmentDefinition Environment { get; set; } = new();
+        public required MapEnvironmentDefinition Environment { get; set; }
 
         public MapEnvironmentDefinition Get(MissionGenerationResources resources)
         {

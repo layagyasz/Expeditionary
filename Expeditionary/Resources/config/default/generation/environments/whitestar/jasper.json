@@ -1,8 +1,12 @@
 [
   {
     "$id": "environment-jasper",
-    "Name": {
-      "FixedName": "Jasper"
+    "Name": "Jasper",
+    "Location": {
+      "Sector": 0,
+      "System": 0,
+      "Planet": 0,
+      "Environment": 0
     },
     "Traits": [
       "environment-trait-default",

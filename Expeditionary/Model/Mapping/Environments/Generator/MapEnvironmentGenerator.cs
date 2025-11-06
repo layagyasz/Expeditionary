@@ -1,6 +1,5 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Json.Collections;
-using Expeditionary.Model.Galaxies;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
@@ -37,7 +36,7 @@ namespace Expeditionary.Model.Mapping.Environments.Generator
         public ImmutableList<TraitGroup> Groups { get; set; } = ImmutableList.Create<TraitGroup>();
         public ImmutableList<TraitRule> Rules { get; set; } = ImmutableList.Create<TraitRule>();
 
-        public MapEnvironmentDefinition Generate(MapEnvironmentKey key, SectorNaming naming)
+        public MapEnvironmentDefinition Generate(MapEnvironmentKey key)
         {
             var sectorSeed = new Random(key.SectorSeed());
             var systemSeed = new Random(key.SystemSeed());
@@ -66,8 +65,8 @@ namespace Expeditionary.Model.Mapping.Environments.Generator
             }
             return new MapEnvironmentDefinition()
             {
+                Location = new(0, 0, 0, 0),
                 Key = $"map-environment-{key.EnvironmentSeed()}",
-                Name = new(key),
                 Traits = result.ToList()
             };
         }

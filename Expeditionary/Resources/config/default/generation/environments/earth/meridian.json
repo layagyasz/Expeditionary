@@ -1,8 +1,12 @@
 [
   {
     "$id": "environment-meridian",
-    "Name": {
-      "FixedName": "Meridian"
+    "Name": "Meridian",
+    "Location": {
+      "Sector": 0,
+      "System": 0,
+      "Planet": 0,
+      "Environment": 0
     },
     "Trait": [
       "environment-trait-default",

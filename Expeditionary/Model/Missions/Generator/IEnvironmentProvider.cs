@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Model.Mapping.Environments;
 
-namespace Expeditionary.Model.Missions.MissionNodes
+namespace Expeditionary.Model.Missions.Generator
 {
     public interface IEnvironmentProvider
     {

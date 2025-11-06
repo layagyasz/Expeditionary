@@ -63,6 +63,11 @@ namespace Expeditionary.Runners
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
             soundtrack.Initialize();
 
+            foreach (var sector in data.Module.Galaxy.Sectors)
+            {
+                Console.WriteLine(sector);
+            }
+
             ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory));
             ui.Start();
         }
