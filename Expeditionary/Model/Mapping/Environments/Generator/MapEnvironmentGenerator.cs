@@ -65,7 +65,7 @@ namespace Expeditionary.Model.Mapping.Environments.Generator
             }
             return new MapEnvironmentDefinition()
             {
-                Location = new(0, 0, 0, 0),
+                Location = key,
                 Key = $"map-environment-{key.EnvironmentSeed()}",
                 Traits = result.ToList()
             };

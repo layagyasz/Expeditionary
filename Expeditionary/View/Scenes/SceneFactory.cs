@@ -27,6 +27,7 @@ namespace Expeditionary.View.Scenes
 
         private readonly GalaxyViewFactory _galaxyViewFactory;
         private readonly MapViewFactory _mapViewFactory;
+        private readonly MissionLayerFactory _missionLayerFactory;
         private readonly FogOfWarLayerFactory _fogOfWarLayerFactory;
         private readonly AssetLayerFactory _assetLayerFactory;
         private readonly HighlightLayerFactory _highlightLayerFactory;
@@ -34,12 +35,14 @@ namespace Expeditionary.View.Scenes
         public SceneFactory(
             GalaxyViewFactory galaxyViewFactory,
             MapViewFactory mapViewFactory,
+            MissionLayerFactory missionLayerFactory,
             FogOfWarLayerFactory fogOfWarLayerFactory,
             AssetLayerFactory assetLayerFactory,
             HighlightLayerFactory highlightLayerFactory)
         {
             _galaxyViewFactory = galaxyViewFactory;
             _mapViewFactory = mapViewFactory;
+            _missionLayerFactory = missionLayerFactory;
             _fogOfWarLayerFactory = fogOfWarLayerFactory;
             _assetLayerFactory = assetLayerFactory;
             _highlightLayerFactory = highlightLayerFactory;
@@ -64,7 +67,8 @@ namespace Expeditionary.View.Scenes
                         MouseWheelSensitivity = 0.025f
                     }),
                     camera,
-                    galaxy);
+                    galaxy,
+                    _missionLayerFactory.Create(camera));
 
             galaxy.Parent = scene;
 

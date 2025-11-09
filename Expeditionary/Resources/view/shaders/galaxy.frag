@@ -1,5 +1,7 @@
 #version 430 core
 
+#define OFFSET vec2(0.5f, 0.5f)
+
 #define AMPLITUDE 1
 #define FREQUENCY vec3(10f, 10f, 10f)
 #define LACUNARITY 2f
@@ -10,7 +12,7 @@
 #define SEED_Y 5678
 
 #define BRIGHTNESS 0.8f
-#define DISTORTION vec2(0.2f, 0.2f)
+#define DISTORTION vec2(0.4f, 0.05f)
 
 out vec4 out_color;
 
@@ -101,11 +103,13 @@ float noise(vec3 position, int seed) {
 void main()
 {
 	vec3 pos = vec3(vert_tex_coord, time);
+	float radius = length(vert_tex_coord - OFFSET);
+	float distortion = dot(DISTORTION, vec2(radius, 1f));
 	float noise_x = noise(pos, SEED_X);
 	float noise_y = noise(pos, SEED_Y);
-	float value = texture(tex_shape, vert_tex_coord + DISTORTION * vec2(noise_x, noise_y)).x;
+	float value = texture(tex_shape, vert_tex_coord + distortion * vec2(noise_x, noise_y)).x;
     out_color = 
 		BRIGHTNESS
 		* vert_color
-		* vec4(texture(tex_lut, vec2(value, clamp(length(vert_tex_coord), 0f, 1f))).rgb, value);
+		* vec4(texture(tex_lut, vec2(value, clamp(radius, 0f, 1f))).rgb, value);
 }

@@ -53,6 +53,7 @@ namespace Expeditionary.Runners
                         resources.GetShader("shader-filter-no-tex"),
                         resources.GetShader("shader-mask"),
                         resources.GetShader("shader-default")),
+                    new MissionLayerFactory(uiElementFactory),
                     new FogOfWarLayerFactory(resources.GetShader("shader-default"), data.TextureLibrary.Partitions),
                     new AssetLayerFactory(
                         resources.GetShader("shader-default"),
@@ -62,11 +63,6 @@ namespace Expeditionary.Runners
             SoundtrackPlayer soundtrack = 
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
             soundtrack.Initialize();
-
-            foreach (var sector in data.Module.Galaxy.Sectors)
-            {
-                Console.WriteLine(sector);
-            }
 
             ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory));
             ui.Start();

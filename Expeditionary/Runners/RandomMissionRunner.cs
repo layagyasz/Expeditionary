@@ -25,12 +25,11 @@ namespace Expeditionary.Runners
         {
             var module = data.Module;
             var random = new Random();
-            var missionResources =
-                new MissionGenerationResources(
+            var missionGenerator =
+                new MissionGenerator(
                     data.Module.Galaxy, 
                     module.MapEnvironmentGenerator,
-                    new(module.FactionFormations, module.Formations), 
-                    random);
+                    new(module.FactionFormations, module.Formations));
             var missionNode =
                 new MissionNode()
                 {
@@ -43,6 +42,7 @@ namespace Expeditionary.Runners
                     Attackers = new() { module.Factions["faction-sm"] },
                     Defenders = new() { module.Factions["faction-earth"] },
                     Frequency = 1f,
+                    Cap = 1,
                     Duration = new NormalSampler(1, 0),
                     Content = 
                         new AssaultMissionGenerator()
@@ -65,7 +65,7 @@ namespace Expeditionary.Runners
                             }
                         }
                 };
-            var mission = missionNode.Create(missionResources).Content;
+            var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
             foreach (var trait in mission.Map.Environment.Traits)
             {

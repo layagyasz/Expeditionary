@@ -17,15 +17,18 @@ namespace Expeditionary.View.Scenes.Galaxies
         public float? OverrideDepth { get; set; }
 
         public InteractiveModel Galaxy { get; }
+        public MissionLayer Missions { get; }
 
         public GalaxyScene(
             IElementController controller,
             ICamera camera,
-            InteractiveModel galaxy)
+            InteractiveModel galaxy,
+            MissionLayer missions)
         {
             Controller = controller;
             Camera = camera;
             Galaxy = galaxy;
+            Missions = missions;
         }
 
         protected override void DisposeImpl()
@@ -41,6 +44,10 @@ namespace Expeditionary.View.Scenes.Galaxies
             Galaxy.Draw(target, context);
             target.PopProjectionMatrix();
             target.PopViewMatrix();
+
+            target.Flatten();
+            context.Flatten();
+            Missions.Draw(target, context);
         }
 
         public float? GetRayIntersection(Ray3 ray)
@@ -51,6 +58,7 @@ namespace Expeditionary.View.Scenes.Galaxies
         public void Initialize()
         {
             Galaxy.Initialize();
+            Missions.Initialize();
             Controller.Bind(this);
         }
 
@@ -58,11 +66,13 @@ namespace Expeditionary.View.Scenes.Galaxies
         {
             Camera.SetAspectRatio(bounds.X / bounds.Y);
             Galaxy.ResizeContext(bounds);
+            Missions.ResizeContext(bounds);
         }
 
         public void Update(long delta)
         {
             Galaxy.Update(delta);
+            Missions.Update(delta);
         }
     }
 }
