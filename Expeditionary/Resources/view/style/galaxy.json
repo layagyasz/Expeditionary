@@ -4,7 +4,6 @@
     "Parent": "base-button",
     "Default": {
       "Size": [ 32, 32 ],
-      "ForegroundColor": "#5e7d78c1",
       "Texture": "button_alert"
     }
   }

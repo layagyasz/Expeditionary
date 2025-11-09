@@ -7,6 +7,8 @@ namespace Expeditionary.Model.Missions
         public EventHandler<Mission>? MissionAdded { get; set; }
         public EventHandler<Mission>? MissionRemoved { get; set; }
 
+        public IEnumerable<Mission> Missions => _missions;
+
         private readonly MissionGenerator _missionGenerator;
         private readonly List<MissionNode> _nodes;
         private readonly Random _random;
@@ -30,7 +32,7 @@ namespace Expeditionary.Model.Missions
             var addedMissions = new List<Mission>();
             foreach (var mission in _missions)
             {
-                if (mission.StartTime + mission.Duration < _time)
+                if (_time < mission.StartTime + mission.Duration)
                 {
                     newMissions.Add(mission);
                 }
@@ -65,7 +67,8 @@ namespace Expeditionary.Model.Missions
             var r = random.NextSingle();
             if (r < frequency)
             {
-                return (int)(cap * (1f - MathF.Sqrt(1f - r / frequency) + 1f));
+                var v = (int)(cap * (1f - MathF.Sqrt(1f - r / frequency))) + 1;
+                return v;
             }
             return 0;
         }

@@ -25,16 +25,14 @@ namespace Expeditionary.View.Scenes.Galaxies
         }
 
         private readonly UiElementFactory _uiElementFactory;
-        private readonly ICamera _camera;
 
         private Vector3 _bounds;
         private bool _dirty;
 
-        public MissionLayer(IController controller, UiElementFactory uiElementFactory, ICamera camera)
+        public MissionLayer(IController controller, UiElementFactory uiElementFactory)
             : base(controller)
         {
             _uiElementFactory = uiElementFactory;
-            _camera = camera;
         }
 
         public void Add(Mission mission)
@@ -46,41 +44,30 @@ namespace Expeditionary.View.Scenes.Galaxies
                     new(mission.Position.X, 0, mission.Position.Y)));
         }
 
-        public override void Draw(IRenderTarget target, IUiContext context)
+        public void Dirty()
         {
-            UpdateFromCamera();
-            base.Draw(target, context);
+            _dirty = true;
         }
 
-        public override void Initialize()
+        public void Remove(Mission mission)
         {
-            base.Initialize();
-            _camera.Changed += HandleCamera;
+            Remove(_elements.First(x => ((OptionElementController<Mission>)x.Controller).Key == mission));
         }
 
         public override void ResizeContext(Vector3 bounds)
         {
             _bounds = bounds;
+            Dirty();
         }
 
-        private void HandleCamera(object? sender, EventArgs e)
-        {
-            _dirty = true;
-        }
-
-        private Matrix4 GetProjection()
-        {
-            return Matrix4.CreateOrthographicOffCenter(0, _bounds.X, _bounds.Y, 0, -10, 10);
-        }
-
-        private void UpdateFromCamera()
+        public void UpdateFromCamera(ICamera camera)
         {
             if (_dirty)
             {
-                var sceneProjection = _camera.GetProjection();
+                var sceneProjection = camera.GetProjection();
                 var uiProjection = GetProjection();
                 uiProjection.Invert();
-                var transform = _camera.GetViewMatrix() * sceneProjection.Matrix * uiProjection;
+                var transform = camera.GetViewMatrix() * sceneProjection.Matrix * uiProjection;
                 foreach (var element in _elements)
                 {
                     if (element is MissionButton button)
@@ -92,6 +79,11 @@ namespace Expeditionary.View.Scenes.Galaxies
                 }
                 _dirty = false;
             }
+        }
+
+        private Matrix4 GetProjection()
+        {
+            return Matrix4.CreateOrthographicOffCenter(0, _bounds.X, _bounds.Y, 0, -10, 10);
         }
     }
 }

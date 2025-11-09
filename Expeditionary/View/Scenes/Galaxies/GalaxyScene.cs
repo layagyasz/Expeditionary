@@ -47,6 +47,7 @@ namespace Expeditionary.View.Scenes.Galaxies
 
             target.Flatten();
             context.Flatten();
+            Missions.UpdateFromCamera(Camera);
             Missions.Draw(target, context);
         }
 

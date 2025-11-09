@@ -1,6 +1,7 @@
 ﻿using Cardamom.Graphics.Camera;
 using Cardamom.Ui;
-using Cardamom.Ui.Controller;
+using Expeditionary.Controller.Scenes.Galaxies;
+using Expeditionary.Model.Missions;
 
 namespace Expeditionary.View.Scenes.Galaxies
 {
@@ -13,9 +14,9 @@ namespace Expeditionary.View.Scenes.Galaxies
             _uiElementFactory = uiElementFactory;
         }
 
-        public MissionLayer Create(ICamera camera)
+        public MissionLayer Create(MissionManager manager, ICamera camera)
         {
-            return new(new NoOpController(), _uiElementFactory, camera);
+            return new(new MissionLayerController(manager, camera), _uiElementFactory);
         }
     }
 }

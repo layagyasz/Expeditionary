@@ -38,8 +38,8 @@ namespace Expeditionary.Runners
                     Attackers = new() { module.Factions["faction-sm"] },
                     Defenders = new() { module.Factions["faction-earth"] },
                     Frequency = 1f,
-                    Cap = 1,
-                    Duration = new NormalSampler(1, 0),
+                    Cap = 2,
+                    Duration = new NormalSampler(10, 3),
                     Content =
                         new AssaultMissionGenerator()
                         {
@@ -61,11 +61,13 @@ namespace Expeditionary.Runners
                             }
                         }
                 };
-            var screen = new GalaxyScreen(new NoOpController(), sceneFactory.CreateGalaxy());
-            for (int i=0; i<50; ++i)
+            var missionManager = new MissionManager(missionGenerator, new List<MissionNode>() { missionNode }, random);
+            for (int i = 0; i < 10; ++i)
             {
-                screen.Scene!.Missions.Add(missionGenerator.Generate(missionNode, 0, random.Next()));
+                missionManager.Step();
             }
+
+            var screen = new GalaxyScreen(new NoOpController(), sceneFactory.Create(missionManager));
             return screen;
         }
     }
