@@ -9,14 +9,23 @@ namespace Expeditionary.Model.Galaxies
         public required List<string> StarPrefixes { get; set; }
         public required List<SectorName> Sectors { get; set; }
 
-        public string Name(MapEnvironment environment)
+        public string Name(MapEnvironmentDefinition environment)
         {
             if (environment.Name != null)
             {
                 return environment.Name;
             }
             var key = environment.Location;
-            return $"{StarPrefixes[key.System]} {Sectors[key.Sector].StarName} {key.Planet}";
+            return $"{Capitalize(StarPrefixes[key.System])} {Capitalize(Sectors[key.Sector].StarName)} {key.Planet}";
+        }
+
+        private static string Capitalize(string value)
+        {
+            if (value.Any())
+            {
+                return char.ToUpper(value[0]) + value.Substring(1);
+            }
+            return value;
         }
     }
 }

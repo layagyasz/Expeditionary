@@ -4,13 +4,12 @@ using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Expeditionary.Model.Missions;
 using Expeditionary.View.Scenes.Galaxies;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Expeditionary.Controller.Scenes.Galaxies
 {
     public class MissionLayerController : IController
     {
-        public EventHandler<Mission>? MissionSelected { get; set; }
+        public EventHandler<GalaxyClickedEventArgs<Mission>>? MissionSelected { get; set; }
 
         private readonly MissionManager _manager;
         private readonly ICamera _camera;
@@ -81,11 +80,8 @@ namespace Expeditionary.Controller.Scenes.Galaxies
 
         private void HandleClick(object? sender, MouseButtonClickEventArgs e)
         {
-            if (e.Button == MouseButton.Button1)
-            {
-                var controller = (OptionElementController<Mission>)sender!;
-                MissionSelected?.Invoke(this, controller.Key);
-            }
+            var controller = (OptionElementController<Mission>)sender!;
+            MissionSelected?.Invoke(this, new(controller.Key, e));
         }
     }
 }

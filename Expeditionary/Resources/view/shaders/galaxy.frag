@@ -2,7 +2,7 @@
 
 #define OFFSET vec2(0.5f, 0.5f)
 
-#define AMPLITUDE 1
+#define ATTENUATION 0.24
 #define FREQUENCY vec3(10f, 10f, 10f)
 #define LACUNARITY 2f
 #define OCTAVES 8
@@ -86,30 +86,34 @@ float octave(vec3 position, int seed) {
 
 float noise(vec3 position, int seed) {
 	float total = 0;
-    float a = AMPLITUDE;
-    float max = 0;
+    float a = 1f;
 	vec3 f = FREQUENCY;
     for (int i = 0; i < OCTAVES; ++i)
     {
         total += a * octave(f * position, seed);
-        max += a;
         a *= PERSISTENCE;
         f *= LACUNARITY;
     }
-
-    return total / max;
+    return ATTENUATION * total;
 }
 
 void main()
 {
 	vec3 pos = vec3(vert_tex_coord, time);
 	float radius = length(vert_tex_coord - OFFSET);
-	float distortion = dot(DISTORTION, vec2(radius, 1f));
-	float noise_x = noise(pos, SEED_X);
-	float noise_y = noise(pos, SEED_Y);
-	float value = texture(tex_shape, vert_tex_coord + distortion * vec2(noise_x, noise_y)).x;
-    out_color = 
-		BRIGHTNESS
-		* vert_color
-		* vec4(texture(tex_lut, vec2(value, clamp(radius, 0f, 1f))).rgb, value);
+	if (radius < 1)
+	{
+		float distortion = dot(DISTORTION, vec2(radius, 1f));
+		float noise_x = noise(pos, SEED_X);
+		float noise_y = noise(pos, SEED_Y);
+		float value = texture(tex_shape, vert_tex_coord + distortion * vec2(noise_x, noise_y)).x;
+		out_color = 
+			BRIGHTNESS
+			* vert_color
+			* vec4(texture(tex_lut, vec2(value, clamp(radius, 0f, 1f))).rgb, value);
+	}
+	else
+	{
+		out_color = vec4(0,0,0,0);
+	}
 }

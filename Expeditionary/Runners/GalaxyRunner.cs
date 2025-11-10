@@ -2,10 +2,12 @@
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Utils.Generators.Samplers;
+using Expeditionary.Controller.Screens;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
 using Expeditionary.View.Scenes;
+using Expeditionary.View.Scenes.Galaxies;
 using Expeditionary.View.Screens;
 using System.Collections.Immutable;
 
@@ -67,7 +69,11 @@ namespace Expeditionary.Runners
                 missionManager.Step();
             }
 
-            var screen = new GalaxyScreen(new NoOpController(), sceneFactory.Create(missionManager));
+            var screen = 
+                new GalaxyScreen(
+                    new GalaxyScreenController(module.SectorNamings.First().Value),
+                    sceneFactory.Create(missionManager), 
+                    MissionPane.Create(uiElementFactory));
             return screen;
         }
     }

@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics;
-using Cardamom.Graphics.Camera;
+﻿using Cardamom.Graphics.Camera;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
@@ -11,7 +10,7 @@ namespace Expeditionary.View.Scenes.Galaxies
 {
     public class MissionLayer : UiGroup, IDisposable
     {
-        private static readonly string s_ButtonClass = "galaxy-mission-button";
+        private static readonly string s_ButtonClass = "galaxy-mission-alert";
 
         private class MissionButton : SimpleUiElement
         {

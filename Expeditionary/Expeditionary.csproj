@@ -409,6 +409,9 @@
     <None Update="Resources\view\textures\buttons\button_alert.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\buttons\button_close.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\buttons\button_load.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

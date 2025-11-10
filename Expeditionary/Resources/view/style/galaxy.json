@@ -1,10 +1,37 @@
 [
   {
-    "$id": "galaxy-mission-button",
+    "$id": "galaxy-mission-alert",
     "Parent": "base-button",
     "Default": {
       "Size": [ 32, 32 ],
       "Texture": "button_alert"
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 512, "DynamicContents" ],
+      "Margin": [ 0 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-title",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-close",
+    "Parent": "base-button-image",
+    "Default": {
+      "Size": [ 20, 20 ],
+      "Texture": "button_close"
     }
   }
 ]

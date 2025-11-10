@@ -64,11 +64,11 @@ namespace Expeditionary.Model.Missions
 
         private static int RollMissions(float frequency, int cap, Random random)
         {
+            float p = 2f * frequency / cap;
             var r = random.NextSingle();
-            if (r < frequency)
+            if (r < p)
             {
-                var v = (int)(cap * (1f - MathF.Sqrt(1f - r / frequency))) + 1;
-                return v;
+                return (int)Math.Ceiling(cap * (p - r) / p);
             }
             return 0;
         }
