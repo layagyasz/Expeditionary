@@ -1,19 +1,31 @@
 [
   {
-    "$id": "load-container",
-    "Parent": "base-span",
+    "$id": "load-bar-outline",
+    "Parent": "base-container",
     "Default": {
-      "Size": [ 800, 24 ]
+      "BackgroundColor": [ "#26333b00" ],
+      "Size": [ 800, 24 ],
+      "Padding": [ 2 ]
     }
   },
   {
-    "$id": "load-bar",
-    "Parent": "base-container",
+    "$id": "load-bar-fill",
+    "Parent": "base-block",
     "Default": {
+      "BorderWidth": [ 0 ],
       "Size": [
-        [ "DynamicContents", 6, 800 ],
-        24
+        [ "DynamicContents", 6, 796 ],
+        20
       ]
+    }
+  },
+  {
+    "$id": "load-bar-text",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 800, 20 ],
+      "Margin": [ 4 ],
+      "FontSize": 12
     }
   }
 ]
