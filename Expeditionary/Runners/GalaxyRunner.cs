@@ -3,6 +3,7 @@ using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Controller.Screens;
+using Expeditionary.Loader;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
@@ -19,7 +20,7 @@ namespace Expeditionary.Runners
             : base(config) { }
 
         protected override IRenderable MakeRoot(
-            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory)
+            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader)
         {
             var module = data.Module;
             var random = new Random();

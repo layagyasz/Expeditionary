@@ -12,6 +12,7 @@ using Expeditionary.View.Scenes;
 using Expeditionary.View.Screens;
 using Expeditionary.View.Common.Components;
 using System.Collections.Immutable;
+using Expeditionary.Loader;
 
 namespace Expeditionary.Runners
 {
@@ -21,7 +22,7 @@ namespace Expeditionary.Runners
             : base(config) { }
 
         protected override IRenderable MakeRoot(
-           ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory)
+           ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader)
         {
             var module = data.Module;
             var random = new Random();

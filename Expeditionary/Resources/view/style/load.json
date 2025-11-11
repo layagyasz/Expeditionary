@@ -1,0 +1,19 @@
+[
+  {
+    "$id": "load-container",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 800, 24 ]
+    }
+  },
+  {
+    "$id": "load-bar",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [
+        [ "DynamicContents", 6, 800 ],
+        24
+      ]
+    }
+  }
+]

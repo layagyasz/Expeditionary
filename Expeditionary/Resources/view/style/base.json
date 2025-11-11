@@ -75,6 +75,13 @@
     ]
   },
   {
+    "$id": "base-button-internal",
+    "Parent": "base-button",
+    "Default": {
+      "BorderWidth": [ 0 ]
+    }
+  },
+  {
     "$id": "base-button-image",
     "Default": {
       "Size": [ 32, 32 ],

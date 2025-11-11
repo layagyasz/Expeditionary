@@ -1,6 +1,7 @@
 ﻿using Cardamom.Audio;
 using Cardamom.Graphics;
 using Cardamom.Ui;
+using Expeditionary.Loader;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Screens;
 
@@ -12,7 +13,7 @@ namespace Expeditionary.Runners
             : base(config) { }
 
         protected override IRenderable MakeRoot(
-            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory)
+            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader)
         {
             return MainMenuScreen.Create(new UiElementFactory(new AudioPlayer(), data.Resources));
         }

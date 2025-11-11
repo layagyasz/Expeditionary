@@ -1,7 +1,9 @@
 ﻿using Cardamom.Audio;
 using Cardamom.Graphics;
+using Cardamom.Logging;
 using Cardamom.Ui;
 using Cardamom.Window;
+using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
@@ -64,11 +66,15 @@ namespace Expeditionary.Runners
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
             soundtrack.Initialize();
 
-            ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory));
+            var loader = 
+                new ThreadedLoader(
+                    window, numWorkers: 2, numGLWorkers: 1, new Logger(new ConsoleBackend(), LogLevel.Info));
+            ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory, loader));
+            loader.Start();
             ui.Start();
         }
 
         protected abstract IRenderable MakeRoot(
-            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory);
+            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader);
     }
 }
