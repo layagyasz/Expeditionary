@@ -1,6 +1,7 @@
-﻿using Expeditionary.Loader;
-using Expeditionary.Runners.GameStates;
+﻿using Cardamom.Ui;
+using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders.Runtime;
+using Expeditionary.View.Screens;
 
 namespace Expeditionary.Runners
 {
@@ -9,16 +10,12 @@ namespace Expeditionary.Runners
         public GalaxyRunner(ProgramConfig config)
             : base(config) { }
 
-        protected override void Handle(ProgramController controller)
+        protected override void Handle(
+            ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory)
         {
-            var module = controller.GetModule();
-            (var status, var task) = NewGalaxyLoader.Load(module, seed: 0);
-            controller.Enter(
-                GameStateId.Load,
-                new LoadState.LoadContext(
-                    GameStateId.GalaxyOverview,
-                    status,
-                    task.Map(x => (object?)new GalaxyState.GalaxyContext(x))));
+            var module = data.Module;
+            (var _, var task) = NewGalaxyLoader.Load(module, seed: 0);
+            window.SetRoot(screenFactory.CreateGalaxy(module, task.GetNow()));
         }
     }
 }

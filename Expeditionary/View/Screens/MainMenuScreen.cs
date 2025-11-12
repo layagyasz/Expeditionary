@@ -13,6 +13,7 @@ namespace Expeditionary.View.Screens
         public static readonly object NewGame = new();
         public static readonly object LoadGame = new();
         public static readonly object Options = new();
+        public static readonly object Credits = new();
 
         private static readonly string s_Container = "main-menu-container";
         private static readonly string s_Title = "main-menu-title";
@@ -43,6 +44,7 @@ namespace Expeditionary.View.Screens
                     .Add(s_Option, "New Game", NewGame)
                     .Add(s_Option, "Load Game", LoadGame)
                     .Add(s_Option, "Options", Options)
+                    .Add(s_Option, "Credits", Credits)
                     .Build(uiElementFactory));
         }
 

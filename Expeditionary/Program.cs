@@ -14,7 +14,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new LoadRunner(Config).Run();
+            new DefaultRunner(Config).Run();
         }
     }
 }

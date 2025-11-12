@@ -3,7 +3,6 @@ using Cardamom.Graphics;
 using Cardamom.Logging;
 using Cardamom.Ui;
 using Cardamom.Window;
-using Expeditionary.Controller;
 using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders;
 using Expeditionary.View.Mapping;
@@ -66,18 +65,17 @@ namespace Expeditionary.Runners
             var loader =
                 new ThreadedLoader(
                     window, numWorkers: 2, numGLWorkers: 1, new Logger(new ConsoleBackend(), LogLevel.Info));
-            var programController = new ProgramController(ui, loader, screenFactory, data.Module);
 
             SoundtrackPlayer soundtrack = 
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
 
             soundtrack.Initialize();
-            programController.Initialize();
             loader.Start();
-            Handle(programController);
+            Handle(data, ui, loader, screenFactory);
             ui.Start();
         }
 
-        protected abstract void Handle(ProgramController controller);
+        protected abstract void Handle(
+            ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory);
     }
 }

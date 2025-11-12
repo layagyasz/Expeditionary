@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics;
-using Cardamom.Utils.Generators.Samplers;
+﻿using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Ai;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.Generator;
@@ -8,6 +7,7 @@ using Expeditionary.Model;
 using Expeditionary.View.Screens;
 using System.Collections.Immutable;
 using Expeditionary.Loader;
+using Cardamom.Ui;
 
 namespace Expeditionary.Runners
 {
@@ -16,10 +16,9 @@ namespace Expeditionary.Runners
         public RandomMissionRunner(ProgramConfig config)
             : base(config) { }
 
-        protected override void Handle(ProgramController controller)
+        protected override void Handle(
+            ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory)
         {
-            // Implement with new scheme
-            /*
             var module = data.Module;
             var random = new Random();
             var missionGenerator =
@@ -78,8 +77,7 @@ namespace Expeditionary.Runners
             aiManager.Initialize();
             match.Step();
 
-            return screenFactory.CreateMatch(match, appearance, player);
-            */
+            window.SetRoot(screenFactory.CreateMatch(match, appearance, player));
         }
     }
 }
