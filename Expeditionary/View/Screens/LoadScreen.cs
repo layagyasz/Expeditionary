@@ -10,9 +10,11 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    internal class LoadScreen : ManagedResource, IRenderable
+    public class LoadScreen : ManagedResource, IRenderable
     {
         private static readonly long s_RefreshTime = 100;
+
+        public event EventHandler<EventArgs>? Updated;
 
         public IController Controller { get; }
         public LoadBar LoadBar { get; }
@@ -47,6 +49,7 @@ namespace Expeditionary.View.Screens
         {
             _refresher.Update(delta);
             LoadBar.Update(delta);
+            Updated?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void DisposeImpl()

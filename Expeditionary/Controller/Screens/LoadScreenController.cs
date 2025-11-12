@@ -6,6 +6,8 @@ namespace Expeditionary.Controller.Screens
 {
     public class LoadScreenController : IController
     {
+        public EventHandler<EventArgs>? Finished { get; set; }
+
         private readonly ILoaderTask _task;
 
         private LoadScreen? _screen;
@@ -17,12 +19,22 @@ namespace Expeditionary.Controller.Screens
 
         public void Bind(object @object)
         {
-            _screen = (LoadScreen?)@object;
+            _screen = (LoadScreen)@object!;
+            _screen.Updated += HandleUpdate;
         }
 
         public void Unbind()
         {
+            _screen!.Updated -= HandleUpdate;
             _screen = null;
+        }
+
+        private void HandleUpdate(object? sender, EventArgs e)
+        {
+            if (_task.IsReady())
+            {
+                Finished?.Invoke(sender, e);
+            }
         }
     }
 }

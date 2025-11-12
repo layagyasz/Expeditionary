@@ -1,8 +1,5 @@
-﻿using Cardamom.Graphics;
-using Cardamom.Ui;
-using Expeditionary.Loader;
-using Expeditionary.View.Scenes;
-using Expeditionary.View.Screens;
+﻿using Expeditionary.Loader;
+using Expeditionary.Runners.GameStates;
 
 namespace Expeditionary.Runners
 {
@@ -11,8 +8,7 @@ namespace Expeditionary.Runners
         public LoadRunner(ProgramConfig config)
             : base(config) { }
 
-        protected override IRenderable MakeRoot(
-            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader)
+        protected override void Handle(ProgramController controller)
         {
             var status = new LoaderStatus(Enumerable.Range(0, 10).Cast<object>().ToList(), logLength: 1);
             var tasks = new List<LoaderTaskNode<object>>();
@@ -24,8 +20,12 @@ namespace Expeditionary.Runners
             var task = 
                 AggregateLoaderTask<object, List<object>>.Aggregate(
                     tasks, () => new(), (list, x) => { list.Add(x); return list; });
-            loader.Load(task);
-            return LoadScreen.Create(uiElementFactory, task, status);
+            controller.Enter(
+                GameStateId.Load,
+                new LoadState.LoadContext(
+                    GameStateId.MainMenu,
+                    status,
+                    task.Map(x => (object?)null)));
         }
 
         private static object Load(object segment, LoaderStatus status)

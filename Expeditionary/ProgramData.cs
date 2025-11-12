@@ -8,7 +8,7 @@ namespace Expeditionary
 {
     public record class ProgramData(
         GameResources Resources, 
-        GameModule Module, 
+        GameModule Module,
         Playlist Playlist,
         SpectrumSensitivity SpectrumSensitivity,
         TextureLibrary TextureLibrary,

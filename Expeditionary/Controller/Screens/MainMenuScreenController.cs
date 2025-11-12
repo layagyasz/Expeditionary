@@ -6,6 +6,8 @@ namespace Expeditionary.Controller.Screens
 {
     public class MainMenuScreenController : IController
     {
+        public EventHandler<object>? MenuClicked { get; set; }
+
         private MainMenuScreen? _screen;
         private ButtonMenuController? _menuController;
 
@@ -27,7 +29,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleMenuClicked(object? sender, object item)
         {
-            Console.WriteLine(item);
+            MenuClicked?.Invoke(this, item);
         }
     }
 }

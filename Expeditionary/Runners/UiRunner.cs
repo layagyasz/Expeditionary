@@ -3,12 +3,14 @@ using Cardamom.Graphics;
 using Cardamom.Logging;
 using Cardamom.Ui;
 using Cardamom.Window;
+using Expeditionary.Controller;
 using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Galaxies;
 using Expeditionary.View.Scenes.Matches.Layers;
+using Expeditionary.View.Screens;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -39,7 +41,6 @@ namespace Expeditionary.Runners
             var resources = data.Resources;
 
             var uiElementFactory = new UiElementFactory(new AudioPlayer(),resources);
-
             var sceneFactory =
                 new SceneFactory(
                     new GalaxyViewFactory(
@@ -61,20 +62,22 @@ namespace Expeditionary.Runners
                         resources.GetShader("shader-default"),
                         data.UnitTextures),
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
+            var screenFactory = new ScreenFactory(uiElementFactory, sceneFactory, data.SpectrumSensitivity);
+            var loader =
+                new ThreadedLoader(
+                    window, numWorkers: 2, numGLWorkers: 1, new Logger(new ConsoleBackend(), LogLevel.Info));
+            var programController = new ProgramController(ui, loader, screenFactory, data.Module);
 
             SoundtrackPlayer soundtrack = 
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
-            soundtrack.Initialize();
 
-            var loader = 
-                new ThreadedLoader(
-                    window, numWorkers: 2, numGLWorkers: 1, new Logger(new ConsoleBackend(), LogLevel.Info));
-            ui.SetRoot(MakeRoot(data, uiElementFactory, sceneFactory, loader));
+            soundtrack.Initialize();
+            programController.Initialize();
             loader.Start();
+            Handle(programController);
             ui.Start();
         }
 
-        protected abstract IRenderable MakeRoot(
-            ProgramData data, UiElementFactory uiElementFactory, SceneFactory sceneFactory, ThreadedLoader loader);
+        protected abstract void Handle(ProgramController controller);
     }
 }

@@ -1,30 +1,30 @@
-﻿using Cardamom.Graphics;
-using Cardamom.Utils.Generators.Samplers;
-using Expeditionary.Ai;
-using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Missions.Generator;
-using Expeditionary.Model.Missions;
-using Expeditionary.Model;
-using Expeditionary.View.Screens;
-using System.Collections.Immutable;
+﻿using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Loader;
+using Expeditionary.Model;
+using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.Generator;
+using System.Collections.Immutable;
 
-namespace Expeditionary.Runners
+namespace Expeditionary.Runners.Loaders.Runtime
 {
-    public class RandomMissionRunner : UiRunner
+    public static class NewGalaxyLoader
     {
-        public RandomMissionRunner(ProgramConfig config)
-            : base(config) { }
+        private static readonly object s_Galaxy = new();
+        private static readonly int s_Rounds = 10;
 
-        protected override void Handle(ProgramController controller)
+        public static (LoaderStatus, LoaderTaskNode<MissionManager>) Load(GameModule module, int seed)
         {
-            // Implement with new scheme
-            /*
-            var module = data.Module;
-            var random = new Random();
+            var status = new LoaderStatus(new List<object>() { s_Galaxy }, logLength: 1);
+            return new(status, new SourceLoaderTask<MissionManager>(() => Create(status, module, seed), isGL: false));
+        }
+
+        private static MissionManager Create(LoaderStatus status, GameModule module, int seed)
+        {
+            var random = new Random(seed);
             var missionGenerator =
                 new MissionGenerator(
-                    data.Module.Galaxy, 
+                    module.Galaxy,
                     module.MapEnvironmentGenerator,
                     new(module.FactionFormations, module.Formations));
             var missionNode =
@@ -39,9 +39,9 @@ namespace Expeditionary.Runners
                     Attackers = new() { module.Factions["faction-sm"] },
                     Defenders = new() { module.Factions["faction-earth"] },
                     Frequency = 1f,
-                    Cap = 1,
-                    Duration = new NormalSampler(1, 0),
-                    Content = 
+                    Cap = 2,
+                    Duration = new NormalSampler(10, 3),
+                    Content =
                         new AssaultMissionGenerator()
                         {
                             ZoneOptions =
@@ -62,24 +62,14 @@ namespace Expeditionary.Runners
                             }
                         }
                 };
-            var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;
-            Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
-            foreach (var trait in mission.Map.Environment.Traits)
+            var missionManager = new MissionManager(missionGenerator, new List<MissionNode>() { missionNode }, random);
+            status.AddWork(s_Galaxy, s_Rounds);
+            for (int i = 0; i < s_Rounds; ++i)
             {
-                Console.WriteLine(trait.Key);
+                missionManager.Step();
+                status.DoWork(s_Galaxy);
             }
-            var player = mission.Players.First().Player;
-            var creationContext = new CreationContext(player, IsTest: true);
-            (var match, var appearance) = mission.Create(random, creationContext);
-            var aiManager = new AiManager(match, mission.Players.Select(x => x.Player).Where(x => x != player));
-            var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
-            mission.Setup(match, setupContext);
-            match.Initialize();
-            aiManager.Initialize();
-            match.Step();
-
-            return screenFactory.CreateMatch(match, appearance, player);
-            */
+            return missionManager;
         }
     }
 }

@@ -14,7 +14,7 @@
     "Default": {
       "BorderWidth": [ 0 ],
       "Size": [
-        [ "DynamicContents", 6, 796 ],
+        [ "DynamicContents", 0, 796 ],
         20
       ]
     }
@@ -24,7 +24,7 @@
     "Parent": "base-span",
     "Default": {
       "Size": [ 800, 20 ],
-      "Margin": [ 4 ],
+      "Margin": [ 3 ],
       "FontSize": 12
     }
   }
