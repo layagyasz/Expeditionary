@@ -31,7 +31,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleUpdate(object? sender, EventArgs e)
         {
-            if (_task.IsReady())
+            if (_task.IsDone())
             {
                 Finished?.Invoke(sender, e);
             }

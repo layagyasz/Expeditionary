@@ -9,6 +9,8 @@ namespace Expeditionary.Runners.GameStates
     {
         public record class LoadContext(GameStateId NextState, LoaderStatus Status, LoaderTaskNode<object?> Task);
 
+        private static readonly int i_Wait = 200;
+
         public EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
 
         public GameStateId Id => GameStateId.Load;
@@ -27,10 +29,11 @@ namespace Expeditionary.Runners.GameStates
         public IRenderable Enter(object? context, ScreenFactory screenFactory)
         {
             _context = (LoadContext)context!;
-            _screen = screenFactory.CreateLoad(_context.Task, _context.Status);
+            var task = _context.Task.Map(Wait);
+            _screen = screenFactory.CreateLoad(task, _context.Status);
             _controller = (LoadScreenController)_screen.Controller;
             _controller.Finished += HandleFinished;
-            _loader.Load(_context.Task);
+            _loader.Load(task);
             return _screen;
         }
 
@@ -48,6 +51,12 @@ namespace Expeditionary.Runners.GameStates
         private void HandleFinished(object? sender, EventArgs e)
         {
             GameStateChanged?.Invoke(this, new(_context!.NextState, _context!.Task.GetPromise().Get()));
+        }
+
+        private static T Wait<T>(T value)
+        {
+            Thread.Sleep(i_Wait);
+            return value;
         }
     }
 }

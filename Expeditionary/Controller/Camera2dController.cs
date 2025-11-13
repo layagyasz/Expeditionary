@@ -57,7 +57,7 @@ namespace Expeditionary.Controller
             return false;
         }
 
-        private void ChangeFocus(Vector3 delta)
+        public void ChangeFocus(Vector3 delta)
         {
             var newFocus = _camera.Focus + delta;
             newFocus.X = XRange.Clamp(newFocus.X);

@@ -6,18 +6,30 @@ namespace Expeditionary.Loader
     {
         public IPool Progress { get; }
 
-        private readonly Dictionary<object, LoaderStatusSegment> _segments;
+        private readonly Dictionary<object, LoaderStatusSegment> _segments = new();
         private readonly List<string> _status = new();
         private readonly int _logLength;
 
-        public LoaderStatus(IEnumerable<object> segments, int logLength)
+        public LoaderStatus(int logLength)
         {
-            _segments = segments.ToDictionary(x => x, _ => new LoaderStatusSegment(logLength));
             _logLength = logLength;
             Progress = 
                 new VirtualPool(
                     () => _segments.Sum(x => x.Value.GetPercentDone()),
                     () => _segments.Count);
+        }
+
+        public void AddSegment(object segment)
+        {
+            _segments.Add(segment, new LoaderStatusSegment(_logLength));
+        }
+
+        public void AddSegments(params object[] segments)
+        {
+            foreach (var segment in segments)
+            {
+                AddSegment(segment);
+            }
         }
 
         public void AddWork(object segment, int amount)

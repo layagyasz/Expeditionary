@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Missions
+﻿using Expeditionary.Loader;
+
+namespace Expeditionary.Model.Missions
 {
-    public record class CreationContext(Player Player, bool IsTest);
+    public record class CreationContext(LoaderStatus Status, Player Player, bool IsTest);
 }

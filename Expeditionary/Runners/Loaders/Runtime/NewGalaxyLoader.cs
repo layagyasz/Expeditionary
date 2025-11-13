@@ -10,12 +10,13 @@ namespace Expeditionary.Runners.Loaders.Runtime
 {
     public static class NewGalaxyLoader
     {
-        private static readonly object s_Galaxy = new();
-        private static readonly int s_Rounds = 10;
+        private static readonly int i_Rounds = 10;
+        private static readonly object o_Segment = new();
 
         public static (LoaderStatus, LoaderTaskNode<MissionManager>) Load(GameModule module, int seed)
         {
-            var status = new LoaderStatus(new List<object>() { s_Galaxy }, logLength: 1);
+            var status = new LoaderStatus(logLength: 1);
+            status.AddSegment(o_Segment);
             return new(status, new SourceLoaderTask<MissionManager>(() => Create(status, module, seed), isGL: false));
         }
 
@@ -63,11 +64,11 @@ namespace Expeditionary.Runners.Loaders.Runtime
                         }
                 };
             var missionManager = new MissionManager(missionGenerator, new List<MissionNode>() { missionNode }, random);
-            status.AddWork(s_Galaxy, s_Rounds);
-            for (int i = 0; i < s_Rounds; ++i)
+            status.AddWork(o_Segment, i_Rounds);
+            for (int i = 0; i < i_Rounds; ++i)
             {
                 missionManager.Step();
-                status.DoWork(s_Galaxy);
+                status.DoWork(o_Segment);
             }
             return missionManager;
         }

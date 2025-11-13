@@ -1,4 +1,5 @@
-﻿using Cardamom.Logging;
+﻿using Cardamom.Graphics.Camera;
+using Cardamom.Logging;
 using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
 using Cardamom.Window;
@@ -206,6 +207,12 @@ namespace Expeditionary.Controller.Screens
             _screen!.UnitSelect!.Visible = false;
         }
 
+        private void JumpTo(Vector3i hex)
+        {
+            var p = Cubic.Cartesian.Instance.Project(hex);
+            ((SubjectiveCamera3d)_screen!.Scene!.Camera).SetFocus(new Vector3(p.X, 0, p.Y));
+        }
+
         private void OpenRightClickMenu(Vector2 position, IEnumerable<object> options)
         {
             _screen!.UnitSelect!.Set(options.Select(x => SelectOption<object>.Create(x, GetObjectName(x))));
@@ -241,6 +248,10 @@ namespace Expeditionary.Controller.Screens
                 _selectedUnitEnumerator = StepActiveUnitEnumerator();
                 while (_selectedUnitEnumerator.MoveNext() && !IsUnitActionable(_selectedUnitEnumerator.Current)) ;
                 _selectedUnit = _selectedUnitEnumerator.Current;
+            }
+            if (_selectedUnit != null)
+            {
+                JumpTo(_selectedUnit.Position!.Value);
             }
             UpdateUnitOverlay();
         }

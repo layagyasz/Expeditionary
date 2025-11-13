@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Mapping;
+﻿using Expeditionary.Loader;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Mapping.Environments;
 using Expeditionary.Model.Mapping.Generator;
@@ -24,11 +25,12 @@ namespace Expeditionary.Model.Missions
             _extraLayers = extraLayers.ToList();
         }
 
-        public (Map, MapAppearance) GenerateMap(Random random)
+        public LoaderTaskNode<(Map, MapAppearance)> GenerateMap(LoaderStatus status, Random random)
         {
             var environment = Environment.GetEnvironment();
             environment.Parameters.Cities.Layers.InsertRange(0, _extraLayers);
-            return (MapGenerator.Generate(environment.Parameters, Size, seed: random.Next()), environment.Appearance);
+            return MapGenerator.Generate(
+                status, environment.Parameters, Size, seed: random.Next()).Map(map => (map, environment.Appearance));
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Expeditionary.Runners
         protected override void Handle(
             ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory)
         {
-            var status = new LoaderStatus(Enumerable.Range(0, 10).Cast<object>().ToList(), logLength: 1);
+            var status = new LoaderStatus(logLength: 1);
+            status.AddSegments(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
             var tasks = new List<LoaderTaskNode<object>>();
             for (int i=0; i<10; ++i)
             {
