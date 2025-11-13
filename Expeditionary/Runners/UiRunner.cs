@@ -30,7 +30,7 @@ namespace Expeditionary.Runners
             var monitor = Monitors.GetPrimaryMonitor();
             var window =
                 new RenderWindow(
-                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), false);
+                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), true);
             var ui = new UiWindow(window);
             ui.Bind(new MouseListener());
             ui.Bind(
@@ -39,7 +39,7 @@ namespace Expeditionary.Runners
             var data = new ProgramDataLoader(_config).Load();
             var resources = data.Resources;
 
-            var uiElementFactory = new UiElementFactory(new AudioPlayer(),resources);
+            var uiElementFactory = new UiElementFactory(new AudioPlayer(), resources);
             var sceneFactory =
                 new SceneFactory(
                     new GalaxyViewFactory(

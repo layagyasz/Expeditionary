@@ -240,15 +240,7 @@ namespace Expeditionary.Model.Combat
         private static float GetProbability(float attack, float defense, float defenseMin, float scale)
         {
             var raw = scale * (attack - defenseMin) / (attack + defense - 2 * defenseMin);
-            if (raw < 0)
-            {
-                return 0;
-            }
-            if (raw > 1)
-            {
-                return 1;
-            }
-            return raw;
+            return MathHelper.Clamp(raw, 0, 1);
         }
     }
 }
