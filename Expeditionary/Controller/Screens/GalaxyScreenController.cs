@@ -10,10 +10,13 @@ namespace Expeditionary.Controller.Screens
 {
     public class GalaxyScreenController : IController
     {
+        public EventHandler<Mission>? Launched { get; set; }
+
         private readonly SectorNaming _naming;
 
         private GalaxyScreen? _screen;
-        private MissionLayerController? _missionController;
+        private MissionLayerController? _missionLayerController;
+        private MissionPaneController? _missionPaneController;
 
         public GalaxyScreenController(SectorNaming naming)
         {
@@ -23,14 +26,18 @@ namespace Expeditionary.Controller.Screens
         public void Bind(object @object)
         {
             _screen = (GalaxyScreen)@object;
-            _missionController = (MissionLayerController)_screen.Scene!.Missions.GroupController;
-            _missionController.MissionSelected += HandleMissionSelected;
+            _missionLayerController = (MissionLayerController)_screen.Scene!.Missions.GroupController;
+            _missionLayerController.MissionSelected += HandleMissionSelected;
+            _missionPaneController = (MissionPaneController)_screen.MissionPane!.ComponentController;
+            _missionPaneController.Launched += HandleLaunch;
         }
 
         public void Unbind()
         {
-            _missionController!.MissionSelected -= HandleMissionSelected;
-            _missionController = null;
+            _missionPaneController!.Launched -= HandleLaunch;
+            _missionPaneController = null;
+            _missionLayerController!.MissionSelected -= HandleMissionSelected;
+            _missionLayerController = null;
             _screen = null;
         }
 
@@ -38,10 +45,14 @@ namespace Expeditionary.Controller.Screens
         {
             if (e.Args.Button == MouseButton.Button1)
             {
-                _screen!.MissionPane!.Visible = true;
-                _screen!.MissionPane.Position = new Vector3(e.Args.ScreenPosition.X, e.Args.ScreenPosition.Y, 0);
-                _screen!.MissionPane!.SetTitle(_naming.Name(e.Element.Content.Map.Environment));
+                _missionPaneController!.Open(e.Element, _naming);
+                _screen!.MissionPane!.Position = new Vector3(e.Args.ScreenPosition.X, e.Args.ScreenPosition.Y, 0);
             }
+        }
+
+        private void HandleLaunch(object? sender, Mission e)
+        {
+            Launched?.Invoke(this, e);
         }
     }
 }

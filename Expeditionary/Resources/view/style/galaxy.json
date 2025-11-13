@@ -34,5 +34,15 @@
       "Size": [ 20, 20 ],
       "Texture": "button_close"
     }
+  },
+  {
+    "$id": "galaxy-mission-pane-launch",
+    "Parent": "base-button",
+    "Default": {
+      "Size": [ 504, 24 ],
+      "Margin": [ 2 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
   }
 ]

@@ -30,7 +30,8 @@ namespace Expeditionary.Runners
                 {
                     { GameStateId.GalaxyOverview, new GalaxyState(_module) },
                     { GameStateId.Load, new LoadState(_loader) },
-                    { GameStateId.MainMenu, new MainMenuState(_module) }
+                    { GameStateId.MainMenu, new MainMenuState(_module) },
+                    { GameStateId.Match, new MatchState(_module) }
                 };
         }
 

@@ -1,7 +1,9 @@
 ﻿using Cardamom.Graphics;
 using Expeditionary.Controller.Screens;
+using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Model.Missions;
+using Expeditionary.Runners.Loaders.Runtime;
 using Expeditionary.View.Screens;
 
 namespace Expeditionary.Runners.GameStates
@@ -30,6 +32,7 @@ namespace Expeditionary.Runners.GameStates
             _context = (GalaxyContext)context!;
             _screen = screenFactory.CreateGalaxy(_module, _context.MissionManager);
             _controller = (GalaxyScreenController)_screen.Controller;
+            _controller.Launched += HandleLaunch;
             return _screen;
         }
 
@@ -40,6 +43,21 @@ namespace Expeditionary.Runners.GameStates
 
             _controller = null;
             _context = null;
+        }
+
+        private void HandleLaunch(object? sender, Mission e)
+        {
+            (var status, var task) = NewMatchLoader.Create(e, e.Content.Players.First().Player, seed: 0);
+            GameStateChanged?.Invoke(
+                this,
+                new(
+                    GameStateId.Load,
+                    new LoadState.LoadContext(
+                        GameStateId.Match, 
+                        status, 
+                        task.Map(
+                            x => (object?)new MatchState.MatchContext(
+                                x.Player, x.Match, x.Appearance, x.AiManager)))));
         }
     }
 }

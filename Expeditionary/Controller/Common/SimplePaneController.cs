@@ -8,13 +8,13 @@ namespace Expeditionary.Controller.Common
     {
         private IPane? _pane;
 
-        public void Bind(object @object)
+        public virtual void Bind(object @object)
         {
             _pane = (IPane)@object;
             _pane.CloseButton.Controller.Clicked += HandleClose;
         }
 
-        public void Unbind()
+        public virtual void Unbind()
         {
             _pane!.CloseButton.Controller.Clicked -= HandleClose;
             _pane = null;
