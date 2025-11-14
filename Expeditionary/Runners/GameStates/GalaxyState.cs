@@ -16,14 +16,16 @@ namespace Expeditionary.Runners.GameStates
 
         public GameStateId Id => GameStateId.GalaxyOverview;
 
+        private readonly ProgramConfig _config;
         private readonly GameModule _module;
 
         private GalaxyContext? _context;
         private GalaxyScreen? _screen;
         private GalaxyScreenController? _controller;
 
-        public GalaxyState(GameModule module)
+        public GalaxyState(ProgramConfig config, GameModule module)
         {
+            _config = config;
             _module = module;
         }
 
@@ -47,7 +49,8 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleLaunch(object? sender, Mission e)
         {
-            (var status, var task) = NewMatchLoader.Create(e, e.Content.Players.First().Player, seed: 0);
+            (var status, var task) =
+                NewMatchLoader.Create(e, e.Content.Players.First().Player, _config.IsDebug, seed: 0);
             GameStateChanged?.Invoke(
                 this,
                 new(

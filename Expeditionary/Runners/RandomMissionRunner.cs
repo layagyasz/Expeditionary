@@ -1,13 +1,14 @@
-﻿using Cardamom.Utils.Generators.Samplers;
+﻿using Cardamom.Ui;
+using Cardamom.Utils.Generators.Samplers;
+using Cardamom.Utils.Suppliers.Promises;
 using Expeditionary.Ai;
-using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Missions.Generator;
-using Expeditionary.Model.Missions;
+using Expeditionary.Loader;
 using Expeditionary.Model;
+using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.Generator;
 using Expeditionary.View.Screens;
 using System.Collections.Immutable;
-using Expeditionary.Loader;
-using Cardamom.Ui;
 
 namespace Expeditionary.Runners
 {
@@ -69,11 +70,16 @@ namespace Expeditionary.Runners
             }
             var player = mission.Players.First().Player;
             var status = new LoaderStatus(0);
-            var creationContext = new CreationContext(status, player, IsTest: true);
-            (var match, var appearance) = mission.Create(random, creationContext).GetNow();
+            var creationContext = new CreationContext(player, random, IsTest: true);
+            (var match, var appearance) = mission.Create(status, creationContext).GetNow();
             var aiManager = new AiManager(match, mission.Players.Select(x => x.Player).Where(x => x != player));
-            var setupContext = new SetupContext(status, random, new SerialIdGenerator(), aiManager);
-            match = mission.Setup(match, setupContext).GetNow();
+            var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
+            match = 
+                mission.Setup(
+                    status, 
+                    ImmediatePromise<Match>.Of(match), 
+                    ImmediatePromise<SetupContext>.Of(setupContext))
+                .GetNow();
             match.Initialize();
             aiManager.Initialize();
             match.Step();

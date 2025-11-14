@@ -10,9 +10,12 @@ namespace Expeditionary.Runners
             : base(config) { }
 
         protected override void Handle(
-            ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory) 
+            ProgramData data, 
+            UiWindow window, 
+            ThreadedLoader loader, 
+            ScreenFactory screenFactory) 
         {
-            var programController = new ProgramController(window, loader, screenFactory, data.Module);
+            var programController = new ProgramController(data.Config, window, loader, screenFactory, data.Module);
             programController.Initialize();
         }
     }

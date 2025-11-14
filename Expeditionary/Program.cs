@@ -10,7 +10,8 @@ namespace Expeditionary
                 "resources/view/ui.json", 
                 "resources/audio/playlist.json",
                 "resources/view/human_eye_sensitivity.json",
-                "resources/view/unit_texture_generator_settings.json");
+                "resources/view/unit_texture_generator_settings.json",
+                IsDebug: false);
 
         public static void Main()
         {

@@ -9,6 +9,7 @@ namespace Expeditionary.Runners
 {
     public class ProgramController
     {
+        private readonly ProgramConfig _config;
         private readonly UiWindow _window;
         private readonly ThreadedLoader _loader;
         private readonly ScreenFactory _screenFactory;
@@ -18,8 +19,13 @@ namespace Expeditionary.Runners
         private IGameState? _state;
 
         public ProgramController(
-            UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory, GameModule module)
+            ProgramConfig config,
+            UiWindow window, 
+            ThreadedLoader loader,
+            ScreenFactory screenFactory,
+            GameModule module)
         {
+            _config = config;
             _window = window;
             _loader = loader;
             _screenFactory = screenFactory;
@@ -28,7 +34,7 @@ namespace Expeditionary.Runners
             _stateMap =
                 new()
                 {
-                    { GameStateId.GalaxyOverview, new GalaxyState(_module) },
+                    { GameStateId.GalaxyOverview, new GalaxyState(_config, _module) },
                     { GameStateId.Load, new LoadState(_loader) },
                     { GameStateId.MainMenu, new MainMenuState(_module) },
                     { GameStateId.Match, new MatchState(_module) }

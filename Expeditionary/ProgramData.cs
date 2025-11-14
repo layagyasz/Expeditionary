@@ -7,6 +7,7 @@ using Expeditionary.View.Textures;
 namespace Expeditionary
 {
     public record class ProgramData(
+        ProgramConfig Config,
         GameResources Resources, 
         GameModule Module,
         Playlist Playlist,

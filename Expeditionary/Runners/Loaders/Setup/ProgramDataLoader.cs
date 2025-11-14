@@ -14,6 +14,7 @@
             var resources = new GameResourcesLoader(_config.Resources).Load();
             var module = new ModuleLoader(_config.Module).Load();
             return new(
+                _config,
                 resources, 
                 module, 
                 new PlaylistLoader(_config.Playlist).Load(),

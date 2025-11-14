@@ -1,4 +1,5 @@
-﻿using Expeditionary.Loader;
+﻿using Cardamom.Utils.Suppliers.Promises;
+using Expeditionary.Loader;
 using Expeditionary.Model.Mapping.Appearance;
 
 namespace Expeditionary.Model.Missions
@@ -8,42 +9,43 @@ namespace Expeditionary.Model.Missions
         private static readonly object o_Create = new();
         private static readonly object o_Setup = new();
 
-        public LoaderTaskNode<(Match, MapAppearance)> Create(Random random, CreationContext context)
+        public LoaderTaskNode<(Match, MapAppearance)> Create(LoaderStatus status, CreationContext context)
         {
-            context.Status.AddSegment(o_Create);
-            return Map.GenerateMap(context.Status, random)
+            status.AddSegment(o_Create);
+            return Map.GenerateMap(status, context.Random)
                 .Map(x =>
                     {
                         (var map, var appearance) = x;
-                        var match = new Match(new(), new SerialIdGenerator(), x.Item1);
-                        CreateAux(match, context);
+                        var match = new Match(context.Random, new SerialIdGenerator(), x.Item1);
+                        CreateAux(status, match, context);
                         return (match, appearance);
                     });
         }
 
-        public LoaderTaskNode<Match> Setup(Match match, SetupContext context)
+        public LoaderTaskNode<Match> Setup(LoaderStatus status, IPromise<Match> match, IPromise<SetupContext> context)
         {
-            context.Status.AddSegments(o_Setup);
-            return new SourceLoaderTask<Match>(() => { SetupAux(match, context); return match; }, isGL: false);
+            status.AddSegments(o_Setup);
+            return new SourceLoaderTask<Match>(
+                () => { SetupAux(status, match.Get(), context.Get()); return match.Get(); }, isGL: false);
         }
 
-        private void CreateAux(Match match, CreationContext context)
+        private void CreateAux(LoaderStatus status, Match match, CreationContext context)
         {
-            context.Status.AddWork(o_Create, Players.Count);
+            status.AddWork(o_Create, Players.Count);
             foreach (var player in Players)
             {
                 player.Create(match, context);
-                context.Status.DoWork(o_Create);
+                status.DoWork(o_Create);
             }
         }
 
-        private void SetupAux(Match match, SetupContext context)
+        private void SetupAux(LoaderStatus status, Match match, SetupContext context)
         {
-            context.Status.AddWork(o_Setup, Players.Count);
+            status.AddWork(o_Setup, Players.Count);
             foreach (var player in Players)
             {
                 player.Setup(match, context);
-                context.Status.DoWork(o_Setup);
+                status.DoWork(o_Setup);
             }
         }
     }
