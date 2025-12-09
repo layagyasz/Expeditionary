@@ -9,6 +9,7 @@ namespace Expeditionary.View.Scenes.Galaxies
     public class GalaxyView : ManagedResource, IRenderable
     {
         private static readonly float s_Distortion = 0.000001f;
+        private Color4 s_SectorFilter = new(1f, 1f, 1f, 0.8f);
         private static readonly Vertex3[] s_Vertices =
         {
             new(new(-2f, 0f, -2f), Color4.White, new(-1f, -1f)),
@@ -19,27 +20,41 @@ namespace Expeditionary.View.Scenes.Galaxies
             new(new(2f, 0f, 2f), Color4.White, new(2f, 2f))
         };
 
+        private readonly float _scale;
         private readonly Texture _shape;
         private readonly Texture _lookup;
+        private readonly VertexBuffer<Vertex3> _sectors;
         private readonly RenderShader _shader;
+        private readonly RenderShader _sectorShader;
 
         private long _time;
 
-        public GalaxyView(Texture shape, Texture lookup, RenderShader shader)
+        public GalaxyView(
+            float scale,
+            Texture shape,
+            Texture lookup, 
+            VertexBuffer<Vertex3> sectors,
+            RenderShader shader, 
+            RenderShader sectorShader)
         {
+            _scale = scale;
             _shape = shape;
             _lookup = lookup;
+            _sectors = sectors;
             _shader = shader;
+            _sectorShader = sectorShader;
         }
 
         protected override void DisposeImpl() 
         {
             _shape.Dispose();
             _lookup.Dispose();
+            _sectors.Dispose();
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
         {
+            target.PushModelMatrix(Matrix4.CreateScale(_scale));
             _shader.SetFloat("time", s_Distortion * _time);
             target.Draw(
                 s_Vertices, 
@@ -47,6 +62,10 @@ namespace Expeditionary.View.Scenes.Galaxies
                 0,
                 s_Vertices.Length,
                 new(BlendMode.Alpha, _shader, _shape, _lookup));
+            target.PopModelMatrix();
+
+            _sectorShader.SetColor("filter_color", s_SectorFilter);
+            target.Draw(_sectors, 0, _sectors.Length, new(BlendMode.Alpha, _sectorShader));
         }
 
         public void Initialize() { }

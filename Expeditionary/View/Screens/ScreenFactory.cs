@@ -30,7 +30,7 @@ namespace Expeditionary.View.Screens
         {
             return new GalaxyScreen(
                 new GalaxyScreenController(module.SectorNamings.First().Value),
-                _sceneFactory.Create(missionManager),
+                _sceneFactory.Create(module.Galaxy, missionManager),
                 MissionPane.Create(_uiElementFactory));
         }
 

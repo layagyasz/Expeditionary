@@ -7,6 +7,7 @@ namespace Expeditionary.Model.Galaxies
         public required int Id { get; set; }
         public required Vector2 TopLeft { get; set; }
         public required Vector2 Size { get; set; }
+        public required Color4 Color { get; set; }
         public required int SystemCount { get; set; }
     }
 }

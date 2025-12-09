@@ -30,7 +30,7 @@ namespace Expeditionary.Runners
             var monitor = Monitors.GetPrimaryMonitor();
             var window =
                 new RenderWindow(
-                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), true);
+                    "Expeditionary", new Vector2i(monitor.HorizontalResolution, monitor.VerticalResolution), false);
             var ui = new UiWindow(window);
             ui.Bind(new MouseListener());
             ui.Bind(
@@ -44,7 +44,8 @@ namespace Expeditionary.Runners
                 new SceneFactory(
                     new GalaxyViewFactory(
                         ComputeShader.FromFile("resources/view/textures/generation/galaxy.comp", new(32, 32)),
-                        resources.GetShader("shader-galaxy")),
+                        resources.GetShader("shader-galaxy"),
+                        resources.GetShader("shader-filter-no-tex")),
                     new MapViewFactory(
                         new()
                         {

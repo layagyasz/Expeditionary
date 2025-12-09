@@ -7,6 +7,7 @@ using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Model;
+using Expeditionary.Model.Galaxies;
 using Expeditionary.Model.Missions;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes.Galaxies;
@@ -49,29 +50,30 @@ namespace Expeditionary.View.Scenes
             _highlightLayerFactory = highlightLayerFactory;
         }
 
-        public GalaxyScene Create(MissionManager manager)
+        public GalaxyScene Create(Galaxy galaxy, MissionManager manager)
         {
             var camera = new SubjectiveCamera3d(100);
             camera.SetPitch(-MathF.PI / 2);
             camera.SetYaw(MathF.PI / 2);
-            camera.SetDistance(1);
+            camera.SetDistance(galaxy.Scale);
 
             var galaxyController = new NoOpElementController();
-            var galaxy = new InteractiveModel(_galaxyViewFactory.Create(), new NoCollider(), galaxyController);
+            var galaxyView = 
+                new InteractiveModel(_galaxyViewFactory.Create(galaxy), new NoCollider(), galaxyController);
 
             var scene = 
                 new GalaxyScene(
                     new PassthroughController(new Camera2dController(camera)
                     {
-                        KeySensitivity = 0.0005f,
-                        DistanceRange = new(0.025f, 1),
-                        MouseWheelSensitivity = 0.025f
+                        KeySensitivity = 0.0005f * galaxy.Scale,
+                        DistanceRange = new(0.025f * galaxy.Scale, galaxy.Scale),
+                        MouseWheelSensitivity = 0.025f * galaxy.Scale
                     }),
                     camera,
-                    galaxy,
+                    galaxyView,
                     _missionLayerFactory.Create(manager, camera));
 
-            galaxy.Parent = scene;
+            galaxyView.Parent = scene;
 
             return scene;
         }
