@@ -9,7 +9,7 @@ namespace Expeditionary.View.Scenes.Galaxies
     public class GalaxyView : ManagedResource, IRenderable
     {
         private static readonly float s_Distortion = 0.000001f;
-        private Color4 s_SectorFilter = new(1f, 1f, 1f, 0.8f);
+        private Color4 s_SectorFilter = new(1f, 1f, 1f, 0.5f);
         private static readonly Vertex3[] s_Vertices =
         {
             new(new(-2f, 0f, -2f), Color4.White, new(-1f, -1f)),

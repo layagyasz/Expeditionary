@@ -17,7 +17,8 @@ namespace Expeditionary.View.Scenes.Galaxies
             new(1f, 0f, 1f),
             new(0f, 0f, 1f)
         };
-        private static readonly float s_GridWidth = 0.04f;
+        private static readonly float s_GridWidth = 0.1f;
+        private static readonly float s_GridZ = 1f;
         private static readonly Vector2i s_LookupSize = new(512, 512);
         private static readonly int s_TransformLocation = 0;
 
@@ -70,7 +71,7 @@ namespace Expeditionary.View.Scenes.Galaxies
 
         private static Vector3 ToVector3(Vector2 x)
         {
-            return new(x.X, 0, x.Y);
+            return new(x.X, s_GridZ, x.Y);
         }
     }
 }
