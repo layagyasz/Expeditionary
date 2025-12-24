@@ -5,469 +5,462 @@
       "Id": 0,
       "TopLeft": [ 0, 19 ],
       "Size": [ 1, 1 ],
-      "Color": "#cccc66ff",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 1,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 19 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 2,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 3,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 0, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 4,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 5,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 19 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 6,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 7,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 0, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 8,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 9,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 2, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 10,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 2, 19 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 11,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 2, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 12,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 2, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 13,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 14,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 0, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 15,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 16,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 17,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 18,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 19 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 19,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 20,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 17 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 21,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 17 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 22,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 0, 17 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 23,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 17 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 24,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 2, 16 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 25,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 3, 18 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 26,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 3, 19 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 27,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 3, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 28,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 3, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 29,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 2, 22 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 30,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 0, 22 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 31,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -2, 22 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 32,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 22 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 33,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
-      "SystemCount": 24
-    },
-    {
-      "Id": 33,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -3, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 34,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -3, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 35,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -4, 21 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 36,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -4, 20 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 37,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 18 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 38,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 16 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 39,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 16 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 40,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 16 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 41,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 0, 16 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 42,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ 1, 16 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 43,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 14 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 44,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 14 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 45,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 15 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 46,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 14 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 47,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 15 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 48,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 0, 14 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 49,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 2, 14 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 50,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 12 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 51,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 12 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 52,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 13 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 53,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 12 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 54,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 13 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 55,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 0, 12 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 56,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 2, 12 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 57,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ -4, 10 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 58,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 10 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 59,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -2, 11 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 60,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 10 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 61,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -1, 11 ],
+      "Size": [ 1, 1 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 62,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 0, 10 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 63,
-      "TopLeft": [ -1, -1 ],
+      "TopLeft": [ 2, 10 ],
       "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 64,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [ -4, 24 ],
+      "Size": [ 4, 4 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {
       "Id": 65,
-      "TopLeft": [ -1, -1 ],
-      "Size": [ 2, 2 ],
-      "Color": "#00000000",
+      "TopLeft": [0, 24 ],
+      "Size": [ 4, 4 ],
+      "Color": "#333333ff",
       "SystemCount": 24
     },
     {

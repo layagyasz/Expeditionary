@@ -18,7 +18,7 @@ namespace Expeditionary.View.Scenes.Galaxies
             new(0f, 0f, 1f)
         };
         private static readonly float s_GridWidth = 0.1f;
-        private static readonly float s_GridZ = 1f;
+        private static readonly float s_GridZ = 4 * float.Epsilon;
         private static readonly Vector2i s_LookupSize = new(512, 512);
         private static readonly int s_TransformLocation = 0;
 
