@@ -458,7 +458,7 @@
     },
     {
       "Id": 65,
-      "TopLeft": [0, 24 ],
+      "TopLeft": [ 0, 24 ],
       "Size": [ 4, 4 ],
       "Color": "#333333ff",
       "SystemCount": 24
@@ -493,91 +493,91 @@
     },
     {
       "Id": 70,
-      "TopLeft": [ -12, 24 ],
-      "Size": [ 8, 8 ],
-      "Color": "#cc9966ff",
-      "SystemCount": 24
-    },
-    {
-      "Id": 71,
       "TopLeft": [ -12, 22 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 72,
+      "Id": 71,
       "TopLeft": [ -12, 20 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 73,
+      "Id": 72,
       "TopLeft": [ -10, 20 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 74,
+      "Id": 73,
       "TopLeft": [ -8, 20 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 75,
+      "Id": 74,
       "TopLeft": [ -8, 22 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 76,
+      "Id": 75,
       "TopLeft": [ -6, 20 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
-      "Id": 77,
+      "Id": 76,
       "TopLeft": [ -6, 22 ],
       "Size": [ 2, 2 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
+      "Id": 77,
+      "TopLeft": [ -8, 24 ],
+      "Size": [ 4, 4 ],
+      "Color": "#cc9966ff",
+      "SystemCount": 24
+    },
+    {
       "Id": 78,
-      "TopLeft": [ -4, 28 ],
+      "TopLeft": [ -8, 28 ],
       "Size": [ 4, 4 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
       "Id": 79,
-      "TopLeft": [ -16, 20 ],
+      "TopLeft": [ -4, 28 ],
       "Size": [ 4, 4 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
       "Id": 80,
-      "TopLeft": [ -20, 20 ],
+      "TopLeft": [ -16, 20 ],
       "Size": [ 4, 4 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
       "Id": 81,
-      "TopLeft": [ -24, 20 ],
+      "TopLeft": [ -20, 20 ],
       "Size": [ 4, 4 ],
       "Color": "#cc9966ff",
       "SystemCount": 24
     },
     {
       "Id": 82,
-      "TopLeft": [ -20, 24 ],
+      "TopLeft": [ -16, 24 ],
       "Size": [ 8, 8 ],
       "Color": "#cc9966ff",
       "SystemCount": 24

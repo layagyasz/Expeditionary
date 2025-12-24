@@ -383,58 +383,58 @@
       },
       {
         "Id": 70,
-        "Name": "perseus",
-        "StarName": "persei"
-      },
-      {
-        "Id": 71,
         "Name": "limax",
         "StarName": "limacis"
       },
       {
-        "Id": 72,
+        "Id": 71,
         "Name": "vulpecula",
         "StarName": "vulpeculae"
       },
       {
-        "Id": 73,
+        "Id": 72,
         "Name": "cygnus",
         "StarName": "cygni"
       },
       {
-        "Id": 74,
+        "Id": 73,
         "Name": "cepheus",
         "StarName": "cephei"
       },
       {
-        "Id": 75,
+        "Id": 74,
         "Name": "funis",
         "StarName": "funis"
       },
       {
-        "Id": 76,
+        "Id": 75,
         "Name": "cassiopeia",
         "StarName": "cassiopeiae"
       },
       {
-        "Id": 77,
+        "Id": 76,
         "Name": "camelopardalis",
         "StarName": "camelopardalis"
       },
       {
+        "Id": 77,
+        "Name": "perseus",
+        "StarName": "persei"
+      },
+      {
         "Id": 78,
+        "Name": "musculus",
+        "StarName": "musculi"
+      },
+      {
+        "Id": 79,
         "Name": "auriga",
         "StarName": "aurigae"
       },
       {
-        "Id": 79,
+        "Id": 80,
         "Name": "formica",
         "StarName": "formicae"
-      },
-      {
-        "Id": 80,
-        "Name": "musculus",
-        "StarName": "musculi"
       },
       {
         "Id": 81,

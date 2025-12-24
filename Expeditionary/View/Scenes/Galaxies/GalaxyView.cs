@@ -65,7 +65,7 @@ namespace Expeditionary.View.Scenes.Galaxies
             target.PopModelMatrix();
 
             _sectorShader.SetColor("filter_color", s_SectorFilter);
-            target.Draw(_sectors, 0, _sectors.Length, new(BlendMode.Alpha, _sectorShader));
+            target.Draw(_sectors, 0, _sectors.Length, new(BlendMode.Alpha, _sectorShader) { EnableDepthTest = false });
         }
 
         public void Initialize() { }
