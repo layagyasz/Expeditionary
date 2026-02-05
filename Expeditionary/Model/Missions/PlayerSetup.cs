@@ -4,11 +4,11 @@ using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class PlayerSetup(Player Player, ObjectiveSet Objectives, List<FormationSetup> Formations)
+    public record class PlayerSetup(Player Player, IObjective Objective, List<FormationSetup> Formations)
     {
         public void Create(Match match, CreationContext context)
         {
-            match.Add(Player, Objectives, CreatePlayerKnowledge(Player, match.GetMap(), context));
+            match.Add(Player, Objective, CreatePlayerKnowledge(Player, match.GetMap(), context));
         }
 
         public void Setup(Match match, SetupContext context) 

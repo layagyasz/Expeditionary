@@ -1,28 +1,25 @@
 ﻿namespace Expeditionary.Model.Missions.Objectives
 {
-    public record class EliminateObjective(AssetValue Quantity, bool Team) : IObjective
+    public record class DurationObjective(int Turns) : IObjective
     {
         private static readonly ObjectiveDisposition s_Disposition = ObjectiveDisposition.Optimistic;
 
         public ObjectiveCompletion Evaluate(Player player, Match match)
         {
-            var score = 
-                Team 
-                    ? match.GetStatistics(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y) 
-                    : match.GetStatistics(player).Destroyed;
-            if (score >= Quantity)
+            int turn = match.GetTurn();
+            if (turn >= Turns)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.DecisiveVictory);
             }
-            if (score >= 0.75f * Quantity)
+            if (turn >= 0.83f * Turns)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.MarginalVictory);
             }
-            if (score >= 0.5f * Quantity)
+            if (turn >= 0.67f * Turns)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.Stalemate);
             }
-            if (score > 0.25f * Quantity)
+            if (turn > 0.5f * Turns)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.MarginalDefeat);
             }

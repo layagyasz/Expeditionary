@@ -35,13 +35,14 @@ namespace Expeditionary.Model
         private readonly TileEvaluator _tileEvaluator;
 
         private readonly List<Player> _players = new();
-        private readonly Dictionary<Player, ObjectiveSet> _playerObjectives = new();
+        private readonly Dictionary<Player, IObjective> _playerObjectives = new();
         private readonly Dictionary<Player, PlayerStatistics> _playerStatistics = new();
         private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
         private readonly List<Formation> _formations = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
 
+        private int _turn = 0;
         private int _activePlayer = -1;
 
         public Match(Random random, IIdGenerator idGenerator, Map map)
@@ -59,10 +60,10 @@ namespace Expeditionary.Model
             _stepped = new EventBuffer<EventArgs>((s, e) => Stepped?.Invoke(s, e));
         }
 
-        public void Add(Player player, ObjectiveSet objectives, IPlayerKnowledge knowledge)
+        public void Add(Player player, IObjective objective, IPlayerKnowledge knowledge)
         {
             _players.Add(player);
-            _playerObjectives.Add(player, objectives);
+            _playerObjectives.Add(player, objective);
             _playerStatistics.Add(player, new());
             _playerKnowledge.Add(player, knowledge);
             foreach (var asset in _assets)
@@ -189,7 +190,7 @@ namespace Expeditionary.Model
             return _map;
         }
 
-        public IEnumerable<ObjectiveSet> GetObjectiveSets(int team)
+        public IEnumerable<IObjective> GetObjectives(int team)
         {
             return _playerObjectives.Where(x => x.Key.Team == team).Select(x => x.Value);
         }
@@ -207,6 +208,11 @@ namespace Expeditionary.Model
         public PlayerStatistics GetStatistics(Player player)
         {
             return _playerStatistics[player];
+        }
+
+        public int GetTurn()
+        {
+            return _turn;
         }
 
         public IEnumerable<PlayerStatistics> GetStatistics(int team)
@@ -307,6 +313,7 @@ namespace Expeditionary.Model
             if (_activePlayer >= GetPlayers().Count())
             {
                 _activePlayer = 0;
+                _turn++;
                 Reset();
             }
             s_Logger.Log($"Entered turn {_players[_activePlayer]}");

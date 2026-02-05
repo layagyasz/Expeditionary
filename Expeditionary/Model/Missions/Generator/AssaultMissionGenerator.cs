@@ -21,11 +21,7 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup = 
                     new PlayerSetup(
                         player,
-                        new(
-                            new List<IObjective>()
-                            {
-                                new OccupyObjective(MapTag.Control1, new AssetValue(1, 1))
-                            }),
+                        new OccupyObjective(MapTag.Control1, new AssetValue(1, 1), IsDefender: false),
                         new()
                         {
                             new(
@@ -41,11 +37,7 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup =
                     new PlayerSetup(
                         player,
-                        new(
-                            new List<IObjective>()
-                            {
-                                new InvertObjective(Team: 0)
-                            }),
+                        new PreventTeamObjective(Team: 0),
                         new()
                         {
                             new(
