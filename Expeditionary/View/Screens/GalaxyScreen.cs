@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class GalaxyScreen : ManagedResource, IRenderable
+    public class GalaxyScreen : ManagedResource, IScreen
     {
         public IController Controller { get; }
         public GalaxyScene? Scene { get; private set; }

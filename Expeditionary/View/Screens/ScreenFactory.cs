@@ -8,7 +8,7 @@ using Expeditionary.Spectra;
 using Expeditionary.View.Common.Components;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Galaxies;
-using Expeditionary.View.Scenes.Matches;
+using Expeditionary.View.Scenes.Matches.Overlays;
 
 namespace Expeditionary.View.Screens
 {

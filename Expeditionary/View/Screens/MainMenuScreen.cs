@@ -8,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class MainMenuScreen : ManagedResource, IRenderable
+    public class MainMenuScreen : ManagedResource, IScreen
     {
         public static readonly object NewGame = new();
         public static readonly object LoadGame = new();

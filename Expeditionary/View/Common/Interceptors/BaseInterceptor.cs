@@ -3,7 +3,7 @@ using Cardamom.Ui;
 using Expeditionary.View.Common.Components.Dynamics;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View.Common
+namespace Expeditionary.View.Common.Interceptors
 {
     public abstract class BaseInterceptor : IDynamic
     {

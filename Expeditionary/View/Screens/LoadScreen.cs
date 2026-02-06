@@ -10,7 +10,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class LoadScreen : ManagedResource, IDynamic
+    public class LoadScreen : ManagedResource, IDynamic, IScreen
     {
         public event EventHandler<EventArgs>? Updated;
 

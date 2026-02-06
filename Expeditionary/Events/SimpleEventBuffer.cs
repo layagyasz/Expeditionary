@@ -1,24 +1,24 @@
-﻿namespace Expeditionary
+﻿namespace Expeditionary.Events
 {
-    public class EventBuffer<T>
+    public class SimpleEventBuffer<T> : IEventBuffer<T>
     {
-        private readonly Queue<Tuple<object?, T>> _invocations = new();
+        private readonly Queue<(object?, T)> _invocations = new();
         private readonly Action<object?, T> _handler;
 
-        public EventBuffer(Action<object?, T> handler)
+        public SimpleEventBuffer(Action<object?, T> handler)
         {
             _handler = handler;
         }
 
-        public void QueueEvent(object? sender, T e)
+        public void Queue(object? sender, T e)
         {
             lock (_invocations)
             {
-                _invocations.Enqueue(new Tuple<object?, T>(sender, e));
+                _invocations.Enqueue((sender, e));
             }
         }
 
-        public void DispatchEvents()
+        public void DispatchEvents(long delta)
         {
             lock (_invocations)
             {

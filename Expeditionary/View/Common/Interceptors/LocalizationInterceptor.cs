@@ -1,6 +1,6 @@
 ﻿using Cardamom.Graphics;
 
-namespace Expeditionary.View.Common
+namespace Expeditionary.View.Common.Interceptors
 {
     public class LocalizationInterceptor : BaseInterceptor
     {

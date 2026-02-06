@@ -3,6 +3,7 @@ using Cardamom.Logging;
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Caches;
 using Expeditionary.Evaluation.TileEvaluators;
+using Expeditionary.Events;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
@@ -24,9 +25,10 @@ namespace Expeditionary.Model
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
 
-        private readonly EventBuffer<AssetKnowledgeChangedEventArgs> _assetKnowledgeChanged;
-        private readonly EventBuffer<MapKnowledgeChangedEventArgs> _mapKnowledgeChanged;
-        private readonly EventBuffer<EventArgs> _stepped;
+        private readonly IEventBuffer<AssetKnowledgeChangedEventArgs> _assetKnowledgeChanged;
+        private readonly IEventBuffer<Formation> _formationAdded;
+        private readonly IEventBuffer<MapKnowledgeChangedEventArgs> _mapKnowledgeChanged;
+        private readonly IEventBuffer<EventArgs> _stepped;
 
         private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
@@ -54,10 +56,11 @@ namespace Expeditionary.Model
             _tileEvaluator = new TileEvaluator(_evaluationCache, random);
 
             _assetKnowledgeChanged =
-                new EventBuffer<AssetKnowledgeChangedEventArgs>((s, e) => AssetKnowledgeChanged?.Invoke(s, e));
+                new SimpleEventBuffer<AssetKnowledgeChangedEventArgs>((s, e) => AssetKnowledgeChanged?.Invoke(s, e));
+            _formationAdded = new SimpleEventBuffer<Formation>((s, e) => FormationAdded?.Invoke(s, e));
             _mapKnowledgeChanged =
-                new EventBuffer<MapKnowledgeChangedEventArgs>((s, e) => MapKnowledgeChanged?.Invoke(s, e));
-            _stepped = new EventBuffer<EventArgs>((s, e) => Stepped?.Invoke(s, e));
+                new SimpleEventBuffer<MapKnowledgeChangedEventArgs>((s, e) => MapKnowledgeChanged?.Invoke(s, e));
+            _stepped = new SimpleEventBuffer<EventArgs>((s, e) => Stepped?.Invoke(s, e));
         }
 
         public void Add(Player player, IObjective objective, IPlayerKnowledge knowledge)
@@ -81,7 +84,7 @@ namespace Expeditionary.Model
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
             s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
-            FormationAdded?.Invoke(this, formation);
+            _formationAdded.Queue(this, formation);
             return formation;
         }
 
@@ -115,11 +118,12 @@ namespace Expeditionary.Model
             }
         }
 
-        public void DispatchEvents()
+        public void DispatchEvents(long delta)
         {
-            _assetKnowledgeChanged.DispatchEvents();
-            _mapKnowledgeChanged.DispatchEvents();
-            _stepped.DispatchEvents();
+            _assetKnowledgeChanged.DispatchEvents(delta);
+            _formationAdded.DispatchEvents(delta);
+            _mapKnowledgeChanged.DispatchEvents(delta);
+            _stepped.DispatchEvents(delta);
         }
 
         public bool DoOrder(IOrder order)
@@ -317,7 +321,7 @@ namespace Expeditionary.Model
                 Reset();
             }
             s_Logger.Log($"Entered turn {_players[_activePlayer]}");
-            _stepped.QueueEvent(this, EventArgs.Empty);
+            _stepped.Queue(this, EventArgs.Empty);
         }
 
         public void Unload(Unit unit)
@@ -347,13 +351,13 @@ namespace Expeditionary.Model
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            _assetKnowledgeChanged.QueueEvent(sender, e);
+            _assetKnowledgeChanged.Queue(sender, e);
         }
 
         private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            _mapKnowledgeChanged.QueueEvent(sender, e);
+            _mapKnowledgeChanged.Queue(sender, e);
         }
     }
 }

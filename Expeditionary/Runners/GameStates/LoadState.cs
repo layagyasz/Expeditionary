@@ -26,7 +26,7 @@ namespace Expeditionary.Runners.GameStates
             _loader = loader;
         }
 
-        public IRenderable Enter(object? context, ScreenFactory screenFactory)
+        public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
             _context = (LoadContext)context!;
             var task = _context.Task.Map(Wait);

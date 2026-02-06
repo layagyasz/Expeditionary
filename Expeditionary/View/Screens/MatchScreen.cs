@@ -4,14 +4,13 @@ using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Expeditionary.View.Common.Components;
 using Expeditionary.View.Scenes.Matches;
+using Expeditionary.View.Scenes.Matches.Overlays;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class MatchScreen : ManagedResource, IRenderable
+    public class MatchScreen : ManagedResource, IScreen
     {
-        public event EventHandler<EventArgs>? Updated;
-
         public IController Controller { get; }
         public MatchScene? Scene { get; private set; }
         public UnitOverlay? UnitOverlay { get; private set; }
@@ -51,7 +50,6 @@ namespace Expeditionary.View.Screens
 
         public void Update(long delta)
         {
-            Updated?.Invoke(this, EventArgs.Empty);
             Scene!.Update(delta);
             UnitOverlay!.Update(delta);
             UnitSelect!.Update(delta);

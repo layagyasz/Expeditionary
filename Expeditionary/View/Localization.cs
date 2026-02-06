@@ -43,13 +43,11 @@ namespace Expeditionary.View
             var result = new Dictionary<string, string>();
             foreach (var file in Directory.GetFiles(dir))
             {
-                using (FileStream stream = new(file, FileMode.Open))
+                using FileStream stream = new(file, FileMode.Open);
+                var contents = JsonSerializer.Deserialize<Dictionary<string, string>>(stream)!;
+                foreach (var entry in contents)
                 {
-                    var contents = JsonSerializer.Deserialize<Dictionary<string, string>>(stream)!;
-                    foreach (var entry in contents)
-                    {
-                        result.Add(entry.Key, entry.Value);
-                    }
+                    result.Add(entry.Key, entry.Value);
                 }
             }
             return result;

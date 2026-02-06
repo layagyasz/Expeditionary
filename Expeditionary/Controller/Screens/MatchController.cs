@@ -6,7 +6,9 @@ using Cardamom.Window;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Controller.Scenes.Matches.Layers;
+using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.Evaluation.Considerations;
+using Expeditionary.Events;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Combat;
@@ -20,7 +22,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Expeditionary.Controller.Screens
 {
-    public class MatchController : IController
+    public class MatchController : IController, IEventDispatchable
     {
         private static readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(MatchController));
@@ -66,7 +68,6 @@ namespace Expeditionary.Controller.Screens
             _unitSelectController!.ValueChanged += HandleUnitSelected;
 
             _screen.UnitOverlay.Visible = false;
-            _screen.Updated += HandleFrame;
         }
 
         public void Unbind()
@@ -83,13 +84,11 @@ namespace Expeditionary.Controller.Screens
 
             _unitSelectController!.ValueChanged -= HandleUnitSelected;
             _unitSelectController = null;
-
-            _screen!.Updated -= HandleFrame;
         }
 
-        private void HandleFrame(object? sender, EventArgs e)
+        public void DispatchEvents(long delta)
         {
-            _match.DispatchEvents();
+            _match.DispatchEvents(delta);
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)

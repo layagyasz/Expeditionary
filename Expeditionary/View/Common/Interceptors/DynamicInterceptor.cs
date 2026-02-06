@@ -1,6 +1,6 @@
 ﻿using Cardamom.Graphics;
 
-namespace Expeditionary.View.Common.Components.Dynamics
+namespace Expeditionary.View.Common.Interceptors
 {
     public class DynamicInterceptor : BaseInterceptor
     {
@@ -8,7 +8,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
 
         private long _time;
 
-        public DynamicInterceptor(IRenderable child, long refreshTime) 
+        public DynamicInterceptor(IRenderable child, long refreshTime)
             : base(child)
         {
             RefreshTime = refreshTime;

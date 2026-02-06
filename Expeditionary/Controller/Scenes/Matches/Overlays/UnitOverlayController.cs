@@ -2,8 +2,9 @@
 using Expeditionary.Model;
 using Expeditionary.Model.Units;
 using Expeditionary.View.Scenes.Matches;
+using Expeditionary.View.Scenes.Matches.Overlays;
 
-namespace Expeditionary.Controller.Scenes.Matches
+namespace Expeditionary.Controller.Scenes.Matches.Overlays
 {
     public class UnitOverlayController : IController
     {

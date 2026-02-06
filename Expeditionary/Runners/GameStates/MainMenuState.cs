@@ -23,7 +23,7 @@ namespace Expeditionary.Runners.GameStates
             _module = module;
         }
 
-        public IRenderable Enter(object? context, ScreenFactory screenFactory)
+        public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
             _screen = screenFactory.CreateMainMenu();
             _controller = (MainMenuScreenController)_screen.Controller;

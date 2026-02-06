@@ -2,11 +2,11 @@
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
-using Expeditionary.Controller.Scenes.Matches;
+using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.View.Common;
 using OpenTK.Mathematics;
 
-namespace Expeditionary.View.Scenes.Matches
+namespace Expeditionary.View.Scenes.Matches.Overlays
 {
     public class UnitOverlay : UiCompoundComponent
     {
@@ -14,7 +14,7 @@ namespace Expeditionary.View.Scenes.Matches
         private static readonly string s_TitleContainer = "unit-overlay-title-container";
         private static readonly string s_Title = "unit-overlay-title";
         private static readonly string s_OrderContainer = "unit-overlay-order-container";
-        private static readonly ButtonStyle s_AttackButton = 
+        private static readonly ButtonStyle s_AttackButton =
             new("unit-overlay-order-button", "unit-overlay-order-attack", "base-button-text");
         private static readonly ButtonStyle s_MoveButton =
             new("unit-overlay-order-button", "unit-overlay-order-move", "base-button-text");
@@ -43,9 +43,9 @@ namespace Expeditionary.View.Scenes.Matches
                     new RadioController<OrderValue>(),
                     new UiSerialContainer(
                         uiElementFactory.GetClass(s_OrderContainer),
-                        new InlayController(uiElementFactory.GetAudioPlayer()), 
+                        new InlayController(uiElementFactory.GetAudioPlayer()),
                         UiSerialContainer.Orientation.Vertical));
-            Title = 
+            Title =
                 new TextUiElement(
                     uiElementFactory.GetClass(s_Title),
                     new InlayController(uiElementFactory.GetAudioPlayer()),
@@ -63,10 +63,10 @@ namespace Expeditionary.View.Scenes.Matches
 
         public void AddOrder(OrderValue order)
         {
-            var element = 
+            var element =
                 _uiElementFactory.CreateButton(
                     GetClass(order.OrderId),
-                    new OptionElementController<OrderValue>(_uiElementFactory.GetAudioPlayer(), order), 
+                    new OptionElementController<OrderValue>(_uiElementFactory.GetAudioPlayer(), order),
                     order.Name);
             element.Initialize();
             Orders.Add(element);

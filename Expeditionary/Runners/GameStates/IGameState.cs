@@ -9,6 +9,6 @@ namespace Expeditionary.Runners.GameStates
         GameStateId Id { get; }
 
         void Exit();
-        IRenderable Enter(object? context, ScreenFactory screenFactory);
+        IScreen Enter(object? context, ScreenFactory screenFactory);
     }
 }

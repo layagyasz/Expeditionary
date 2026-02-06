@@ -8,6 +8,8 @@ using Expeditionary.View.Common.Components.Dynamics;
 using Expeditionary.View.Common;
 using Expeditionary.View.Screens;
 using Expeditionary.View;
+using Expeditionary.View.Common.Interceptors;
+using Expeditionary.Events;
 
 namespace Expeditionary.Runners
 {
@@ -77,13 +79,18 @@ namespace Expeditionary.Runners
             Enter(e.State, e.Context);
         }
 
-        private IRenderable AddInterceptors(IRenderable screen)
+        private IRenderable AddInterceptors(IScreen screen)
         {
+            IRenderable result = screen;
+            if (screen.Controller is IEventDispatchable dispatch)
+            {
+                result = new EventInterceptor(result, dispatch);
+            }
             if (screen is IDynamic)
             {
-                screen = new DynamicInterceptor(screen, s_RefreshTime);
+                result = new DynamicInterceptor(result, s_RefreshTime);
             }
-            return new LocalizationInterceptor(screen, _localization);
+            return new LocalizationInterceptor(result, _localization);
         }
     }
 }
