@@ -15,7 +15,8 @@ namespace Expeditionary.Runners
             ThreadedLoader loader, 
             ScreenFactory screenFactory) 
         {
-            var programController = new ProgramController(data.Config, window, loader, screenFactory, data.Module);
+            var programController = 
+                new ProgramController(data.Config, window, loader, screenFactory, data.Module, data.Localization);
             programController.Initialize();
         }
     }

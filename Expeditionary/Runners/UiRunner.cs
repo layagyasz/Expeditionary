@@ -5,6 +5,7 @@ using Cardamom.Ui;
 using Cardamom.Window;
 using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders;
+using Expeditionary.View;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Galaxies;
@@ -62,7 +63,8 @@ namespace Expeditionary.Runners
                         resources.GetShader("shader-default"),
                         data.UnitTextures),
                     new HighlightLayerFactory(resources.GetShader("shader-default-no-tex")));
-            var screenFactory = new ScreenFactory(uiElementFactory, sceneFactory, data.SpectrumSensitivity);
+            var screenFactory =
+                new ScreenFactory(uiElementFactory, sceneFactory, data.Localization, data.SpectrumSensitivity);
             var loader =
                 new ThreadedLoader(
                     window, numWorkers: 2, numGLWorkers: 1, new Logger(new ConsoleBackend(), LogLevel.Info));

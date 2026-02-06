@@ -16,13 +16,18 @@ namespace Expeditionary.View.Screens
     {
         private readonly UiElementFactory _uiElementFactory;
         private readonly SceneFactory _sceneFactory;
+        private readonly Localization _localization;
         private readonly SpectrumSensitivity _spectrumSensitivity;
 
         public ScreenFactory(
-            UiElementFactory uiElementFactory, SceneFactory sceneFactory, SpectrumSensitivity spectrumSensitivity)
+            UiElementFactory uiElementFactory,
+            SceneFactory sceneFactory,
+            Localization localization, 
+            SpectrumSensitivity spectrumSensitivity)
         {
             _uiElementFactory = uiElementFactory;
             _sceneFactory = sceneFactory;
+            _localization = localization;
             _spectrumSensitivity = spectrumSensitivity;
         }
 
@@ -41,7 +46,7 @@ namespace Expeditionary.View.Screens
 
         public MainMenuScreen CreateMainMenu()
         {
-            return MainMenuScreen.Create(_uiElementFactory);
+            return MainMenuScreen.Create(_uiElementFactory, _localization);
         }
 
         public MatchScreen CreateMatch(Match match, MapAppearance appearance, Player player)

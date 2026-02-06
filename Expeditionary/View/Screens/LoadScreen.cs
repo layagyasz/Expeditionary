@@ -10,25 +10,19 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class LoadScreen : ManagedResource, IRenderable
+    public class LoadScreen : ManagedResource, IDynamic
     {
-        private static readonly long s_RefreshTime = 100;
-
         public event EventHandler<EventArgs>? Updated;
 
         public IController Controller { get; }
         public TextureBackground Background { get; }
         public LoadBar LoadBar { get; }
 
-        private readonly DynamicRefresher _refresher = new(s_RefreshTime);
-
         private LoadScreen(IController controller, TextureBackground background, LoadBar loadBar)
         {
             Controller = controller;
             Background = background;
             LoadBar = loadBar;
-
-            _refresher.Add(LoadBar);
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
@@ -44,6 +38,11 @@ namespace Expeditionary.View.Screens
             LoadBar.Initialize();
         }
 
+        public void Refresh()
+        {
+            LoadBar.Refresh();
+        }
+
         public void ResizeContext(Vector3 bounds)
         {
 
@@ -54,7 +53,6 @@ namespace Expeditionary.View.Screens
 
         public void Update(long delta)
         {
-            _refresher.Update(delta);
             LoadBar.Update(delta);
             Background.Update(delta);
             Updated?.Invoke(this, EventArgs.Empty);

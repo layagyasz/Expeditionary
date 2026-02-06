@@ -19,6 +19,12 @@ namespace Expeditionary.View.Screens
         private static readonly string s_Title = "main-menu-title";
         private static readonly string s_Option = "main-menu-option";
 
+        private static readonly string s_TitleKey = "localize-main-menu-title";
+        private static readonly string s_NewGameKey = "localize-main-menu-new";
+        private static readonly string s_LoadGameKey = "localize-main-menu-load";
+        private static readonly string s_OptionsKey = "localize-main-menu-options";
+        private static readonly string s_CreditsKey = "localize-main-menu-credits";
+
         public IController Controller { get; }
         public TextureBackground? Background { get; private set; }
         public ButtonMenu? Menu { get; private set; }
@@ -32,7 +38,7 @@ namespace Expeditionary.View.Screens
             Menu = menu;
         }
 
-        public static MainMenuScreen Create(UiElementFactory uiElementFactory)
+        public static MainMenuScreen Create(UiElementFactory uiElementFactory, Localization localization)
         {
             var segment = uiElementFactory.GetTexture("background_main_menu");
             return new(
@@ -40,11 +46,11 @@ namespace Expeditionary.View.Screens
                 new TextureBackground(
                     segment.Texture!, segment.TextureView, uiElementFactory.GetShader("shader-default")),
                 new ButtonMenu.Builder(s_Container)
-                    .SetTitle("Main Menu", s_Title)
-                    .Add(s_Option, "New Game", NewGame)
-                    .Add(s_Option, "Load Game", LoadGame)
-                    .Add(s_Option, "Options", Options)
-                    .Add(s_Option, "Credits", Credits)
+                    .SetTitle(localization.Localize(s_TitleKey), s_Title)
+                    .Add(s_Option, localization.Localize(s_NewGameKey), NewGame)
+                    .Add(s_Option, localization.Localize(s_LoadGameKey), LoadGame)
+                    .Add(s_Option, localization.Localize(s_OptionsKey), Options)
+                    .Add(s_Option, localization.Localize(s_CreditsKey), Credits)
                     .Build(uiElementFactory));
         }
 

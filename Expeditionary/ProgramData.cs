@@ -2,6 +2,7 @@
 using Cardamom.Audio;
 using Expeditionary.Model;
 using Expeditionary.Spectra;
+using Expeditionary.View;
 using Expeditionary.View.Textures;
 
 namespace Expeditionary
@@ -11,6 +12,7 @@ namespace Expeditionary
         GameResources Resources, 
         GameModule Module,
         Playlist Playlist,
+        Localization Localization,
         SpectrumSensitivity SpectrumSensitivity,
         TextureLibrary TextureLibrary,
         Cardamom.Graphics.TexturePacking.ITextureVolume UnitTextures)
