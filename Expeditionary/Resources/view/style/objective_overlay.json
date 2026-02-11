@@ -1,0 +1,41 @@
+[
+  {
+    "$id": "objective-overlay-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 512, "DynamicContents" ],
+      "Margin": [ 8 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "objective-overlay-title",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
+  },
+  {
+    "$id": "objective-overlay-objective-container",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 508, "DynamicContents" ],
+      "Margin": [ 0 ],
+      "Padding": [ 0 ]
+    }
+  },
+  {
+    "$id": "objective-overlay-objective-text",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12,
+      "Align": "Left"
+    }
+  }
+]

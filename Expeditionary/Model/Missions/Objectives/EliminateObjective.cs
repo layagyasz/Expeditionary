@@ -6,27 +6,43 @@
 
         public ObjectiveCompletion Evaluate(Player player, Match match)
         {
-            var score = 
-                Team 
-                    ? match.GetStatistics(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y) 
-                    : match.GetStatistics(player).Destroyed;
-            if (score >= Quantity)
+            var p = GetProgress(player, match).GetPercentDone();
+            if (p >= 1)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.DecisiveVictory);
             }
-            if (score >= 0.75f * Quantity)
+            if (p >= 0.75f)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.MarginalVictory);
             }
-            if (score >= 0.5f * Quantity)
+            if (p >= 0.5f)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.Stalemate);
             }
-            if (score > 0.25f * Quantity)
+            if (p > 0.25f)
             {
                 return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.MarginalDefeat);
             }
             return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.DecisiveDefeat);
+        }
+
+        public ObjectiveProgress GetProgress(Player player, Match match)
+        {
+            return new(
+                ToScalar(
+                    Team
+                        ? match.GetStatistics(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y)
+                        : match.GetStatistics(player).Destroyed),
+                ToScalar(Quantity));
+        }
+
+        private static float ToScalar(AssetValue value)
+        {
+            if (value.Points > 0)
+            {
+                return value.Points;
+            }
+            return value.Number;
         }
     }
 }

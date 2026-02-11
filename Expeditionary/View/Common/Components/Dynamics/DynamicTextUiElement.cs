@@ -9,7 +9,8 @@ namespace Expeditionary.View.Common.Components.Dynamics
         private readonly Func<string> _textFn;
 
         public DynamicTextUiElement(
-            Class @class, IElementController controller, Func<string> textFn) : base(@class, controller, textFn())
+            Class @class, IElementController controller, Func<string> textFn, bool supportLineBreak = false) 
+            : base(@class, controller, textFn(), supportLineBreak)
         {
             _textFn = textFn;
         }

@@ -4,13 +4,21 @@
     {
         public ObjectiveCompletion Evaluate(Player player, Match match)
         {
-            var completions = match.GetObjectives(Team).Select(x => x.Evaluate(player, match)).ToList();
+            var completions = match.GetObjectives(Team).Select(kvp => kvp.Item2.Evaluate(kvp.Item1, match)).ToList();
             return new ObjectiveCompletion(
                 Invert(completions.Max(completion => completion.Status)), 
                 IObjective.Combine(completions.Select(completion => completion.Disposition)),
                 completions.All(completion => completion.IsTerminal) 
                 || completions.Any(
                     completion => completion.Disposition == ObjectiveDisposition.Optimistic && completion.IsTerminal));
+        }
+
+        public ObjectiveProgress GetProgress(Player player, Match match)
+        {
+            var objectives = match.GetObjectives(Team).ToList();
+            return new(
+                objectives.Count(kvp => kvp.Item2.Evaluate(kvp.Item1, match).Status == ObjectiveStatus.DecisiveDefeat),
+                objectives.Count);
         }
 
         private static ObjectiveStatus Invert(ObjectiveStatus status)

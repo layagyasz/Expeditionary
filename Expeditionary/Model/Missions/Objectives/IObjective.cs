@@ -3,6 +3,7 @@
     public interface IObjective
     {
         ObjectiveCompletion Evaluate(Player player, Match match);
+        ObjectiveProgress GetProgress(Player player, Match match);
 
         public static ObjectiveDisposition Combine(IEnumerable<ObjectiveDisposition> dispositions)
         {

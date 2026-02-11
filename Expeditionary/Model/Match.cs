@@ -194,9 +194,14 @@ namespace Expeditionary.Model
             return _map;
         }
 
-        public IEnumerable<IObjective> GetObjectives(int team)
+        public IObjective GetObjective(Player player)
         {
-            return _playerObjectives.Where(x => x.Key.Team == team).Select(x => x.Value);
+            return _playerObjectives[player];
+        }
+
+        public IEnumerable<(Player, IObjective)> GetObjectives(int team)
+        {
+            return _playerObjectives.Where(x => x.Key.Team == team).Select(kvp => (kvp.Key, kvp.Value));
         }
 
         public IEnumerable<Player> GetPlayers()

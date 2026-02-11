@@ -13,14 +13,20 @@ namespace Expeditionary.View.Screens
     {
         public IController Controller { get; }
         public MatchScene? Scene { get; private set; }
+        public ObjectiveOverlay? ObjectiveOverlay { get; private set; }
         public UnitOverlay? UnitOverlay { get; private set; }
         public RightClickMenu? UnitSelect { get; private set; }
 
         public MatchScreen(
-            IController controller, MatchScene scene, UnitOverlay unitOverlay, RightClickMenu unitSelect)
+            IController controller, 
+            MatchScene scene, 
+            ObjectiveOverlay objectiveOverlay,
+            UnitOverlay unitOverlay, 
+            RightClickMenu unitSelect)
         {
             Controller = controller;
             Scene = scene;
+            ObjectiveOverlay = objectiveOverlay;
             UnitOverlay = unitOverlay;
             UnitSelect = unitSelect;
         }
@@ -29,6 +35,7 @@ namespace Expeditionary.View.Screens
         {
             Scene!.Draw(target, context);
             context.Flatten();
+            ObjectiveOverlay!.Draw(target, context);
             UnitOverlay!.Draw(target, context);
             UnitSelect!.Draw(target, context);
         }
@@ -36,6 +43,7 @@ namespace Expeditionary.View.Screens
         public void Initialize()
         {
             Scene!.Initialize();
+            ObjectiveOverlay!.Initialize();
             UnitOverlay!.Initialize();
             UnitSelect!.Initialize();
             Controller.Bind(this);
@@ -44,6 +52,7 @@ namespace Expeditionary.View.Screens
         public void ResizeContext(Vector3 bounds)
         {
             Scene!.ResizeContext(bounds);
+            ObjectiveOverlay!.ResizeContext(bounds);
             UnitOverlay!.ResizeContext(bounds);
             UnitSelect!.ResizeContext(bounds);
         }
@@ -51,6 +60,7 @@ namespace Expeditionary.View.Screens
         public void Update(long delta)
         {
             Scene!.Update(delta);
+            ObjectiveOverlay!.Update(delta);
             UnitOverlay!.Update(delta);
             UnitSelect!.Update(delta);
         }
@@ -60,6 +70,8 @@ namespace Expeditionary.View.Screens
             Controller.Unbind();
             Scene!.Dispose();
             Scene = null;
+            ObjectiveOverlay!.Dispose();
+            ObjectiveOverlay = null;
             UnitOverlay!.Dispose();
             UnitOverlay = null;
             UnitSelect!.Dispose();

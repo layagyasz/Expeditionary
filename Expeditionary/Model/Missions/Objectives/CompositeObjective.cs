@@ -33,5 +33,12 @@
                         && completion.IsTerminal));
             }
         }
+
+        public ObjectiveProgress GetProgress(Player player, Match match)
+        {
+            return new(
+                Objectives.Count(x => x.Evaluate(player, match).Status == ObjectiveStatus.DecisiveVictory),
+                Composition == Operator.And ? Objectives.Count : 1);
+        }
     }
 }

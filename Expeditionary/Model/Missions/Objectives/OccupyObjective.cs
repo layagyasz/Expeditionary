@@ -9,9 +9,11 @@ namespace Expeditionary.Model.Missions.Objectives
         {
             var units = match.GetAssetsIn(Area).Where(x => x is Unit).Cast<Unit>();
             var enemy = 
-                units.Where(x => !player.MatchTeam(x.Player)).Select(x => x.Value).Aggregate((x, y) => x + y);
+                units.Where(x => !player.MatchTeam(x.Player)).Select(x => x.Value)
+                    .Aggregate(new AssetValue(), (x, y) => x + y);
             var friendly =
-                units.Where(x => player.MatchTeam(x.Player)).Select(x => x.Value).Aggregate((x, y) => x + y);
+                units.Where(x => player.MatchTeam(x.Player)).Select(x => x.Value)
+                    .Aggregate(new AssetValue(), (x, y) => x + y);
             var disposition = IsDefender ? ObjectiveDisposition.Pessimistic : ObjectiveDisposition.Optimistic;
             if (enemy.Number == 0 && friendly >= OccupationQuantity)
             {
@@ -30,6 +32,11 @@ namespace Expeditionary.Model.Missions.Objectives
                 return IObjective.WrapDefault(disposition, ObjectiveStatus.MarginalDefeat);
             }
             return IObjective.WrapDefault(disposition, ObjectiveStatus.DecisiveDefeat);
+        }
+
+        public ObjectiveProgress GetProgress(Player player, Match match)
+        {
+            return new(Evaluate(player, match).Status == ObjectiveStatus.DecisiveVictory ? 1 : 0, 1);
         }
     }
 }
