@@ -1,7 +1,6 @@
 ﻿using Cardamom.Ui.Controller;
 using Expeditionary.Model;
 using Expeditionary.Model.Units;
-using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Scenes.Matches.Overlays;
 
 namespace Expeditionary.Controller.Scenes.Matches.Overlays
@@ -13,13 +12,13 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
         private Match? _match;
 
         private UnitOverlay? _overlay;
-        private IFormFieldController<OrderValue>? _orderSelectController;
+        private IFormFieldController<IOrderPrototype>? _orderSelectController;
 
         public void Bind(object @object)
         {
             _overlay = @object as UnitOverlay;
 
-            _orderSelectController = (IFormFieldController<OrderValue>)_overlay!.Orders.ComponentController;
+            _orderSelectController = (IFormFieldController<IOrderPrototype>)_overlay!.Orders.ComponentController;
             _orderSelectController.ValueChanged += HandleOrderChanged;
         }
 
@@ -31,7 +30,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             _orderSelectController = null;
         }
 
-        public OrderValue? GetOrder()
+        public IOrderPrototype? GetOrder()
         {
             return _orderSelectController!.GetValue();
         }
@@ -63,7 +62,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             OrderChanged?.Invoke(this, e);
         }
 
-        private IEnumerable<OrderValue> GetPossibleOrders(Unit unit)
+        private IEnumerable<IOrderPrototype> GetPossibleOrders(Unit unit)
         {
             if (unit.Actions == 0 || !unit.IsActive())
             {
@@ -73,21 +72,22 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             {
                 foreach (var mode in weapon.Weapon.Modes)
                 {
-                    yield return new(FormatAttackName(weapon, mode), OrderId.Attack, new object[] { weapon, mode });
+                    yield return new IOrderPrototype.AttackOrderPrototype(
+                        FormatAttackName(weapon, mode), weapon, mode);
                 }
             }
             if (unit.Type.Speed >= 1)
             {
-                yield return new("Move", OrderId.Move, Array.Empty<object>());
+                yield return new IOrderPrototype.MoveOrderPrototype("Move");
             }
             foreach (var passenger in _match!.GetAssetsAt(unit.Position!.Value)
                 .Where(x => OrderChecker.CanLoad(unit, x)))
             {
-                yield return new($"Load {passenger.Name}", OrderId.Load, new object[] { passenger });
+                yield return new IOrderPrototype.LoadOrderPrototype($"Load {passenger.Name}", passenger);
             }
             if (unit.Passenger != null)
             {
-                yield return new($"Unload {unit.Passenger.Name}", OrderId.Unload, Array.Empty<object>());
+                yield return new IOrderPrototype.UnloadOrderPrototype($"Unload {unit.Passenger.Name}");
             }
         }
 

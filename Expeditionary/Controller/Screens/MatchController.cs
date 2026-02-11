@@ -14,7 +14,6 @@ using Expeditionary.Model;
 using Expeditionary.Model.Combat;
 using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
-using Expeditionary.View.Scenes.Matches;
 using Expeditionary.View.Scenes.Matches.Layers;
 using Expeditionary.View.Screens;
 using OpenTK.Mathematics;
@@ -37,7 +36,7 @@ namespace Expeditionary.Controller.Screens
         private IFormFieldController<object>? _unitSelectController;
 
         private Unit? _selectedUnit;
-        private OrderValue? _selectedOrder;
+        private IOrderPrototype? _selectedOrder;
         private IEnumerator<Unit>? _selectedUnitEnumerator;
 
         public MatchController(Match match, Player player)
@@ -101,17 +100,15 @@ namespace Expeditionary.Controller.Screens
             }
             else if (e.Button.Button == MouseButton.Right)
             {
-                if (_selectedOrder?.OrderId == OrderId.Attack && _selectedUnit != null)
+                if (_selectedOrder is IOrderPrototype.AttackOrderPrototype attack && _selectedUnit != null)
                 {
-                    var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
-                    var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
-                    if (mode.IsIndirect())
+                    if (attack.Mode.IsIndirect())
                     {
-                        DoOrder(new IndirectAttackOrder(_selectedUnit, weapon, mode, e.Position));
+                        DoOrder(new IndirectAttackOrder(_selectedUnit, attack.Weapon, attack.Mode, e.Position));
                     }
                     else if (e.Assets.First() is Unit defender)
                     {
-                        DoOrder(new DirectAttackOrder(_selectedUnit, weapon, mode, defender));
+                        DoOrder(new DirectAttackOrder(_selectedUnit, attack.Weapon, attack.Mode, defender));
                     }
                     else
                     {
@@ -134,7 +131,7 @@ namespace Expeditionary.Controller.Screens
 
             if (e.Button.Button == MouseButton.Right)
             {
-                if (_selectedOrder?.OrderId == OrderId.Move)
+                if (_selectedOrder is IOrderPrototype.MoveOrderPrototype)
                 {
                     // Cheap check to make sure hex is reachable
                     if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
@@ -151,13 +148,11 @@ namespace Expeditionary.Controller.Screens
                                     _selectedUnit.Type.Speed)));
                     }
                 }
-                else if (_selectedOrder?.OrderId == OrderId.Attack)
+                else if (_selectedOrder is IOrderPrototype.AttackOrderPrototype attack)
                 {
-                    var weapon = (UnitWeaponUsage)_selectedOrder.Args![0];
-                    var mode = (UnitWeapon.Mode)_selectedOrder.Args![1];
-                    if (mode.IsIndirect())
+                    if (attack.Mode.IsIndirect())
                     {
-                        DoOrder(new IndirectAttackOrder(_selectedUnit, weapon, mode, e.Hex));
+                        DoOrder(new IndirectAttackOrder(_selectedUnit, attack.Weapon, attack.Mode, e.Hex));
                     }
                 }
             }
@@ -283,16 +278,16 @@ namespace Expeditionary.Controller.Screens
             _selectedOrder = _unitOverlayController!.GetOrder();
             if (_selectedUnit != null)
             {
-                if (_selectedOrder?.OrderId == OrderId.Attack)
+                if (_selectedOrder is IOrderPrototype.AttackOrderPrototype attack)
                 {
-                    var mode = (UnitWeapon.Mode)_selectedOrder.Args[1];
-                    var range = (int)mode.Range.GetMaximum();
+                    var range = (int)attack.Mode.Range.GetMaximum();
                     _highlightLayer!.SetHighlight(
-                        CombatCalculator.GetValidAttackHexes(mode, _match.GetMap(), _selectedUnit.Position!.Value)
+                        CombatCalculator.GetValidAttackHexes(
+                            attack.Mode, _match.GetMap(), _selectedUnit.Position!.Value)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
-                else if (_selectedOrder?.OrderId == OrderId.Move)
+                else if (_selectedOrder is IOrderPrototype.MoveOrderPrototype)
                 {
                     var movement = (int)_selectedUnit.Type.Speed;
                     var used = _selectedUnit.Type.Speed - _selectedUnit.Type.Speed;
@@ -306,11 +301,11 @@ namespace Expeditionary.Controller.Screens
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Destination, HighlightLayer.GetLevel(x.Cost + used, new Interval(0, movement)))));
                 }
-                else if (_selectedOrder?.OrderId == OrderId.Load)
+                else if (_selectedOrder is IOrderPrototype.LoadOrderPrototype load)
                 {
-                    DoOrder(new LoadOrder(_selectedUnit, (IAsset)_selectedOrder.Args[0]));
+                    DoOrder(new LoadOrder(_selectedUnit, load.Passenger));
                 }
-                else if (_selectedOrder?.OrderId == OrderId.Unload)
+                else if (_selectedOrder is IOrderPrototype.UnloadOrderPrototype)
                 {
                     DoOrder(new UnloadOrder(_selectedUnit));
                 }

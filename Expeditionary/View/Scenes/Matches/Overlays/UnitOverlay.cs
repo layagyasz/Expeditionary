@@ -2,6 +2,7 @@
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
+using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.View.Common;
 using OpenTK.Mathematics;
@@ -40,7 +41,7 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
 
             Orders =
                 new UiCompoundComponent(
-                    new RadioController<OrderValue>(),
+                    new RadioController<IOrderPrototype>(),
                     new UiSerialContainer(
                         uiElementFactory.GetClass(s_OrderContainer),
                         new InlayController(uiElementFactory.GetAudioPlayer()),
@@ -61,12 +62,12 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
             Add(Orders);
         }
 
-        public void AddOrder(OrderValue order)
+        public void AddOrder(IOrderPrototype order)
         {
             var element =
                 _uiElementFactory.CreateButton(
-                    GetClass(order.OrderId),
-                    new OptionElementController<OrderValue>(_uiElementFactory.GetAudioPlayer(), order),
+                    GetClass(order),
+                    new OptionElementController<IOrderPrototype>(_uiElementFactory.GetAudioPlayer(), order),
                     order.Name);
             element.Initialize();
             Orders.Add(element);
@@ -78,15 +79,15 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
             Position = new(bounds.X - Size.X, Position.Y, 0);
         }
 
-        private static ButtonStyle GetClass(OrderId buttonId)
+        private static ButtonStyle GetClass(IOrderPrototype order)
         {
-            return buttonId switch
+            return order switch
             {
-                OrderId.Attack => s_AttackButton,
-                OrderId.Move => s_MoveButton,
-                OrderId.Load => s_LoadButton,
-                OrderId.Unload => s_UnloadButton,
-                _ => throw new ArgumentException($"Unsupported ButtonId: {buttonId}"),
+                IOrderPrototype.AttackOrderPrototype => s_AttackButton,
+                IOrderPrototype.MoveOrderPrototype => s_MoveButton,
+                IOrderPrototype.LoadOrderPrototype => s_LoadButton,
+                IOrderPrototype.UnloadOrderPrototype => s_UnloadButton,
+                _ => throw new ArgumentException($"Unsupported IOrderPrototype: {order}"),
             };
         }
     }
