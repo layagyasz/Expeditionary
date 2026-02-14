@@ -28,10 +28,14 @@
     }
   },
   {
+    "$id": "objective-overlay-objective-checkbox",
+    "Parent": "base-checkbox"
+  },
+  {
     "$id": "objective-overlay-objective-text",
     "Parent": "base-span",
     "Default": {
-      "Size": [ 508, 24 ],
+      "Size": [ 476, 24 ],
       "Margin": [ 0 ],
       "Padding": [ 5 ],
       "FontSize": 12,

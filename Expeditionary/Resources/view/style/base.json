@@ -122,5 +122,13 @@
         }
       }
     ]
+  },
+  {
+    "$id": "base-checkbox",
+    "Parent": "base-button",
+    "Default": {
+      "Size": [ 16, 16 ],
+      "Margin": [ 4 ]
+    }
   }
 ]

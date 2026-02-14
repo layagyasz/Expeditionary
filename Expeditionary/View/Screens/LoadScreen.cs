@@ -12,7 +12,7 @@ namespace Expeditionary.View.Screens
 {
     public class LoadScreen : ManagedResource, IDynamic, IScreen
     {
-        public event EventHandler<EventArgs>? Updated;
+        public EventHandler<EventArgs>? Refreshed { get; set; }
 
         public IController Controller { get; }
         public TextureBackground Background { get; }
@@ -41,6 +41,7 @@ namespace Expeditionary.View.Screens
         public void Refresh()
         {
             LoadBar.Refresh();
+            Refreshed?.Invoke(this, EventArgs.Empty);
         }
 
         public void ResizeContext(Vector3 bounds)
@@ -55,7 +56,6 @@ namespace Expeditionary.View.Screens
         {
             LoadBar.Update(delta);
             Background.Update(delta);
-            Updated?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void DisposeImpl()

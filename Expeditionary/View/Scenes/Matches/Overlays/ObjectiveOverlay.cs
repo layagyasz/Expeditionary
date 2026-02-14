@@ -2,6 +2,7 @@
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
+using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.Model;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.View.Common.Components.Dynamics;
@@ -13,10 +14,54 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
     {
         private const string Container = "objective-overlay-container";
         private const string Title = "objective-overlay-title";
-        private const string ObjectiveContainer = "objective-overlay-objective-container";
-        private const string ObjectiveText = "objective-overlay-objective-text";
 
         private const string TitleKey = "localize-objective-overlay-title";
+
+        public class ObjectiveComponent : DynamicUiCompoundComponent
+        {
+            private const string Container = "objective-overlay-objective-container";
+            private const string Check = "objective-overlay-objective-checkbox";
+            private const string Text = "objective-overlay-objective-text";
+
+            public IUiElement Checkbox { get; }
+
+            private ObjectiveComponent(IController controller, IUiContainer container, IUiElement checkbox)
+                : base(controller, container)
+            {
+                Checkbox = checkbox;
+            }
+
+            public static ObjectiveComponent Create(
+                UiElementFactory uiElementFactory, Match match, Player player, IObjective objective)
+            {
+                var container = 
+                    new DynamicUiSerialContainer(
+                        uiElementFactory.GetClass(Container),
+                        new InlayController(uiElementFactory.GetAudioPlayer()),
+                        UiSerialContainer.Orientation.Horizontal);
+
+                var check = 
+                    new SimpleUiElement(
+                        uiElementFactory.GetClass(Check), 
+                        new OptionElementController<object>(uiElementFactory.GetAudioPlayer(), objective));
+                container.Add(check);
+
+                var text = 
+                    new DynamicTextUiElement(
+                        uiElementFactory.GetClass(Text),
+                        new InlayController(uiElementFactory.GetAudioPlayer()),
+                        () => ToObjectiveString(objective, objective.GetProgress(player, match)));
+                container.Add(text);
+
+                return new ObjectiveComponent(
+                    new ObjectiveComponentController(match, player, objective), container, check);
+            }
+
+            private static string ToObjectiveString(IObjective objective, ObjectiveProgress progress)
+            {
+                return $"{progress.Progress}/{progress.Target} Done";
+            }
+        }
 
         public ObjectiveOverlay(IController controller, IUiContainer container) 
             : base(controller, container) { }
@@ -41,22 +86,8 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
                         uiElementFactory.GetClass(Title), 
                         new InlayController(uiElementFactory.GetAudioPlayer()),
                         localization.Localize(TitleKey)),
-                    CreateElement(uiElementFactory, match, player, match.GetObjective(player))
+                    ObjectiveComponent.Create(uiElementFactory, match, player, match.GetObjective(player))
                 });
-        }
-
-        private static IUiElement CreateElement(
-            UiElementFactory uiElementFactory, Match match, Player player, IObjective objective)
-        {
-            return new DynamicTextUiElement(
-                uiElementFactory.GetClass(ObjectiveText), 
-                new InlayController(uiElementFactory.GetAudioPlayer()), 
-                () => ToObjectiveString(objective, objective.GetProgress(player, match)));
-        }
-
-        private static string ToObjectiveString(IObjective objective, ObjectiveProgress progress)
-        {
-            return $"{progress.Progress}/{progress.Target} Done";
         }
     }
 }

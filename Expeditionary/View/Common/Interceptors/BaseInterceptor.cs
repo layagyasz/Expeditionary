@@ -7,6 +7,8 @@ namespace Expeditionary.View.Common.Interceptors
 {
     public abstract class BaseInterceptor : IDynamic
     {
+        public EventHandler<EventArgs>? Refreshed { get; set; }
+
         public IRenderable Child { get; }
 
         public BaseInterceptor(IRenderable child)
@@ -34,6 +36,7 @@ namespace Expeditionary.View.Common.Interceptors
             {
                 dynamic.Refresh();
             }
+            Refreshed?.Invoke(this, EventArgs.Empty);
         }
 
         public void ResizeContext(Vector3 bounds)

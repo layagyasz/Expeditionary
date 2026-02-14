@@ -6,6 +6,8 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public class DynamicUiContainer : UiContainer, IDynamic
     {
+        public EventHandler<EventArgs>? Refreshed { get; set; }
+
         public DynamicUiContainer(Class @class, IElementController controller)
             : base(@class, controller) { }
 
@@ -18,6 +20,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
                     dynamic.Refresh();
                 }
             }
+            Refreshed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

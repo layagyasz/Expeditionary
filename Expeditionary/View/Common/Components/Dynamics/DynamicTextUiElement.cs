@@ -6,6 +6,8 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public class DynamicTextUiElement : TextUiElement, IDynamic
     {
+        public EventHandler<EventArgs>? Refreshed { get; set; }
+
         private readonly Func<string> _textFn;
 
         public DynamicTextUiElement(
@@ -18,6 +20,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
         public void Refresh()
         {
             SetText(_textFn());
+            Refreshed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -1,39 +1,29 @@
 ﻿using Cardamom.Ui.Controller;
+using Expeditionary.Events;
 using Expeditionary.Loader;
-using Expeditionary.View.Screens;
 
 namespace Expeditionary.Controller.Screens
 {
-    public class LoadScreenController : IController
+    public class LoadScreenController : IController, IEventDispatchable
     {
         public EventHandler<EventArgs>? Finished { get; set; }
 
         private readonly ILoaderTask _task;
-
-        private LoadScreen? _screen;
 
         public LoadScreenController(ILoaderTask task)
         {
             _task = task;
         }
 
-        public void Bind(object @object)
-        {
-            _screen = (LoadScreen)@object!;
-            _screen.Updated += HandleUpdate;
-        }
+        public void Bind(object @object) { }
 
-        public void Unbind()
-        {
-            _screen!.Updated -= HandleUpdate;
-            _screen = null;
-        }
+        public void Unbind() { }
 
-        private void HandleUpdate(object? sender, EventArgs e)
+        public void DispatchEvents(long delta)
         {
             if (_task.IsDone())
             {
-                Finished?.Invoke(sender, e);
+                Finished?.Invoke(this, EventArgs.Empty);
             }
         }
     }
