@@ -1,7 +1,8 @@
 ﻿namespace Expeditionary.Events
 {
-    public interface IEventBuffer<T> : IEventDispatchable
+    public interface IEventBuffer : IEventDispatchable
     {
-        void Queue(object? sender, T e);
+        EventHandler<T> Hook<T>(EventHandler<T> Handler);
+        void Queue<T>(EventHandler<T>? Handler, object? Sender, T Args);
     }
 }

@@ -25,10 +25,7 @@ namespace Expeditionary.Model
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
 
-        private readonly IEventBuffer<AssetKnowledgeChangedEventArgs> _assetKnowledgeChanged;
-        private readonly IEventBuffer<Formation> _formationAdded;
-        private readonly IEventBuffer<MapKnowledgeChangedEventArgs> _mapKnowledgeChanged;
-        private readonly IEventBuffer<EventArgs> _stepped;
+        private readonly IEventBuffer _events = new SimpleEventBuffer();
 
         private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
@@ -54,13 +51,6 @@ namespace Expeditionary.Model
             _map = map;
             _evaluationCache = new EvaluationCache(new ExposureCache(_map), new PartitionCache(_map));
             _tileEvaluator = new TileEvaluator(_evaluationCache, random);
-
-            _assetKnowledgeChanged =
-                new SimpleEventBuffer<AssetKnowledgeChangedEventArgs>((s, e) => AssetKnowledgeChanged?.Invoke(s, e));
-            _formationAdded = new SimpleEventBuffer<Formation>((s, e) => FormationAdded?.Invoke(s, e));
-            _mapKnowledgeChanged =
-                new SimpleEventBuffer<MapKnowledgeChangedEventArgs>((s, e) => MapKnowledgeChanged?.Invoke(s, e));
-            _stepped = new SimpleEventBuffer<EventArgs>((s, e) => Stepped?.Invoke(s, e));
         }
 
         public void Add(Player player, IObjective objective, IPlayerKnowledge knowledge)
@@ -84,7 +74,7 @@ namespace Expeditionary.Model
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
             s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
-            _formationAdded.Queue(this, formation);
+            _events.Queue(FormationAdded, this, formation);
             return formation;
         }
 
@@ -120,10 +110,7 @@ namespace Expeditionary.Model
 
         public void DispatchEvents(long delta)
         {
-            _assetKnowledgeChanged.DispatchEvents(delta);
-            _formationAdded.DispatchEvents(delta);
-            _mapKnowledgeChanged.DispatchEvents(delta);
-            _stepped.DispatchEvents(delta);
+            _events.DispatchEvents(delta);
         }
 
         public bool DoOrder(IOrder order)
@@ -233,8 +220,10 @@ namespace Expeditionary.Model
         {
             foreach (var knowledge in _playerKnowledge.Values)
             {
-                knowledge.AssetKnowledgeChanged += HandleAssetKnowledgeChanged;
-                knowledge.MapKnowledgeChanged += HandleMapKnowledgeChanged;
+                knowledge.AssetKnowledgeChanged += 
+                    _events.Hook<AssetKnowledgeChangedEventArgs>(HandleAssetKnowledgeChanged);
+                knowledge.MapKnowledgeChanged += 
+                    _events.Hook<MapKnowledgeChangedEventArgs>(HandleMapKnowledgeChanged);
             }
             s_Logger.Log("Initialized");
         }
@@ -326,7 +315,7 @@ namespace Expeditionary.Model
                 Reset();
             }
             s_Logger.Log($"Entered turn {_players[_activePlayer]}");
-            _stepped.Queue(this, EventArgs.Empty);
+            _events.Queue(Stepped, this, EventArgs.Empty);
         }
 
         public void Unload(Unit unit)
@@ -356,13 +345,13 @@ namespace Expeditionary.Model
         private void HandleAssetKnowledgeChanged(object? sender, AssetKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            _assetKnowledgeChanged.Queue(sender, e);
+            AssetKnowledgeChanged?.Invoke(sender, e);
         }
 
         private void HandleMapKnowledgeChanged(object? sender, MapKnowledgeChangedEventArgs e)
         {
             s_Logger.Log(e.ToString());
-            _mapKnowledgeChanged.Queue(sender, e);
+            MapKnowledgeChanged?.Invoke(sender, e);
         }
     }
 }

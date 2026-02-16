@@ -67,6 +67,8 @@ namespace Expeditionary.Controller.Screens
             _unitSelectController!.ValueChanged += HandleUnitSelected;
 
             _screen.UnitOverlay.Visible = false;
+
+            StepSelectedUnit();
         }
 
         public void Unbind()
@@ -201,12 +203,6 @@ namespace Expeditionary.Controller.Screens
             _screen!.UnitSelect!.Visible = false;
         }
 
-        private void JumpTo(Vector3i hex)
-        {
-            var p = Cubic.Cartesian.Instance.Project(hex);
-            ((SubjectiveCamera3d)_screen!.Scene!.Camera).SetFocus(new Vector3(p.X, 0, p.Y));
-        }
-
         private void OpenRightClickMenu(Vector2 position, IEnumerable<object> options)
         {
             _screen!.UnitSelect!.Set(options.Select(x => SelectOption<object>.Create(x, GetObjectName(x))));
@@ -245,7 +241,7 @@ namespace Expeditionary.Controller.Screens
             }
             if (_selectedUnit != null)
             {
-                JumpTo(_selectedUnit.Position!.Value);
+                _sceneController!.JumpTo(_selectedUnit.Position!.Value);
             }
             UpdateUnitOverlay();
         }

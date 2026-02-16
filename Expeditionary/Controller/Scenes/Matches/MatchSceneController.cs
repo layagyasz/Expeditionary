@@ -1,9 +1,11 @@
 ﻿using Cardamom.Graphics.Camera;
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches.Layers;
+using Expeditionary.Hexagons;
 using Expeditionary.Model;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.View.Scenes.Matches;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Controller.Scenes.Matches
 {
@@ -63,6 +65,12 @@ namespace Expeditionary.Controller.Scenes.Matches
 
             _mapController!.HexClicked -= HandleHexClicked;
             _mapController = null;
+        }
+
+        public void JumpTo(Vector3i hex)
+        {
+            var p = Cubic.Cartesian.Instance.Project(hex);
+            ((SubjectiveCamera3d)_camera!).SetFocus(new Vector3(p.X, 0, p.Y));
         }
 
         public void SetPlayer(Player player)

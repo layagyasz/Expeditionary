@@ -2,11 +2,13 @@
 using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Utils.Suppliers.Promises;
 using Expeditionary.Ai;
+using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
+using Expeditionary.View.Common.Interceptors;
 using Expeditionary.View.Screens;
 using System.Collections.Immutable;
 
@@ -70,7 +72,7 @@ namespace Expeditionary.Runners
             }
             var player = mission.Players.First().Player;
             var status = new LoaderStatus(0);
-            var creationContext = new CreationContext(player, random, IsTest: true);
+            var creationContext = new CreationContext(player, random, IsTest: false);
             (var match, var appearance) = mission.Create(status, creationContext).GetNow();
             var aiManager = new AiManager(match, mission.Players.Select(x => x.Player).Where(x => x != player));
             var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
@@ -84,7 +86,9 @@ namespace Expeditionary.Runners
             aiManager.Initialize();
             match.Step();
 
-            window.SetRoot(screenFactory.CreateMatch(match, appearance, player));
+            var screen = screenFactory.CreateMatch(match, appearance, player);
+            window.SetRoot(
+                new DynamicInterceptor(new EventInterceptor(screen, (MatchController)screen.Controller), 500L));
         }
     }
 }

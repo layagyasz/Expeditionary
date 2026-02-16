@@ -2,26 +2,23 @@
 
 namespace Expeditionary.Events
 {
-    public class DelayEventBuffer<T> : IEventBuffer<T>
+    public class DelayEventBuffer : IEventBuffer
     {
-        private readonly Heap<(object?, T), long> _invocations = new();
-        private readonly Action<object?, T> _handler;
+        private record struct Invocation(EventHandler<object> Handler, object? Sender, object Args);
+
+        private readonly Heap<Invocation, long> _invocations = new();
         private readonly long _delay;
 
         private long _time;
 
-        public DelayEventBuffer(Action<object?, T> handler, long delay)
+        public DelayEventBuffer(long delay)
         {
-            _handler = handler;
             _delay = delay;
         }
 
-        public void Queue(object? sender, T e)
+        public EventHandler<T> Hook<T>(EventHandler<T> Handler)
         {
-            lock (_invocations)
-            {
-                _invocations.Push((sender, e), _time + _delay);
-            }
+            return (Sender, E) => Queue(Handler, Sender, E!);
         }
 
         public void DispatchEvents(long delta)
@@ -31,9 +28,21 @@ namespace Expeditionary.Events
             {
                 while (_invocations.Count > 0 && _invocations.PeekValue() <= _time)
                 {
-                    (var sender, var args) = _invocations.Pop();
-                    _handler.Invoke(sender, args);
+                    var invocation = _invocations.Pop();
+                    invocation.Handler(invocation.Sender, invocation.Args);
                 }
+            }
+        }
+
+        public void Queue<T>(EventHandler<T>? Handler, object? Sender, T Args)
+        {
+            if (Handler == null)
+            {
+                return;
+            }
+            lock (_invocations)
+            {
+                _invocations.Push(new((s, e) => Handler?.Invoke(s, (T)e), Sender, Args!), _delay);
             }
         }
     }

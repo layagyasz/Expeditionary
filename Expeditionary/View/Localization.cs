@@ -22,7 +22,7 @@ namespace Expeditionary.View
             {
                 return string.Format(value!, args);
             }
-            return "Missing Localization";
+            return key;
         }
 
         public void SetLanguage(string language)

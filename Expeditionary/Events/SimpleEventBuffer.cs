@@ -1,21 +1,14 @@
 ﻿namespace Expeditionary.Events
 {
-    public class SimpleEventBuffer<T> : IEventBuffer<T>
+    public class SimpleEventBuffer : IEventBuffer
     {
-        private readonly Queue<(object?, T)> _invocations = new();
-        private readonly Action<object?, T> _handler;
+        private record struct Invocation(EventHandler<object> Handler, object? Sender, object Args); 
 
-        public SimpleEventBuffer(Action<object?, T> handler)
-        {
-            _handler = handler;
-        }
+        readonly Queue<Invocation> _invocations = new();
 
-        public void Queue(object? sender, T e)
+        public EventHandler<T> Hook<T>(EventHandler<T> Handler)
         {
-            lock (_invocations)
-            {
-                _invocations.Enqueue((sender, e));
-            }
+            return (Sender, E) => Queue(Handler, Sender, E!);
         }
 
         public void DispatchEvents(long delta)
@@ -24,9 +17,22 @@
             {
                 foreach (var invocation in _invocations)
                 {
-                    _handler(invocation.Item1, invocation.Item2);
+                    Console.WriteLine(invocation);
+                    invocation.Handler(invocation.Sender, invocation.Args);
                 }
                 _invocations.Clear();
+            }
+        }
+
+        public void Queue<T>(EventHandler<T>? Handler, object? Sender, T Args)
+        {
+            if (Handler == null)
+            {
+                return;
+            }
+            lock (_invocations)
+            {
+                _invocations.Enqueue(new((s, e) => Handler(s, (T)e), Sender, Args!));
             }
         }
     }
