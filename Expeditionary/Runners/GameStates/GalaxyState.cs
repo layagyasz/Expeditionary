@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics;
-using Expeditionary.Controller.Screens;
+﻿using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Model.Missions;
@@ -10,16 +9,12 @@ namespace Expeditionary.Runners.GameStates
 {
     public class GalaxyState : IGameState
     {
-        public record class GalaxyContext(MissionManager MissionManager);
-
-        public EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
-
-        public GameStateId Id => GameStateId.GalaxyOverview;
+        public event EventHandler<IGameStateContext>? GameStateChanged;
 
         private readonly ProgramConfig _config;
         private readonly GameModule _module;
 
-        private GalaxyContext? _context;
+        private IGameStateContext.GalaxyContext? _context;
         private GalaxyScreen? _screen;
         private GalaxyScreenController? _controller;
 
@@ -31,7 +26,7 @@ namespace Expeditionary.Runners.GameStates
 
         public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
-            _context = (GalaxyContext)context!;
+            _context = (IGameStateContext.GalaxyContext)context!;
             _screen = screenFactory.CreateGalaxy(_module, _context.MissionManager);
             _controller = (GalaxyScreenController)_screen.Controller;
             _controller.Launched += HandleLaunch;
@@ -53,14 +48,11 @@ namespace Expeditionary.Runners.GameStates
                 NewMatchLoader.Create(e, e.Content.Players.First().Player, _config.IsDebug, seed: 0);
             GameStateChanged?.Invoke(
                 this,
-                new(
-                    GameStateId.Load,
-                    new LoadState.LoadContext(
-                        GameStateId.Match, 
-                        status, 
-                        task.Map(
-                            x => (object?)new MatchState.MatchContext(
-                                x.Player, x.Match, x.Appearance, x.AiManager)))));
+                new IGameStateContext.LoadContext(
+                    status, 
+                    task.Map(
+                        result => (IGameStateContext)new IGameStateContext.MatchContext(
+                            result.Player, result.Match, result.Appearance, result.AiManager))));
         }
     }
 }

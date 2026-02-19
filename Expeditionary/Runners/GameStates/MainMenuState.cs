@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics;
-using Expeditionary.Controller.Screens;
+﻿using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Runners.Loaders.Runtime;
@@ -9,9 +8,7 @@ namespace Expeditionary.Runners.GameStates
 {
     public class MainMenuState : IGameState
     {
-        public EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
-
-        public GameStateId Id => GameStateId.MainMenu;
+        public event EventHandler<IGameStateContext>? GameStateChanged;
 
         private readonly GameModule _module;
 
@@ -42,28 +39,15 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleMenuClicked(object? sender, object e)
         {
-            var state = MapGameState(e);
-            if (state == GameStateId.GalaxyOverview)
+            if (e == MainMenuScreen.NewGame)
             {
                 (var status, var task) = NewGalaxyLoader.Load(_module, seed: 0);
                 GameStateChanged?.Invoke(
-                    this, 
-                    new(
-                        GameStateId.Load, 
-                        Context: new LoadState.LoadContext(
-                            GameStateId.GalaxyOverview, 
-                            status, 
-                            task.Map(x => (object?)new GalaxyState.GalaxyContext(x)))));
+                    this,
+                    new IGameStateContext.LoadContext(
+                        status, 
+                        task.Map(result => (IGameStateContext)new IGameStateContext.GalaxyContext(result))));
             }
-        }
-
-        private static GameStateId MapGameState(object menuItem)
-        {
-            if (menuItem == MainMenuScreen.NewGame)
-            {
-                return GameStateId.GalaxyOverview;
-            }
-            return GameStateId.Unknown;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Expeditionary.Model
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(Match));
 
         public event EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged;
+        public event EventHandler<EventArgs>? Finished;
         public event EventHandler<Formation>? FormationAdded;
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
@@ -307,6 +308,11 @@ namespace Expeditionary.Model
 
         public void Step()
         {
+            if (_playerObjectives.Any(entry => entry.Value.Evaluate(entry.Key, this).IsTerminal))
+            {
+                _events.Queue(Finished, this, EventArgs.Empty);
+                return;
+            }
             _activePlayer++;
             if (_activePlayer >= GetPlayers().Count())
             {

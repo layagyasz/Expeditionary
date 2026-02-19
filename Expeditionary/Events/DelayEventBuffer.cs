@@ -18,7 +18,7 @@ namespace Expeditionary.Events
 
         public EventHandler<T> Hook<T>(EventHandler<T> Handler)
         {
-            return (Sender, E) => Queue(Handler, Sender, E!);
+            return (sender, e) => Queue(Handler, sender, e!);
         }
 
         public void DispatchEvents(long delta)

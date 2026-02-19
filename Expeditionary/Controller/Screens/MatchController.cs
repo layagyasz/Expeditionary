@@ -23,11 +23,15 @@ namespace Expeditionary.Controller.Screens
 {
     public class MatchController : IController, IEventDispatchable
     {
+        public event EventHandler<EventArgs>? Finished;
+
         private static readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(MatchController));
 
         private readonly Match _match;
         private readonly Player _player;
+
+        private readonly IEventBuffer _events = new DelayEventBuffer(3000);
 
         private MatchScreen? _screen;
         private HighlightLayer? _highlightLayer;
@@ -49,6 +53,7 @@ namespace Expeditionary.Controller.Screens
         {
             _screen = (MatchScreen)@object;
 
+            _match.Finished += _events.Hook<EventArgs>(HandleFinished);
             _match.Stepped += HandleStep;
 
             _highlightLayer = _screen.Scene!.Highlight;
@@ -90,6 +95,12 @@ namespace Expeditionary.Controller.Screens
         public void DispatchEvents(long delta)
         {
             _match.DispatchEvents(delta);
+            _events.DispatchEvents(delta);
+        }
+
+        private void HandleFinished(object? sender, EventArgs e)
+        {
+            Finished?.Invoke(this, e);
         }
 
         private void HandleAssetClicked(object? sender, AssetClickedEventArgs e)

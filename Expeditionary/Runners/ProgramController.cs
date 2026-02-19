@@ -5,7 +5,6 @@ using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Runners.GameStates;
 using Expeditionary.View.Common.Components.Dynamics;
-using Expeditionary.View.Common;
 using Expeditionary.View.Screens;
 using Expeditionary.View;
 using Expeditionary.View.Common.Interceptors;
@@ -23,7 +22,7 @@ namespace Expeditionary.Runners
         private readonly ScreenFactory _screenFactory;
         private readonly GameModule _module;
         private readonly Localization _localization;
-        private readonly EnumMap<GameStateId, IGameState> _stateMap;
+        private readonly Dictionary<Type, IGameState> _stateMap;
 
         private IGameState? _state;
 
@@ -45,16 +44,16 @@ namespace Expeditionary.Runners
             _stateMap =
                 new()
                 {
-                    { GameStateId.GalaxyOverview, new GalaxyState(_config, _module) },
-                    { GameStateId.Load, new LoadState(_loader) },
-                    { GameStateId.MainMenu, new MainMenuState(_module) },
-                    { GameStateId.Match, new MatchState(_module) }
+                    { typeof(IGameStateContext.GalaxyContext), new GalaxyState(_config, _module) },
+                    { typeof(IGameStateContext.LoadContext), new LoadState(_loader) },
+                    { typeof(IGameStateContext.MainMenuContext), new MainMenuState(_module) },
+                    { typeof(IGameStateContext.MatchContext), new MatchState(_module) }
                 };
         }
 
-        public void Enter(GameStateId state, object? context)
+        public void Enter(IGameStateContext context)
         {
-            var newState = _stateMap[state];
+            var newState = _stateMap[context.GetType()];
             _window.SetRoot(AddInterceptors(newState.Enter(context, _screenFactory)));
             _state?.Exit();
             _state = newState;
@@ -71,12 +70,12 @@ namespace Expeditionary.Runners
             {
                 state.GameStateChanged += HandleStateChange;
             }
-            Enter(GameStateId.MainMenu, null);
+            Enter(new IGameStateContext.MainMenuContext());
         }
 
-        private void HandleStateChange(object? sender, GameStateChangedEventArgs e)
+        private void HandleStateChange(object? sender, IGameStateContext e)
         {
-            Enter(e.State, e.Context);
+            Enter(e);
         }
 
         private IRenderable AddInterceptors(IScreen screen)

@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics;
-using Expeditionary.Controller.Screens;
+﻿using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.View.Screens;
 
@@ -7,17 +6,13 @@ namespace Expeditionary.Runners.GameStates
 {
     public class LoadState : IGameState
     {
-        public record class LoadContext(GameStateId NextState, LoaderStatus Status, LoaderTaskNode<object?> Task);
+        private static readonly int WaitMillis = 200;
 
-        private static readonly int i_Wait = 200;
-
-        public EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
-
-        public GameStateId Id => GameStateId.Load;
+        public event EventHandler<IGameStateContext>? GameStateChanged;
 
         private readonly ThreadedLoader _loader;
 
-        private LoadContext? _context;
+        private IGameStateContext.LoadContext? _context;
         private LoadScreen? _screen;
         private LoadScreenController? _controller;
 
@@ -28,7 +23,7 @@ namespace Expeditionary.Runners.GameStates
 
         public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
-            _context = (LoadContext)context!;
+            _context = (IGameStateContext.LoadContext)context!;
             var task = _context.Task.Map(Wait);
             _screen = screenFactory.CreateLoad(task, _context.Status);
             _controller = (LoadScreenController)_screen.Controller;
@@ -50,12 +45,12 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleFinished(object? sender, EventArgs e)
         {
-            GameStateChanged?.Invoke(this, new(_context!.NextState, _context!.Task.GetPromise().Get()));
+            GameStateChanged?.Invoke(this, _context!.Task.GetPromise().Get());
         }
 
         private static T Wait<T>(T value)
         {
-            Thread.Sleep(i_Wait);
+            Thread.Sleep(WaitMillis);
             return value;
         }
     }

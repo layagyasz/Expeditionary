@@ -1,23 +1,16 @@
-﻿using Cardamom.Graphics;
-using Expeditionary.Ai;
-using Expeditionary.Controller.Screens;
+﻿using Expeditionary.Controller.Screens;
 using Expeditionary.Model;
-using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.View.Screens;
 
 namespace Expeditionary.Runners.GameStates
 {
     public class MatchState : IGameState
     {
-        public record class MatchContext(Player Player, Match Match, MapAppearance Appearance, AiManager AiManager);
-
-        public EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
-
-        public GameStateId Id => GameStateId.Match;
+        public event EventHandler<IGameStateContext>? GameStateChanged;
 
         private readonly GameModule _module;
 
-        private MatchContext? _context;
+        private IGameStateContext.MatchContext? _context;
         private MatchScreen? _screen;
         private MatchController? _controller;
 
@@ -28,12 +21,13 @@ namespace Expeditionary.Runners.GameStates
 
         public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
-            _context = (MatchContext)context!;
+            _context = (IGameStateContext.MatchContext)context!;
             _context.Match.Initialize();
             _context.AiManager.Initialize();
             _context.Match.Step();
             _screen = screenFactory.CreateMatch(_context.Match, _context.Appearance, _context.Player);
             _controller = (MatchController)_screen.Controller;
+            _controller.Finished += HandleFinished;
             return _screen;
         }
 
@@ -42,8 +36,14 @@ namespace Expeditionary.Runners.GameStates
             _screen!.Dispose();
             _screen = null;
 
+            _controller!.Finished -= HandleFinished;
             _controller = null;
             _context = null;
+        }
+
+        private void HandleFinished(object? sender, EventArgs e) 
+        {
+            GameStateChanged?.Invoke(this, new IGameStateContext.MainMenuContext());
         }
     }
 }

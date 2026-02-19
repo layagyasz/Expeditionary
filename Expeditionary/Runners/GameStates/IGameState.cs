@@ -1,13 +1,10 @@
-﻿using Cardamom.Graphics;
-using Expeditionary.View.Screens;
+﻿using Expeditionary.View.Screens;
 
 namespace Expeditionary.Runners.GameStates
 {
     public interface IGameState
     {
-        EventHandler<GameStateChangedEventArgs>? GameStateChanged { get; set; }
-        GameStateId Id { get; }
-
+        event EventHandler<IGameStateContext>? GameStateChanged;
         void Exit();
         IScreen Enter(object? context, ScreenFactory screenFactory);
     }

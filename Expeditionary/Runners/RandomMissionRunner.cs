@@ -72,7 +72,7 @@ namespace Expeditionary.Runners
             }
             var player = mission.Players.First().Player;
             var status = new LoaderStatus(0);
-            var creationContext = new CreationContext(player, random, IsTest: false);
+            var creationContext = new CreationContext(player, random, data.Config.IsDebug);
             (var match, var appearance) = mission.Create(status, creationContext).GetNow();
             var aiManager = new AiManager(match, mission.Players.Select(x => x.Player).Where(x => x != player));
             var setupContext = new SetupContext(random, new SerialIdGenerator(), aiManager);
