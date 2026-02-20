@@ -1,5 +1,4 @@
 ﻿using Cardamom.Graphics;
-using Cardamom.Graphics.TexturePacking;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Textures
@@ -18,23 +17,18 @@ namespace Expeditionary.View.Textures
 
         public record class Option(Vector2[][] TexCoords);
 
-        private readonly ITexturePage _texture;
-        private readonly Option[] _options;
+        public Texture Texture { get; }
+        public Option[] Options { get; }
 
-        public PartitionLibrary(ITexturePage texture, Option[] options)
+        public PartitionLibrary(Texture texture, Option[] options)
         {
-            _texture = texture;
-            _options = options;
-        }
-
-        public Texture GetTexture()
-        {
-            return _texture.GetTexture();
+            Texture = texture;
+            Options = options;
         }
 
         public IEnumerable<Option> Query()
         {
-            foreach (var option in _options)
+            foreach (var option in Options)
             {
                 for (int i = 0; i < s_Transforms.Length; ++i)
                 {

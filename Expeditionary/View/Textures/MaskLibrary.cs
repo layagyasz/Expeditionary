@@ -1,11 +1,26 @@
-﻿using Cardamom.Graphics.TexturePacking;
-using Cardamom.Graphics;
+﻿using Cardamom.Graphics;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Textures
 {
     public class MaskLibrary
     {
+        public record class Option(Vector2[] TexCoords, Vector3i Levels);
+
+        public Texture Texture { get; }
+        public Option[] Options { get; }
+
+        public MaskLibrary(Texture texture, Option[] options)
+        {
+            Texture = texture;
+            Options = options;
+        }
+
+        public IEnumerable<Option> Query(Vector3i levels)
+        {
+            return Options.SelectMany(AllTransforms).Where(x => (x.Levels - levels).ManhattanLength == 0);
+        }
+
         private readonly static int[][] s_Transforms =
         {
             new int[] { 0, 1, 2 },
@@ -15,41 +30,12 @@ namespace Expeditionary.View.Textures
             new int[] { 2, 1, 0 },
             new int[] { 1, 0, 2 }
         };
-
-        public record class Option(Vector2[] TexCoords, Vector3i Levels);
-
-        private readonly ITexturePage _texture;
-        private readonly Option[] _options;
-
-        private MaskLibrary(ITexturePage texture, Option[] options)
+        private static IEnumerable<Option> AllTransforms(Option option)
         {
-            _texture = texture;
-            _options = options;
-        }
-
-        public static MaskLibrary Create(ITexturePage texture, Option[] options)
-        {
-            var transformed = new Option[6 * options.Length];
-            int i = 0;
-            foreach (var option in options)
+            foreach (var transform in s_Transforms)
             {
-                foreach (var transform in s_Transforms)
-                {
-                    transformed[i++] = 
-                        new(Transform(option.TexCoords, transform), Transform(option.Levels, transform));
-                }
+                yield return new(Transform(option.TexCoords, transform), Transform(option.Levels, transform));
             }
-            return new(texture, transformed);
-        }
-
-        public Texture GetTexture()
-        {
-            return _texture.GetTexture();
-        }
-
-        public IEnumerable<Option> Query(Vector3i levels)
-        {
-            return _options.Where(x => (x.Levels - levels).ManhattanLength == 0);
         }
 
         private static T[] Transform<T>(T[] array, int[] transform)

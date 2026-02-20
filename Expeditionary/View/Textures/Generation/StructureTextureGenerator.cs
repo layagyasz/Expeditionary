@@ -172,8 +172,7 @@ namespace Expeditionary.View.Textures.Generation
                 options[i] = MakeOption(arcs, segment);
             }
 
-            sheet.GetTexture().CopyToImage().SaveToFile("habitation.png");
-            return StructureLibrary.Create(sheet, options);
+            return new StructureLibrary(sheet.GetTexture(), options);
         }
 
         private static Vector3 GetAnchor(int face, int anchor)

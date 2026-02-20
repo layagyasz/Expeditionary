@@ -96,32 +96,32 @@ namespace Expeditionary.View.Mapping
         private RenderResources GetFoliageRenderResources()
         {
             return new(
-                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.GetTexture(), _maskTexture!.GetTexture());
+                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _maskTexture!.GetTexture());
         }
 
         private RenderResources GetMaskRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Masks.GetTexture());
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Masks.Texture);
         }
 
         private RenderResources GetRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.GetTexture());
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.Texture);
         }
 
         private RenderResources GetRiverRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Rivers.GetTexture());
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Rivers.Texture);
         }
 
         private RenderResources GetRidgeRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Ridges.GetTexture());
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Ridges.Texture);
         }
 
         private RenderResources GetStructureRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Structures.GetTexture());
+            return new(BlendMode.Alpha, _texShader, _textureLibrary.Structures.Texture);
         }
     }
 }

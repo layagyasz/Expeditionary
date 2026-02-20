@@ -149,7 +149,7 @@ namespace Expeditionary.View.Textures.Generation
             }
             canvasProvider.Dispose();
             renderTexture.Dispose();
-            return new(sheet, options);
+            return new(sheet.GetTexture(), options);
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)

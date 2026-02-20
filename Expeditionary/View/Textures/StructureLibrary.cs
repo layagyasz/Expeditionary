@@ -1,7 +1,9 @@
 ﻿using Cardamom.Graphics;
-using Cardamom.Graphics.TexturePacking;
+using Cardamom.Json.Graphics;
+using Cardamom.Json.OpenTK;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
+using System.Text.Json.Serialization;
 
 namespace Expeditionary.View.Textures
 {
@@ -29,7 +31,7 @@ namespace Expeditionary.View.Textures
                         return false;
                     }
                 }
-                for (int i=0; i<5; ++i)
+                for (int i = 0; i < 5; ++i)
                 {
                     if (!ThisContains(connection.Type[i], connection.Level[i]))
                     {
@@ -96,39 +98,29 @@ namespace Expeditionary.View.Textures
 
         public record class StructureQuery(StructureType Type, int Level, IConnectionQuery[] Connections);
 
-        private readonly ITexturePage _texture;
-        private readonly Option[] _options;
+        public Texture Texture { get; }
 
-        private StructureLibrary(ITexturePage texture, Option[] options)
-        {
-            _texture = texture;
-            _options = options;
-        }
+        public Option[] Options { get; }
 
-        public static StructureLibrary Create(ITexturePage texture, Option[] options)
+        public StructureLibrary(Texture texture, Option[] options)
         {
-            Option[] transformed = new Option[12 * options.Length];
-            int i = 0;
-            foreach (var option in options)
-            {
-                for (int rotation=0; rotation<6; ++rotation)
-                {
-                    transformed[i++] = Transform(option, rotation, reflection: false);
-                    transformed[i++] = Transform(option, rotation, reflection: true);
-                }
-            }
-            return new StructureLibrary(texture, transformed);
-        }
-
-        public Texture GetTexture()
-        {
-            return _texture.GetTexture();
+            Texture = texture;
+            Options = options;
         }
 
         // TODO -- Add wildcard queries
         public IEnumerable<Option> Query(StructureQuery query)
         {
-            return _options.Where(x => Satisfies(query, x));
+            return Options.SelectMany(AllTransforms).Where(x => Satisfies(query, x));
+        }
+
+        private static IEnumerable<Option> AllTransforms(Option option)
+        {
+            for (int rotation = 0; rotation < 6; ++rotation)
+            {
+                yield return Transform(option, rotation, reflection: false);
+                yield return Transform(option, rotation, reflection: true);
+            }
         }
 
         private static Option Transform(Option option, int rotation, bool reflection)

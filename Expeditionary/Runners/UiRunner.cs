@@ -5,7 +5,6 @@ using Cardamom.Ui;
 using Cardamom.Window;
 using Expeditionary.Loader;
 using Expeditionary.Runners.Loaders;
-using Expeditionary.View;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes;
 using Expeditionary.View.Scenes.Galaxies;

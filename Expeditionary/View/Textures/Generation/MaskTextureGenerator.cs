@@ -144,10 +144,9 @@ namespace Expeditionary.View.Textures.Generation
                     options[option++] = new(GetTexCoords(segment), s_Distributions[i].Levels);
                 }
             }
-            sheet.GetTexture().CopyToImage().SaveToFile("mask.png");
             canvasProvider.Dispose();
             renderTexture.Dispose();
-            return MaskLibrary.Create(sheet, options);
+            return new MaskLibrary(sheet.GetTexture(), options);
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)

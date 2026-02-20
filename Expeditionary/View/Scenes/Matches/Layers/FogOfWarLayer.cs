@@ -89,7 +89,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
 
         public void Draw(IRenderTarget target, IUiContext context)
         {
-            target.Draw(_buffer!, 0, _buffer!.Length, new(BlendMode.Alpha, _shader, _partitions.GetTexture()));
+            target.Draw(_buffer!, 0, _buffer!.Length, new(BlendMode.Alpha, _shader, _partitions.Texture));
         }
 
         public void Initialize() { }
