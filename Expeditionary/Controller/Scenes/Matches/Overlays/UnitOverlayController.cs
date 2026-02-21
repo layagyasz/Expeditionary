@@ -45,10 +45,12 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             _overlay!.Orders.Clear(true);
             if (unit == null)
             {
+                _overlay.Visible = false;
                 _overlay!.Title.SetText(string.Empty);
             }
             else
             {
+                _overlay.Visible = true;
                 _overlay!.Title.SetText(unit.Name);
                 foreach (var order in GetPossibleOrders(unit))
                 {

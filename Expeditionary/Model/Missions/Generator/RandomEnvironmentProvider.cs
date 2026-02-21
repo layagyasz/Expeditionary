@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Galaxies;
-using Expeditionary.Model.Mapping.Environments;
+﻿using Expeditionary.Model.Mapping.Environments;
 using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Missions.Generator

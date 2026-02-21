@@ -36,6 +36,7 @@ namespace Expeditionary.Controller.Screens
         private MatchScreen? _screen;
         private HighlightLayer? _highlightLayer;
         private MatchSceneController? _sceneController;
+        private FinishedOverlayController? _finishedOverlayController;
         private UnitOverlayController? _unitOverlayController;
         private IFormFieldController<object>? _unitSelectController;
 
@@ -64,7 +65,9 @@ namespace Expeditionary.Controller.Screens
             _sceneController.TextEntered += HandleTextEntered;
             _sceneController.SetPlayer(_player);
 
-            _unitOverlayController = _screen.UnitOverlay!.ComponentController as UnitOverlayController;
+            _finishedOverlayController = _screen.FinishedOverlay.ComponentController as FinishedOverlayController;
+
+            _unitOverlayController = _screen.UnitOverlay.ComponentController as UnitOverlayController;
             _unitOverlayController!.OrderChanged += HandleOrderChanged;
             _unitOverlayController.SetMatch(_match);
 
@@ -85,6 +88,8 @@ namespace Expeditionary.Controller.Screens
             _sceneController!.TextEntered -= HandleTextEntered;
             _sceneController = null;
 
+            _finishedOverlayController = null;
+
             _unitOverlayController!.OrderChanged -= HandleOrderChanged;
             _unitOverlayController = null;
 
@@ -100,6 +105,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleFinished(object? sender, EventArgs e)
         {
+            _finishedOverlayController!.Activate(_match.GetObjectiveStatus(_player));
             Finished?.Invoke(this, e);
         }
 
@@ -176,6 +182,10 @@ namespace Expeditionary.Controller.Screens
             if (e.Key == Keys.Space)
             {
                 StepSelectedUnit();
+            }
+            if (e.Key == Keys.P)
+            {
+                _match.Step();
             }
         }
 
@@ -269,12 +279,10 @@ namespace Expeditionary.Controller.Screens
         {
             if (_selectedUnit != null)
             {
-                _screen!.UnitOverlay!.Visible = true;
                 _unitOverlayController!.SetUnit(_selectedUnit);
             }
             else
             {
-                _screen!.UnitOverlay!.Visible = false;
                 _unitOverlayController!.SetUnit(null);
                 _highlightLayer!.SetHighlight(Enumerable.Empty<HighlightLayer.HexHighlight>());
             }

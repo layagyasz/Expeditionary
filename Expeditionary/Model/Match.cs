@@ -187,6 +187,11 @@ namespace Expeditionary.Model
             return _playerObjectives[player];
         }
 
+        public ObjectiveStatus GetObjectiveStatus(Player player)
+        {
+            return GetObjective(player).Evaluate(player, this).Status;
+        }
+
         public IEnumerable<(Player, IObjective)> GetObjectives(int team)
         {
             return _playerObjectives.Where(x => x.Key.Team == team).Select(kvp => (kvp.Key, kvp.Value));
@@ -308,11 +313,6 @@ namespace Expeditionary.Model
 
         public void Step()
         {
-            if (_playerObjectives.Any(entry => entry.Value.Evaluate(entry.Key, this).IsTerminal))
-            {
-                _events.Queue(Finished, this, EventArgs.Empty);
-                return;
-            }
             _activePlayer++;
             if (_activePlayer >= GetPlayers().Count())
             {
@@ -320,7 +320,12 @@ namespace Expeditionary.Model
                 _turn++;
                 Reset();
             }
-            s_Logger.Log($"Entered turn {_players[_activePlayer]}");
+            if (_playerObjectives.Any(entry => entry.Value.Evaluate(entry.Key, this).IsTerminal))
+            {
+                _events.Queue(Finished, this, EventArgs.Empty);
+                return;
+            }
+            s_Logger.Log($"Entered turn {_players[_activePlayer]} {_turn}");
             _events.Queue(Stepped, this, EventArgs.Empty);
         }
 

@@ -16,7 +16,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new GenerateTexturesRunner(Config).Run();
+            new RandomMissionRunner(Config).Run();
         }
     }
 }

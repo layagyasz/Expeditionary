@@ -135,7 +135,7 @@ namespace Expeditionary.View.Textures.Generation
                 new DynamicStaticSizeTexturePage(
                     new(2048, 2048),
                     new(128, 128),
-                    Color4.Black,
+                    new(),
                     new(),
                     new()
                     {
@@ -205,9 +205,7 @@ namespace Expeditionary.View.Textures.Generation
             return new StructureLibrary.Option(
                 segment.Center,
                 s_Corners.Select(x => 64f * x.Xy + segment.Center).ToArray(), 
-                StructureType.None,
-                0, 
-                connections);
+                new(StructureType.None, 0, connections));
         }
 
         private static void AddEndpoint(StructureLibrary.Connection[] connections, Endpoint endpoint)

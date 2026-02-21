@@ -7,7 +7,7 @@ namespace Expeditionary.View.Common.Interceptors
 {
     public abstract class BaseInterceptor : IDynamic
     {
-        public EventHandler<EventArgs>? Refreshed { get; set; }
+        public event EventHandler<EventArgs>? Refreshed;
 
         public IRenderable Child { get; }
 

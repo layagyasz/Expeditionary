@@ -6,7 +6,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public class DynamicUiCompoundComponent : UiCompoundComponent, IDynamic
     {
-        public EventHandler<EventArgs>? Refreshed { get; set; }
+        public event EventHandler<EventArgs>? Refreshed;
 
         public DynamicUiCompoundComponent(IController componentController, IUiContainer container)
             : base(componentController, container) { }

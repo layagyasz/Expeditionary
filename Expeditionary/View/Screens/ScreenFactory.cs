@@ -54,6 +54,7 @@ namespace Expeditionary.View.Screens
             return new MatchScreen(
                 new MatchController(match, player),
                 _sceneFactory.Create(match, appearance.Materialize(_spectrumSensitivity), seed: 0),
+                FinishedOverlay.Create(_uiElementFactory, _localization),
                 ObjectiveOverlay.Create(_uiElementFactory, _localization, match, player),
                 new UnitOverlay(_uiElementFactory),
                 RightClickMenu.Create(_uiElementFactory));

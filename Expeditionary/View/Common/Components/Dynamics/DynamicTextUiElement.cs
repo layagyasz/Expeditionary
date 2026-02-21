@@ -6,7 +6,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public class DynamicTextUiElement : TextUiElement, IDynamic
     {
-        public EventHandler<EventArgs>? Refreshed { get; set; }
+        public event EventHandler<EventArgs>? Refreshed;
 
         private readonly Func<string> _textFn;
 

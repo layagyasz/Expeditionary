@@ -12,7 +12,7 @@ namespace Expeditionary.View.Screens
 {
     public class LoadScreen : ManagedResource, IDynamic, IScreen
     {
-        public EventHandler<EventArgs>? Refreshed { get; set; }
+        public event EventHandler<EventArgs>? Refreshed;
 
         public IController Controller { get; }
         public TextureBackground Background { get; }

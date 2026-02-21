@@ -1,9 +1,6 @@
 ﻿using Cardamom.Graphics;
-using Cardamom.Json.Graphics;
-using Cardamom.Json.OpenTK;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
-using System.Text.Json.Serialization;
 
 namespace Expeditionary.View.Textures
 {
@@ -93,8 +90,9 @@ namespace Expeditionary.View.Textures
             }
         }
 
-        public record class Option(
-            Vector2 TexCenter, Vector2[] TexCoords, StructureType Type, int Level, Connection[] Connections);
+        public record struct Option(Vector2 TexCenter, Vector2[] TexCoords, StructureParameters Parameters);
+
+        public record struct StructureParameters(StructureType Type, int Level, Connection[] Connections);
 
         public record class StructureQuery(StructureType Type, int Level, IConnectionQuery[] Connections);
 
@@ -111,7 +109,7 @@ namespace Expeditionary.View.Textures
         // TODO -- Add wildcard queries
         public IEnumerable<Option> Query(StructureQuery query)
         {
-            return Options.SelectMany(AllTransforms).Where(x => Satisfies(query, x));
+            return Options.SelectMany(AllTransforms).Where(option => Satisfies(query, option.Parameters));
         }
 
         private static IEnumerable<Option> AllTransforms(Option option)
@@ -132,9 +130,10 @@ namespace Expeditionary.View.Textures
             return new(
                 option.TexCenter,
                 Utils.Rotate(option.TexCoords, rotation), 
-                option.Type,
-                option.Level, 
-                Utils.Rotate(option.Connections, rotation));
+                new(
+                    option.Parameters.Type,
+                    option.Parameters.Level, 
+                    Utils.Rotate(option.Parameters.Connections, rotation)));
         }
 
         private static readonly int[] s_CornerReflection = { 1, 0, 5, 4, 3, 2 };
@@ -145,33 +144,34 @@ namespace Expeditionary.View.Textures
                 new Option(
                     option.TexCenter, 
                     Utils.Transform(option.TexCoords, s_CornerReflection),
-                    option.Type,
-                    option.Level,
-                    Utils.Transform(option.Connections, s_FaceReflection));
-            for (int i=0; i<newOption.Connections.Length; ++i)
+                    new(
+                        option.Parameters.Type,
+                        option.Parameters.Level,
+                        Utils.Transform(option.Parameters.Connections, s_FaceReflection)));
+            for (int i=0; i<newOption.Parameters.Connections.Length; ++i)
             {
-                newOption.Connections[i] = 
+                newOption.Parameters.Connections[i] = 
                     new Connection(
-                        newOption.Connections[i].Type.Reverse().ToArray(),
-                        newOption.Connections[i].Level.Reverse().ToArray(),
-                        newOption.Connections[i].Angle.Reverse().Select(x => -x).ToArray());
+                        newOption.Parameters.Connections[i].Type.Reverse().ToArray(),
+                        newOption.Parameters.Connections[i].Level.Reverse().ToArray(),
+                        newOption.Parameters.Connections[i].Angle.Reverse().Select(x => -x).ToArray());
             }
             return newOption;
         }
 
-        private static bool Satisfies(StructureQuery query, Option option)
+        private static bool Satisfies(StructureQuery query, StructureParameters parameters)
         {
-            if (query.Type != option.Type)
+            if (query.Type != parameters.Type)
             {
                 return false;
             }
-            if (query.Level != option.Level)
+            if (query.Level != parameters.Level)
             {
                 return false;
             }
             for (int i=0; i<6; ++i)
             {
-                if (!query.Connections[i].Matches(option.Connections[i]))
+                if (!query.Connections[i].Matches(parameters.Connections[i]))
                 {
                     return false;
                 }

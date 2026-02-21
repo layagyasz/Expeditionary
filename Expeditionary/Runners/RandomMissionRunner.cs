@@ -44,7 +44,7 @@ namespace Expeditionary.Runners
                     Cap = 1,
                     Duration = new NormalSampler(1, 0),
                     Content = 
-                        new AssaultMissionGenerator()
+                        new TestMissionGenerator()
                         {
                             ZoneOptions =
                             new()

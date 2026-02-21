@@ -63,7 +63,7 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
             }
         }
 
-        public ObjectiveOverlay(IController controller, IUiContainer container) 
+        private ObjectiveOverlay(IController controller, IUiContainer container) 
             : base(controller, container) { }
 
         public override void ResizeContext(Vector3 bounds)

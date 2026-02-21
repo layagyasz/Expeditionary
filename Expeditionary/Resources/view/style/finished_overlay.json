@@ -1,0 +1,22 @@
+[
+  {
+    "$id": "finished-overlay-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 768, 56 ],
+      "Margin": [ 0 ],
+      "Padding": [ 0 ]
+    }
+  },
+  {
+    "$id": "finished-overlay-text",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 768, 56 ],
+      "Margin": [ 0 ],
+      "Padding": [ 12 ],
+      "FontSize": 32,
+      "Align": "Center"
+    }
+  }
+]

@@ -4,7 +4,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public interface IDynamic : IRenderable
     {
-        EventHandler<EventArgs>? Refreshed { get; set; }
+        event EventHandler<EventArgs>? Refreshed;
         void Refresh();
     }
 }

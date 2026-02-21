@@ -21,7 +21,7 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup = 
                     new PlayerSetup(
                         player,
-                        new OccupyObjective(MapTag.Control1, new AssetValue(1, 1), IsDefender: false),
+                        GetOffenseObjective(),
                         new()
                         {
                             new(
@@ -37,7 +37,7 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup =
                     new PlayerSetup(
                         player,
-                        new PreventTeamObjective(Team: 0),
+                        GetDefenseObjective(),
                         new()
                         {
                             new(
@@ -60,6 +60,16 @@ namespace Expeditionary.Model.Missions.Generator
                                 zoneChoice, MapTag.Control1, Hexagons.Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)))
                         }),
                     players);
+        }
+
+        protected virtual IObjective GetOffenseObjective()
+        {
+            return new OccupyObjective(MapTag.Control1, new AssetValue(1, 1), IsDefender: false);
+        }
+
+        protected virtual IObjective GetDefenseObjective()
+        {
+            return new OccupyObjective(MapTag.Control1, new AssetValue(1, 1), IsDefender: true);
         }
 
         private static CityGenerator.LayerParameters Materialize(

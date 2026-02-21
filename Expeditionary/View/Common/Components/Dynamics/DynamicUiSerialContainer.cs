@@ -6,7 +6,7 @@ namespace Expeditionary.View.Common.Components.Dynamics
 {
     public class DynamicUiSerialContainer : UiSerialContainer, IDynamic
     {
-        public EventHandler<EventArgs>? Refreshed { get; set; }
+        public event EventHandler<EventArgs>? Refreshed;
 
         public DynamicUiSerialContainer(Class @class, IElementController controller, Orientation orientation)
             : base(@class, controller, orientation) { }

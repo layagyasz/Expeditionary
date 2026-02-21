@@ -106,7 +106,7 @@ namespace Expeditionary.View.Textures.Generation
                 new DynamicStaticSizeTexturePage(
                     new(1024, 1024),
                     new(64, 64),
-                    Color4.Black,
+                    new(),
                     new(),
                     new()
                     {
