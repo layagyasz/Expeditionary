@@ -46,7 +46,11 @@ namespace Expeditionary.Model.Mapping.Generator
             Hindrance(map);
             status.DoWork(o_Hindrance);
 
-            TransportGenerator.Generate(parameters.Transport, cores, map, random);
+            TransportGenerator.Generate(
+                parameters.Transport,
+                map.Range().Where(tile => map.Get(tile)!.Structure.Level > 0).ToList(), 
+                map,
+                random);
             status.DoWork(o_Transport);
 
             return map;

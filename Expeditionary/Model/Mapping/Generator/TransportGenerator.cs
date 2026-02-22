@@ -39,7 +39,9 @@ namespace Expeditionary.Model.Mapping.Generator
             public void AddNeighbors(IEnumerable<Node> neighbors)
             {
                 _edges.AddRange(
-                    neighbors.Select(x => new DefaultGraphEdge(this, x, Geometry.GetCubicDistance(Hex, x.Hex))));
+                    neighbors.Select(
+                        neighbor => new DefaultGraphEdge(
+                            this, neighbor, Geometry.GetCubicDistance(Hex, neighbor.Hex))));
             }
         }
 
@@ -59,10 +61,10 @@ namespace Expeditionary.Model.Mapping.Generator
 
                 var voronoiVerts =
                     wrappers
-                        .Select(x => Cubic.Cartesian.Instance.Project(x.Hex))
-                        .Select(x => new Vertex(x.X, x.Y))
+                        .Select(node => Cubic.Cartesian.Instance.Project(node.Hex))
+                        .Select(position => new Vertex(position.X, position.Y))
                         .ToList();
-                if (voronoiVerts.Count() < 2)
+                if (voronoiVerts.Count < 2)
                 {
                     continue;
                 }
@@ -71,7 +73,9 @@ namespace Expeditionary.Model.Mapping.Generator
 
                 for (int i=0; i<wrappers.Count; ++i)
                 {
-                    wrappers[i].AddNeighbors(graph.Neighbors[i].Where(x => x >= 0).Select(x => wrappers[x]));
+                    wrappers[i].AddNeighbors(
+                        graph.Neighbors[i]
+                            .Where(wrapperId => wrapperId >= 0).Select(wrapperId => wrappers[wrapperId]));
                 }
                 var mst = MinimalSpanningTree.Compute(wrappers).ToHashSet();
                 foreach (var edge in mst)
@@ -80,7 +84,7 @@ namespace Expeditionary.Model.Mapping.Generator
                 }
 
                 (double mean, double stdDev) =
-                    wrappers.SelectMany(x => x.GetEdges()).Select(x => x.Cost).MeanStandardDeviation();
+                    wrappers.SelectMany(node => node.GetEdges()).Select(edge => edge.Cost).MeanStandardDeviation();
                 var closed = new HashSet<Node>();
                 foreach (var wrapper in wrappers)
                 {

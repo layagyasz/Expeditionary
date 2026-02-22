@@ -80,31 +80,26 @@ namespace Expeditionary.View.Textures.Generation
             {
                 new(new(0, 0, 0), new(3, 0, 0)),
                 new(new(0, 0, 0), new(1, 0, 0)),
-                new(new(1, 0, 0), new(3, 0, 0)),
-                new(new(2, 0, 0), new(0, 0, 0)),
+                new(new(2, 0, 0), new(1, 0, 0)),
                 new(new(2, 0, 0), new(3, 0, 0)),
             },
             new Arc[]
             {
                 new(new(0, 0, 0), new(3, 0, 0)),
-                new(new(0, 0, 0), new(1, 0, 0)),
                 new(new(1, 0, 0), new(4, 0, 0)),
-                new(new(3, 0, 0), new(4, 0, 0)),
             },
             new Arc[]
             {
                 new(new(0, 0, 0), new(3, 0, 0)),
                 new(new(0, 0, 0), new(2, 0, 0)),
                 new(new(0, 0, 0), new(4, 0, 0)),
-                new(new(2, 0, 0), new(3, 0, 0)),
-                new(new(3, 0, 0), new(4, 0, 0)),
+                new(new(2, 0, 0), new(4, 0, 0)),
             },
             new Arc[]
             {
                 new(new(0, 0, 0), new(2, 0, 0)),
                 new(new(0, 0, 0), new(4, 0, 0)),
-                new(new(1, 0, 0), new(4, 0, 0)),
-                new(new(2, 0, 0), new(5, 0, 0)),
+                new(new(1, 0, 0), new(5, 0, 0)),
             },
             new Arc[]
             {
