@@ -8,6 +8,7 @@ NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampl
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
+TransportGenerator_StructurePredicate=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+StructurePredicate')
 
 
 Habitation0 = MapEnvironmentTrait()
@@ -293,10 +294,16 @@ function Infrastructure1:Apply(environment)
 	local roads = TransportGenerator_Parameters()
 	roads.Type = EdgeType.Road
 	roads.Level = 1
-	roads.SupportedStructures:Add(StructureType.Commercial, 1)
-	roads.SupportedStructures:Add(StructureType.Residential, 1)
-	roads.SupportedStructures:Add(StructureType.Mining, 1)
-	roads.SupportedStructures:Add(StructureType.Industrial, 1)
+	roads.SupportedStructures:Add(
+		StructureType.Commercial, TransportGenerator_StructurePredicate(1, false))
+	roads.SupportedStructures:Add(
+		StructureType.Residential, TransportGenerator_StructurePredicate(1, false))
+	roads.SupportedStructures:Add(
+		StructureType.Mining, TransportGenerator_StructurePredicate(1, false))
+	roads.SupportedStructures:Add(
+		StructureType.Industrial, TransportGenerator_StructurePredicate(1, false))
+	roads.SupportedStructures:Add(
+		StructureType.Agricultural, TransportGenerator_StructurePredicate(1, true))
 	parameters.Transport:Add(roads)
 end
 

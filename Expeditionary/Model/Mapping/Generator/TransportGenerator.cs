@@ -10,11 +10,13 @@ namespace Expeditionary.Model.Mapping.Generator
 {
     public static class TransportGenerator
     {
+        public record struct StructurePredicate(int Level, bool IsCore);
+
         public class Parameters
         {
             public EdgeType Type { get; set; }
             public int Level { get; set; }
-            public EnumMap<StructureType, int> SupportedStructures { get; set; } = new();
+            public EnumMap<StructureType, StructurePredicate> SupportedStructures { get; set; } = new();
             public float MaximumCost { get; set; } = 1000f;
             public float Density { get; set; } = 1f;
             public float Dropoff { get; set; } = 2f;
@@ -53,11 +55,15 @@ namespace Expeditionary.Model.Mapping.Generator
                 softness: new(0, 25, 5),
                 waterDepth: new(0, 50, 5));
 
-        public static void Generate(IEnumerable<Parameters> parameters, List<Vector3i> nodes, Map map, Random random)
+        public static void Generate(IEnumerable<Parameters> parameters, ISet<Vector3i> cores, IList<Vector3i> nodes, Map map, Random random)
         {
             foreach (var p in parameters)
             {
-                var wrappers = nodes.Where(x => IsSupported(map.Get(x)!, p)).Select(x => new Node(x)).ToList();
+                var wrappers = 
+                    nodes
+                        .Where(hex => IsSupported(map.Get(hex)!, cores.Contains(hex), p))
+                        .Select(hex => new Node(hex))
+                        .ToList();
 
                 var voronoiVerts =
                     wrappers
@@ -121,10 +127,10 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        private static bool IsSupported(Tile tile, Parameters parameters)
+        private static bool IsSupported(Tile tile, bool isCore, Parameters parameters)
         {
-            int supportedLevel = parameters.SupportedStructures[tile.Structure.Type];
-            return supportedLevel > 0 && supportedLevel <= tile.Structure.Level;
+            var predicate = parameters.SupportedStructures[tile.Structure.Type];
+            return predicate.Level > 0 && predicate.Level <= tile.Structure.Level && (!predicate.IsCore || isCore);
         }
 
         private static double GetDensity(double density, double droppoff, double deviations)

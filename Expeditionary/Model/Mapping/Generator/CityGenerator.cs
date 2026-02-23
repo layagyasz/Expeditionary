@@ -66,12 +66,12 @@ namespace Expeditionary.Model.Mapping.Generator
             }
         }
 
-        public static List<Vector3i> Generate(Parameters parameters, Map map, Random random)
+        public static HashSet<Vector3i> Generate(Parameters parameters, Map map, Random random)
         {
             var closed = new HashSet<Vector3i>();
             var open = new Heap<Node, float>();
             var nodes = new Dictionary<Vector3i, Node>();
-            var cores = new List<Vector3i>();
+            var cores = new HashSet<Vector3i>();
 
             int availableTiles = map.Range().Select(map.Get).Count(x => !x!.Terrain.IsLiquid);
             foreach (var param in parameters.Layers)

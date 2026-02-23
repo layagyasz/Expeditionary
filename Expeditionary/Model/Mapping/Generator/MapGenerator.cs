@@ -48,6 +48,7 @@ namespace Expeditionary.Model.Mapping.Generator
 
             TransportGenerator.Generate(
                 parameters.Transport,
+                cores,
                 map.Range().Where(tile => map.Get(tile)!.Structure.Level > 0).ToList(), 
                 map,
                 random);

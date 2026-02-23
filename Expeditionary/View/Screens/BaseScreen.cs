@@ -55,6 +55,7 @@ namespace Expeditionary.View.Screens
                     dynamic.Refresh();
                 }
             }
+            Refreshed?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void ResizeContext(Vector3 bounds)
