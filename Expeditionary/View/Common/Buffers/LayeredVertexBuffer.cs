@@ -8,15 +8,15 @@ namespace Expeditionary.View.Common.Buffers
     {
         public class Builder
         {
-            private readonly List<Vertex3[]> _layers = new();
+            private readonly List<MaskedVertex3[]> _layers = new();
 
             public Builder AddLayer(int size)
             {
-                _layers.Add(new Vertex3[size]);
+                _layers.Add(new MaskedVertex3[size]);
                 return this;
             }
 
-            public void SetVertex(int layer, int index, Vertex3 value)
+            public void SetVertex(int layer, int index, MaskedVertex3 value)
             {
                 _layers[layer][index] = value;
             }
@@ -34,9 +34,9 @@ namespace Expeditionary.View.Common.Buffers
 
         public class Layer : ManagedResource
         {
-            private VertexBuffer<Vertex3>? _vertices;
+            private VertexBuffer<MaskedVertex3>? _vertices;
 
-            internal Layer(VertexBuffer<Vertex3> vertices)
+            internal Layer(VertexBuffer<MaskedVertex3> vertices)
             {
                 _vertices = vertices;
             }

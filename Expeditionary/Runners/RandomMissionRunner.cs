@@ -10,7 +10,6 @@ using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
 using Expeditionary.View.Common.Interceptors;
 using Expeditionary.View.Screens;
-using System.Collections.Immutable;
 
 namespace Expeditionary.Runners
 {
@@ -32,10 +31,8 @@ namespace Expeditionary.Runners
             var missionNode =
                 new MissionNode()
                 {
-                    Environment = new RandomEnvironmentProvider()
-                    {
-                        Sectors = ImmutableList.Create(1, 2, 3, 4, 5)
-                    },
+                    Environment = 
+                        new StaticEnvironmentProvider() { Environment = module.Environments["environment-meridian"] },
                     Difficulty = new() { MissionDifficulty.Medium },
                     Scale = new() { MissionScale.Medium },
                     Attackers = new() { module.Factions["faction-sm"] },

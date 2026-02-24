@@ -1,6 +1,8 @@
 ﻿using Cardamom;
+using Cardamom.Graphics;
 using Expeditionary.View.Textures;
 using Expeditionary.View.Textures.Generation;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Runners.Loaders
 {
@@ -35,7 +37,7 @@ namespace Expeditionary.Runners.Loaders
                 new StructureTextureGenerator(_resources.GetShader("shader-default-no-tex"));
             var structures = structureTextureGenerator.Generate();
 
-            return new(rivers, ridges, masks, partitions, structures);
+            return new(Texture.Create(new(1, 1), Color4.White, new()), rivers, ridges, masks, partitions, structures);
         }
     }
 }

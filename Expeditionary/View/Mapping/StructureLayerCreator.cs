@@ -71,19 +71,24 @@ namespace Expeditionary.View.Mapping
             int triangle,
             StructureLibrary.Option option)
         {
-            bufferBuilder.SetVertex(s_LayerId, index + 3 * triangle, new(hexCenter, Color4.White, option.TexCenter));
+            bufferBuilder.SetVertex(
+                s_LayerId, index + 3 * triangle, new(hexCenter, Color4.White, option.TexCenter, new()));
             bufferBuilder.SetVertex(
                 s_LayerId,
                 index + 3 * triangle + 1, 
-                new(hexCenter + s_Corners[triangle], 
-                Color4.White, 
-                option.TexCoords[triangle]));
+                new(
+                    hexCenter + s_Corners[triangle], 
+                    Color4.White, 
+                    option.TexCoords[triangle],
+                    new()));
             bufferBuilder.SetVertex(
                 s_LayerId,
                 index + 3 * triangle + 2,
-                new(hexCenter + s_Corners[(triangle + 1) % 6],
-                Color4.White,
-                option.TexCoords[(triangle + 1) % 6]));
+                new(
+                    hexCenter + s_Corners[(triangle + 1) % 6],
+                    Color4.White,
+                    option.TexCoords[(triangle + 1) % 6], 
+                    new()));
         }
 
         private static Vector3 ToVector3(Vector2 x)

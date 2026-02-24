@@ -11,7 +11,6 @@ namespace Expeditionary.View.Mapping
     {
         private VertexBuffer<Vertex3>? _grid;
         private LayeredVertexBuffer? _terrain;
-        private LayeredVertexBuffer? _mask;
         private readonly RenderShader _texShader;
         private readonly RenderShader _maskShader;
         private readonly RenderShader _gridShader;
@@ -19,12 +18,9 @@ namespace Expeditionary.View.Mapping
 
         private Color4 _gridFilter = Color4.White;
 
-        private RenderTexture? _maskTexture;
-
         internal MapView(
             VertexBuffer<Vertex3>? grid,
             LayeredVertexBuffer? terrain,
-            LayeredVertexBuffer? mask,
             RenderShader texShader,
             RenderShader maskShader,
             RenderShader gridShader,
@@ -32,7 +28,6 @@ namespace Expeditionary.View.Mapping
         {
             _grid = grid;
             _terrain = terrain;
-            _mask = mask;
             _texShader = texShader;
             _maskShader = maskShader;
             _gridShader = gridShader;
@@ -46,23 +41,10 @@ namespace Expeditionary.View.Mapping
 
             _terrain?.Dispose();
             _terrain = null;
-
-            _mask?.Dispose();
-            _mask = null;
         }
 
         public void Draw(IRenderTarget target, IUiContext context)
         {
-            _maskTexture!.PushModelMatrix(target.GetModelMatrix());
-            _maskTexture.PushViewMatrix(target.GetViewMatrix());
-            _maskTexture.PushProjection(target.GetProjection());
-            _maskTexture.Clear();
-            _mask!.GetLayer(0).Draw(_maskTexture, GetMaskRenderResources());
-            _maskTexture.Display();
-            _maskTexture.PopProjectionMatrix();
-            _maskTexture.PopViewMatrix();
-            _maskTexture.PopModelMatrix();
-
             _terrain!.GetLayer(0).Draw(target, GetRenderResources());
             _terrain!.GetLayer(1).Draw(target, GetFoliageRenderResources());
             _terrain!.GetLayer(2).Draw(target, GetRenderResources());
@@ -80,11 +62,7 @@ namespace Expeditionary.View.Mapping
 
         public void Initialize() { }
 
-        public void ResizeContext(Vector3 size)
-        {
-            _maskTexture?.Dispose();
-            _maskTexture = new RenderTexture(new((int)size.X, (int)size.Y));
-        }
+        public void ResizeContext(Vector3 size) { }
 
         public void SetGridAlpha(float alpha)
         {
@@ -96,32 +74,27 @@ namespace Expeditionary.View.Mapping
         private RenderResources GetFoliageRenderResources()
         {
             return new(
-                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _maskTexture!.GetTexture());
-        }
-
-        private RenderResources GetMaskRenderResources()
-        {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Masks.Texture);
+                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _textureLibrary.Masks.Texture);
         }
 
         private RenderResources GetRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Partitions.Texture);
+            return new(BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _textureLibrary.Blank);
         }
 
         private RenderResources GetRiverRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Rivers.Texture);
+            return new(BlendMode.Alpha, _maskShader, _textureLibrary.Rivers.Texture, _textureLibrary.Blank);
         }
 
         private RenderResources GetRidgeRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Ridges.Texture);
+            return new(BlendMode.Alpha, _maskShader, _textureLibrary.Ridges.Texture, _textureLibrary.Blank);
         }
 
         private RenderResources GetStructureRenderResources()
         {
-            return new(BlendMode.Alpha, _texShader, _textureLibrary.Structures.Texture);
+            return new(BlendMode.Alpha, _maskShader, _textureLibrary.Structures.Texture, _textureLibrary.Blank);
         }
     }
 }

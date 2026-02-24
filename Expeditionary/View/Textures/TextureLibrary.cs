@@ -1,25 +1,12 @@
-﻿namespace Expeditionary.View.Textures
-{
-    public class TextureLibrary
-    {
-        public EdgeLibrary Rivers { get; }
-        public EdgeLibrary Ridges { get; }
-        public MaskLibrary Masks { get; }
-        public PartitionLibrary Partitions { get; }
-        public StructureLibrary Structures { get; }
+﻿using Cardamom.Graphics;
 
-        public TextureLibrary(
-            EdgeLibrary rivers,
-            EdgeLibrary ridges,
-            MaskLibrary masks, 
-            PartitionLibrary partitions,
-            StructureLibrary structures)
-        {
-            Rivers = rivers;
-            Ridges = ridges;
-            Masks = masks;
-            Partitions = partitions;
-            Structures = structures;
-        }
-    }
+namespace Expeditionary.View.Textures
+{
+    public record class TextureLibrary(
+        Texture Blank,
+        EdgeLibrary Rivers,
+        EdgeLibrary Ridges,
+        MaskLibrary Masks,
+        PartitionLibrary Partitions,
+        StructureLibrary Structures);
 }

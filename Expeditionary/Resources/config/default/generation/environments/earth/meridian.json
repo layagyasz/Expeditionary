@@ -8,7 +8,7 @@
       "Planet": 0,
       "Environment": 0
     },
-    "Trait": [
+    "Traits": [
       "environment-trait-default",
       "environment-trait-star-sol",
       "environment-trait-landform-lithic-a",

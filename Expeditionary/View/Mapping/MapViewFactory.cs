@@ -62,7 +62,6 @@ namespace Expeditionary.View.Mapping
                     .AddLayer(triangles)
                     .AddLayer(triangles)
                     .AddLayer(18 * map.Width * map.Height);
-            var maskBufferBuilder = new LayeredVertexBuffer.Builder().AddLayer(3 * triangles);
 
             int triangle = 0;
             foreach (var corner in Geometry.GetAllCorners(map.Size))
@@ -81,23 +80,68 @@ namespace Expeditionary.View.Mapping
                 var centerPos = ToVector3(Axial.Cartesian.Instance.Project(centerHex.Xy));
                 var leftPos = ToVector3(Axial.Cartesian.Instance.Project(leftHex.Xy));
                 var rightPos = ToVector3(Axial.Cartesian.Instance.Project(rightHex.Xy));
-                for (int layer = 0; layer < 3; ++layer)
+
+                // Base Terrain
+                var terrainMask = options[random.Next(options.Length)];
+                for (int hex = 0; hex < 3; ++hex)
                 {
-                    var selected = options[random.Next(options.Length)];
-                    for (int hex = 0; hex < 3; ++hex)
-                    {
-                        var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
-                        var color = GetTileColor(tile, layer, parameters, map.ElevationLevels);
-                        var index = 9 * triangle + 3 * hex;
-                        bufferBuilder.SetVertex(layer, index, new(centerPos, color, selected.TexCoords[hex][0]));
-                        bufferBuilder.SetVertex(layer, index + 1, new(leftPos, color, selected.TexCoords[hex][1]));
-                        bufferBuilder.SetVertex(layer, index + 2, new(rightPos, color, selected.TexCoords[hex][2]));
-                    }
+                    var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
+                    var color = GetTileColor(tile, 0, parameters, map.ElevationLevels);
+                    var index = 9 * triangle + 3 * hex;
+                    bufferBuilder.SetVertex(0, index, new(centerPos, color, terrainMask.TexCoords[hex][0], new()));
+                    bufferBuilder.SetVertex(0, index + 1, new(leftPos, color, terrainMask.TexCoords[hex][1], new()));
+                    bufferBuilder.SetVertex(0, index + 2, new(rightPos, color, terrainMask.TexCoords[hex][2], new()));
+                }
+
+                // Foliage
+                Vector3i foliageQuery =
+                    2 * new Vector3i(
+                        Convert.ToInt32(center.Terrain.Foliage.HasValue),
+                        Convert.ToInt32(left.Terrain.Foliage.HasValue),
+                        Convert.ToInt32(right.Terrain.Foliage.HasValue));
+                Vector2[] foliage;
+                if (foliageQuery.ManhattanLength > 0)
+                {
+                    var foliageOptions = _textureLibrary.Masks.Query(foliageQuery).ToArray();
+                    foliage = foliageOptions[random.Next(foliageOptions.Length)].TexCoords;
+                }
+                else
+                {
+                    foliage = new Vector2[] { Vector2.Zero, Vector2.Zero, Vector2.Zero };
+                }
+                var foliageMask = options[random.Next(options.Length)];
+                for (int hex = 0; hex < 3; ++hex)
+                {
+                    var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
+                    var color = GetTileColor(tile, 0, parameters, map.ElevationLevels);
+                    var index = 9 * triangle + 3 * hex;
+                    bufferBuilder.SetVertex(
+                        1, index, new(centerPos, color, foliageMask.TexCoords[hex][0], foliage[0]));
+                    bufferBuilder.SetVertex(
+                        1, index + 1, new(leftPos, color, foliageMask.TexCoords[hex][1], foliage[1]));
+                    bufferBuilder.SetVertex(
+                        1, index + 2, new(rightPos, color, foliageMask.TexCoords[hex][2], foliage[2]));
+                }
+
+                // Structures
+                // TODO: Should be rendered with special tiles.
+                var structureMask = options[random.Next(options.Length)];
+                for (int hex = 0; hex < 3; ++hex)
+                {
+                    var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
+                    var color = GetTileColor(tile, 2, parameters, map.ElevationLevels);
+                    var index = 9 * triangle + 3 * hex;
+                    bufferBuilder.SetVertex(2, index, new(centerPos, color, structureMask.TexCoords[hex][0], new()));
+                    bufferBuilder.SetVertex(2, index + 1, new(leftPos, color, structureMask.TexCoords[hex][1], new()));
+                    bufferBuilder.SetVertex(
+                        2, index + 2, new(rightPos, color, structureMask.TexCoords[hex][2], new()));
                 }
 
                 var edgeA = map.GetEdge(Geometry.GetEdge(centerHex, leftHex))!;
                 var edgeB = map.GetEdge(Geometry.GetEdge(leftHex, rightHex))!;
                 var edgeC = map.GetEdge(Geometry.GetEdge(centerHex, rightHex))!;
+
+                // Rivers
                 AddEdge(
                     bufferBuilder, 
                     s_RiverLayerId, 
@@ -114,6 +158,8 @@ namespace Expeditionary.View.Mapping
                         edgeB.Levels.ContainsKey(EdgeType.River),
                         edgeC.Levels.ContainsKey(EdgeType.River)
                     });
+
+                // Ridges
                 AddEdge(
                     bufferBuilder,
                     s_RidgeLayerId,
@@ -130,23 +176,6 @@ namespace Expeditionary.View.Mapping
                         left.Elevation != right.Elevation,
                         center.Elevation != right.Elevation
                     });
-
-                Vector3i foliageQuery = 
-                    2 * new Vector3i(
-                        Convert.ToInt32(center.Terrain.Foliage.HasValue),
-                        Convert.ToInt32(left.Terrain.Foliage.HasValue),
-                        Convert.ToInt32(right.Terrain.Foliage.HasValue));
-                if (foliageQuery.ManhattanLength > 0)
-                {
-                    var maskOptions = _textureLibrary.Masks.Query(foliageQuery).ToArray();
-                    var selectedMask = maskOptions[random.Next(maskOptions.Length)];
-                    maskBufferBuilder.SetVertex(
-                        layer: 0, 3 * triangle, new(centerPos, Color4.White, selectedMask.TexCoords[0]));
-                    maskBufferBuilder.SetVertex(
-                        layer: 0, 3 * triangle + 1, new(leftPos, Color4.White, selectedMask.TexCoords[1]));
-                    maskBufferBuilder.SetVertex(
-                        layer: 0, 3 * triangle + 2, new(rightPos, Color4.White, selectedMask.TexCoords[2]));
-                }
 
                 ++triangle;
             }
@@ -171,7 +200,6 @@ namespace Expeditionary.View.Mapping
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
-                maskBufferBuilder.Build(),
                 _texShader,
                 _maskShader,
                 _filterShader,
@@ -227,9 +255,9 @@ namespace Expeditionary.View.Mapping
             {
                 var edgeOptions = library.Query(query).ToArray();
                 var selectedEdge = edgeOptions[random.Next(edgeOptions.Length)];
-                builder.SetVertex(layerId, 3 * index, new(a, color, selectedEdge.TexCoords[0]));
-                builder.SetVertex(layerId, 3 * index + 1, new(b, color, selectedEdge.TexCoords[1]));
-                builder.SetVertex(layerId, 3 * index + 2, new(c, color, selectedEdge.TexCoords[2]));
+                builder.SetVertex(layerId, 3 * index, new(a, color, selectedEdge.TexCoords[0], new()));
+                builder.SetVertex(layerId, 3 * index + 1, new(b, color, selectedEdge.TexCoords[1], new()));
+                builder.SetVertex(layerId, 3 * index + 2, new(c, color, selectedEdge.TexCoords[2], new()));
             }
         }
 

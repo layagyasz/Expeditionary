@@ -56,13 +56,6 @@
     }
   },
   {
-    "$id": "shader-mask-no-tex",
-    "Element": {
-      "Vertex": "Resources/view/shaders/default.vert",
-      "Fragment": "Resources/view/shaders/mask_no_tex.frag"
-    }
-  },
-  {
     "$id": "shader-ui",
     "Element": {
       "Vertex": "Resources/view/shaders/ui.vert",
