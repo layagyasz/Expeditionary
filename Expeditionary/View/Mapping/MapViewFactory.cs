@@ -33,20 +33,17 @@ namespace Expeditionary.View.Mapping
         private readonly TextureLibrary _textureLibrary;
         private readonly RenderShader _filterShader;
         private readonly RenderShader _maskShader;
-        private readonly RenderShader _texShader;
 
         public MapViewFactory(
             MapViewParameters parameters,
             TextureLibrary textureLibrary,
             RenderShader filterShader,
-            RenderShader maskShader,
-            RenderShader texShader)
+            RenderShader maskShader)
         {
             _parameters = parameters;
             _textureLibrary = textureLibrary;
             _filterShader = filterShader;
             _maskShader = maskShader;
-            _texShader = texShader;
         }
 
         public MapView Create(Map map, TerrainViewParameters parameters, int seed)
@@ -102,7 +99,7 @@ namespace Expeditionary.View.Mapping
                 Vector2[] foliage;
                 if (foliageQuery.ManhattanLength > 0)
                 {
-                    var foliageOptions = _textureLibrary.Masks.Query(foliageQuery).ToArray();
+                    var foliageOptions = _textureLibrary.Foliage.Query(foliageQuery).ToArray();
                     foliage = foliageOptions[random.Next(foliageOptions.Length)].TexCoords;
                 }
                 else
@@ -200,7 +197,6 @@ namespace Expeditionary.View.Mapping
             return new MapView(
                 new VertexBuffer<Vertex3>(grid.GetData(), PrimitiveType.Triangles),
                 bufferBuilder.Build(),
-                _texShader,
                 _maskShader,
                 _filterShader,
                 _textureLibrary);

@@ -3,14 +3,14 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Textures
 {
-    public class MaskLibrary
+    public class FoliageLibrary
     {
         public record class Option(Vector2[] TexCoords, Vector3i Levels);
 
         public Texture Texture { get; }
         public Option[] Options { get; }
 
-        public MaskLibrary(Texture texture, Option[] options)
+        public FoliageLibrary(Texture texture, Option[] options)
         {
             Texture = texture;
             Options = options;

@@ -11,7 +11,6 @@ namespace Expeditionary.View.Mapping
     {
         private VertexBuffer<Vertex3>? _grid;
         private LayeredVertexBuffer? _terrain;
-        private readonly RenderShader _texShader;
         private readonly RenderShader _maskShader;
         private readonly RenderShader _gridShader;
         private readonly TextureLibrary _textureLibrary;
@@ -21,14 +20,12 @@ namespace Expeditionary.View.Mapping
         internal MapView(
             VertexBuffer<Vertex3>? grid,
             LayeredVertexBuffer? terrain,
-            RenderShader texShader,
             RenderShader maskShader,
             RenderShader gridShader,
             TextureLibrary textureLibrary)
         {
             _grid = grid;
             _terrain = terrain;
-            _texShader = texShader;
             _maskShader = maskShader;
             _gridShader = gridShader;
             _textureLibrary = textureLibrary;
@@ -74,7 +71,7 @@ namespace Expeditionary.View.Mapping
         private RenderResources GetFoliageRenderResources()
         {
             return new(
-                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _textureLibrary.Masks.Texture);
+                BlendMode.Alpha, _maskShader, _textureLibrary.Partitions.Texture, _textureLibrary.Foliage.Texture);
         }
 
         private RenderResources GetRenderResources()

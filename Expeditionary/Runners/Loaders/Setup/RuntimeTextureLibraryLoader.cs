@@ -23,7 +23,7 @@ namespace Expeditionary.Runners.Loaders
                 partitionTextureGenerator.Generate(
                     frequencyRange: new(0.5f, 4f), magnitudeRange: new(0f, 4f), seed: 0, count: 60);
 
-            var maskTextureGenerator = new MaskTextureGenerator(_resources.GetShader("shader-generate-mask"));
+            var maskTextureGenerator = new FoliageTextureGenerator(_resources.GetShader("shader-generate-mask"));
             var masks = maskTextureGenerator.Generate(
                 frequencyRange: new(4f, 8f), magnitudeRange: new(0f, 1f), seed: 0, count: 16);
 

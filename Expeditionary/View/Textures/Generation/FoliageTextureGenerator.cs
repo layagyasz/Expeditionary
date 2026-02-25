@@ -10,7 +10,7 @@ using Cardamom.Mathematics;
 
 namespace Expeditionary.View.Textures.Generation
 {
-    public class MaskTextureGenerator
+    public class FoliageTextureGenerator
     {
         private record class Distribution(Vector4 Mask, Vector3i Levels);
 
@@ -37,7 +37,7 @@ namespace Expeditionary.View.Textures.Generation
         private readonly ConstantSupplier<int> _wSeed = new();
         private readonly ConstantSupplier<Vector3> _frequency = new();
 
-        public MaskTextureGenerator(RenderShader maskShader)
+        public FoliageTextureGenerator(RenderShader maskShader)
         {
             _maskShader = maskShader;
             _pipeline =
@@ -83,7 +83,7 @@ namespace Expeditionary.View.Textures.Generation
                     .Build();
         }
 
-        public MaskLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
+        public FoliageLibrary Generate(Interval frequencyRange, Interval magnitudeRange, int seed, int count)
         {
             var random = new Random(seed);
             var canvasProvider = new CachingCanvasProvider(new(64, 64), Color4.Black);
@@ -100,7 +100,7 @@ namespace Expeditionary.View.Textures.Generation
             renderTexture.PushProjection(new(-10, Matrix4.CreateOrthographicOffCenter(0, 1, 0, 1, -10, 10)));
             renderTexture.PushViewMatrix(Matrix4.Identity);
             renderTexture.PushModelMatrix(Matrix4.Identity);
-            var options = new MaskLibrary.Option[count * s_Distributions.Length];
+            var options = new FoliageLibrary.Option[count * s_Distributions.Length];
             var sheet =
                 new DynamicStaticSizeTexturePage(
                     new(1024, 1024),
@@ -146,7 +146,7 @@ namespace Expeditionary.View.Textures.Generation
             }
             canvasProvider.Dispose();
             renderTexture.Dispose();
-            return new MaskLibrary(sheet.GetTexture(), options);
+            return new FoliageLibrary(sheet.GetTexture(), options);
         }
 
         private static Vector2[] GetTexCoords(Box2i segment)

@@ -54,8 +54,7 @@ namespace Expeditionary.Runners
                         },
                         data.TextureLibrary,
                         resources.GetShader("shader-filter-no-tex"),
-                        resources.GetShader("shader-mask"),
-                        resources.GetShader("shader-default")),
+                        resources.GetShader("shader-mask")),
                     new MissionLayerFactory(uiElementFactory),
                     new FogOfWarLayerFactory(resources.GetShader("shader-default"), data.TextureLibrary.Partitions),
                     new AssetLayerFactory(

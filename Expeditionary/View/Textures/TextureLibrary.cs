@@ -6,7 +6,7 @@ namespace Expeditionary.View.Textures
         Texture Blank,
         EdgeLibrary Rivers,
         EdgeLibrary Ridges,
-        MaskLibrary Masks,
+        FoliageLibrary Foliage,
         PartitionLibrary Partitions,
         StructureLibrary Structures);
 }
