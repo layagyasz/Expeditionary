@@ -1,0 +1,12 @@
+{
+  "Textures": {
+    "$type": "DynamicStaticSize",
+    "Size": [ 2048, 2048 ],
+    "ElementSize": [ 128, 128 ],
+    "Textures": {
+      "Prefix": "",
+      "Implicit": [ "Resources/view/textures/structures/*.png" ]
+    }
+  },
+  "Options": [ "Resources/view/textures/structures::*.json" ]
+}

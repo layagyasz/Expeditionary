@@ -13,7 +13,7 @@ namespace Expeditionary.View.Mapping
         private LayeredVertexBuffer? _terrain;
         private readonly RenderShader _maskShader;
         private readonly RenderShader _gridShader;
-        private readonly TextureLibrary _textureLibrary;
+        private readonly MapTextureLibrary _textureLibrary;
 
         private Color4 _gridFilter = Color4.White;
 
@@ -22,7 +22,7 @@ namespace Expeditionary.View.Mapping
             LayeredVertexBuffer? terrain,
             RenderShader maskShader,
             RenderShader gridShader,
-            TextureLibrary textureLibrary)
+            MapTextureLibrary textureLibrary)
         {
             _grid = grid;
             _terrain = terrain;

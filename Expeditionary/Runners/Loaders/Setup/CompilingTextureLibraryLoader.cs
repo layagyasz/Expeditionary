@@ -1,22 +1,26 @@
-﻿using Cardamom;
-using Cardamom.Graphics;
-using Expeditionary.View.Textures;
+﻿using Cardamom.Graphics;
+using Cardamom;
 using Expeditionary.View.Textures.Generation;
+using Expeditionary.View.Textures;
 using OpenTK.Mathematics;
+using System.Text.Json;
+using Cardamom.Json.OpenTK;
+using Cardamom.Json;
 
-namespace Expeditionary.Runners.Loaders
+namespace Expeditionary.Runners.Loaders.Setup
 {
-    public class RuntimeTextureLibraryLoader
+    public class CompilingTextureLibraryLoader
     {
         private readonly GameResources _resources;
 
-        public RuntimeTextureLibraryLoader(GameResources resources)
+        public CompilingTextureLibraryLoader(GameResources resources)
         {
             _resources = resources;
         }
 
         public MapTextureLibrary Load()
         {
+            // TODO: Compile other texture libraries
             var partitionTextureGenerator =
                 new PartitionTextureGenerator(_resources.GetShader("shader-generate-partition"));
             var partitions =
@@ -33,9 +37,15 @@ namespace Expeditionary.Runners.Loaders
             var ridges = edgeTextureGenerator.Generate(
                 frequencyRange: new(0.5f, 2f), magnitudeRange: new(0f, 1f), gauge: 4, seed: 0, count: 10);
 
-            var structureTextureGenerator =
-                new StructureTextureGenerator(_resources.GetShader("shader-default-no-tex"));
-            var structures = structureTextureGenerator.Generate();
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = new KeyedReferenceHandler()
+            };
+            options.Converters.Add(new ColorJsonConverter());
+            options.Converters.Add(new Vector2JsonConverter());
+            options.Converters.Add(new Vector2iJsonConverter());
+            var structures = JsonSerializer.Deserialize<StructureLibrary>(
+                File.ReadAllText("Resources/view/structures.json"), options)!;
 
             return new(Texture.Create(new(1, 1), Color4.White, new()), rivers, ridges, masks, partitions, structures);
         }

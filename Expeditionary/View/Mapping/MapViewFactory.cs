@@ -30,13 +30,13 @@ namespace Expeditionary.View.Mapping
         private static readonly float s_GridWidth = 0.04f;
 
         private readonly MapViewParameters _parameters;
-        private readonly TextureLibrary _textureLibrary;
+        private readonly MapTextureLibrary _textureLibrary;
         private readonly RenderShader _filterShader;
         private readonly RenderShader _maskShader;
 
         public MapViewFactory(
             MapViewParameters parameters,
-            TextureLibrary textureLibrary,
+            MapTextureLibrary textureLibrary,
             RenderShader filterShader,
             RenderShader maskShader)
         {

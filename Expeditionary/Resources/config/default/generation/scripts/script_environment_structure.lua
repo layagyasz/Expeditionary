@@ -293,7 +293,7 @@ function Infrastructure1:Apply(environment)
 
 	local roads = TransportGenerator_Parameters()
 	roads.Type = EdgeType.Road
-	roads.Level = 1
+	roads.Level = 2
 	roads.SupportedStructures:Add(
 		StructureType.Commercial, TransportGenerator_StructurePredicate(1, false))
 	roads.SupportedStructures:Add(

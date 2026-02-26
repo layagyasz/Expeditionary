@@ -14,7 +14,7 @@ namespace Expeditionary
         Playlist Playlist,
         Localization Localization,
         SpectrumSensitivity SpectrumSensitivity,
-        TextureLibrary TextureLibrary,
+        MapTextureLibrary TextureLibrary,
         Cardamom.Graphics.TexturePacking.ITextureVolume UnitTextures)
     { }
 }

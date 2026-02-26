@@ -1,11 +1,19 @@
 ﻿using Cardamom.Graphics;
+using Cardamom.Graphics.TexturePacking;
+using Cardamom.Json;
+using Cardamom.Json.Collections;
+using Cardamom.Json.Graphics.TexturePacking;
 using Expeditionary.Model.Mapping;
 using OpenTK.Mathematics;
+using System.Text.Json.Serialization;
 
 namespace Expeditionary.View.Textures
 {
+    [JsonConverter(typeof(BuilderJsonConverter))]
+    [BuilderClass(typeof(Builder))]
     public class StructureLibrary
     {
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum ConnectionType
         {
             None,
@@ -92,9 +100,38 @@ namespace Expeditionary.View.Textures
 
         public record struct Option(Vector2 TexCenter, Vector2[] TexCoords, StructureParameters Parameters);
 
-        public record struct StructureParameters(StructureType Type, int Level, Connection[] Connections);
+        public record class StructureParameters(StructureType Type, int Level, Connection[] Connections);
 
         public record class StructureQuery(StructureType Type, int Level, IConnectionQuery[] Connections);
+
+        public class Builder
+        {
+            public record class OptionBuilder {
+                [JsonConverter(typeof(ReferenceJsonConverter))]
+                public TextureSegment? Texture { get; set; }
+
+                public StructureParameters? Parameters { get; set; }
+            }
+
+            [JsonConverter(typeof(FromMultipleFileJsonConverter))]
+            public List<OptionBuilder> Options { get; set; } = new();
+
+            [JsonConverter(typeof(TextureVolumeJsonConverter))]
+            public ITextureVolume? Textures { get; set; }
+
+            public StructureLibrary Build()
+            {
+                return new(
+                    Textures!.GetSegments().Select(segment => segment.Texture!).Distinct().Single(),
+                    Options.Select(
+                        option => 
+                            new Option(
+                                option.Texture!.TextureView.Center,
+                                GetTexCoords(option.Texture!.TextureView),
+                                option.Parameters!))
+                        .ToArray());
+            }
+        }
 
         public Texture Texture { get; }
 
@@ -177,6 +214,22 @@ namespace Expeditionary.View.Textures
                 }
             }
             return true;
+        }
+
+        private static readonly float Sqrt3d2 = 0.5f * MathF.Sqrt(3);
+        private static readonly Vector3[] Corners =
+        {
+            new(-0.5f, -Sqrt3d2, 0f),
+            new(0.5f, -Sqrt3d2, 0f),
+            new(1f, 0f, 0f),
+            new(0.5f, Sqrt3d2, 0f),
+            new(-0.5f, Sqrt3d2, 0f),
+            new(-1f, 0f, 0f)
+        };
+        private static Vector2[] GetTexCoords(Box2i box)
+        {
+            var radius = 0.5f * Math.Min(box.Size.X, box.Size.Y);
+            return Corners.Select(x => radius * x.Xy + box.Center).ToArray();
         }
     }
 }

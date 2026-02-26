@@ -2,7 +2,7 @@
 
 namespace Expeditionary.View.Textures
 {
-    public record class TextureLibrary(
+    public record class MapTextureLibrary(
         Texture Blank,
         EdgeLibrary Rivers,
         EdgeLibrary Ridges,

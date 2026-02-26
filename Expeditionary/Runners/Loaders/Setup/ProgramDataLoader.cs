@@ -1,4 +1,5 @@
-﻿using Expeditionary.View;
+﻿using Expeditionary.Runners.Loaders.Setup;
+using Expeditionary.View;
 
 namespace Expeditionary.Runners.Loaders
 {
@@ -24,7 +25,7 @@ namespace Expeditionary.Runners.Loaders
                 new PlaylistLoader(_config.Playlist).Load(),
                 localization,
                 new SpectrumSensitivityLoader(_config.SpectrumSensitivity).Load(), 
-                new RuntimeTextureLibraryLoader(resources).Load(),
+                new CompilingTextureLibraryLoader(resources).Load(),
                 new RuntimeUnitTextureLoader(module, _config.UnitTextureSettings).Load());
         }
     }

@@ -181,7 +181,7 @@ namespace Expeditionary.View.Textures.Generation
                 renderTexture.Draw(
                     vertices.GetData(), PrimitiveType.Triangles, 0, vertices.Count, new(BlendMode.None, _shader));
                 renderTexture.Display();
-                // renderTexture.GetTexture().CopyToImage().SaveToFile($"road-0-{i}.png");
+                renderTexture.GetTexture().CopyToImage().SaveToFile($"road-{i}.png");
                 sheet.Add(renderTexture.GetTexture(), out var segment);
 
                 options[i] = MakeOption(arcs, segment);
