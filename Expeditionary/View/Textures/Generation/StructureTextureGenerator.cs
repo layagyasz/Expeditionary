@@ -187,7 +187,7 @@ namespace Expeditionary.View.Textures.Generation
                 options[i] = MakeOption(arcs, segment);
             }
             // sheet.GetTexture().CopyToImage().SaveToFile("roads2.png");
-            return new StructureLibrary(sheet.GetTexture(), options);
+            return new StructureLibrary(sheet.GetTexture(), options.First(), options);
         }
 
         private static Vector3 GetAnchor(int face, int anchor)

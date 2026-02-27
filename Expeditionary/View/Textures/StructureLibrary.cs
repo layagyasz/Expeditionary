@@ -111,10 +111,17 @@ namespace Expeditionary.View.Textures
                 public TextureSegment? Texture { get; set; }
 
                 public StructureParameters? Parameters { get; set; }
+
+                public Option Build()
+                {
+                    return new Option(Texture!.TextureView.Center, GetTexCoords(Texture!.TextureView), Parameters!);
+                }
             }
 
             [JsonConverter(typeof(FromMultipleFileJsonConverter))]
             public List<OptionBuilder> Options { get; set; } = new();
+
+            public OptionBuilder? NoResult { get; set; }
 
             [JsonConverter(typeof(TextureVolumeJsonConverter))]
             public ITextureVolume? Textures { get; set; }
@@ -123,30 +130,32 @@ namespace Expeditionary.View.Textures
             {
                 return new(
                     Textures!.GetSegments().Select(segment => segment.Texture!).Distinct().Single(),
-                    Options.Select(
-                        option => 
-                            new Option(
-                                option.Texture!.TextureView.Center,
-                                GetTexCoords(option.Texture!.TextureView),
-                                option.Parameters!))
-                        .ToArray());
+                    NoResult!.Build(),
+                    Options.Select(option => option.Build()).ToArray());
             }
         }
 
         public Texture Texture { get; }
-
+        public Option NoResult { get; }
         public Option[] Options { get; }
 
-        public StructureLibrary(Texture texture, Option[] options)
+        public StructureLibrary(Texture texture, Option noResult, Option[] options)
         {
             Texture = texture;
+            NoResult = noResult;
             Options = options;
         }
 
         // TODO -- Add wildcard queries
-        public IEnumerable<Option> Query(StructureQuery query)
+        public List<Option> Query(StructureQuery query)
         {
-            return Options.SelectMany(AllTransforms).Where(option => Satisfies(query, option.Parameters));
+            var result = 
+                Options.SelectMany(AllTransforms).Where(option => Satisfies(query, option.Parameters)).ToList();
+            if (result.Count == 0)
+            {
+                return new() { NoResult };
+            }
+            return result;
         }
 
         private static IEnumerable<Option> AllTransforms(Option option)

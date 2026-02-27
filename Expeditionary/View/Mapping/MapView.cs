@@ -44,10 +44,9 @@ namespace Expeditionary.View.Mapping
         {
             _terrain!.GetLayer(0).Draw(target, GetRenderResources());
             _terrain!.GetLayer(1).Draw(target, GetFoliageRenderResources());
-            _terrain!.GetLayer(2).Draw(target, GetRenderResources());
-            _terrain!.GetLayer(3).Draw(target, GetRidgeRenderResources());
-            _terrain!.GetLayer(4).Draw(target, GetRiverRenderResources());
-            _terrain!.GetLayer(5).Draw(target, GetStructureRenderResources());
+            _terrain!.GetLayer(2).Draw(target, GetRidgeRenderResources());
+            _terrain!.GetLayer(3).Draw(target, GetRiverRenderResources());
+            _terrain!.GetLayer(4).Draw(target, GetStructureRenderResources());
 
             _gridShader.SetColor("filter_color", _gridFilter);
             target.Draw(

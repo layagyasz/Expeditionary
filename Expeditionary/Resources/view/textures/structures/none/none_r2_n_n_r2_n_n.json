@@ -23,7 +23,7 @@
         {
           "Type": [ "None", "None", "Road", "None", "None" ],
           "Level": [ 0, 0, 2, 0, 0 ],
-          "Angle": [ 0, 0, 2, 0, 0 ]
+          "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
           "Type": [ "None", "None", "None", "None", "None" ],

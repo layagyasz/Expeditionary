@@ -8,15 +8,15 @@ namespace Expeditionary.View.Mapping
 {
     public class StructureLayerCreator
     {
-        private static readonly int s_LayerId = 5;
-        private static readonly float s_Sqrt3d2 = 0.5f * MathF.Sqrt(3);
-        private static readonly Vector3[] s_Corners =
+        private static readonly int LayerId = 4;
+        private static readonly float Sqrt3d2 = 0.5f * MathF.Sqrt(3);
+        private static readonly Vector3[] Corners =
         {
-            new(-0.5f, 0, -s_Sqrt3d2),
-            new(0.5f, 0, -s_Sqrt3d2),
+            new(-0.5f, 0, -Sqrt3d2),
+            new(0.5f, 0, -Sqrt3d2),
             new(1, 0, 0),
-            new(0.5f, 0, s_Sqrt3d2),
-            new(-0.5f, 0, s_Sqrt3d2),
+            new(0.5f, 0, Sqrt3d2),
+            new(-0.5f, 0, Sqrt3d2),
             new(-1, 0, 0)
         };
 
@@ -29,6 +29,7 @@ namespace Expeditionary.View.Mapping
                 for (int j=0; j<map.Height; ++j)
                 {
                     var hex = Cubic.HexagonalOffset.Instance.Wrap(new(i, j));
+                    var tile = map.Get(hex)!;
 
                     var connections = new StructureLibrary.IConnectionQuery[6];
                     int e = 0;
@@ -42,11 +43,10 @@ namespace Expeditionary.View.Mapping
                         connections[e++] = new StructureLibrary.OpenConnectionQuery(query);
                     }
 
-                    // TODO -- Generate textures for building types
                     var options =
                         structures.Query(
-                            new StructureLibrary.StructureQuery(StructureType.None, Level: 0, connections))
-                        .ToList();
+                            new StructureLibrary.StructureQuery(
+                                tile.Structure.Type, tile.Structure.Level, connections));
                     var selected = options[random.Next(options.Count)];
 
                     AddHex(bufferBuilder, h++, hex, selected);
@@ -72,20 +72,20 @@ namespace Expeditionary.View.Mapping
             StructureLibrary.Option option)
         {
             bufferBuilder.SetVertex(
-                s_LayerId, index + 3 * triangle, new(hexCenter, Color4.White, option.TexCenter, new()));
+                LayerId, index + 3 * triangle, new(hexCenter, Color4.White, option.TexCenter, new()));
             bufferBuilder.SetVertex(
-                s_LayerId,
+                LayerId,
                 index + 3 * triangle + 1, 
                 new(
-                    hexCenter + s_Corners[triangle], 
+                    hexCenter + Corners[triangle], 
                     Color4.White, 
                     option.TexCoords[triangle],
                     new()));
             bufferBuilder.SetVertex(
-                s_LayerId,
+                LayerId,
                 index + 3 * triangle + 2,
                 new(
-                    hexCenter + s_Corners[(triangle + 1) % 6],
+                    hexCenter + Corners[(triangle + 1) % 6],
                     Color4.White,
                     option.TexCoords[(triangle + 1) % 6], 
                     new()));

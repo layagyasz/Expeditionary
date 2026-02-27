@@ -13,21 +13,21 @@ namespace Expeditionary.View.Mapping
 {
     public class MapViewFactory
     {
-        private static readonly int s_RidgeLayerId = 3;
-        private static readonly int s_RiverLayerId = 4;
+        private static readonly int RidgeLayerId = 2;
+        private static readonly int RiverLayerId = 3;
 
-        private static readonly float s_Sqrt3d2 = 0.5f * MathF.Sqrt(3);
-        private static readonly Vector3[] s_Corners =
+        private static readonly float Sqrt3d2 = 0.5f * MathF.Sqrt(3);
+        private static readonly Vector3[] Corners =
         {
-            new(-0.5f, 0, -s_Sqrt3d2),
-            new(0.5f, 0, -s_Sqrt3d2),
+            new(-0.5f, 0, -Sqrt3d2),
+            new(0.5f, 0, -Sqrt3d2),
             new(1, 0, 0),
-            new(0.5f, 0, s_Sqrt3d2),
-            new(-0.5f, 0, s_Sqrt3d2),
+            new(0.5f, 0, Sqrt3d2),
+            new(-0.5f, 0, Sqrt3d2),
             new(-1, 0, 0)
         };
-        private static readonly Color4 s_GridColor = new(0, 0, 0, 0.25f);
-        private static readonly float s_GridWidth = 0.04f;
+        private static readonly Color4 GridColor = new(0, 0, 0, 0.25f);
+        private static readonly float GridWidth = 0.04f;
 
         private readonly MapViewParameters _parameters;
         private readonly MapTextureLibrary _textureLibrary;
@@ -53,7 +53,6 @@ namespace Expeditionary.View.Mapping
             int triangles = 6 * (map.Width - 1) * (map.Height - 1);
             var bufferBuilder =
                 new LayeredVertexBuffer.Builder()
-                    .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(3 * triangles)
                     .AddLayer(triangles)
@@ -120,20 +119,6 @@ namespace Expeditionary.View.Mapping
                         1, index + 2, new(rightPos, color, foliageMask.TexCoords[hex][2], foliage[2]));
                 }
 
-                // Structures
-                // TODO: Should be rendered with special tiles.
-                var structureMask = options[random.Next(options.Length)];
-                for (int hex = 0; hex < 3; ++hex)
-                {
-                    var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
-                    var color = GetTileColor(tile, 2, parameters, map.ElevationLevels);
-                    var index = 9 * triangle + 3 * hex;
-                    bufferBuilder.SetVertex(2, index, new(centerPos, color, structureMask.TexCoords[hex][0], new()));
-                    bufferBuilder.SetVertex(2, index + 1, new(leftPos, color, structureMask.TexCoords[hex][1], new()));
-                    bufferBuilder.SetVertex(
-                        2, index + 2, new(rightPos, color, structureMask.TexCoords[hex][2], new()));
-                }
-
                 var edgeA = map.GetEdge(Geometry.GetEdge(centerHex, leftHex))!;
                 var edgeB = map.GetEdge(Geometry.GetEdge(leftHex, rightHex))!;
                 var edgeC = map.GetEdge(Geometry.GetEdge(centerHex, rightHex))!;
@@ -141,7 +126,7 @@ namespace Expeditionary.View.Mapping
                 // Rivers
                 AddEdge(
                     bufferBuilder, 
-                    s_RiverLayerId, 
+                    RiverLayerId, 
                     triangle,
                     parameters.Liquid,
                     centerPos, 
@@ -159,7 +144,7 @@ namespace Expeditionary.View.Mapping
                 // Ridges
                 AddEdge(
                     bufferBuilder,
-                    s_RidgeLayerId,
+                    RidgeLayerId,
                     triangle,
                     GetRidgeColor(center, left, right, parameters, map.ElevationLevels),
                     centerPos,
@@ -187,10 +172,10 @@ namespace Expeditionary.View.Mapping
                     var centerPos = ToVector3(Axial.Cartesian.Instance.Project(Axial.Offset.Instance.Wrap(new(i, j))));
                     Shapes.AddVertices(
                         grid,
-                        s_GridColor,
+                        GridColor,
                         new Line3(
-                            s_Corners.Select(x => x + centerPos).ToArray(), new Vector3(0, 1, 0), isLoop: true),
-                        s_GridWidth,
+                            Corners.Select(x => x + centerPos).ToArray(), new Vector3(0, 1, 0), isLoop: true),
+                        GridWidth,
                         center: false);
                 }
             }
@@ -259,21 +244,6 @@ namespace Expeditionary.View.Mapping
 
         private static Color4 GetBaseTileColor(Tile tile, int layer, TerrainViewParameters parameters)
         {
-            // City
-            // TODO: this should be rendered with special tiles
-            if (layer == 2)
-            {
-                return tile.Structure.Type switch
-                {
-                    StructureType.Agricultural => new(0f, 1f, 0f, 1f),
-                    StructureType.Mining => new(1f, 1f, 0f, 1f),
-                    StructureType.Residential => new(0f, 1f, 1f, 1f),
-                    StructureType.Commercial => new(0f, 0f, 1f, 1f),
-                    StructureType.Industrial => new(1f, 0f, 0f, 1f),
-                    _ => new(),
-                };
-            }
-
             // Foliage
             if (layer == 1)
             {

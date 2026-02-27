@@ -8,5 +8,8 @@
       "Implicit": [ "Resources/view/textures/structures/*.png" ]
     }
   },
+  "NoResult": {
+    "Texture": "error"
+  },
   "Options": [ "Resources/view/textures/structures::*.json" ]
 }

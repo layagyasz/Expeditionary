@@ -469,6 +469,9 @@
     <None Update="Resources\view\structures.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\structures\error.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\structures\none\none_n_n_n_n_n_n.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
