@@ -109,7 +109,7 @@ namespace Expeditionary.View.Mapping
                 for (int hex = 0; hex < 3; ++hex)
                 {
                     var tile = map.Get(Geometry.GetCornerHex(corner, hex))!;
-                    var color = GetTileColor(tile, 0, parameters, map.ElevationLevels);
+                    var color = GetTileColor(tile, 1, parameters, map.ElevationLevels);
                     var index = 9 * triangle + 3 * hex;
                     bufferBuilder.SetVertex(
                         1, index, new(centerPos, color, foliageMask.TexCoords[hex][0], foliage[0]));

@@ -34,6 +34,7 @@ function Habitation1:Apply(environment)
 	residential.CoreDensity = 0.004
 	residential.CandidateDensity = 0.02
 	residential.Type = StructureType.Residential
+	residential.Level = 2
 	residential.Size = NormalSampler(4, 2)
 	parameters.Cities.Layers:Add(residential)
 
@@ -63,6 +64,7 @@ function Habitation2:Apply(environment)
 	residential.CoreDensity = 0.004
 	residential.CandidateDensity = 0.02
 	residential.Type = StructureType.Residential
+	residential.Level = 2
 	residential.Size = NormalSampler(8, 4)
 	parameters.Cities.Layers:Add(residential)
 
@@ -92,6 +94,7 @@ function Habitation3:Apply(environment)
 	residential.CoreDensity = 0.004
 	residential.CandidateDensity = 0.02
 	residential.Type = StructureType.Residential
+	residential.Level = 2
 	residential.Size = NormalSampler(32, 16)
 	parameters.Cities.Layers:Add(residential)
 
@@ -121,6 +124,7 @@ function Habitation4:Apply(environment)
 	residential.CoreDensity = 0.016
 	residential.CandidateDensity = 0.032
 	residential.Type = StructureType.Residential
+	residential.Level = 2
 	residential.Size = NormalSampler(32, 16)
 	parameters.Cities.Layers:Add(residential)
 
@@ -150,6 +154,7 @@ function Habitation5:Apply(environment)
 	residential.CoreDensity = 0.032
 	residential.CandidateDensity = 0.064
 	residential.Type = StructureType.Residential
+	residential.Level = 2
 	residential.Size = NormalSampler(32, 16)
 	parameters.Cities.Layers:Add(residential)
 

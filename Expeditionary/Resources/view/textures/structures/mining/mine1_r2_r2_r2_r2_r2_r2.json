@@ -1,0 +1,41 @@
+[
+  {
+    "Texture": "mine1_r2_r2_r2_r2_r2_r2",
+    "Parameters": {
+      "Type": "Mining",
+      "Level": 1,
+      "Connections": [
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        },
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        },
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        },
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        },
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        },
+        {
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
+          "Angle": [ 0, 0, 0, 0, 0 ]
+        }
+      ]
+    }
+  }
+]

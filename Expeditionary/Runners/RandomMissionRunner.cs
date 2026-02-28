@@ -25,14 +25,14 @@ namespace Expeditionary.Runners
             var random = new Random();
             var missionGenerator =
                 new MissionGenerator(
-                    data.Module.Galaxy, 
+                    data.Module.Galaxy,
                     module.MapEnvironmentGenerator,
                     new(module.FactionFormations, module.Formations));
             var missionNode =
                 new MissionNode()
                 {
                     Environment = 
-                        new StaticEnvironmentProvider() { Environment = module.Environments["environment-meridian"] },
+                    new StaticEnvironmentProvider() { Environment = module.Environments["environment-meridian"] },
                     Difficulty = new() { MissionDifficulty.Medium },
                     Scale = new() { MissionScale.Medium },
                     Attackers = new() { module.Factions["faction-sm"] },
@@ -52,7 +52,7 @@ namespace Expeditionary.Runners
                                     CandidateDensity = .005f,
                                     Type = StructureType.Mining,
                                     Level = 1,
-                                    Size = new NormalSampler(2, 1),
+                                    Size = new NormalSampler(10, 4),
                                     RiverPenalty = new(),
                                     CoastPenalty = new(),
                                     SlopePenalty = new(0, -1, 1),
