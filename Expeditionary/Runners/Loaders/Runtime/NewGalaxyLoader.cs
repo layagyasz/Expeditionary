@@ -53,7 +53,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
                                     CoreCount = 1,
                                     CandidateDensity = .005f,
                                     Type = StructureType.Mining,
-                                    Level = 1,
+                                    Level = 2,
                                     Size = new NormalSampler(2, 1),
                                     RiverPenalty = new(),
                                     CoastPenalty = new(),

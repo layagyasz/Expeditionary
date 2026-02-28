@@ -7,8 +7,8 @@ namespace Expeditionary.Model.Mapping
         public bool IsLiquid { get; set; }
         public Vector3 Stone { get; set; }
         public Vector3? Soil { get; set; }
-        public bool HasGroundCover { get; set; }
         public Vector2? Brush { get; set; }
+        public bool HasGroundCover { get; set; }
         public Vector2? Foliage { get; set; }
     }
 }

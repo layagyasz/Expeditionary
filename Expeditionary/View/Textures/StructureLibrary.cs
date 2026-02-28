@@ -150,7 +150,11 @@ namespace Expeditionary.View.Textures
         public List<Option> Query(StructureQuery query)
         {
             var result = 
-                Options.SelectMany(AllTransforms).Where(option => Satisfies(query, option.Parameters)).ToList();
+                Options
+                    .Where(option => SatisfiesPrototype(query, option.Parameters))
+                    .SelectMany(AllTransforms)
+                    .Where(option => Satisfies(query, option.Parameters))
+                    .ToList();
             if (result.Count == 0)
             {
                 return new() { NoResult };
@@ -205,7 +209,7 @@ namespace Expeditionary.View.Textures
             return newOption;
         }
 
-        private static bool Satisfies(StructureQuery query, StructureParameters parameters)
+        private static bool SatisfiesPrototype(StructureQuery query, StructureParameters parameters)
         {
             if (query.Type != parameters.Type)
             {
@@ -215,6 +219,11 @@ namespace Expeditionary.View.Textures
             {
                 return false;
             }
+            return true;
+        }
+
+        private static bool Satisfies(StructureQuery query, StructureParameters parameters)
+        {
             for (int i=0; i<6; ++i)
             {
                 if (!query.Connections[i].Matches(parameters.Connections[i]))

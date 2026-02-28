@@ -7,6 +7,7 @@ MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments
 NormalSampler=luanet.import_type('Cardamom.Utils.Generators.Samplers.NormalSampler')
 Quadratic=luanet.import_type('Expeditionary.Model.Quadratic')
 StructureType=luanet.import_type('Expeditionary.Model.Mapping.StructureType')
+TerrainLayer=luanet.import_type('Expeditionary.Model.Mapping.TerrainLayer')
 TransportGenerator_Parameters=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+Parameters')
 TransportGenerator_StructurePredicate=luanet.import_type('Expeditionary.Model.Mapping.Generator.TransportGenerator+StructurePredicate')
 
@@ -44,6 +45,7 @@ function Habitation1:Apply(environment)
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
 	industrial.Level = 2
+	industrial.TopLayer = TerrainLayer.Soil
 	industrial.Size = NormalSampler(1, 1)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -76,6 +78,7 @@ function Habitation2:Apply(environment)
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
 	industrial.Level = 2
+	industrial.TopLayer = TerrainLayer.Soil
 	industrial.Size = NormalSampler(2, 1)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -108,6 +111,7 @@ function Habitation3:Apply(environment)
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
 	industrial.Level = 2
+	industrial.TopLayer = TerrainLayer.Soil
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -140,6 +144,7 @@ function Habitation4:Apply(environment)
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
 	industrial.Level = 2
+	industrial.TopLayer = TerrainLayer.Soil
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -172,6 +177,7 @@ function Habitation5:Apply(environment)
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
 	industrial.Level = 2
+	industrial.TopLayer = TerrainLayer.Soil
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -194,6 +200,7 @@ function Farm1:Apply(environment)
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
 	farming.Level = 2
+	farming.TopLayer = TerrainLayer.Soil
 	farming.Size = NormalSampler(20, 10)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -213,6 +220,7 @@ function Farm2:Apply(environment)
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
 	farming.Level = 2
+	farming.TopLayer = TerrainLayer.Soil
 	farming.Size = NormalSampler(40, 20)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -232,6 +240,7 @@ function Farm3:Apply(environment)
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
 	farming.Level = 2
+	farming.TopLayer = TerrainLayer.Soil
 	farming.Size = NormalSampler(40, 20)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -257,6 +266,7 @@ function Mine1:Apply(environment)
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
 	mining.Level = 2
+	mining.TopLayer = TerrainLayer.Soil
 	mining.Size = NormalSampler(2, 1)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()
@@ -276,6 +286,7 @@ function Mine2:Apply(environment)
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
 	mining.Level = 2
+	mining.TopLayer = TerrainLayer.Soil
 	mining.Size = NormalSampler(4, 2)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()
@@ -295,6 +306,7 @@ function Mine3:Apply(environment)
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
 	mining.Level = 2
+	mining.TopLayer = TerrainLayer.Soil
 	mining.Size = NormalSampler(8, 4)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()

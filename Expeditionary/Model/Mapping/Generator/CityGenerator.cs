@@ -21,6 +21,7 @@ namespace Expeditionary.Model.Mapping.Generator
             public ISampler Size { get; set; } = new NormalSampler(20, 10);
             public StructureType Type { get; set; }
             public int Level { get; set; } = 1;
+            public TerrainLayer TopLayer { get; set; } = TerrainLayer.Brush;
             public List<MapTag> Tags { get; set; } = new();
             public Vector3i Center { get; set; }
             public Quadratic DistancePenalty { get; set; }
@@ -166,13 +167,25 @@ namespace Expeditionary.Model.Mapping.Generator
                 if (node.Closed && node.Core != null)
                 {
                     var tile = map.Get(node.Hex)!;
+                    var p = node.Core.Parameters;
                     tile.Structure =
                         new()
                         {
-                            Type = node.Core.Parameters.Type,
-                            Level = node.Core.Parameters.Level
+                            Type = p.Type,
+                            Level = p.Level
                         };
-                    tile.Terrain.Foliage = null;
+                    if (p.TopLayer < TerrainLayer.Foliage)
+                    {
+                        tile.Terrain.Foliage = null;
+                    }
+                    if (p.TopLayer < TerrainLayer.Brush)
+                    {
+                        tile.Terrain.Brush = null;
+                    }
+                    if (p.TopLayer < TerrainLayer.Soil)
+                    {
+                        tile.Terrain.Soil = null;
+                    }
                     tile.Tags.AddRange(node.Core.Parameters.Tags);
                 }
             }
