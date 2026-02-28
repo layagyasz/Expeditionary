@@ -27,6 +27,7 @@ function Habitation1:Apply(environment)
 	commercial.CoreDensity = 0.001
 	commercial.CandidateDensity = 0.02
 	commercial.Type = StructureType.Commercial
+	commercial.Level = 2
 	commercial.Size = NormalSampler(2, 1)
 	parameters.Cities.Layers:Add(commercial)
 
@@ -42,6 +43,7 @@ function Habitation1:Apply(environment)
 	industrial.CoreDensity = 0.001
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
+	industrial.Level = 2
 	industrial.Size = NormalSampler(1, 1)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -57,6 +59,7 @@ function Habitation2:Apply(environment)
 	commercial.CoreDensity = 0.001
 	commercial.CandidateDensity = 0.02
 	commercial.Type = StructureType.Commercial
+	commercial.Level = 2
 	commercial.Size = NormalSampler(4, 2)
 	parameters.Cities.Layers:Add(commercial)
 
@@ -72,6 +75,7 @@ function Habitation2:Apply(environment)
 	industrial.CoreDensity = 0.001
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
+	industrial.Level = 2
 	industrial.Size = NormalSampler(2, 1)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -87,6 +91,7 @@ function Habitation3:Apply(environment)
 	commercial.CoreDensity = 0.001
 	commercial.CandidateDensity = 0.02
 	commercial.Type = StructureType.Commercial
+	commercial.Level = 2
 	commercial.Size = NormalSampler(16, 8)
 	parameters.Cities.Layers:Add(commercial)
 
@@ -102,6 +107,7 @@ function Habitation3:Apply(environment)
 	industrial.CoreDensity = 0.001
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
+	industrial.Level = 2
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -117,6 +123,7 @@ function Habitation4:Apply(environment)
 	commercial.CoreDensity = 0.004
 	commercial.CandidateDensity = 0.02
 	commercial.Type = StructureType.Commercial
+	commercial.Level = 2
 	commercial.Size = NormalSampler(16, 8)
 	parameters.Cities.Layers:Add(commercial)
 
@@ -132,6 +139,7 @@ function Habitation4:Apply(environment)
 	industrial.CoreDensity = 0.004
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
+	industrial.Level = 2
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -147,6 +155,7 @@ function Habitation5:Apply(environment)
 	commercial.CoreDensity = 0.008
 	commercial.CandidateDensity = 0.02
 	commercial.Type = StructureType.Commercial
+	commercial.Level = 2
 	commercial.Size = NormalSampler(16, 8)
 	parameters.Cities.Layers:Add(commercial)
 
@@ -162,6 +171,7 @@ function Habitation5:Apply(environment)
 	industrial.CoreDensity = 0.008
 	industrial.CandidateDensity = 0.02
 	industrial.Type = StructureType.Industrial
+	industrial.Level = 2
 	industrial.Size = NormalSampler(8, 4)
 	industrial.RiverPenalty = Quadratic()
 	parameters.Cities.Layers:Add(industrial)
@@ -183,6 +193,7 @@ function Farm1:Apply(environment)
 	farming.CoreDensity = 0.004
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
+	farming.Level = 2
 	farming.Size = NormalSampler(20, 10)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -201,6 +212,7 @@ function Farm2:Apply(environment)
 	farming.CoreDensity = 0.004
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
+	farming.Level = 2
 	farming.Size = NormalSampler(40, 20)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -219,6 +231,7 @@ function Farm3:Apply(environment)
 	farming.CoreDensity = 0.008
 	farming.CandidateDensity = 0.02
 	farming.Type = StructureType.Agricultural
+	farming.Level = 2
 	farming.Size = NormalSampler(40, 20)
 	farming.RiverPenalty = Quadratic(0, -2, 2)
 	farming.CoastPenalty = Quadratic()
@@ -243,7 +256,7 @@ function Mine1:Apply(environment)
 	mining.CoreDensity = 0.0004
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
-	mining.Level = 1
+	mining.Level = 2
 	mining.Size = NormalSampler(2, 1)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()
@@ -262,7 +275,7 @@ function Mine2:Apply(environment)
 	mining.CoreDensity = 0.0006
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
-	mining.Level = 1
+	mining.Level = 2
 	mining.Size = NormalSampler(4, 2)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()
@@ -281,7 +294,7 @@ function Mine3:Apply(environment)
 	mining.CoreDensity = 0.0008
 	mining.CandidateDensity = 0.01
 	mining.Type = StructureType.Mining
-	mining.Level = 1
+	mining.Level = 2
 	mining.Size = NormalSampler(8, 4)
 	mining.RiverPenalty = Quadratic()
 	mining.CoastPenalty = Quadratic()

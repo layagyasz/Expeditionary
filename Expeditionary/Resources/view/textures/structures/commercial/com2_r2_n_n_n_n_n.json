@@ -1,9 +1,9 @@
 [
   {
-    "Texture": "ind1_r2_n_n_n_n_n",
+    "Texture": "com2_r2_n_n_n_n_n",
     "Parameters": {
-      "Type": "Industrial",
-      "Level": 1,
+      "Type": "Commercial",
+      "Level": 2,
       "Connections": [
         {
           "Type": [ "None", "None", "Road", "None", "None" ],

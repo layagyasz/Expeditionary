@@ -1,9 +1,9 @@
 [
   {
-    "Texture": "com1_r2_r2_r2_r2_r2_r2",
+    "Texture": "mine2_r2_r2_r2_r2_r2_r2",
     "Parameters": {
-      "Type": "Commercial",
-      "Level": 1,
+      "Type": "Mining",
+      "Level": 2,
       "Connections": [
         {
           "Type": [ "None", "None", "Road", "None", "None" ],

@@ -1,9 +1,9 @@
 [
   {
-    "Texture": "com1_r2_n_r2_n_n_n",
+    "Texture": "ag2_r2_r2_r2_r2_r2_r2",
     "Parameters": {
-      "Type": "Commercial",
-      "Level": 1,
+      "Type": "Agricultural",
+      "Level": 2,
       "Connections": [
         {
           "Type": [ "None", "None", "Road", "None", "None" ],
@@ -11,8 +11,8 @@
           "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
-          "Type": [ "None", "None", "None", "None", "None" ],
-          "Level": [ 0, 0, 0, 0, 0 ],
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
           "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
@@ -21,18 +21,18 @@
           "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
-          "Type": [ "None", "None", "None", "None", "None" ],
-          "Level": [ 0, 0, 0, 0, 0 ],
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
           "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
-          "Type": [ "None", "None", "None", "None", "None" ],
-          "Level": [ 0, 0, 0, 0, 0 ],
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
           "Angle": [ 0, 0, 0, 0, 0 ]
         },
         {
-          "Type": [ "None", "None", "None", "None", "None" ],
-          "Level": [ 0, 0, 0, 0, 0 ],
+          "Type": [ "None", "None", "Road", "None", "None" ],
+          "Level": [ 0, 0, 2, 0, 0 ],
           "Angle": [ 0, 0, 0, 0, 0 ]
         }
       ]
