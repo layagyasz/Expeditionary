@@ -484,10 +484,22 @@
     <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_n_n_n_n.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_r2_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_n_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_n_n_n.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_n_n_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_n_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\agricultural\ag2_r2_n_r2_r2_r2_n.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\structures\agricultural\ag2_r2_r2_n_n_n_n.png">
@@ -523,6 +535,18 @@
     <None Update="Resources\view\textures\structures\agricultural\ag2_r2_r2_r2_r2_r2_r2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\structures\commercial\com2_r2_n_r2_r2_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\commercial\com2_r2_n_r2_n_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\commercial\com2_r2_n_r2_n_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\commercial\com2_r2_n_r2_r2_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\structures\commercial\com2_r2_r2_r2_r2_r2_r2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -553,6 +577,24 @@
     <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_n_n_n_n.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_n_n_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_r2_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_n_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_n_n_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_n_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\industrial\ind2_r2_n_r2_r2_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\textures\structures\industrial\ind2_r2_r2_r2_r2_r2_r2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -572,6 +614,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\structures\mining\mine2_r2_n_n_r2_n_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\mining\mine2_r2_n_r2_r2_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\mining\mine2_r2_n_r2_n_r2_n.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\mining\mine2_r2_n_r2_n_r2_n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\textures\structures\mining\mine2_r2_n_r2_r2_r2_n.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\textures\structures\mining\mine2_r2_r2_r2_r2_r2_r2.json">
