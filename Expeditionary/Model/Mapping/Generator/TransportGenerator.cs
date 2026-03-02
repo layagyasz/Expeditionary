@@ -20,16 +20,19 @@ namespace Expeditionary.Model.Mapping.Generator
             public float MaximumCost { get; set; } = 1000f;
             public float Density { get; set; } = 1f;
             public float Dropoff { get; set; } = 2f;
+            public float CrossoverMultiplier = 5f;
         }
 
         private class Node : IGraphNode
         {
+            public StructureType Type { get; }
             public Vector3i Hex { get; }
 
             private readonly List<IGraphEdge> _edges = new();
 
-            public Node(Vector3i hex)
+            public Node(StructureType type, Vector3i hex)
             {
+                Type = type;
                 Hex = hex;
             }
 
@@ -38,12 +41,9 @@ namespace Expeditionary.Model.Mapping.Generator
                 return _edges;
             }
 
-            public void AddNeighbors(IEnumerable<Node> neighbors)
+            public void AddEdge(IGraphEdge edge)
             {
-                _edges.AddRange(
-                    neighbors.Select(
-                        neighbor => new DefaultGraphEdge(
-                            this, neighbor, Geometry.GetCubicDistance(Hex, neighbor.Hex))));
+                _edges.Add(edge);
             }
         }
 
@@ -55,14 +55,16 @@ namespace Expeditionary.Model.Mapping.Generator
                 softness: new(0, 25, 5),
                 waterDepth: new(0, 50, 5));
 
-        public static void Generate(IEnumerable<Parameters> parameters, ISet<Vector3i> cores, IList<Vector3i> nodes, Map map, Random random)
+        public static void Generate(
+            IEnumerable<Parameters> parameters, ISet<Vector3i> cores, IList<Vector3i> nodes, Map map, Random random)
         {
             foreach (var p in parameters)
             {
-                var wrappers = 
+                var wrappers =
                     nodes
-                        .Where(hex => IsSupported(map.Get(hex)!, cores.Contains(hex), p))
-                        .Select(hex => new Node(hex))
+                        .Select(hex => (tile: map.Get(hex)!, hex))
+                        .Where(tile => IsSupported(tile.tile, cores.Contains(tile.hex), p))
+                        .Select(tile => new Node(tile.tile.Structure.Type, tile.hex))
                         .ToList();
 
                 var voronoiVerts =
@@ -79,9 +81,21 @@ namespace Expeditionary.Model.Mapping.Generator
 
                 for (int i=0; i<wrappers.Count; ++i)
                 {
-                    wrappers[i].AddNeighbors(
-                        graph.Neighbors[i]
-                            .Where(wrapperId => wrapperId >= 0).Select(wrapperId => wrappers[wrapperId]));
+                    var node = wrappers[i];
+                    foreach (var neighborId in graph.Neighbors[i])
+                    {
+                        if (neighborId < 0)
+                        {
+                            continue;
+                        }
+                        var neighbor = wrappers[neighborId];
+                        node.AddEdge(
+                            new DefaultGraphEdge(
+                                node,
+                                neighbor,
+                                (node.Type == neighbor.Type ? 1 : p.CrossoverMultiplier) 
+                                    * Geometry.GetCubicDistance(node.Hex, neighbor.Hex)));
+                    }
                 }
                 var mst = MinimalSpanningTree.Compute(wrappers).ToHashSet();
                 foreach (var edge in mst)
@@ -113,7 +127,7 @@ namespace Expeditionary.Model.Mapping.Generator
         private static void AddEdge(Vector3i origin, Vector3i destination, Parameters parameters, Map map)
         {
             var path = Pathing.GetShortestPath(map, origin, destination, s_Movement, TileConsiderations.None)!;
-            if (path.Cost> parameters.MaximumCost)
+            if (path.Cost > parameters.MaximumCost)
             {
                 return;
             }
