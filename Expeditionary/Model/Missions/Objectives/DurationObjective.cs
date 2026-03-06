@@ -28,7 +28,7 @@
 
         public ObjectiveProgress GetProgress(Player player, Match match)
         {
-            return new(match.GetTurn(), Turns);
+            return new(match.CurrentTurn.Turn, Turns);
         }
     }
 }

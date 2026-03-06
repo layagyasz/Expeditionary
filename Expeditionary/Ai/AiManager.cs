@@ -55,7 +55,7 @@ namespace Expeditionary.Ai
 
         private void HandleStep(object? sender, EventArgs e)
         {
-            if (_handlers.TryGetValue(_match.GetActivePlayer(), out var handler))
+            if (_handlers.TryGetValue(_match.CurrentTurn.Player!, out var handler))
             {
                 Task.Run(handler.DoTurn);
             }

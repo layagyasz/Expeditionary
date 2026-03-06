@@ -1,10 +1,12 @@
-﻿using Expeditionary.Model.Knowledge;
+﻿using Expeditionary.Model.Events;
+using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class PlayerSetup(Player Player, IObjective Objective, List<FormationSetup> Formations)
+    public record class PlayerSetup(
+        Player Player, IObjective Objective, List<IEvent> Events, List<FormationSetup> Formations)
     {
         public void Create(Match match, CreationContext context)
         {
@@ -13,6 +15,10 @@ namespace Expeditionary.Model.Missions
 
         public void Setup(Match match, SetupContext context) 
         {
+            foreach (var @event in Events)
+            {
+                match.Add(@event);
+            }
             foreach (var formation in Formations)
             {
                 formation.Setup(Player, match, context);

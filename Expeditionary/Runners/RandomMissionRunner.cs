@@ -44,22 +44,22 @@ namespace Expeditionary.Runners
                         new TestMissionGenerator()
                         {
                             ZoneOptions =
-                            new()
-                            {
                                 new()
                                 {
-                                    CoreCount = 1,
-                                    CandidateDensity = .005f,
-                                    Type = StructureType.Mining,
-                                    Level = 2,
-                                    TopLayer = TerrainLayer.Soil,
-                                    Size = new NormalSampler(10, 3),
-                                    RiverPenalty = new(),
-                                    CoastPenalty = new(),
-                                    SlopePenalty = new(0, -1, 1),
-                                    ElevationPenalty = new(0, -1, 1),
+                                    new()
+                                    {
+                                        CoreCount = 1,
+                                        CandidateDensity = .005f,
+                                        Type = StructureType.Mining,
+                                        Level = 2,
+                                        TopLayer = TerrainLayer.Soil,
+                                        Size = new NormalSampler(10, 3),
+                                        RiverPenalty = new(),
+                                        CoastPenalty = new(),
+                                        SlopePenalty = new(0, -1, 1),
+                                        ElevationPenalty = new(0, -1, 1),
+                                    }
                                 }
-                            }
                         }
                 };
             var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;

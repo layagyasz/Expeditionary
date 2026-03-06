@@ -21,8 +21,9 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup = 
                     new PlayerSetup(
                         player,
-                        GetOffenseObjective(),
-                        new()
+                        Objective: GetOffenseObjective(),
+                        Events: new(),
+                        Formations: new()
                         {
                             new(
                                 resources.FormationGenerator.Generate(attacker, resources.Random), 
@@ -37,8 +38,9 @@ namespace Expeditionary.Model.Missions.Generator
                 var setup =
                     new PlayerSetup(
                         player,
-                        GetDefenseObjective(),
-                        new()
+                        Objective: GetDefenseObjective(),
+                        Events: new(),
+                        Formations: new()
                         {
                             new(
                                 resources.FormationGenerator.Generate(defender, resources.Random),
@@ -55,9 +57,13 @@ namespace Expeditionary.Model.Missions.Generator
                         environment,
                         new Vector2i(100, 100),
                         new List<CityGenerator.LayerParameters>()
-                        { 
-                            Materialize(
-                                zoneChoice, MapTag.Control1, Hexagons.Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)))
+                        {
+                            zoneChoice with
+                            {
+                                Tags = zoneChoice.Tags.Concat(Enumerable.Repeat(MapTag.Control1, 1)).ToList(),
+                                Center = Hexagons.Cubic.HexagonalOffset.Instance.Wrap(new(50, 50)),
+                                DistancePenalty = new(0, 0.2f, 0),
+                            }
                         }),
                     players);
         }
@@ -70,33 +76,6 @@ namespace Expeditionary.Model.Missions.Generator
         protected virtual IObjective GetDefenseObjective()
         {
             return new OccupyObjective(MapTag.Control1, new AssetValue(1, 1), IsDefender: true);
-        }
-
-        private static CityGenerator.LayerParameters Materialize(
-            CityGenerator.LayerParameters parameters, MapTag tag, Vector3i center)
-        {
-            return new()
-            {
-                CoreCount = parameters.CoreCount,
-                CoreDensity = parameters.CoreDensity,
-                CandidateDensity = parameters.CandidateDensity,
-                Size = parameters.Size,
-                Type = parameters.Type,
-                Level = parameters.Level,
-                Tags = parameters.Tags.Concat(Enumerable.Repeat(tag, 1)).ToList(),
-                Center = center,
-                DistancePenalty = new(0, 0.2f, 0),
-                SprawlPenalty = parameters.SprawlPenalty,
-                SlopePenalty = parameters.SlopePenalty,
-                ElevationPenalty = parameters.ElevationPenalty,
-                CoastPenalty = parameters.CoastPenalty,
-                RiverPenalty = parameters.RiverPenalty,
-                SandPenalty = parameters.SandPenalty,
-                ClayPenalty = parameters.ClayPenalty,
-                SiltPenalty = parameters.SiltPenalty,
-                HeatPenalty = parameters.HeatPenalty,
-                MoisturePenalty = parameters.MoisturePenalty,
-            };
         }
     }
 }

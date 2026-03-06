@@ -196,7 +196,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleStep(object? sender, EventArgs e)
         {
-            if (_player == _match.GetActivePlayer())
+            if (_player == _match.CurrentTurn.Player)
             {
                 StepSelectedUnit();
             }

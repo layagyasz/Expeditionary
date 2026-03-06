@@ -4,6 +4,7 @@ using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Caches;
 using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Events;
+using Expeditionary.Model.Events;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
@@ -26,7 +27,7 @@ namespace Expeditionary.Model
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
 
-        private readonly IEventBuffer _events = new SimpleEventBuffer();
+        private readonly IEventBuffer _eventBuffer = new SimpleEventBuffer();
 
         private readonly Random _random;
         private readonly IIdGenerator _idGenerator;
@@ -41,9 +42,12 @@ namespace Expeditionary.Model
         private readonly List<Formation> _formations = new();
         private readonly List<IAsset> _assets = new();
         private readonly MultiMap<Vector3i, IAsset> _positions = new();
+        private readonly List<IEvent> _events = new();
 
         private int _turn = 0;
         private int _activePlayer = -1;
+
+        public TurnInfo CurrentTurn => new(_turn, GetPlayer(_activePlayer), TurnSegment.Active);
 
         public Match(Random random, IIdGenerator idGenerator, Map map)
         {
@@ -75,8 +79,13 @@ namespace Expeditionary.Model
             var formation = template.Materialize(player, _idGenerator);
             _formations.Add(formation);
             s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
-            _events.Queue(FormationAdded, this, formation);
+            _eventBuffer.Queue(FormationAdded, this, formation);
             return formation;
+        }
+
+        public void Add(IEvent @event)
+        {
+            _events.Add(@event);
         }
 
         public void Damage(Unit attacker, Unit defender, int kills)
@@ -111,7 +120,7 @@ namespace Expeditionary.Model
 
         public void DispatchEvents(long delta)
         {
-            _events.DispatchEvents(delta);
+            _eventBuffer.DispatchEvents(delta);
         }
 
         public bool DoOrder(IOrder order)
@@ -129,11 +138,6 @@ namespace Expeditionary.Model
             s_Logger.Log($"{order} executed");
             order.Execute(this);
             return true;
-        }
-
-        public Player GetActivePlayer()
-        {
-            return _players[_activePlayer];
         }
 
         public IEnumerable<IAsset> GetAssets()
@@ -212,11 +216,6 @@ namespace Expeditionary.Model
             return _playerStatistics[player];
         }
 
-        public int GetTurn()
-        {
-            return _turn;
-        }
-
         public IEnumerable<PlayerStatistics> GetStatistics(int team)
         {
             return _playerStatistics.Where(x => x.Key.Team == team).Select(x => x.Value);
@@ -227,9 +226,9 @@ namespace Expeditionary.Model
             foreach (var knowledge in _playerKnowledge.Values)
             {
                 knowledge.AssetKnowledgeChanged += 
-                    _events.Hook<AssetKnowledgeChangedEventArgs>(HandleAssetKnowledgeChanged);
+                    _eventBuffer.Hook<AssetKnowledgeChangedEventArgs>(HandleAssetKnowledgeChanged);
                 knowledge.MapKnowledgeChanged += 
-                    _events.Hook<MapKnowledgeChangedEventArgs>(HandleMapKnowledgeChanged);
+                    _eventBuffer.Hook<MapKnowledgeChangedEventArgs>(HandleMapKnowledgeChanged);
             }
             s_Logger.Log("Initialized");
         }
@@ -313,20 +312,24 @@ namespace Expeditionary.Model
 
         public void Step()
         {
+            DoEvents(new(_turn, GetPlayer(_activePlayer), _activePlayer >= 0 ? TurnSegment.End : TurnSegment.Start));
             _activePlayer++;
             if (_activePlayer >= GetPlayers().Count())
             {
-                _activePlayer = 0;
+                DoEvents(new(_turn, GetPlayer(_activePlayer), TurnSegment.End));
                 _turn++;
                 Reset();
+                DoEvents(new(_turn, GetPlayer(_activePlayer), TurnSegment.Start));
+                _activePlayer = 0;
             }
             if (_playerObjectives.Any(entry => entry.Value.Evaluate(entry.Key, this).IsTerminal))
             {
-                _events.Queue(Finished, this, EventArgs.Empty);
+                _eventBuffer.Queue(Finished, this, EventArgs.Empty);
                 return;
             }
+            DoEvents(new(_turn, GetPlayer(_activePlayer), TurnSegment.Start));
             s_Logger.Log($"Entered turn {_players[_activePlayer]} {_turn}");
-            _events.Queue(Stepped, this, EventArgs.Empty);
+            _eventBuffer.Queue(Stepped, this, EventArgs.Empty);
         }
 
         public void Unload(Unit unit)
@@ -346,6 +349,27 @@ namespace Expeditionary.Model
                 }
             }
             unit.Passenger = null;
+        }
+
+        private void DoEvents(TurnInfo turn)
+        {
+            var removedEvents = new List<IEvent>();
+            foreach (var @event in _events)
+            { 
+                if (@event.Fire(this, turn) && !@event.IsRecurring)
+                {
+                    removedEvents.Add(@event);
+                }
+            }
+            if (removedEvents.Any())
+            {
+                _events.RemoveAll(removedEvents.Contains);
+            }
+        }
+
+        private Player? GetPlayer(int playerId)
+        {
+            return playerId >= 0 ? _players[playerId] : null;
         }
 
         private bool ValidatePlayer(Player player)
