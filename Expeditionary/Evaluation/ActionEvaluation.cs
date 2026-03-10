@@ -17,7 +17,7 @@ namespace Expeditionary.Evaluation
         {
             var preview =
                 CombatCalculator.GetDirectPreview(
-                    attacker, attacker.Position!.Value, attack, mode, defender, defender.Position!.Value, map);
+                    attacker, attacker.Position, attack, mode, defender, defender.Position, map);
             return defender.Type.Points * Math.Min(1, preview.Result / defender.Number);
         }
 
@@ -32,7 +32,7 @@ namespace Expeditionary.Evaluation
                 {
                     var preview =
                         CombatCalculator.GetIndirectPreview(
-                            attacker, attacker.Position!.Value, attack, mode, targetUnit, target, map);
+                            attacker, attacker.Position, attack, mode, targetUnit, target, map);
                     result += (targetUnit.Player.Team == targetUnit.Player.Team ? -1 : 1) 
                         * targetUnit.Type.Points * Math.Min(1, preview.Result / targetUnit.Number);
                 }
@@ -45,7 +45,7 @@ namespace Expeditionary.Evaluation
         {
             var consideration =
                     tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match);
-            var baseline = TileConsiderations.Evaluate(consideration, unit.Position!.Value, match.GetMap());
+            var baseline = TileConsiderations.Evaluate(consideration, unit.Position, match.GetMap());
             return unit.Value.Points 
                 * (TileConsiderations.Evaluate(consideration, path.Destination, match.GetMap()) - baseline);
         }
@@ -69,7 +69,7 @@ namespace Expeditionary.Evaluation
             {
                 var baselineConsideration = TileConsiderations.Evaluate(
                     tileEvaluator.GetThreatConsiderationFor(Disposition.Defensive, match),
-                    unit.Position!.Value,
+                    unit.Position,
                     match.GetMap());
                 var baseline = (unit.Value.Points + unit.Passenger.Value.Points) * baselineConsideration;
                 var passenger = 
@@ -77,7 +77,7 @@ namespace Expeditionary.Evaluation
                         tileEvaluator
                             .ForPassenger(passengerUnit)
                             .GetThreatConsiderationFor(Disposition.Defensive, match),
-                        unit.Position!.Value, 
+                        unit.Position, 
                         match.GetMap());
                 return passengerUnit.Value.Points * passenger + unit.Value.Points * baselineConsideration - baseline;
             }

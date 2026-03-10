@@ -42,7 +42,7 @@ namespace Expeditionary.Ai.Assignments
             {
                 return Region.Contains(match.GetMap(), moveAction.Path.Destination);
             }
-            return Region.Contains(match.GetMap(), unit.Position!.Value);
+            return Region.Contains(match.GetMap(), unit.Position);
         }
 
         public Vector3i SelectHex(Map map)

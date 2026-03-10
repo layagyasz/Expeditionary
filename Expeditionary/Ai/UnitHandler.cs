@@ -35,7 +35,7 @@ namespace Expeditionary.Ai
 
         public AiHandlerStatus DoTurn(Match match)
         {
-            if (!Unit.IsActive())
+            if (!Unit.IsActive)
             {
                 return AiHandlerStatus.Inactive;
             }

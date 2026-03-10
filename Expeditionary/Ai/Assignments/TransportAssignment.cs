@@ -34,7 +34,7 @@ namespace Expeditionary.Ai.Assignments
 
         public bool NotifyAction(Unit unit, IUnitAction action, Match match)
         {
-            return action is UnloadAction || !Unit.IsActive();
+            return action is UnloadAction || !Unit.IsActive;
         }
 
         public Vector3i SelectHex(Map map)
@@ -44,24 +44,24 @@ namespace Expeditionary.Ai.Assignments
 
         private Pathing.Path? GetPath(Unit unit, Match match)
         {
-            if (Unit.Position == null)
+            if (!Unit.IsActive)
             {
                 return null;
             }
-            if (unit.Passenger != Unit && unit.Position!.Value != Unit.Position!.Value)
+            if (unit.Passenger != Unit && unit.Position != Unit.Position)
             {
                 return Pathing.GetShortestPath(
                     match.GetMap(),
-                    unit.Position!.Value,
-                    Unit.Position!.Value,
+                    unit.Position,
+                    Unit.Position,
                     unit.Type.Movement,
                     TileConsiderations.None);
             }
-            if (unit.Passenger == Unit && Unit.Position!.Value != Hex)
+            if (unit.Passenger == Unit && Unit.Position != Hex)
             {
                 return Pathing.GetShortestPath(
                     match.GetMap(),
-                    unit.Position!.Value,
+                    unit.Position,
                     Hex,
                     unit.Type.Movement,
                     TileConsiderations.None);
@@ -76,14 +76,14 @@ namespace Expeditionary.Ai.Assignments
             {
                 return ActionEvaluation.EvaluateMovePathBonus(unit, moveAction.Path, path);
             }
-            if (unit.Passenger != Unit && unit.Position!.Value == Unit.Position!.Value)
+            if (unit.Passenger != Unit && unit.Position == Unit.Position)
             {
                 if (action is LoadAction)
                 {
                     return reward;
                 }
             }
-            if (unit.Passenger == Unit && unit.Position!.Value == Hex)
+            if (unit.Passenger == Unit && unit.Position == Hex)
             {
                 if (action is UnloadAction)
                 {

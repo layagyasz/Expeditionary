@@ -76,7 +76,7 @@ namespace Expeditionary.Ai.Assignments
 
         private static bool IsDeployed(IAiHandler formation)
         {
-            return formation.GetAllDiads().Any(x => x.Unit.Unit.IsDestroyed || x.Unit.Unit.Position != null);
+            return formation.GetAllDiads().Any(diad => !diad.Unit.Unit.IsReserved);
         }
     }
 }

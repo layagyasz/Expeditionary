@@ -66,9 +66,9 @@ namespace Expeditionary.Model
             _playerKnowledge.Add(player, knowledge);
             foreach (var asset in _assets)
             {
-                if (asset.Position.HasValue)
+                if (asset.IsActive)
                 {
-                    knowledge.Place(asset, asset.Position.Value, _positions);
+                    knowledge.Place(asset, asset.Position, _positions);
                 }
             }
             s_Logger.Log($"{player} added");
@@ -111,7 +111,8 @@ namespace Expeditionary.Model
             {
                 knowledge.Destroy(unit, _positions);
             }
-            unit.Destroy();
+            RemoveInternal(unit);
+            unit.Status = AssetStatus.Destroyed;
             if (unit.Passenger != null && unit.Passenger is Unit passenger)
             {
                 Destroy(passenger);
@@ -266,9 +267,9 @@ namespace Expeditionary.Model
         public void Place(IAsset asset, Vector3i position)
         {
             s_Logger.Log($"{asset} placed at {position}");
-            if (asset.Position.HasValue)
+            if (asset.IsActive)
             {
-                _positions.Remove(asset.Position.Value, asset);
+                _positions.Remove(asset.Position, asset);
                 
                 foreach (var knowledge in _playerKnowledge.Values)
                 {
@@ -286,22 +287,14 @@ namespace Expeditionary.Model
             {
                 knowledge.Place(asset, position, _positions);
             }
+
+            asset.Status = AssetStatus.Active;
         }
 
         public void Remove(IAsset asset)
         {
-            s_Logger.Log($"{asset} removed");
-            _assets.Remove(asset);
-            if (asset.Position.HasValue)
-            {
-                _positions.Remove(asset.Position.Value, asset);
-                asset.Position = null;
-            }
-
-            foreach (var knowledge in _playerKnowledge.Values)
-            {
-                knowledge.Remove(asset, _positions);
-            }
+            RemoveInternal(asset);
+            asset.Status = AssetStatus.Reserved;
         }
 
         public void Reset()
@@ -339,13 +332,9 @@ namespace Expeditionary.Model
             if (passenger != null)
             {
                 passenger.IsPassenger = false;
-
-                if (passenger.Position != null)
+                foreach (var knowledge in _playerKnowledge.Values)
                 {
-                    foreach (var knowledge in _playerKnowledge.Values)
-                    {
-                        knowledge.Place(passenger, passenger.Position.Value, _positions);
-                    }
+                    knowledge.Place(passenger, passenger.Position, _positions);
                 }
             }
             unit.Passenger = null;
@@ -370,6 +359,21 @@ namespace Expeditionary.Model
         private Player? GetPlayer(int playerId)
         {
             return playerId >= 0 ? _players[playerId] : null;
+        }
+
+        private void RemoveInternal(IAsset asset)
+        {
+            s_Logger.Log($"{asset} removed");
+            _assets.Remove(asset);
+            if (asset.IsActive)
+            {
+                _positions.Remove(asset.Position, asset);
+                asset.Position = default;
+            }
+            foreach (var knowledge in _playerKnowledge.Values)
+            {
+                knowledge.Remove(asset, _positions);
+            }
         }
 
         private bool ValidatePlayer(Player player)

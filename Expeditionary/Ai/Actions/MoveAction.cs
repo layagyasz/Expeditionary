@@ -12,7 +12,7 @@ namespace Expeditionary.Ai.Actions
             var realPath = 
                 Pathing.GetShortestPath(
                     match.GetMap(), 
-                    unit.Position!.Value, 
+                    unit.Position, 
                     Path.Destination,
                     unit.Type.Movement,
                     TileConsiderations.None);
@@ -22,7 +22,7 @@ namespace Expeditionary.Ai.Actions
         public static IEnumerable<IUnitAction> GenerateValidMoves(Match match, Unit unit)
         {
             return Pathing.GetPathField(
-                match.GetMap(), unit.Position!.Value, unit.Type.Movement, TileConsiderations.None, unit.Type.Speed)
+                match.GetMap(), unit.Position, unit.Type.Movement, TileConsiderations.None, unit.Type.Speed)
                 .Where(x => x.Destination != unit.Position)
                 .Select(x => new MoveAction(x));
         }

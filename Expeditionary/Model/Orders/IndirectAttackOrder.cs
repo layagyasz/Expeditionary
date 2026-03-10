@@ -13,7 +13,7 @@ namespace Expeditionary.Model.Orders
             {
                 return false;
             }
-            if (!CombatCalculator.IsValidLineOfSight(Mode, match.GetMap(), Unit.Position!.Value, Target))
+            if (!CombatCalculator.IsValidLineOfSight(Mode, match.GetMap(), Unit.Position, Target))
             {
                 return false;
             }

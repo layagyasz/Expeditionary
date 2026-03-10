@@ -7,11 +7,14 @@ namespace Expeditionary.Model.Units
         int Id { get; }
         string Name { get; }
         string TypeKey { get; }
-        public Vector3i? Position { get; set; }
-        public bool IsDestroyed { get; }
-        public bool IsPassenger { get; set; }
-        public AssetValue Value { get; }
-        public void Reset();
+        Vector3i Position { get; set; }
+        AssetStatus Status { get; set; }
+        bool IsActive => Status == AssetStatus.Active;
+        bool IsDestroyed => Status == AssetStatus.Destroyed;
+        bool IsReserved => Status == AssetStatus.Reserved;
+        bool IsPassenger { get; set; }
+        AssetValue Value { get; }
+        void Reset();
 
         public string? ToString()
         {

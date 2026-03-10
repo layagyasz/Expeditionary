@@ -1,5 +1,6 @@
 ﻿using Cardamom.Ui.Controller;
 using Expeditionary.Model;
+using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 using Expeditionary.View.Scenes.Matches.Overlays;
 
@@ -66,7 +67,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
 
         private IEnumerable<IOrderPrototype> GetPossibleOrders(Unit unit)
         {
-            if (unit.Actions == 0 || !unit.IsActive())
+            if (unit.Actions == 0 || !unit.IsActive)
             {
                 yield break;
             }
@@ -82,7 +83,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             {
                 yield return new IOrderPrototype.MoveOrderPrototype("Move");
             }
-            foreach (var passenger in _match!.GetAssetsAt(unit.Position!.Value)
+            foreach (var passenger in _match!.GetAssetsAt(unit.Position)
                 .Where(x => OrderChecker.CanLoad(unit, x)))
             {
                 yield return new IOrderPrototype.LoadOrderPrototype($"Load {passenger.Name}", passenger);

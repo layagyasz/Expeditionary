@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Model.Units;
 
-namespace Expeditionary.Model
+namespace Expeditionary.Model.Orders
 {
     public static class OrderChecker
     {

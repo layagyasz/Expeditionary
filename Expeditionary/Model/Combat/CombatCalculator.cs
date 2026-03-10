@@ -34,11 +34,7 @@ namespace Expeditionary.Model.Combat
 
         public static bool IsValidTarget(Unit attacker, Unit target)
         {
-            if (target.IsDestroyed)
-            {
-                return false;
-            }
-            if (!target.Position.HasValue)
+            if (!target.IsActive)
             {
                 return false;
             }
@@ -59,7 +55,7 @@ namespace Expeditionary.Model.Combat
 
         public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            return IsValidTarget(attacker, attacker.Position!.Value, mode, target, target.Position!.Value, map);
+            return IsValidTarget(attacker, attacker.Position, mode, target, target.Position, map);
         }
 
         public static bool IsValidTarget(
@@ -89,8 +85,7 @@ namespace Expeditionary.Model.Combat
         public static CombatPreview GetDirectPreview(
             Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            return GetDirectPreview(
-                attacker, attacker.Position!.Value, weapon, mode, target, target.Position!.Value, map);
+            return GetDirectPreview(attacker, attacker.Position, weapon, mode, target, target.Position, map);
         }
 
         public static CombatPreview GetDirectPreview(
@@ -167,8 +162,7 @@ namespace Expeditionary.Model.Combat
         public static CombatPreview GetIndirectPreview(
             Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
         {
-            return GetIndirectPreview(
-                attacker, attacker.Position!.Value, weapon, mode, target, target.Position!.Value, map);
+            return GetIndirectPreview(attacker, attacker.Position, weapon, mode, target, target.Position, map);
         }
 
         public static CombatPreview GetIndirectPreview(

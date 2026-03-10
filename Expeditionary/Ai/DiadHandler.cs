@@ -2,6 +2,7 @@
 using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Model;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Orders;
 using Expeditionary.Model.Units;
 
 namespace Expeditionary.Ai
@@ -81,7 +82,7 @@ namespace Expeditionary.Ai
         private static bool ShouldUseTransport(
             Unit? transport, Unit passenger, PointAssignment assignment, TileEvaluator evaluator)
         {
-            if (transport == null || !transport.IsActive() || !passenger.IsActive())
+            if (transport == null || !transport.IsActive || !passenger.IsActive)
             {
                 return false;
             }
@@ -90,8 +91,8 @@ namespace Expeditionary.Ai
                 return false;
             }
             var hindrance = transport.Type.Movement.GetMaxHindrance();
-            return evaluator.IsReachable(hindrance, transport.Position!.Value, assignment.Hex)
-                && evaluator.IsReachable(hindrance, transport.Position!.Value, passenger.Position!.Value);
+            return evaluator.IsReachable(hindrance, transport.Position, assignment.Hex)
+                && evaluator.IsReachable(hindrance, transport.Position, passenger.Position);
         }
 
         private static IAssignment GetShadowAssignment(UnitHandler unit, IAssignment assignment, Match match)

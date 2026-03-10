@@ -9,8 +9,11 @@ namespace Expeditionary.Model.Units
         public Player Player { get; }
         public UnitType Type { get; }
         public string TypeKey => Type.Key;
-        public Vector3i? Position { get; set; }
-        public bool IsDestroyed { get; private set; }
+        public Vector3i Position { get; set; }
+        public AssetStatus Status { get; set; } = AssetStatus.Reserved;
+        public bool IsActive => Status == AssetStatus.Active;
+        public bool IsDestroyed => Status == AssetStatus.Destroyed;
+        public bool IsReserved => Status == AssetStatus.Reserved;
         public bool IsPassenger { get; set; }
         public int Number { get; private set; }
         public int Actions { get; private set; }
@@ -35,17 +38,6 @@ namespace Expeditionary.Model.Units
         public void Damage(int kills)
         {
             Number -= kills;
-        }
-
-        public void Destroy()
-        {
-            IsDestroyed = true;
-            Position = default;
-        }
-
-        public bool IsActive()
-        {
-            return !IsDestroyed && Position != null;
         }
 
         public void Reset()

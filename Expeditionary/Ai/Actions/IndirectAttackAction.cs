@@ -23,7 +23,7 @@ namespace Expeditionary.Ai.Actions
                 {
                     if (mode.IsIndirect())
                     {
-                        foreach (var target in CombatCalculator.GetValidAttackHexes(mode, map, unit.Position!.Value))
+                        foreach (var target in CombatCalculator.GetValidAttackHexes(mode, map, unit.Position))
                         {
                             yield return new IndirectAttackAction(target.Target, attack, mode);
                         }

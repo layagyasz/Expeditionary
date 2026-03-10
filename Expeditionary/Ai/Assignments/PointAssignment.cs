@@ -183,10 +183,10 @@ namespace Expeditionary.Ai.Assignments
         public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
         {
             var path = 
-                unit.Position!.Value == Hex 
+                unit.Position == Hex 
                 ? null 
                 : Pathing.GetShortestPath(
-                    match.GetMap(), unit.Position!.Value, Hex, unit.Type.Movement, TileConsiderations.None);
+                    match.GetMap(), unit.Position, Hex, unit.Type.Movement, TileConsiderations.None);
             return actions.Select(x => EvaluateAction(x, unit, path));
         }
 
@@ -201,7 +201,7 @@ namespace Expeditionary.Ai.Assignments
             {
                 return moveAction.Path.Destination == Hex;
             }
-            return unit.Position!.Value == Hex;
+            return unit.Position == Hex;
         }
 
         public Vector3i SelectHex(Map map)
@@ -224,7 +224,7 @@ namespace Expeditionary.Ai.Assignments
             {
                 return ActionEvaluation.EvaluateMovePathBonus(unit, moveAction.Path, path);
             }
-            if (unit.Position!.Value == Hex)
+            if (unit.Position == Hex)
             {
                 if (action is MoveAction)
                 {

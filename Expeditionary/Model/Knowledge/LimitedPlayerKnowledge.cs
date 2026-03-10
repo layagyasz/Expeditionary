@@ -102,7 +102,7 @@ namespace Expeditionary.Model.Knowledge
 
         private void DestroySelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
         {
-            var delta = Sighting.GetSightField(_map, unit.Position!.Value, GetMaxRange(unit)).ToList();
+            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
             var assetDelta = _assetKnowledge.DestroySelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())
@@ -181,11 +181,11 @@ namespace Expeditionary.Model.Knowledge
 
         private void RemoveSelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
         {
-            if (!unit.Position.HasValue)
+            if (!unit.IsActive)
             {
                 return;
             }
-            var delta = Sighting.GetSightField(_map, unit.Position.Value, GetMaxRange(unit)).ToList();
+            var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
             var assetDelta = _assetKnowledge.RemoveSelf(_mapKnowledge, unit, delta, positions);
             if (mapDelta.Any())

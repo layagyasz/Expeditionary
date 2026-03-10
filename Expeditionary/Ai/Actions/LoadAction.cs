@@ -13,7 +13,7 @@ namespace Expeditionary.Ai.Actions
 
         public static IEnumerable<IUnitAction> GenerateValidLoads(Match match, Unit unit)
         {
-            return match.GetAssetsAt(unit.Position!.Value)
+            return match.GetAssetsAt(unit.Position)
                 .Where(x => OrderChecker.CanLoad(unit, x))
                 .Select(x => new LoadAction(x));
         }

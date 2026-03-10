@@ -32,10 +32,11 @@ namespace Expeditionary.Model.Knowledge
                 return new(
                     _discovery.IsDiscovered(hex),
                     _spotters[hex]
-                        .Any(x => x.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue()
-                            >= Geometry.GetCubicDistance(x.Position!.Value, hex)
-                            && x.Position != null 
-                            && Sighting.IsValidLineOfSight(_map, x.Position.Value, hex)));
+                        .Any(spotter => 
+                            spotter.Type.Capabilities.GetRange(condition, UnitDetectionBand.Visual).GetValue() 
+                                >= Geometry.GetCubicDistance(spotter.Position, hex)
+                            && spotter.IsActive
+                            && Sighting.IsValidLineOfSight(_map, spotter.Position, hex)));
             }
         }
 
@@ -53,11 +54,11 @@ namespace Expeditionary.Model.Knowledge
                 var result = new EnumMap<UnitDetectionBand, float>();
                 foreach (var spotter in _spotters[hex])
                 {
-                    if (spotter.Position == null)
+                    if (!spotter.IsActive)
                     {
                         continue;
                     }
-                    var los = Sighting.GetLineOfSight(_map, spotter.Position.Value, hex);
+                    var los = Sighting.GetLineOfSight(_map, spotter.Position, hex);
                     foreach (var band in Enum.GetValues<UnitDetectionBand>())
                     {
                         result[band] =

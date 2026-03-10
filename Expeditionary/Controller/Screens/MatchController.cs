@@ -153,14 +153,14 @@ namespace Expeditionary.Controller.Screens
                 if (_selectedOrder is IOrderPrototype.MoveOrderPrototype)
                 {
                     // Cheap check to make sure hex is reachable
-                    if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position!.Value) <= _selectedUnit.Type.Speed)
+                    if (Geometry.GetCubicDistance(e.Hex, _selectedUnit.Position) <= _selectedUnit.Type.Speed)
                     {
                         DoOrder(
                             new MoveOrder(
                                 _selectedUnit,
                                 Pathing.GetShortestPath(
                                     _match.GetMap(),
-                                    _selectedUnit.Position.Value,
+                                    _selectedUnit.Position,
                                     e.Hex,
                                     _selectedUnit.Type.Movement,
                                     TileConsiderations.None,
@@ -262,7 +262,7 @@ namespace Expeditionary.Controller.Screens
             }
             if (_selectedUnit != null)
             {
-                _sceneController!.JumpTo(_selectedUnit.Position!.Value);
+                _sceneController!.JumpTo(_selectedUnit.Position);
             }
             UpdateUnitOverlay();
         }
@@ -297,8 +297,7 @@ namespace Expeditionary.Controller.Screens
                 {
                     var range = (int)attack.Mode.Range.GetMaximum();
                     _highlightLayer!.SetHighlight(
-                        CombatCalculator.GetValidAttackHexes(
-                            attack.Mode, _match.GetMap(), _selectedUnit.Position!.Value)
+                        CombatCalculator.GetValidAttackHexes(attack.Mode, _match.GetMap(), _selectedUnit.Position)
                             .Select(x => new HighlightLayer.HexHighlight(
                                 x.Target, HighlightLayer.GetLevel(x.Distance, new Interval(0, range)))));
                 }
@@ -309,7 +308,7 @@ namespace Expeditionary.Controller.Screens
                     _highlightLayer!.SetHighlight(
                         Pathing.GetPathField(
                             _match.GetMap(),
-                            _selectedUnit.Position!.Value,
+                            _selectedUnit.Position,
                             _selectedUnit.Type.Movement,
                             TileConsiderations.None,
                             _selectedUnit.Type.Speed)
@@ -338,7 +337,7 @@ namespace Expeditionary.Controller.Screens
 
         private static bool IsUnitActionable(Unit? unit)
         {
-            return unit != null && unit.IsActive() && unit.Actions > 0 && !unit.IsPassenger;
+            return unit != null && unit.IsActive && unit.Actions > 0 && !unit.IsPassenger;
         }
     }
 }
