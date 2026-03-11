@@ -23,7 +23,7 @@ namespace Expeditionary.Ai.Assignments
                 return new(
                     new()
                     {
-                        { root.Children.First(), new DefaultDefensiveAssignment(Facing, DefenseRegions) }
+                        { root.Components.First(), new DefaultDefensiveAssignment(Facing, DefenseRegions) }
                     },
                     new());
             }
@@ -42,7 +42,7 @@ namespace Expeditionary.Ai.Assignments
                         (1, TileConsiderations.Roading)));
             var eligibleOccupiers =
                 new LinkedList<Quantity<FormationHandler>>(
-                    formation.Children
+                    formation.Components
                         .Where(x => x.Formation.Role == FormationRole.Infantry)
                         .Select(x =>
                             Quantity<FormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
@@ -69,7 +69,7 @@ namespace Expeditionary.Ai.Assignments
                 parentAssignment.PartitionByFormations(eligibleOccupiers.Select(x => x.Key), map);
             var offensiveAssignment =
                 parentAssignment.PartitionByFormations(
-                    formation.Children.Where(x => x.Formation.Role != FormationRole.Infantry), map);
+                    formation.Components.Where(x => x.Formation.Role != FormationRole.Infantry), map);
 
             return new AssignmentRealization.Builder()
                 .AddAll(currentAssignment)

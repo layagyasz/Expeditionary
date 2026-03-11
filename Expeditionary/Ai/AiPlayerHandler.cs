@@ -24,17 +24,25 @@ namespace Expeditionary.Ai
                 new RootHandler(player, match.GetFormations(Player).Select(FormationHandler.Create));
         }
 
-        public void AddFormation(Formation formation, IAssignment assignment)
+        public void AddFormation(Formation formation, Formation? parent)
         {
-            var result = FormationHandler.Create(formation);
-            _rootFormationHandler.Add(result);
-            _rootFormationHandler.SetAssignment(assignment);
+            Precondition.Check(formation.Player == Player);
+            var handler = FormationHandler.Create(formation);
+            if (parent == null)
+            {
+                _rootFormationHandler.AddComponent(handler);
+            }
+            else
+            {
+                var parentHandler = 
+                    _rootFormationHandler.GetAllComponents().First(handler => handler.Formation == parent);
+                parentHandler.AddComponent(handler);
+            }
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            _match.FormationAdded -= HandleFormationAdded;
             s_Logger.With(Player.Id).Log("Disposed");
         }
 
@@ -48,20 +56,18 @@ namespace Expeditionary.Ai
 
         public void Initialize()
         {
-            _match.FormationAdded += HandleFormationAdded;
             s_Logger.With(Player.Id).Log("Initialized");
+        }
+
+        public void SetAssignment(IAssignment assignment)
+        {
+            _rootFormationHandler.SetAssignment(assignment);
         }
 
         public void Setup()
         {
             s_Logger.With(Player.Id).Log("Setup formations");
             _rootFormationHandler.Setup(_match);
-        }
-
-        private void HandleFormationAdded(object? sender, Formation formation)
-        {
-            // Add formation in correct location in formation tree.
-            s_Logger.With(Player.Id).AtWarning().Log("HandleFormationAdded not implemented");
         }
     }
 }

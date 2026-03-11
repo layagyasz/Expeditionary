@@ -16,7 +16,7 @@ namespace Expeditionary.Ai.Assignments
             var formationResult = new Dictionary<FormationHandler, IAssignment>();
             var diadResult = new Dictionary<DiadHandler, IAssignment>();
             var random = new Random();
-            foreach (var child in formation.Children)
+            foreach (var child in formation.Components)
             {
                 formationResult.Add(child, this);
             }

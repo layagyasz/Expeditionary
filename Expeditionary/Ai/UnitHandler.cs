@@ -17,7 +17,7 @@ namespace Expeditionary.Ai
         public FormationRole Role { get; }
         public Unit Unit { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment(default);
-        public IEnumerable<FormationHandler> Children => Enumerable.Empty<FormationHandler>();
+        public IEnumerable<FormationHandler> Components => Enumerable.Empty<FormationHandler>();
         public IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
         public string Id => $"unit-{Unit.Id}";
         public int Echelon => 1;
@@ -28,7 +28,7 @@ namespace Expeditionary.Ai
             Role = role;
         }
 
-        public void Add(FormationHandler handler)
+        public void AddComponent(FormationHandler handler)
         {
             throw new NotImplementedException();
         }

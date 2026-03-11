@@ -1,4 +1,5 @@
-﻿using Cardamom.Collections;
+﻿using Cardamom;
+using Cardamom.Collections;
 using Cardamom.Logging;
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Caches;
@@ -23,7 +24,7 @@ namespace Expeditionary.Model
 
         public event EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged;
         public event EventHandler<EventArgs>? Finished;
-        public event EventHandler<Formation>? FormationAdded;
+        public event EventHandler<FormationAddedEventArgs>? FormationAdded;
         public event EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged;
         public event EventHandler<EventArgs>? Stepped;
 
@@ -74,12 +75,20 @@ namespace Expeditionary.Model
             s_Logger.Log($"{player} added");
         }
 
-        public Formation Add(Player player, FormationTemplate template)
+        public Formation Add(Player player, FormationTemplate template, Formation? parent = null)
         {
+            Precondition.Check(parent == null || parent.Player == player);
             var formation = template.Materialize(player, _idGenerator);
-            _formations.Add(formation);
+            if (parent == null)
+            {
+                _formations.Add(formation);
+            }
+            else
+            {
+                parent.AddComponent(formation);
+            }
             s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
-            _eventBuffer.Queue(FormationAdded, this, formation);
+            _eventBuffer.Queue(FormationAdded, this, new(formation, parent));
             return formation;
         }
 

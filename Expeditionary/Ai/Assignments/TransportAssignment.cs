@@ -1,18 +1,18 @@
 ﻿using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
+using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
-using Expeditionary.Evaluation.Considerations;
 
 namespace Expeditionary.Ai.Assignments
 {
     public record class TransportAssignment(Unit Unit, Vector3i Hex, Vector3i Origin, MapDirection Facing) 
         : IAssignment
     {
-        private static readonly float s_Reward = 2f;
+        private static readonly float Reward = 2f;
 
         public IMapRegion Region => new PointMapRegion(Hex, 0);
 
@@ -51,27 +51,19 @@ namespace Expeditionary.Ai.Assignments
             if (unit.Passenger != Unit && unit.Position != Unit.Position)
             {
                 return Pathing.GetShortestPath(
-                    match.GetMap(),
-                    unit.Position,
-                    Unit.Position,
-                    unit.Type.Movement,
-                    TileConsiderations.None);
+                    match.GetMap(), unit.Position, Unit.Position, unit.Type.Movement, TileConsiderations.None);
             }
             if (unit.Passenger == Unit && Unit.Position != Hex)
             {
                 return Pathing.GetShortestPath(
-                    match.GetMap(),
-                    unit.Position,
-                    Hex,
-                    unit.Type.Movement,
-                    TileConsiderations.None);
+                    match.GetMap(), unit.Position, Hex, unit.Type.Movement, TileConsiderations.None);
             }
             return null;
         }
 
         private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
         {
-            var reward = s_Reward * Unit.Value.Points;
+            var reward = Reward * Unit.Value.Points;
             if (action is MoveAction moveAction && path != null)
             {
                 return ActionEvaluation.EvaluateMovePathBonus(unit, moveAction.Path, path);

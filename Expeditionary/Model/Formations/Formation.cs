@@ -41,6 +41,11 @@ namespace Expeditionary.Model.Formations
             _diads = diads.ToList();
             _componentFormations = componentFormations.ToList();
         }
+        
+        public void AddComponent(Formation formation)
+        {
+            _componentFormations.Add(formation);
+        }
 
         public IEnumerable<Diad> GetDiads()
         {

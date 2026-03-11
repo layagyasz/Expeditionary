@@ -14,22 +14,22 @@ namespace Expeditionary.Ai
         public abstract string Id { get; }
         public abstract int Echelon { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment(default);
-        public IEnumerable<FormationHandler> Children => _children;
+        public IEnumerable<FormationHandler> Components => _components;
         public abstract IEnumerable<DiadHandler> Diads { get; }
 
-        private readonly List<FormationHandler> _children;
+        private readonly List<FormationHandler> _components;
 
         private bool _isDirty = true;
         private AssignmentRealization? _assignmentRealization;
 
         protected FormationHandlerBase(IEnumerable<FormationHandler> children)
         {
-            _children = children.ToList();
+            _components = children.ToList();
         }
 
-        public void Add(FormationHandler handler)
+        public void AddComponent(FormationHandler handler)
         {
-            _children.Add(handler);
+            _components.Add(handler);
         }
 
         public AiHandlerStatus DoTurn(Match match)
@@ -47,7 +47,7 @@ namespace Expeditionary.Ai
             }
 
             var statuses = new List<(IAiHandler, AiHandlerStatus)>();
-            foreach (var child in Children)
+            foreach (var child in Components)
             {
                 statuses.Add((child, child.DoTurn(match)));
             }
@@ -60,7 +60,7 @@ namespace Expeditionary.Ai
 
         public Movement.Hindrance GetMaxHindrance()
         {
-            return Enumerable.Concat(Children.Select(x => x.GetMaxHindrance()), Diads.Select(x => x.GetMaxHindrance()))
+            return Enumerable.Concat(Components.Select(x => x.GetMaxHindrance()), Diads.Select(x => x.GetMaxHindrance()))
                 .Aggregate(Movement.Min);
         }
 
@@ -72,7 +72,7 @@ namespace Expeditionary.Ai
             DoAssignment(_assignmentRealization);
             _isDirty = false;
 
-            foreach (var child in Children)
+            foreach (var child in Components)
             {
                 child.Setup(match);
             }

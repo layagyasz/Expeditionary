@@ -6,7 +6,7 @@ namespace Expeditionary.Ai
 {
     public class AiManager : IDisposable, IInitializable
     {
-        private static readonly ILogger s_Logger = 
+        private static readonly ILogger Logger = 
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiManager));
 
         private readonly Match _match;
@@ -27,21 +27,23 @@ namespace Expeditionary.Ai
         {
             GC.SuppressFinalize(this);
             _match.Stepped -= HandleStep;
+            _match.FormationAdded -= HandleFormationAdded;
             foreach (var handler in _handlers.Values) 
             {
                 handler.Dispose();
             }
-            s_Logger.Log("Disposed");
+            Logger.Log("Disposed");
         }
 
         public void Initialize()
         {
             _match.Stepped += HandleStep;
+            _match.FormationAdded += HandleFormationAdded;
             foreach (var handler in _handlers.Values)
             {
                 handler.Initialize();
             }
-            s_Logger.Log("Initialized");
+            Logger.Log("Initialized");
         }
 
         public AiPlayerHandler? GetHandler(Player player)
@@ -51,6 +53,14 @@ namespace Expeditionary.Ai
                 return handler;
             }
             return null;
+        }
+
+        private void HandleFormationAdded(object? sender, FormationAddedEventArgs e)
+        {
+            if (_handlers.TryGetValue(e.Formation.Player, out var handler))
+            {
+                handler.AddFormation(e.Formation, e.Parent);
+            }
         }
 
         private void HandleStep(object? sender, EventArgs e)

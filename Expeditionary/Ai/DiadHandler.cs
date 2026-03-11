@@ -13,7 +13,7 @@ namespace Expeditionary.Ai
         public UnitHandler Unit { get; }
         public UnitHandler? Transport { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment(default);
-        public IEnumerable<FormationHandler> Children => Enumerable.Empty<FormationHandler>();
+        public IEnumerable<FormationHandler> Components => Enumerable.Empty<FormationHandler>();
         public IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
         public string Id => $"diad-{Unit.Id}-{Transport?.Id ?? "NA"}";
         public int Echelon => 1;
@@ -26,7 +26,7 @@ namespace Expeditionary.Ai
             Transport = transport;
         }
 
-        public void Add(FormationHandler handler)
+        public void AddComponent(FormationHandler handler)
         {
             throw new InvalidOperationException();
         }

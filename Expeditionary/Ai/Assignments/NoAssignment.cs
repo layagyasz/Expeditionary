@@ -15,7 +15,7 @@ namespace Expeditionary.Ai.Assignments
         public AssignmentRealization Assign(IAiHandler formation, Match match)
         {
             return new(
-                formation.Children.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)),
+                formation.Components.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)),
                 formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)));
         }
 

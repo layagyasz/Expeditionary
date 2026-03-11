@@ -52,7 +52,7 @@ namespace Expeditionary.Ai.Assignments
 
         public AssignmentRealization PartitionByChildren(IAiHandler formation, Map map)
         {
-            return PartitionByFormations(formation.Children, map);
+            return PartitionByFormations(formation.Components, map);
         }
 
         public AssignmentRealization PartitionByFormations(IEnumerable<FormationHandler> formations, Map map)

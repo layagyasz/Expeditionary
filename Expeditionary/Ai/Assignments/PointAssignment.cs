@@ -29,7 +29,7 @@ namespace Expeditionary.Ai.Assignments
             return new AssignmentRealization.Builder()
                 .AddAll(
                     SelectFrom(
-                        formation.Children,
+                        formation.Components,
                         map,
                         region,
                         facing,
@@ -130,13 +130,13 @@ namespace Expeditionary.Ai.Assignments
             var supportRegion = CompositeMapRegion.Intersect(new PointMapRegion(Hex, 2 * spacing), Bounds);
             var tileEvaluator = match.GetEvaluator();
             var result = new AssignmentRealization.Builder();
-            if (formation.Children.Any())
+            if (formation.Components.Any())
             {
-                var first = formation.Children.First();
+                var first = formation.Components.First();
                 result.Add(first, new PointAssignment(Hex, Origin, Bounds, Facing));
                 result.AddAll(
                     SelectFrom(
-                        formation.Children.Skip(1),
+                        formation.Components.Skip(1),
                         match.GetMap(),
                         supportRegion,
                         Facing,
@@ -147,7 +147,7 @@ namespace Expeditionary.Ai.Assignments
             }
             if (formation.Diads.Any())
             {
-                if (formation.Children.Any())
+                if (formation.Components.Any())
                 {
                     var diads = formation.Diads.ToList();
                     var first = diads.First();
