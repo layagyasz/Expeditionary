@@ -20,11 +20,11 @@ namespace Expeditionary.Model.Formations
         public string Name { get; }
         public FormationRole Role { get; }
         public int Echelon { get; }
-        public List<Diad> UnitsAndRoles => _diads;
-        public List<Formation> ComponentFormations => _componentFormations;
+        public IEnumerable<Diad> Diads => _diads;
+        public IEnumerable<Formation> Components => _components;
 
         private readonly List<Diad> _diads;
-        private readonly List<Formation> _componentFormations;
+        private readonly List<Formation> _components;
 
         public Formation(
             Player player,
@@ -39,23 +39,29 @@ namespace Expeditionary.Model.Formations
             Role = role;
             Echelon = echelon;
             _diads = diads.ToList();
-            _componentFormations = componentFormations.ToList();
+            _components = componentFormations.ToList();
         }
         
         public void AddComponent(Formation formation)
         {
-            _componentFormations.Add(formation);
+            _components.Add(formation);
         }
 
         public IEnumerable<Diad> GetDiads()
         {
-            return Enumerable.Concat(_diads, ComponentFormations.SelectMany(x => x.GetDiads()));
+            return Enumerable.Concat(_diads, Components.SelectMany(diad => diad.GetDiads()));
+        }
+
+        public IEnumerable<Unit> GetUnits()
+        {
+            return Enumerable.Concat(
+                _diads.SelectMany(diad => diad.GetUnits()), _components.SelectMany(component => component.GetUnits()));
         }
 
         public AssetValue GetAliveUnitQuantity()
         {
             return Enumerable.Concat(
-                _componentFormations.Select(x => x.GetAliveUnitQuantity()),
+                _components.Select(x => x.GetAliveUnitQuantity()),
                 _diads.Select(x => x.Unit.Value))
                 .Aggregate(AssetValue.None, (x, y) => x + y);
         }

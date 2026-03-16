@@ -2,7 +2,6 @@
 {
     public interface IEvent
     {
-        bool IsRecurring { get; }
-        bool Fire(Match match, TurnInfo turn);
+        EventStatus Fire(Match match, TurnInfo turn);
     }
 }

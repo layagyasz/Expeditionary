@@ -2,12 +2,12 @@
 {
     public interface IEventSchedule
     {
-        bool Matches(TurnInfo turn);
+        bool IsDue(TurnInfo turn);
 
         public record class RecurringEventSchedule(Player? Player, TurnSegment Segment, int Cycle, int Offset) 
             : IEventSchedule
         {
-            public bool Matches(TurnInfo turn)
+            public bool IsDue(TurnInfo turn)
             {
                 return turn.Player == Player && turn.Segment == Segment && (turn.Turn + Offset) % Cycle == 0;
             }

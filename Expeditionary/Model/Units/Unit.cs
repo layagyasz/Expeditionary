@@ -15,6 +15,7 @@ namespace Expeditionary.Model.Units
         public bool IsDestroyed => Status == AssetStatus.Destroyed;
         public bool IsReserved => Status == AssetStatus.Reserved;
         public bool IsPassenger { get; set; }
+        public IEnumerable<UnitTag> Tags => Type.Tags;
         public int Number { get; private set; }
         public int Actions { get; private set; }
         public IAsset? Passenger { get; set; }

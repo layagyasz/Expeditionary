@@ -4,6 +4,7 @@
     {
         Unknown,
         Active,
+        Evacuated,
         Reserved,
         Destroyed
     }

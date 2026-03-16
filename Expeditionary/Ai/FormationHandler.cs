@@ -23,8 +23,8 @@ namespace Expeditionary.Ai
         {
             return new FormationHandler(
                 formation,
-                formation.ComponentFormations.Select(Create),
-                formation.UnitsAndRoles.Select(
+                formation.Components.Select(Create),
+                formation.Diads.Select(
                     x => new DiadHandler(
                         new UnitHandler(x.Role, x.Unit), 
                         x.Transport == null ? null : new UnitHandler(FormationRole.Transport, x.Transport))));

@@ -1,5 +1,4 @@
-﻿using Cardamom.Graphics.Camera;
-using Cardamom.Logging;
+﻿using Cardamom.Logging;
 using Cardamom.Mathematics;
 using Cardamom.Ui.Controller;
 using Cardamom.Window;

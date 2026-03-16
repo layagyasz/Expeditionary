@@ -87,6 +87,10 @@ namespace Expeditionary.Model
             {
                 parent.AddComponent(formation);
             }
+            foreach (var unit in formation.GetUnits())
+            {
+                _assets.Add(unit);
+            }
             s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
             _eventBuffer.Queue(FormationAdded, this, new(formation, parent));
             return formation;
@@ -148,6 +152,12 @@ namespace Expeditionary.Model
             s_Logger.Log($"{order} executed");
             order.Execute(this);
             return true;
+        }
+
+        public void Evacuate(IAsset asset)
+        {
+            RemoveInternal(asset);
+            asset.Status = AssetStatus.Evacuated;
         }
 
         public IEnumerable<IAsset> GetAssets()
@@ -285,10 +295,6 @@ namespace Expeditionary.Model
                     knowledge.Remove(asset, _positions);
                 }
             }
-            else
-            {
-                _assets.Add(asset);
-            }
             _positions.Add(position, asset);
             asset.Position = position;
 
@@ -354,7 +360,7 @@ namespace Expeditionary.Model
             var removedEvents = new List<IEvent>();
             foreach (var @event in _events)
             { 
-                if (@event.Fire(this, turn) && !@event.IsRecurring)
+                if (@event.Fire(this, turn) == EventStatus.Done)
                 {
                     removedEvents.Add(@event);
                 }
@@ -373,15 +379,14 @@ namespace Expeditionary.Model
         private void RemoveInternal(IAsset asset)
         {
             s_Logger.Log($"{asset} removed");
-            _assets.Remove(asset);
             if (asset.IsActive)
             {
                 _positions.Remove(asset.Position, asset);
                 asset.Position = default;
-            }
-            foreach (var knowledge in _playerKnowledge.Values)
-            {
-                knowledge.Remove(asset, _positions);
+                foreach (var knowledge in _playerKnowledge.Values)
+                {
+                    knowledge.Remove(asset, _positions);
+                }
             }
         }
 
