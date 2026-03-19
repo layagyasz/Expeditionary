@@ -1,7 +1,7 @@
 ﻿using Cardamom.Ui.Controller;
-using Expeditionary.Model;
-using Expeditionary.Model.Orders;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Orders;
 using Expeditionary.View.Scenes.Matches.Overlays;
 
 namespace Expeditionary.Controller.Scenes.Matches.Overlays

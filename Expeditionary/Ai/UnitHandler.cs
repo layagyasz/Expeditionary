@@ -2,10 +2,9 @@
 using Cardamom.Logging;
 using Expeditionary.Ai.Actions;
 using Expeditionary.Ai.Assignments;
-using Expeditionary.Model;
-using Expeditionary.Model.Formations;
-using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Knowledge;
 
 namespace Expeditionary.Ai
 {

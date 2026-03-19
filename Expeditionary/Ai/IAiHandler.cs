@@ -1,5 +1,5 @@
 ﻿using Expeditionary.Ai.Assignments;
-using Expeditionary.Model;
+using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Ai
 {

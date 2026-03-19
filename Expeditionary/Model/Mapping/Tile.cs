@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Combat;
+﻿using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Combat;
 
 namespace Expeditionary.Model.Mapping
 {

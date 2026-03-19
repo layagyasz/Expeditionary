@@ -7,7 +7,7 @@ using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Galaxies;
 using Expeditionary.Model.Mapping.Environments;
 using Expeditionary.Model.Mapping.Environments.Generator;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches.Assets;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model

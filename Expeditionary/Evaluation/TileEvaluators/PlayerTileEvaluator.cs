@@ -1,5 +1,5 @@
 ﻿using Expeditionary.Evaluation.Caches;
-using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Matches.Knowledge;
 
 namespace Expeditionary.Evaluation.TileEvaluators
 {

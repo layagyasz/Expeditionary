@@ -4,6 +4,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.Model;
+using Expeditionary.Model.Matches;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.View.Common.Components.Dynamics;
 using OpenTK.Mathematics;

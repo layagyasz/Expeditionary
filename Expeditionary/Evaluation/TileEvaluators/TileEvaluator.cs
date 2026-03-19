@@ -1,9 +1,8 @@
 ﻿using Expeditionary.Evaluation.Caches;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model;
-using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation.TileEvaluators

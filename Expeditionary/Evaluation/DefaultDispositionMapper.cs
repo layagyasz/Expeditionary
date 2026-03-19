@@ -1,6 +1,6 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Model.Formations;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 
 namespace Expeditionary.Evaluation
 {

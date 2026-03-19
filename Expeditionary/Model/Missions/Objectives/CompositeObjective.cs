@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Missions.Objectives
+﻿using Expeditionary.Model.Matches;
+
+namespace Expeditionary.Model.Missions.Objectives
 {
     public record class CompositeObjective(CompositeObjective.Operator Composition, List<IObjective> Objectives)
     {

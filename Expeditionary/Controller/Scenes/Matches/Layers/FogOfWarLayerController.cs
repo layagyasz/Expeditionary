@@ -2,7 +2,7 @@
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Cardamom.Window;
-using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.View.Scenes.Matches.Layers;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;

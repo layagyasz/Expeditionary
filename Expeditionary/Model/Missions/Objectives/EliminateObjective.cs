@@ -1,4 +1,7 @@
-﻿namespace Expeditionary.Model.Missions.Objectives
+﻿using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+
+namespace Expeditionary.Model.Missions.Objectives
 {
     public record class EliminateObjective(AssetValue Quantity, bool Team) : IObjective
     {

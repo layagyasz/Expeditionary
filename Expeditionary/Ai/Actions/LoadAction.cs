@@ -1,6 +1,6 @@
-﻿using Expeditionary.Model;
-using Expeditionary.Model.Orders;
-using Expeditionary.Model.Units;
+﻿using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Orders;
 
 namespace Expeditionary.Ai.Actions
 {

@@ -1,7 +1,7 @@
-﻿using Expeditionary.Model;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Orders;
-using Expeditionary.Model.Units;
+﻿using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Combat;
+using Expeditionary.Model.Matches.Orders;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Actions

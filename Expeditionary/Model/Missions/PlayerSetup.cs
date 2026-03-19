@@ -1,6 +1,7 @@
-﻿using Expeditionary.Model.Events;
-using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping;
+﻿using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Events;
+using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions

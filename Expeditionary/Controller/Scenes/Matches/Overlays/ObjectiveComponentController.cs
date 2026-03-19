@@ -1,6 +1,7 @@
 ﻿using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Expeditionary.Model;
+using Expeditionary.Model.Matches;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.View.Scenes.Matches.Overlays;
 

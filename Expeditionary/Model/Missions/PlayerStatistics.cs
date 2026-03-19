@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Missions
+﻿using Expeditionary.Model.Matches.Assets;
+
+namespace Expeditionary.Model.Missions
 {
     public record class PlayerStatistics
     {

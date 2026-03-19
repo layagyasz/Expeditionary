@@ -3,7 +3,8 @@ using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Hexagons;
 using Expeditionary.Model;
-using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.View.Scenes.Matches;
 using OpenTK.Mathematics;
 

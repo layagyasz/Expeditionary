@@ -1,9 +1,9 @@
 ﻿using Expeditionary.Evaluation.Caches;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model;
-using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Knowledge;
 
 namespace Expeditionary.Evaluation.TileEvaluators
 {

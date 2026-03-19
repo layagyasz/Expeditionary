@@ -4,9 +4,9 @@ using Cardamom.Graphics;
 using Cardamom.Graphics.TexturePacking;
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
-using Expeditionary.Model;
-using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.View.Common.Buffers;
 using OpenTK.Mathematics;
 

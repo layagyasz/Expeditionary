@@ -1,6 +1,6 @@
-﻿using Expeditionary.Model;
-using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
+﻿using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation.Caches

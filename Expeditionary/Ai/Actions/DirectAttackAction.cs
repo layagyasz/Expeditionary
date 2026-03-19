@@ -1,9 +1,9 @@
-﻿using Expeditionary.Model;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Knowledge;
-using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Orders;
-using Expeditionary.Model.Units;
+﻿using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Combat;
+using Expeditionary.Model.Matches.Knowledge;
+using Expeditionary.Model.Matches.Orders;
 
 namespace Expeditionary.Ai.Actions
 {

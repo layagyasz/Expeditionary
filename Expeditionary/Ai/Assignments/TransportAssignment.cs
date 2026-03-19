@@ -1,10 +1,10 @@
 ﻿using Expeditionary.Ai.Actions;
 using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
-using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments

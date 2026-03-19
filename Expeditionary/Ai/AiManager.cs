@@ -1,6 +1,7 @@
 ﻿using Cardamom;
 using Cardamom.Logging;
 using Expeditionary.Model;
+using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Ai
 {

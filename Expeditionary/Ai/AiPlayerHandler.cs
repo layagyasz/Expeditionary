@@ -2,7 +2,7 @@
 using Cardamom.Logging;
 using Expeditionary.Ai.Assignments;
 using Expeditionary.Model;
-using Expeditionary.Model.Formations;
+using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Ai
 {

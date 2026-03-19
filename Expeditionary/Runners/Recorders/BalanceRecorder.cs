@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Model;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Combat;
 
 namespace Expeditionary.Runners.Recorders
 {

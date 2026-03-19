@@ -1,9 +1,9 @@
 ﻿using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.TileEvaluators;
-using Expeditionary.Model;
-using Expeditionary.Model.Combat;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Combat;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation

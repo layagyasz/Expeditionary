@@ -3,10 +3,10 @@ using Expeditionary.Evaluation;
 using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Evaluation.TileEvaluators;
-using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Ai.Assignments

@@ -2,7 +2,7 @@
 using Cardamom.Graphics;
 using Cardamom.Ui;
 using Expeditionary.Hexagons;
-using Expeditionary.Model.Knowledge;
+using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.View.Textures;
 using OpenTK.Mathematics;
 

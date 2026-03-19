@@ -1,11 +1,11 @@
 ﻿using Expeditionary.Evaluation.Caches;
 using Expeditionary.Evaluation.SignedDistanceFields;
 using Expeditionary.Hexagons;
-using Expeditionary.Model;
-using Expeditionary.Model.Combat;
-using Expeditionary.Model.Knowledge;
 using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Units;
+using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Combat;
+using Expeditionary.Model.Matches.Knowledge;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation.Considerations

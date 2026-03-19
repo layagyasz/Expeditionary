@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Ai.Assignments;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Model.Missions
 {

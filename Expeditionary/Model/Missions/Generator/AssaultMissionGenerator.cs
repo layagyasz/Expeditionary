@@ -2,7 +2,9 @@
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Missions.Objectives;
+
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Missions.Generator

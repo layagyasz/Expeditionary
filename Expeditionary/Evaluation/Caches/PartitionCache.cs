@@ -1,6 +1,6 @@
 ﻿using Expeditionary.Hexagons;
-using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Evaluation.Caches
