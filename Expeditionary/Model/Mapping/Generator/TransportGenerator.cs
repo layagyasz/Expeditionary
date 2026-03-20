@@ -1,9 +1,9 @@
 ﻿using Cardamom.Collections;
 using Cardamom.Graphing;
 using DelaunayTriangulator;
-using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Evaluation.Considerations;
 using MathNet.Numerics.Statistics;
 using OpenTK.Mathematics;
 

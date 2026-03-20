@@ -1,7 +1,7 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches.Evaluation.Considerations;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches

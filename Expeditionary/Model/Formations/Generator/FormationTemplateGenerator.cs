@@ -2,7 +2,7 @@
 using Cardamom.Collections;
 using Cardamom.Json;
 using Expeditionary.Model.Matches;
-using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Units;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Formations.Generator

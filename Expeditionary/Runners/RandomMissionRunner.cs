@@ -1,12 +1,12 @@
 ﻿using Cardamom.Ui;
 using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Utils.Suppliers.Promises;
-using Expeditionary.Ai;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
 using Expeditionary.View.Common.Interceptors;

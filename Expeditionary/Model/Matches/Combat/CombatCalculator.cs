@@ -1,6 +1,7 @@
 ﻿using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Units;
 using MathNet.Numerics.Distributions;
 using OpenTK.Mathematics;
 

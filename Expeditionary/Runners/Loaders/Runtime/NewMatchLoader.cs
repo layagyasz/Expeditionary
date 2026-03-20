@@ -1,9 +1,9 @@
 ﻿using Cardamom.Utils.Suppliers.Promises;
-using Expeditionary.Ai;
 using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Missions;
 
 namespace Expeditionary.Runners.Loaders.Runtime

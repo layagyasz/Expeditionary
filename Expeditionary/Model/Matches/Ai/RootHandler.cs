@@ -1,0 +1,16 @@
+﻿namespace Expeditionary.Model.Matches.Ai
+{
+    public class RootHandler : FormationHandlerBase
+    {
+        public override string Id => Player.Id.ToString();
+        public override int Echelon => Components.Max(x => x.Echelon) + 1;
+        public Player Player { get; }
+        public override IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
+
+        public RootHandler(Player player, IEnumerable<FormationHandler> children)
+            : base(children)
+        {
+            Player = player;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Orders
 {

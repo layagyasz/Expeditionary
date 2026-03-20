@@ -2,6 +2,7 @@
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Orders;
+using Expeditionary.Model.Units;
 using Expeditionary.View.Scenes.Matches.Overlays;
 
 namespace Expeditionary.Controller.Scenes.Matches.Overlays

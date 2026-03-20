@@ -1,5 +1,5 @@
-﻿using Expeditionary.Ai;
-using Expeditionary.Loader;
+﻿using Expeditionary.Loader;
+using Expeditionary.Model.Matches.Ai;
 
 namespace Expeditionary.Model.Missions
 {

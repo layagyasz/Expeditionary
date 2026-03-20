@@ -1,9 +1,9 @@
-﻿using Expeditionary.Ai;
-using Expeditionary.Loader;
+﻿using Expeditionary.Loader;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Ai;
 
 namespace Expeditionary.Runners.GameStates
 {

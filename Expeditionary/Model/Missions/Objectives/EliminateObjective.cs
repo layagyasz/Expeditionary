@@ -1,5 +1,4 @@
 ﻿using Expeditionary.Model.Matches;
-using Expeditionary.Model.Matches.Assets;
 
 namespace Expeditionary.Model.Missions.Objectives
 {
@@ -34,7 +33,7 @@ namespace Expeditionary.Model.Missions.Objectives
             return new(
                 ToScalar(
                     Team
-                        ? match.GetStatistics(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y)
+                        ? match.GetReport(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y)
                         : match.GetStatistics(player).Destroyed),
                 ToScalar(Quantity));
         }

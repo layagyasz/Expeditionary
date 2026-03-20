@@ -2,9 +2,9 @@
 using Cardamom.Graphics;
 using Cardamom.Mathematics;
 using Cardamom.Ui;
-using Expeditionary.Evaluation.Considerations;
 using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches.Evaluation.Considerations;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 

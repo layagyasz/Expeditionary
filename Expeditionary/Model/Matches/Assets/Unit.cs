@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Expeditionary.Model.Units;
+using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Assets
 {

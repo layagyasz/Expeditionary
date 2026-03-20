@@ -3,6 +3,7 @@ using Expeditionary.Hexagons;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Combat;
+using Expeditionary.Model.Units;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Knowledge

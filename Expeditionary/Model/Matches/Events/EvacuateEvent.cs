@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Events
 {

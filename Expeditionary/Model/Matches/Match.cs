@@ -1,17 +1,16 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
 using Cardamom.Logging;
-using Expeditionary.Evaluation;
-using Expeditionary.Evaluation.Caches;
-using Expeditionary.Evaluation.TileEvaluators;
 using Expeditionary.Events;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches.Assets;
+using Expeditionary.Model.Matches.Evaluation;
+using Expeditionary.Model.Matches.Evaluation.Caches;
+using Expeditionary.Model.Matches.Evaluation.TileEvaluators;
 using Expeditionary.Model.Matches.Events;
 using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.Model.Matches.Orders;
-using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Objectives;
 using OpenTK.Mathematics;
 
@@ -38,7 +37,7 @@ namespace Expeditionary.Model.Matches
 
         private readonly List<Player> _players = new();
         private readonly Dictionary<Player, IObjective> _playerObjectives = new();
-        private readonly Dictionary<Player, PlayerStatistics> _playerStatistics = new();
+        private readonly Dictionary<Player, PlayerReport> _playerReports = new();
         private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
         private readonly List<Formation> _formations = new();
         private readonly List<IAsset> _assets = new();
@@ -63,7 +62,7 @@ namespace Expeditionary.Model.Matches
         {
             _players.Add(player);
             _playerObjectives.Add(player, objective);
-            _playerStatistics.Add(player, new());
+            _playerReports.Add(player, new());
             _playerKnowledge.Add(player, knowledge);
             foreach (var asset in _assets)
             {
@@ -109,11 +108,11 @@ namespace Expeditionary.Model.Matches
             {
                 Destroy(defender);
 
-                var attackerStats = _playerStatistics[attacker.Player];
-                attackerStats.Destroyed += defender.Value;
+                var attackerReport = _playerReports[attacker.Player];
+                attackerReport.Destroyed += defender.Value;
 
-                var defenderStats = _playerStatistics[defender.Player];
-                defenderStats.Lost += defender.Value;
+                var defenderReport = _playerReports[defender.Player];
+                defenderReport.Lost += defender.Value;
             }
         }
 
@@ -231,14 +230,14 @@ namespace Expeditionary.Model.Matches
             return _random;
         }
 
-        public PlayerStatistics GetStatistics(Player player)
+        public PlayerReport GetStatistics(Player player)
         {
-            return _playerStatistics[player];
+            return _playerReports[player];
         }
 
-        public IEnumerable<PlayerStatistics> GetStatistics(int team)
+        public IEnumerable<PlayerReport> GetReport(int team)
         {
-            return _playerStatistics.Where(x => x.Key.Team == team).Select(x => x.Value);
+            return _playerReports.Where(x => x.Key.Team == team).Select(x => x.Value);
         }
 
         public void Initialize()
