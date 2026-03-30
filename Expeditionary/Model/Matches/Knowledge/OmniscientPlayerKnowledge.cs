@@ -16,7 +16,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             _player = player;
         }
 
-        public SingleAssetKnowledge GetAsset(IAsset asset)
+        public SingleAssetKnowledge GetAsset(IMatchAsset asset)
         {
             return asset.IsDestroyed ? new(false, null) : new(true, asset.Position);
         }
@@ -26,27 +26,27 @@ namespace Expeditionary.Model.Matches.Knowledge
             return new(true, true);
         }
 
-        public void Destroy(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Destroy(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }
 
-        public void Move(IAsset asset, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
+        public void Move(IMatchAsset asset, Pathing.Path path, MultiMap<Vector3i, IMatchAsset> positions)
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }
 
-        public void Place(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        public void Place(IMatchAsset asset, Vector3i position, MultiMap<Vector3i, IMatchAsset> positions)
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }
 
-        public void Remove(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Remove(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }
 
-        public void Suppress(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Suppress(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
             AssetKnowledgeChanged?.Invoke(this, new(_player, new() { asset }));
         }

@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Matches.Orders
 {
-    public record class LoadOrder(Unit Unit, IAsset Target) : IOrder
+    public record class LoadOrder(MatchUnit Unit, IMatchAsset Target) : IOrder
     {
         public bool Validate(Match match)
         {
@@ -16,7 +16,7 @@ namespace Expeditionary.Model.Matches.Orders
         public void Execute(Match match)
         {
             Unit.ConsumeAction();
-            if (Target is Unit targetUnit)
+            if (Target is MatchUnit targetUnit)
             {
                 targetUnit.ConsumeAction();
             }

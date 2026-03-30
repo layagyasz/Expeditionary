@@ -130,12 +130,12 @@ namespace Expeditionary.Model.Matches.Evaluation.Considerations
             return (hex, tileFn, edgesFn) => left(hex, tileFn, edgesFn) - right(hex, tileFn, edgesFn);
         }
 
-        public static TileConsideration Threat(Unit unit, IPlayerKnowledge knowledge, Match match)
+        public static TileConsideration Threat(MatchUnit unit, IPlayerKnowledge knowledge, Match match)
         {
             var attackers =
                 match.GetAssets()
-                    .Where(x => x is Unit)
-                    .Cast<Unit>()
+                    .Where(x => x is MatchUnit)
+                    .Cast<MatchUnit>()
                     .Where(x => CombatCalculator.IsValidTarget(x, unit))
                     .Select(x => (x, knowledge.GetAsset(x)))
                     .Where(x => x.Item2.IsVisible && x.Item2.LastSeen != null)

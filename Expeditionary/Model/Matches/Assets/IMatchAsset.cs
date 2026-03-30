@@ -3,16 +3,16 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Assets
 {
-    public interface IAsset
+    public interface IMatchAsset
     {
         int Id { get; }
         string Name { get; }
         string TypeKey { get; }
         Vector3i Position { get; set; }
-        AssetStatus Status { get; set; }
-        bool IsActive => Status == AssetStatus.Active;
-        bool IsDestroyed => Status == AssetStatus.Destroyed;
-        bool IsReserved => Status == AssetStatus.Reserved;
+        MatchAssetStatus Status { get; set; }
+        bool IsActive => Status == MatchAssetStatus.Active;
+        bool IsDestroyed => Status == MatchAssetStatus.Destroyed;
+        bool IsReserved => Status == MatchAssetStatus.Reserved;
         bool IsPassenger { get; set; }
         IEnumerable<UnitTag> Tags { get; }
         AssetValue Value { get; }

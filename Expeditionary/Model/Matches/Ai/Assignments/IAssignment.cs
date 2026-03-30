@@ -12,9 +12,9 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
         MapDirection Facing { get; }
         IMapRegion Region { get; }
         AssignmentRealization Assign(IAiHandler formation, Match match);
-        IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match);
+        IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, MatchUnit unit, Match match);
         float EvaluateRealization(AssignmentRealization realization, Match match);
-        bool NotifyAction(Unit unit, IUnitAction action, Match match);
+        bool NotifyAction(MatchUnit unit, IUnitAction action, Match match);
         Vector3i SelectHex(Map map);
     }
 }

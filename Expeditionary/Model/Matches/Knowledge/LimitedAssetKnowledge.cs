@@ -7,14 +7,14 @@ namespace Expeditionary.Model.Matches.Knowledge
     public class LimitedAssetKnowledge
     {
         private readonly Player _player;
-        private readonly Dictionary<IAsset, SingleAssetKnowledge> _assets = new();
+        private readonly Dictionary<IMatchAsset, SingleAssetKnowledge> _assets = new();
 
         public LimitedAssetKnowledge(Player player)
         {
             _player = player;
         }
 
-        public SingleAssetKnowledge Get(IAsset asset)
+        public SingleAssetKnowledge Get(IMatchAsset asset)
         {
             if (IsPlayer(asset))
             {
@@ -23,13 +23,13 @@ namespace Expeditionary.Model.Matches.Knowledge
             return _assets.TryGetValue(asset, out var value) ? value : new();
         }
 
-        public List<IAsset> AddSelf(
+        public List<IMatchAsset> AddSelf(
             LimitedMapKnowledge mapKnowledge,
-            Unit unit, 
+            MatchUnit unit, 
             IEnumerable<Sighting.LineOfSight> delta,
-            MultiMap<Vector3i, IAsset> positions)
+            MultiMap<Vector3i, IMatchAsset> positions)
         {
-            var result = new List<IAsset>() { unit };
+            var result = new List<IMatchAsset>() { unit };
             if (!unit.IsPassenger)
             {
                 result.AddRange(AddLos(mapKnowledge, unit, delta, positions, isPermanent: true));
@@ -37,9 +37,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<IAsset> AddOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Vector3i position)
+        public List<IMatchAsset> AddOther(LimitedMapKnowledge mapKnowledge, IMatchAsset asset, Vector3i position)
         {
-            var result = new List<IAsset>();
+            var result = new List<IMatchAsset>();
             if (asset.IsPassenger)
             {
                 return result;
@@ -59,18 +59,18 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
         
-        public List<IAsset> DestroySelf(
+        public List<IMatchAsset> DestroySelf(
             LimitedMapKnowledge mapKnowledge,
-            Unit unit,
+            MatchUnit unit,
             IEnumerable<Sighting.LineOfSight> delta,
-            MultiMap<Vector3i, IAsset> positions)
+            MultiMap<Vector3i, IMatchAsset> positions)
         {
             return RemoveSelf(mapKnowledge, unit, delta, positions);
         }
 
-        public List<IAsset> DestroyOther(IAsset asset)
+        public List<IMatchAsset> DestroyOther(IMatchAsset asset)
         {
-            var result = new List<IAsset>();
+            var result = new List<IMatchAsset>();
             var current = _assets[asset];
             if (current.IsVisible)
             {
@@ -82,13 +82,13 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<IAsset> RemoveSelf(
+        public List<IMatchAsset> RemoveSelf(
             LimitedMapKnowledge mapKnowledge, 
-            Unit unit, 
+            MatchUnit unit, 
             IEnumerable<Sighting.LineOfSight> delta,
-            MultiMap<Vector3i, IAsset> positions)
+            MultiMap<Vector3i, IMatchAsset> positions)
         {
-            var result = new List<IAsset>() { unit };
+            var result = new List<IMatchAsset>() { unit };
             if (!unit.IsPassenger)
             {
                 result.AddRange(RemoveLos(mapKnowledge, delta, positions));
@@ -96,9 +96,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<IAsset> RemoveOther(IAsset asset)
+        public List<IMatchAsset> RemoveOther(IMatchAsset asset)
         {
-            var result = new List<IAsset>();
+            var result = new List<IMatchAsset>();
             var current = _assets[asset];
             if (current.IsVisible)
             {
@@ -108,7 +108,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<IAsset> MoveOther(LimitedMapKnowledge mapKnowledge, IAsset asset, Pathing.Path path)
+        public List<IMatchAsset> MoveOther(LimitedMapKnowledge mapKnowledge, IMatchAsset asset, Pathing.Path path)
         {
             if (asset.IsPassenger)
             {
@@ -145,15 +145,15 @@ namespace Expeditionary.Model.Matches.Knowledge
             return new();
         }
 
-        public List<IAsset> MoveSelf(
+        public List<IMatchAsset> MoveSelf(
             LimitedMapKnowledge mapKnowledge,
-            Unit unit,
+            MatchUnit unit,
             IEnumerable<Sighting.LineOfSight> initial,
             IEnumerable<Sighting.LineOfSight> medial,
             IEnumerable<Sighting.LineOfSight> final, 
-            MultiMap<Vector3i, IAsset> positions)
+            MultiMap<Vector3i, IMatchAsset> positions)
         {
-            var result = new List<IAsset>() { unit };
+            var result = new List<IMatchAsset>() { unit };
             if (!unit.IsPassenger)
             {
                 result.AddRange(RemoveLos(mapKnowledge, initial, positions));
@@ -163,14 +163,14 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result.Distinct().ToList();
         }
 
-        private List<IAsset> AddLos(
+        private List<IMatchAsset> AddLos(
             LimitedMapKnowledge mapKnowledge, 
-            Unit unit,
+            MatchUnit unit,
             IEnumerable<Sighting.LineOfSight> delta, 
-            MultiMap<Vector3i, IAsset> positions,
+            MultiMap<Vector3i, IMatchAsset> positions,
             bool isPermanent)
         {
-            var result = new List<IAsset>();
+            var result = new List<IMatchAsset>();
             foreach (var los in delta)
             {
                 var hex = los.Target;
@@ -197,12 +197,12 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        private List<IAsset> RemoveLos(
+        private List<IMatchAsset> RemoveLos(
             LimitedMapKnowledge mapKnowledge, 
             IEnumerable<Sighting.LineOfSight> delta, 
-            MultiMap<Vector3i, IAsset> positions)
+            MultiMap<Vector3i, IMatchAsset> positions)
         {
-            var result = new List<IAsset>();
+            var result = new List<IMatchAsset>();
             foreach (var los in delta)
             {
                 var hex = los.Target;
@@ -229,9 +229,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        private bool IsPlayer(IAsset asset)
+        private bool IsPlayer(IMatchAsset asset)
         {
-            return asset is Unit unit && unit.Player == _player;
+            return asset is MatchUnit unit && unit.Player == _player;
         }
     }
 }

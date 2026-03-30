@@ -4,7 +4,7 @@ namespace Expeditionary.Model.Matches.Orders
 {
     public interface IOrder
     {
-        Unit Unit { get; }
+        MatchUnit Unit { get; }
         bool Validate(Match match);
         void Execute(Match match);
     }

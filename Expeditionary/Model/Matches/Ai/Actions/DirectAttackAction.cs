@@ -7,15 +7,15 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Ai.Actions
 {
-    public record class DirectAttackAction(Unit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
+    public record class DirectAttackAction(MatchUnit Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode) : IUnitAction
     {
-        public bool Do(Match match, Unit unit)
+        public bool Do(Match match, MatchUnit unit)
         {
             return match.DoOrder(new DirectAttackOrder(unit, Attack, Mode, Target));
         }
 
         public static IEnumerable<DirectAttackAction> GenerateValidAttacks(
-            Match match, IPlayerKnowledge knowledge, Unit unit)
+            Match match, IPlayerKnowledge knowledge, MatchUnit unit)
         {
             var map = match.GetMap();
             foreach (var attack in unit.Type.Weapons)
@@ -33,14 +33,14 @@ namespace Expeditionary.Model.Matches.Ai.Actions
             }
         }
 
-        private static IEnumerable<Unit> FindValidTargets(
-            Match match, IPlayerKnowledge knowledge, Unit unit, UnitWeapon.Mode mode, Map map)
+        private static IEnumerable<MatchUnit> FindValidTargets(
+            Match match, IPlayerKnowledge knowledge, MatchUnit unit, UnitWeapon.Mode mode, Map map)
         {
             return match.GetAssets()
                 .Where(x => !x.IsDestroyed)
                 .Where(x => knowledge.GetAsset(x).IsVisible)
-                .Where(x => x is Unit)
-                .Cast<Unit>()
+                .Where(x => x is MatchUnit)
+                .Cast<MatchUnit>()
                 .Where(x => CombatCalculator.IsValidTarget(unit, mode, x, map));
         }
     }

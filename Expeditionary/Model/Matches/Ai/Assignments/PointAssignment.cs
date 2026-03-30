@@ -179,7 +179,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return result.Build();
         }
 
-        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, MatchUnit unit, Match match)
         {
             var path =
                 unit.Position == Hex
@@ -194,7 +194,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return 0;
         }
 
-        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        public bool NotifyAction(MatchUnit unit, IUnitAction action, Match match)
         {
             if (action is MoveAction moveAction)
             {
@@ -217,7 +217,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return (int)Math.Pow(3, echelon - 2);
         }
 
-        private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
+        private float EvaluateAction(IUnitAction action, MatchUnit unit, Pathing.Path? path)
         {
             if (action is MoveAction moveAction && path != null)
             {

@@ -78,7 +78,7 @@ namespace Expeditionary.Model.Matches.Ai
         }
 
         private static bool ShouldUseTransport(
-            Unit? transport, Unit passenger, PointAssignment assignment, TileEvaluator evaluator)
+            MatchUnit? transport, MatchUnit passenger, PointAssignment assignment, TileEvaluator evaluator)
         {
             if (transport == null || !transport.IsActive || !passenger.IsActive)
             {

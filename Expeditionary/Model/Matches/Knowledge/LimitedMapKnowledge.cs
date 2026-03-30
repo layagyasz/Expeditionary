@@ -12,7 +12,7 @@ namespace Expeditionary.Model.Matches.Knowledge
     {
         private readonly Map _map;
         private readonly IMapDiscovery _discovery;
-        private readonly MultiMap<Vector3i, Unit> _spotters = new();
+        private readonly MultiMap<Vector3i, MatchUnit> _spotters = new();
 
         public LimitedMapKnowledge(Map map, IMapDiscovery discovery) 
         {
@@ -76,7 +76,7 @@ namespace Expeditionary.Model.Matches.Knowledge
         }
 
         public List<Vector3i> Move(
-            Unit unit,
+            MatchUnit unit,
             IEnumerable<Sighting.LineOfSight> initial,
             IEnumerable<Sighting.LineOfSight> medial,
             IEnumerable<Sighting.LineOfSight> final)
@@ -118,7 +118,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<Vector3i> Place(Unit unit, IEnumerable<Sighting.LineOfSight> delta)
+        public List<Vector3i> Place(MatchUnit unit, IEnumerable<Sighting.LineOfSight> delta)
         {
             var result = new List<Vector3i>();
             var visualRange = GetVisualRange(unit);
@@ -137,7 +137,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        public List<Vector3i> Remove(Unit unit, IEnumerable<Sighting.LineOfSight> delta)
+        public List<Vector3i> Remove(MatchUnit unit, IEnumerable<Sighting.LineOfSight> delta)
         {
             var result = new List<Vector3i>();
             lock (_spotters)
@@ -153,7 +153,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             return result;
         }
 
-        private static int GetVisualRange(Unit unit)
+        private static int GetVisualRange(MatchUnit unit)
         {
             return (int)unit.Type.Capabilities.GetRange(CombatCondition.None, UnitDetectionBand.Visual).GetValue();
         }

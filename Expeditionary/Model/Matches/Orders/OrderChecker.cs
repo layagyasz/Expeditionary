@@ -5,7 +5,7 @@ namespace Expeditionary.Model.Matches.Orders
 {
     public static class OrderChecker
     {
-        public static bool CanLoad(Unit unit, IAsset asset)
+        public static bool CanLoad(MatchUnit unit, IMatchAsset asset)
         {
             if (unit.Actions <= 0)
             {
@@ -15,7 +15,7 @@ namespace Expeditionary.Model.Matches.Orders
             {
                 return false;
             }
-            if (asset is Unit target)
+            if (asset is MatchUnit target)
             {
                 if (!CanLoad(unit.Type, target.Type))
                 {

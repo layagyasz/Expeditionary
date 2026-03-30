@@ -22,7 +22,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             }
         }
 
-        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> action, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> action, MatchUnit unit, Match match)
         {
             throw new NotImplementedException();
         }
@@ -35,7 +35,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
                 / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 
-        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        public bool NotifyAction(MatchUnit unit, IUnitAction action, Match match)
         {
             if (action is MoveAction moveAction)
             {

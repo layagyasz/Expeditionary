@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Matches.Events
                     && asset.Tags.Contains(Tag)
                     && Region.Contains(match.GetMap(), asset.Position)))
             {
-                if (asset is Unit unit && unit.Player != Player)
+                if (asset is MatchUnit unit && unit.Player != Player)
                 {
                     continue;
                 }

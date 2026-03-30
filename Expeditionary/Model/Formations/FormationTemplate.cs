@@ -14,8 +14,8 @@ namespace Expeditionary.Model.Formations
             {
                 return new(
                     Role,
-                    new Unit(idGenerator.Next(), player, UnitType), TransportType == null ? null : 
-                    new Unit(idGenerator.Next(), player, TransportType));
+                    new MatchUnit(idGenerator.Next(), player, UnitType), TransportType == null ? null : 
+                    new MatchUnit(idGenerator.Next(), player, TransportType));
             }
         }
 

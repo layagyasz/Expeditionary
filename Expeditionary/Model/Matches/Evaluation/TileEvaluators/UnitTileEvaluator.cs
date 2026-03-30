@@ -9,12 +9,12 @@ namespace Expeditionary.Model.Matches.Evaluation.TileEvaluators
 {
     public class UnitTileEvaluator : PlayerTileEvaluator
     {
-        private readonly Unit _unit;
+        private readonly MatchUnit _unit;
         private readonly MapDirection _facing;
         private readonly RangeBucket _range;
 
         public UnitTileEvaluator(
-            Unit unit,
+            MatchUnit unit,
             MapDirection facing,
             RangeBucket range,
             IPlayerKnowledge knowledge,
@@ -27,7 +27,7 @@ namespace Expeditionary.Model.Matches.Evaluation.TileEvaluators
             _range = range;
         }
 
-        public UnitTileEvaluator ForPassenger(Unit passenger)
+        public UnitTileEvaluator ForPassenger(MatchUnit passenger)
         {
             return new(passenger, _facing, _range, _knowledge, _evaluationCache, _random);
         }

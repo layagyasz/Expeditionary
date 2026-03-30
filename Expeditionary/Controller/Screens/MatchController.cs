@@ -40,9 +40,9 @@ namespace Expeditionary.Controller.Screens
         private UnitOverlayController? _unitOverlayController;
         private IFormFieldController<object>? _unitSelectController;
 
-        private Unit? _selectedUnit;
+        private MatchUnit? _selectedUnit;
         private IOrderPrototype? _selectedOrder;
-        private IEnumerator<Unit>? _selectedUnitEnumerator;
+        private IEnumerator<MatchUnit>? _selectedUnitEnumerator;
 
         public MatchController(Match match, Player player)
         {
@@ -115,7 +115,7 @@ namespace Expeditionary.Controller.Screens
             if (e.Button.Button == MouseButton.Left)
             {
                 SetSelectedUnit(
-                    e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player).FirstOrDefault());
+                    e.Assets.Where(x => x is MatchUnit).Cast<MatchUnit>().Where(x => x.Player == _player).FirstOrDefault());
             }
             else if (e.Button.Button == MouseButton.Right)
             {
@@ -125,7 +125,7 @@ namespace Expeditionary.Controller.Screens
                     {
                         DoOrder(new IndirectAttackOrder(_selectedUnit, attack.Weapon, attack.Mode, e.Position));
                     }
-                    else if (e.Assets.First() is Unit defender)
+                    else if (e.Assets.First() is MatchUnit defender)
                     {
                         DoOrder(new DirectAttackOrder(_selectedUnit, attack.Weapon, attack.Mode, defender));
                     }
@@ -133,7 +133,7 @@ namespace Expeditionary.Controller.Screens
                     {
                         OpenRightClickMenu(
                             e.Button.ScreenPosition,
-                            e.Assets.Where(x => x is Unit).Cast<Unit>().Where(x => x.Player == _player));
+                            e.Assets.Where(x => x is MatchUnit).Cast<MatchUnit>().Where(x => x.Player == _player));
                     }
                 }
             }
@@ -204,7 +204,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleUnitSelected(object? sender, EventArgs e)
         {
-            if (_unitSelectController!.GetValue() is Unit unit)
+            if (_unitSelectController!.GetValue() is MatchUnit unit)
             {
                 SetSelectedUnit(unit);
             }
@@ -231,7 +231,7 @@ namespace Expeditionary.Controller.Screens
             _screen!.UnitSelect!.Visible = true;
         }
 
-        private void SetSelectedUnit(Unit? unit)
+        private void SetSelectedUnit(MatchUnit? unit)
         {
             _selectedUnit = unit;
             _selectedUnitEnumerator = null;
@@ -267,7 +267,7 @@ namespace Expeditionary.Controller.Screens
             UpdateUnitOverlay();
         }
 
-        private IEnumerator<Unit> StepActiveUnitEnumerator()
+        private IEnumerator<MatchUnit> StepActiveUnitEnumerator()
         {
             return _match.GetFormations(_player)
                 .SelectMany(x => x.GetDiads())
@@ -328,14 +328,14 @@ namespace Expeditionary.Controller.Screens
 
         private static string GetObjectName(object @object)
         {
-            if (@object is Unit unit)
+            if (@object is MatchUnit unit)
             {
                 return unit.Name;
             }
             return @object?.ToString() ?? string.Empty;
         }
 
-        private static bool IsUnitActionable(Unit? unit)
+        private static bool IsUnitActionable(MatchUnit? unit)
         {
             return unit != null && unit.IsActive && unit.Actions > 0 && !unit.IsPassenger;
         }

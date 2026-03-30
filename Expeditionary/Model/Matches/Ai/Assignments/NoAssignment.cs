@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
                 formation.Diads.ToDictionary(x => x, x => (IAssignment)new NoAssignment(Origin)));
         }
 
-        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, MatchUnit unit, Match match)
         {
             return Enumerable.Repeat(0f, actions.Count());
         }
@@ -29,7 +29,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
                 && realization.UnitAssignments.All(x => x.Value is NoAssignment) ? 1f : 0f;
         }
 
-        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        public bool NotifyAction(MatchUnit unit, IUnitAction action, Match match)
         {
             return true;
         }

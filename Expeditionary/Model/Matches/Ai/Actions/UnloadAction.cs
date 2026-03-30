@@ -5,12 +5,12 @@ namespace Expeditionary.Model.Matches.Ai.Actions
 {
     public class UnloadAction : IUnitAction
     {
-        public bool Do(Match match, Unit unit)
+        public bool Do(Match match, MatchUnit unit)
         {
             return match.DoOrder(new UnloadOrder(unit));
         }
 
-        public static IEnumerable<IUnitAction> GenerateValidUnloads(Unit unit)
+        public static IEnumerable<IUnitAction> GenerateValidUnloads(MatchUnit unit)
         {
             if (unit.Passenger != null)
             {

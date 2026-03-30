@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Matches.Knowledge
         public static bool IsSpotted(
             EnumMap<UnitDetectionBand, float> detection,
             CombatCondition condition,
-            IAsset target)
+            IMatchAsset target)
         {
             return detection.Keys.Any(
                 x => IsSpotted(
@@ -24,9 +24,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             return SkillCalculator.SignatureAttenuate(detection, signature) > concealment;
         }
 
-        public static float GetConcealment(IAsset asset, UnitDetectionBand band, CombatCondition conditions)
+        public static float GetConcealment(IMatchAsset asset, UnitDetectionBand band, CombatCondition conditions)
         {
-            if (asset is not Unit unit)
+            if (asset is not MatchUnit unit)
             {
                 return 0;
             }
@@ -34,14 +34,14 @@ namespace Expeditionary.Model.Matches.Knowledge
         }
 
         public static EnumMap<UnitDetectionBand, float> GetDetection(
-            Unit detector, Sighting.LineOfSight los, CombatCondition condition)
+            MatchUnit detector, Sighting.LineOfSight los, CombatCondition condition)
         {
             return Enum.GetValues<UnitDetectionBand>()
                 .ToEnumMap(x => x, x => GetDetection(detector, x, los, condition));
         }
 
         public static float GetDetection(
-            Unit detector, UnitDetectionBand band, Sighting.LineOfSight los, CombatCondition condition)
+            MatchUnit detector, UnitDetectionBand band, Sighting.LineOfSight los, CombatCondition condition)
         {
             if (los.IsBlocked && (band == UnitDetectionBand.Visual || band == UnitDetectionBand.Thermal))
             {
@@ -53,9 +53,9 @@ namespace Expeditionary.Model.Matches.Knowledge
                 los.Distance);
         }
 
-        public static float GetSignature(IAsset asset, UnitDetectionBand band, CombatCondition condition)
+        public static float GetSignature(IMatchAsset asset, UnitDetectionBand band, CombatCondition condition)
         {
-            if (asset is not Unit unit)
+            if (asset is not MatchUnit unit)
             {
                 return 0;
             }

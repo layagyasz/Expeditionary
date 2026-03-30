@@ -14,17 +14,17 @@ namespace Expeditionary.View.Scenes.Matches.Layers
 {
     public class AssetLayer : ManagedResource, IRenderable
     {
-        private class AssetComparator : IComparer<(IAsset, SingleAssetKnowledge)>
+        private class AssetComparator : IComparer<(IMatchAsset, SingleAssetKnowledge)>
         {
-            public int Compare((IAsset, SingleAssetKnowledge) left, (IAsset, SingleAssetKnowledge) right)
+            public int Compare((IMatchAsset, SingleAssetKnowledge) left, (IMatchAsset, SingleAssetKnowledge) right)
             {
                 (var leftAsset, var leftKnowledge) = left;
                 (var rightAsset, var rightKnowledge) = right;
-                if (leftAsset is Unit leftUnit && leftUnit.Passenger == rightAsset)
+                if (leftAsset is MatchUnit leftUnit && leftUnit.Passenger == rightAsset)
                 {
                     return 1;
                 }
-                if (rightAsset is Unit rightUnit && rightUnit.Passenger == leftAsset)
+                if (rightAsset is MatchUnit rightUnit && rightUnit.Passenger == leftAsset)
                 {
                     return -1;
                 }
@@ -60,8 +60,8 @@ namespace Expeditionary.View.Scenes.Matches.Layers
 
         private SegmentedVertexBuffer<Vertex3>? _vertices;
         private readonly Dictionary<Vector3i, int> _addressMap = new();
-        private readonly Dictionary<IAsset, Vector3i> _positionMap = new();
-        private readonly MultiMap<Vector3i, IAsset> _assetMap = new();
+        private readonly Dictionary<IMatchAsset, Vector3i> _positionMap = new();
+        private readonly MultiMap<Vector3i, IMatchAsset> _assetMap = new();
 
         private IPlayerKnowledge? _knowledge;
 
@@ -77,7 +77,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
             _vertices!.Draw(target, context);
         }
 
-        public IEnumerable<IAsset> GetAssetsAt(Vector3i hex)
+        public IEnumerable<IMatchAsset> GetAssetsAt(Vector3i hex)
         {
             if (_assetMap.TryGetValue(hex, out var assets))
             {
@@ -87,7 +87,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
                     .Reverse()
                     .Select(x => x.Item1);
             }
-            return Enumerable.Empty<IAsset>();
+            return Enumerable.Empty<IMatchAsset>();
         }
 
         public void Initialize()
@@ -117,7 +117,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
             }
         }
 
-        public void Set(IEnumerable<IAsset> delta)
+        public void Set(IEnumerable<IMatchAsset> delta)
         {
             foreach (var asset in delta)
             {
@@ -133,7 +133,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
             }
         }
 
-        public void Remove(IAsset asset)
+        public void Remove(IMatchAsset asset)
         {
             if (_positionMap.TryGetValue(asset, out var lastPosition))
             {
@@ -172,7 +172,7 @@ namespace Expeditionary.View.Scenes.Matches.Layers
             return Add(hex);
         }
 
-        private void Place(IAsset asset, Vector3i position)
+        private void Place(IMatchAsset asset, Vector3i position)
         {
             if (_positionMap.TryGetValue(asset, out var lastPosition))
             {
@@ -219,26 +219,26 @@ namespace Expeditionary.View.Scenes.Matches.Layers
             return new(BlendMode.Alpha, _shader, _textures.GetTextures().First());
         }
 
-        private static Color4 GetBackground(IAsset asset)
+        private static Color4 GetBackground(IMatchAsset asset)
         {
-            if (asset is Unit unit)
+            if (asset is MatchUnit unit)
             {
                 return unit.Player.Faction.ColorScheme.Background;
             }
             return Color4.White;
         }
 
-        private static Color4 GetForeground(IAsset asset)
+        private static Color4 GetForeground(IMatchAsset asset)
         {
-            if (asset is Unit unit)
+            if (asset is MatchUnit unit)
             {
                 return unit.Player.Faction.ColorScheme.Foreground;
             }
             return Color4.Black;
         }
 
-        private static (IAsset, SingleAssetKnowledge) GetTopAsset(
-            IEnumerable<IAsset> assets, IPlayerKnowledge knowledge)
+        private static (IMatchAsset, SingleAssetKnowledge) GetTopAsset(
+            IEnumerable<IMatchAsset> assets, IPlayerKnowledge knowledge)
         {
             if (!assets.Any())
             {

@@ -26,7 +26,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return new(formationResult, diadResult);
         }
 
-        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, MatchUnit unit, Match match)
         {
             return Enumerable.Repeat(0f, actions.Count());
         }
@@ -36,7 +36,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return 1f;
         }
 
-        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        public bool NotifyAction(MatchUnit unit, IUnitAction action, Match match)
         {
             return true;
         }

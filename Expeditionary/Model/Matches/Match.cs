@@ -11,6 +11,7 @@ using Expeditionary.Model.Matches.Evaluation.TileEvaluators;
 using Expeditionary.Model.Matches.Events;
 using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.Model.Matches.Orders;
+using Expeditionary.Model.Matches.Reporting;
 using Expeditionary.Model.Missions.Objectives;
 using OpenTK.Mathematics;
 
@@ -37,11 +38,11 @@ namespace Expeditionary.Model.Matches
 
         private readonly List<Player> _players = new();
         private readonly Dictionary<Player, IObjective> _playerObjectives = new();
-        private readonly Dictionary<Player, PlayerReport> _playerReports = new();
+        private readonly Dictionary<Player, PlayerStatistics> _playerReports = new();
         private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
         private readonly List<Formation> _formations = new();
-        private readonly List<IAsset> _assets = new();
-        private readonly MultiMap<Vector3i, IAsset> _positions = new();
+        private readonly List<IMatchAsset> _assets = new();
+        private readonly MultiMap<Vector3i, IMatchAsset> _positions = new();
         private readonly List<IEvent> _events = new();
 
         private int _turn = 0;
@@ -100,7 +101,7 @@ namespace Expeditionary.Model.Matches
             _events.Add(@event);
         }
 
-        public void Damage(Unit attacker, Unit defender, int kills)
+        public void Damage(MatchUnit attacker, MatchUnit defender, int kills)
         {
             s_Logger.Log($"{attacker} damaged {defender} by {kills}");
             defender.Damage(kills);
@@ -116,7 +117,7 @@ namespace Expeditionary.Model.Matches
             }
         }
 
-        public void Destroy(Unit unit)
+        public void Destroy(MatchUnit unit)
         {
             s_Logger.Log($"{unit} destroyed");
             foreach (var knowledge in _playerKnowledge.Values)
@@ -124,8 +125,8 @@ namespace Expeditionary.Model.Matches
                 knowledge.Destroy(unit, _positions);
             }
             RemoveInternal(unit);
-            unit.Status = AssetStatus.Destroyed;
-            if (unit.Passenger != null && unit.Passenger is Unit passenger)
+            unit.Status = MatchAssetStatus.Destroyed;
+            if (unit.Passenger != null && unit.Passenger is MatchUnit passenger)
             {
                 Destroy(passenger);
             }
@@ -153,23 +154,23 @@ namespace Expeditionary.Model.Matches
             return true;
         }
 
-        public void Evacuate(IAsset asset)
+        public void Evacuate(IMatchAsset asset)
         {
             RemoveInternal(asset);
-            asset.Status = AssetStatus.Evacuated;
+            asset.Status = MatchAssetStatus.Evacuated;
         }
 
-        public IEnumerable<IAsset> GetAssets()
+        public IEnumerable<IMatchAsset> GetAssets()
         {
             return _assets;
         }
 
-        public IEnumerable<IAsset> GetAssetsAt(Vector3i hex)
+        public IEnumerable<IMatchAsset> GetAssetsAt(Vector3i hex)
         {
             return _positions[hex];
         }
 
-        public IEnumerable<IAsset> GetAssetsIn(MapTag tag)
+        public IEnumerable<IMatchAsset> GetAssetsIn(MapTag tag)
         {
             return _map.GetArea(tag).SelectMany(x => _positions[x]);
         }
@@ -179,7 +180,7 @@ namespace Expeditionary.Model.Matches
             return _tileEvaluator;
         }
 
-        public UnitTileEvaluator GetEvaluatorFor(Unit unit, MapDirection facing)
+        public UnitTileEvaluator GetEvaluatorFor(MatchUnit unit, MapDirection facing)
         {
             return new UnitTileEvaluator(
                 unit,
@@ -230,12 +231,12 @@ namespace Expeditionary.Model.Matches
             return _random;
         }
 
-        public PlayerReport GetStatistics(Player player)
+        public PlayerStatistics GetStatistics(Player player)
         {
             return _playerReports[player];
         }
 
-        public IEnumerable<PlayerReport> GetReport(int team)
+        public IEnumerable<PlayerStatistics> GetStatistics(int team)
         {
             return _playerReports.Where(x => x.Key.Team == team).Select(x => x.Value);
         }
@@ -252,7 +253,7 @@ namespace Expeditionary.Model.Matches
             s_Logger.Log("Initialized");
         }
 
-        public void Load(Unit unit, IAsset asset)
+        public void Load(MatchUnit unit, IMatchAsset asset)
         {
             s_Logger.Log($"{unit} loaded {asset}");
             unit.Passenger = asset;
@@ -264,7 +265,7 @@ namespace Expeditionary.Model.Matches
             }
         }
 
-        public void Move(IAsset asset, Pathing.Path path)
+        public void Move(IMatchAsset asset, Pathing.Path path)
         {
             s_Logger.Log($"{asset} moved along {path}");
             asset.Position = path.Destination;
@@ -276,13 +277,13 @@ namespace Expeditionary.Model.Matches
                 knowledge.Move(asset, path, _positions);
             }
 
-            if (asset is Unit unit && unit.Passenger != null)
+            if (asset is MatchUnit unit && unit.Passenger != null)
             {
                 Move(unit.Passenger, path);
             }
         }
 
-        public void Place(IAsset asset, Vector3i position)
+        public void Place(IMatchAsset asset, Vector3i position)
         {
             s_Logger.Log($"{asset} placed at {position}");
             if (asset.IsActive)
@@ -302,13 +303,13 @@ namespace Expeditionary.Model.Matches
                 knowledge.Place(asset, position, _positions);
             }
 
-            asset.Status = AssetStatus.Active;
+            asset.Status = MatchAssetStatus.Active;
         }
 
-        public void Remove(IAsset asset)
+        public void Remove(IMatchAsset asset)
         {
             RemoveInternal(asset);
-            asset.Status = AssetStatus.Reserved;
+            asset.Status = MatchAssetStatus.Reserved;
         }
 
         public void Reset()
@@ -339,7 +340,7 @@ namespace Expeditionary.Model.Matches
             _eventBuffer.Queue(Stepped, this, EventArgs.Empty);
         }
 
-        public void Unload(Unit unit)
+        public void Unload(MatchUnit unit)
         {
             s_Logger.Log($"{unit} unloaded");
             var passenger = unit.Passenger;
@@ -375,7 +376,7 @@ namespace Expeditionary.Model.Matches
             return playerId >= 0 ? _players[playerId] : null;
         }
 
-        private void RemoveInternal(IAsset asset)
+        private void RemoveInternal(IMatchAsset asset)
         {
             s_Logger.Log($"{asset} removed");
             if (asset.IsActive)

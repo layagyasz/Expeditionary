@@ -9,12 +9,12 @@ namespace Expeditionary.Model.Matches.Ai.Actions
     public record class IndirectAttackAction(Vector3i Target, UnitWeaponUsage Attack, UnitWeapon.Mode Mode)
         : IUnitAction
     {
-        public bool Do(Match match, Unit unit)
+        public bool Do(Match match, MatchUnit unit)
         {
             return match.DoOrder(new IndirectAttackOrder(unit, Attack, Mode, Target));
         }
 
-        public static IEnumerable<IndirectAttackAction> GenerateValidAttacks(Match match, Unit unit)
+        public static IEnumerable<IndirectAttackAction> GenerateValidAttacks(Match match, MatchUnit unit)
         {
             var map = match.GetMap();
             foreach (var attack in unit.Type.Weapons)

@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Missions.Objectives
     {
         public ObjectiveCompletion Evaluate(Player player, Match match)
         {
-            var units = match.GetAssetsIn(Area).Where(x => x is Unit).Cast<Unit>();
+            var units = match.GetAssetsIn(Area).Where(x => x is MatchUnit).Cast<MatchUnit>();
             var enemy = 
                 units.Where(x => !player.MatchTeam(x.Player)).Select(x => x.Value)
                     .Aggregate(new AssetValue(), (x, y) => x + y);

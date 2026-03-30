@@ -3,26 +3,27 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Assets
 {
-    public class Unit : IAsset
+    public class MatchUnit : IMatchAsset
     {
         public int Id { get; }
+        public int InstanceId { get; }
         public string Name => $"{Type.Name}(#{Id})";
         public Player Player { get; }
         public UnitType Type { get; }
         public string TypeKey => Type.Key;
         public Vector3i Position { get; set; }
-        public AssetStatus Status { get; set; } = AssetStatus.Reserved;
-        public bool IsActive => Status == AssetStatus.Active;
-        public bool IsDestroyed => Status == AssetStatus.Destroyed;
-        public bool IsReserved => Status == AssetStatus.Reserved;
+        public MatchAssetStatus Status { get; set; } = MatchAssetStatus.Reserved;
+        public bool IsActive => Status == MatchAssetStatus.Active;
+        public bool IsDestroyed => Status == MatchAssetStatus.Destroyed;
+        public bool IsReserved => Status == MatchAssetStatus.Reserved;
         public bool IsPassenger { get; set; }
         public IEnumerable<UnitTag> Tags => Type.Tags;
         public int Number { get; private set; }
         public int Actions { get; private set; }
-        public IAsset? Passenger { get; set; }
+        public IMatchAsset? Passenger { get; set; }
         public AssetValue Value => new(1, Type.Points);
 
-        public Unit(int id, Player player, UnitType type)
+        public MatchUnit(int id, Player player, UnitType type)
         {
             Id = id;
             Player = player;

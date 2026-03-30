@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Orders
 {
-    public record class IndirectAttackOrder(Unit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Vector3i Target)
+    public record class IndirectAttackOrder(MatchUnit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Vector3i Target)
         : IOrder
     {
         public bool Validate(Match match)
@@ -26,7 +26,7 @@ namespace Expeditionary.Model.Matches.Orders
             Unit.ConsumeAction();
             foreach (var targetAsset in match.GetAssetsAt(Target))
             {
-                if (targetAsset is Unit targetUnit)
+                if (targetAsset is MatchUnit targetUnit)
                 {
                     var preview = CombatCalculator.GetDirectPreview(Unit, Weapon, Mode, targetUnit, match.GetMap());
                     int kills = CombatCalculator.RollKills(preview, match.GetRandom());

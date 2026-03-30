@@ -4,9 +4,9 @@ namespace Expeditionary.Model.Matches
 {
     public class Formation
     {
-        public record class Diad(FormationRole Role, Unit Unit, Unit? Transport)
+        public record class Diad(FormationRole Role, MatchUnit Unit, MatchUnit? Transport)
         {
-            public IEnumerable<Unit> GetUnits()
+            public IEnumerable<MatchUnit> GetUnits()
             {
                 if (Transport != null)
                 {
@@ -52,7 +52,7 @@ namespace Expeditionary.Model.Matches
             return _diads.Concat(Components.SelectMany(diad => diad.GetDiads()));
         }
 
-        public IEnumerable<Unit> GetUnits()
+        public IEnumerable<MatchUnit> GetUnits()
         {
             return _diads.SelectMany(diad => diad.GetUnits()).Concat(
                 _components.SelectMany(component => component.GetUnits()));

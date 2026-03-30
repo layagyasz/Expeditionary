@@ -4,6 +4,6 @@ namespace Expeditionary.Model.Matches.Ai.Actions
 {
     public interface IUnitAction
     {
-        bool Do(Match match, Unit unit);
+        bool Do(Match match, MatchUnit unit);
     }
 }

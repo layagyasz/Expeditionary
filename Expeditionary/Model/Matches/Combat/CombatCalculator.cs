@@ -33,7 +33,7 @@ namespace Expeditionary.Model.Matches.Combat
             return min > 0 ? range.Where(x => x.Distance >= min) : range;
         }
 
-        public static bool IsValidTarget(Unit attacker, Unit target)
+        public static bool IsValidTarget(MatchUnit attacker, MatchUnit target)
         {
             if (!target.IsActive)
             {
@@ -54,16 +54,16 @@ namespace Expeditionary.Model.Matches.Combat
             return true;
         }
 
-        public static bool IsValidTarget(Unit attacker, UnitWeapon.Mode mode, Unit target, Map map)
+        public static bool IsValidTarget(MatchUnit attacker, UnitWeapon.Mode mode, MatchUnit target, Map map)
         {
             return IsValidTarget(attacker, attacker.Position, mode, target, target.Position, map);
         }
 
         public static bool IsValidTarget(
-            Unit attacker,
+            MatchUnit attacker,
             Vector3i attackerPosition,
             UnitWeapon.Mode mode, 
-            Unit target, 
+            MatchUnit target, 
             Vector3i targetPosition,
             Map map)
         {
@@ -84,17 +84,17 @@ namespace Expeditionary.Model.Matches.Combat
         }
 
         public static CombatPreview GetDirectPreview(
-            Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
+            MatchUnit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, MatchUnit target, Map map)
         {
             return GetDirectPreview(attacker, attacker.Position, weapon, mode, target, target.Position, map);
         }
 
         public static CombatPreview GetDirectPreview(
-            Unit attacker, 
+            MatchUnit attacker, 
             Vector3i attackerPosition,
             UnitWeaponUsage attack,
             UnitWeapon.Mode mode, 
-            Unit defender,
+            MatchUnit defender,
             Vector3i defenderPosition,
             Map map)
         {
@@ -161,17 +161,17 @@ namespace Expeditionary.Model.Matches.Combat
         }
 
         public static CombatPreview GetIndirectPreview(
-            Unit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, Unit target, Map map)
+            MatchUnit attacker, UnitWeaponUsage weapon, UnitWeapon.Mode mode, MatchUnit target, Map map)
         {
             return GetIndirectPreview(attacker, attacker.Position, weapon, mode, target, target.Position, map);
         }
 
         public static CombatPreview GetIndirectPreview(
-            Unit attacker,
+            MatchUnit attacker,
             Vector3i attackerPosition,
             UnitWeaponUsage attack,
             UnitWeapon.Mode mode,
-            Unit defender,
+            MatchUnit defender,
             Vector3i defenderPosition,
             Map map)
         {

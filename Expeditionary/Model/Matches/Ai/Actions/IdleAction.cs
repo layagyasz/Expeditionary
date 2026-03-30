@@ -4,7 +4,7 @@ namespace Expeditionary.Model.Matches.Ai.Actions
 {
     public record class IdleAction : IUnitAction
     {
-        public bool Do(Match match, Unit unit)
+        public bool Do(Match match, MatchUnit unit)
         {
             return true;
         }

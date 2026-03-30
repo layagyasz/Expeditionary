@@ -10,7 +10,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         public record class AttackOrderPrototype(string Name, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode) 
             : IOrderPrototype;
 
-        public record class LoadOrderPrototype(string Name, IAsset Passenger) : IOrderPrototype;
+        public record class LoadOrderPrototype(string Name, IMatchAsset Passenger) : IOrderPrototype;
 
         public record class MoveOrderPrototype(string Name) : IOrderPrototype;
 

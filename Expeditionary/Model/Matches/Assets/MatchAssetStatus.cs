@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.Model.Matches.Assets
 {
-    public enum AssetStatus
+    public enum MatchAssetStatus
     {
         Unknown,
         Active,

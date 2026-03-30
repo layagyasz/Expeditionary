@@ -48,7 +48,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Layers
             _layer!.SetAll(_match, knowledge);
         }
 
-        public void UpdateKnowledge(IEnumerable<IAsset> delta)
+        public void UpdateKnowledge(IEnumerable<IMatchAsset> delta)
         {
             _layer!.Set(delta);
         }

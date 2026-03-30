@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Matches.Orders
 {
-    public record class UnloadOrder(Unit Unit) : IOrder
+    public record class UnloadOrder(MatchUnit Unit) : IOrder
     {
         public bool Validate(Match match)
         {
@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Matches.Orders
             {
                 return false;
             }
-            if (Unit.Passenger is Unit passenger)
+            if (Unit.Passenger is MatchUnit passenger)
             {
                 return Unit.Actions > 0 && passenger.Actions > 0;
             }
@@ -21,7 +21,7 @@ namespace Expeditionary.Model.Matches.Orders
         public void Execute(Match match)
         {
             Unit.ConsumeAction();
-            ((Unit) Unit.Passenger!).ConsumeAction();
+            ((MatchUnit) Unit.Passenger!).ConsumeAction();
             match.Unload(Unit);
         }
     }

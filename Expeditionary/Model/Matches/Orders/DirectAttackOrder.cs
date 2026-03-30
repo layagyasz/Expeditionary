@@ -4,7 +4,7 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Orders
 {
-    public record class DirectAttackOrder(Unit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, Unit Target) 
+    public record class DirectAttackOrder(MatchUnit Unit, UnitWeaponUsage Weapon, UnitWeapon.Mode Mode, MatchUnit Target) 
         : IOrder
     {
         public bool Validate(Match match)

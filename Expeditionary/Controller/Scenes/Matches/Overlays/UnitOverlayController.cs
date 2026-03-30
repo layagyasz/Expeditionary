@@ -42,7 +42,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             _match = match;
         }
 
-        public void SetUnit(Unit? unit)
+        public void SetUnit(MatchUnit? unit)
         {
             _overlay!.Orders.Clear(true);
             if (unit == null)
@@ -66,7 +66,7 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
             OrderChanged?.Invoke(this, e);
         }
 
-        private IEnumerable<IOrderPrototype> GetPossibleOrders(Unit unit)
+        private IEnumerable<IOrderPrototype> GetPossibleOrders(MatchUnit unit)
         {
             if (unit.Actions == 0 || !unit.IsActive)
             {

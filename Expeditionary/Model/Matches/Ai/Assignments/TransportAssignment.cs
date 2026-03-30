@@ -8,7 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Matches.Ai.Assignments
 {
-    public record class TransportAssignment(Unit Unit, Vector3i Hex, Vector3i Origin, MapDirection Facing)
+    public record class TransportAssignment(MatchUnit Unit, Vector3i Hex, Vector3i Origin, MapDirection Facing)
         : IAssignment
     {
         private static readonly float Reward = 2f;
@@ -20,7 +20,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             throw new NotImplementedException();
         }
 
-        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, Unit unit, Match match)
+        public IEnumerable<float> EvaluateActions(IEnumerable<IUnitAction> actions, MatchUnit unit, Match match)
         {
             var path = GetPath(unit, match);
             return actions.Select(x => EvaluateAction(x, unit, path));
@@ -31,7 +31,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return 0;
         }
 
-        public bool NotifyAction(Unit unit, IUnitAction action, Match match)
+        public bool NotifyAction(MatchUnit unit, IUnitAction action, Match match)
         {
             return action is UnloadAction || !Unit.IsActive;
         }
@@ -41,7 +41,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             throw new NotImplementedException();
         }
 
-        private Pathing.Path? GetPath(Unit unit, Match match)
+        private Pathing.Path? GetPath(MatchUnit unit, Match match)
         {
             if (!Unit.IsActive)
             {
@@ -60,7 +60,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             return null;
         }
 
-        private float EvaluateAction(IUnitAction action, Unit unit, Pathing.Path? path)
+        private float EvaluateAction(IUnitAction action, MatchUnit unit, Pathing.Path? path)
         {
             var reward = Reward * Unit.Value.Points;
             if (action is MoveAction moveAction && path != null)

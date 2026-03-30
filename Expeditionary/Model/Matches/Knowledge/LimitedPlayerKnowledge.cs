@@ -26,7 +26,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             _mapKnowledge = mapKnowledge;
         }
         
-        public SingleAssetKnowledge GetAsset(IAsset asset)
+        public SingleAssetKnowledge GetAsset(IMatchAsset asset)
         {
             return _assetKnowledge.Get(asset);
         }
@@ -36,9 +36,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             return _mapKnowledge.Get(hex);
         }
 
-        public void Destroy(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Destroy(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
-            if (asset is Unit unit && unit.Player == _player)
+            if (asset is MatchUnit unit && unit.Player == _player)
             {
                 DestroySelf(unit, positions);
             }
@@ -48,9 +48,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        public void Move(IAsset asset, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
+        public void Move(IMatchAsset asset, Pathing.Path path, MultiMap<Vector3i, IMatchAsset> positions)
         {
-            if (asset is Unit unit && unit.Player == _player)
+            if (asset is MatchUnit unit && unit.Player == _player)
             {
                 MoveSelf(unit, path, positions);
             }
@@ -60,9 +60,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        public void Place(IAsset asset, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        public void Place(IMatchAsset asset, Vector3i position, MultiMap<Vector3i, IMatchAsset> positions)
         {
-            if (asset is Unit unit && unit.Player == _player)
+            if (asset is MatchUnit unit && unit.Player == _player)
             {
                 PlaceSelf(unit, position, positions);
             }
@@ -72,9 +72,9 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        public void Remove(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Remove(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
-            if (asset is Unit unit && unit.Player == _player)
+            if (asset is MatchUnit unit && unit.Player == _player)
             {
                 RemoveSelf(unit, positions);
             }
@@ -84,15 +84,15 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        public void Suppress(IAsset asset, MultiMap<Vector3i, IAsset> positions)
+        public void Suppress(IMatchAsset asset, MultiMap<Vector3i, IMatchAsset> positions)
         {
-            if (asset is Unit unit && unit.Player == _player)
+            if (asset is MatchUnit unit && unit.Player == _player)
             {
                 RemoveSelf(unit, positions);
             }
         }
 
-        private void DestroyOther(IAsset asset)
+        private void DestroyOther(IMatchAsset asset)
         {
             var assetDelta = _assetKnowledge.DestroyOther(asset);
             if (assetDelta.Any())
@@ -101,7 +101,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void DestroySelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
+        private void DestroySelf(MatchUnit unit, MultiMap<Vector3i, IMatchAsset> positions)
         {
             var delta = Sighting.GetSightField(_map, unit.Position, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Remove(unit, delta);
@@ -116,7 +116,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void MoveOther(IAsset asset, Pathing.Path path)
+        private void MoveOther(IMatchAsset asset, Pathing.Path path)
         {
             var assetDelta = _assetKnowledge.MoveOther(_mapKnowledge, asset, path);
             if (assetDelta.Any())
@@ -125,7 +125,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void MoveSelf(Unit unit, Pathing.Path path, MultiMap<Vector3i, IAsset> positions)
+        private void MoveSelf(MatchUnit unit, Pathing.Path path, MultiMap<Vector3i, IMatchAsset> positions)
         {
             var maxRange = GetMaxRange(unit);
             var initial = Sighting.GetSightField(_map, path.Origin, maxRange).ToHashSet();
@@ -147,7 +147,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void PlaceOther(IAsset asset, Vector3i position)
+        private void PlaceOther(IMatchAsset asset, Vector3i position)
         {
             var assetDelta = _assetKnowledge.AddOther(_mapKnowledge, asset, position);
             if (assetDelta.Any())
@@ -156,7 +156,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void PlaceSelf(Unit unit, Vector3i position, MultiMap<Vector3i, IAsset> positions)
+        private void PlaceSelf(MatchUnit unit, Vector3i position, MultiMap<Vector3i, IMatchAsset> positions)
         {
             var delta = Sighting.GetSightField(_map, position, GetMaxRange(unit)).ToList();
             var mapDelta = _mapKnowledge.Place(unit, delta);
@@ -171,7 +171,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void RemoveOther(IAsset asset)
+        private void RemoveOther(IMatchAsset asset)
         {
             var assetDelta = _assetKnowledge.RemoveOther(asset);
             if (assetDelta.Any())
@@ -180,7 +180,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private void RemoveSelf(Unit unit, MultiMap<Vector3i, IAsset> positions)
+        private void RemoveSelf(MatchUnit unit, MultiMap<Vector3i, IMatchAsset> positions)
         {
             if (!unit.IsActive)
             {
@@ -199,7 +199,7 @@ namespace Expeditionary.Model.Matches.Knowledge
             }
         }
 
-        private static int GetMaxRange(Unit unit)
+        private static int GetMaxRange(MatchUnit unit)
         {
             return (int)Enum.GetValues<UnitDetectionBand>()
                 .Select(x => unit.Type.Capabilities.GetRange(CombatCondition.None, x).GetValue()).Max();

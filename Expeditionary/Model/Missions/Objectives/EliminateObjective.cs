@@ -33,7 +33,7 @@ namespace Expeditionary.Model.Missions.Objectives
             return new(
                 ToScalar(
                     Team
-                        ? match.GetReport(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y)
+                        ? match.GetStatistics(player.Team).Select(x => x.Destroyed).Aggregate((x, y) => x + y)
                         : match.GetStatistics(player).Destroyed),
                 ToScalar(Quantity));
         }

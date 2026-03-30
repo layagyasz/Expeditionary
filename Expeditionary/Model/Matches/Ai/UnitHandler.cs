@@ -12,14 +12,14 @@ namespace Expeditionary.Model.Matches.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(UnitHandler));
 
         public FormationRole Role { get; }
-        public Unit Unit { get; }
+        public MatchUnit Unit { get; }
         public IAssignment Assignment { get; private set; } = new NoAssignment(default);
         public IEnumerable<FormationHandler> Components => Enumerable.Empty<FormationHandler>();
         public IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
         public string Id => $"unit-{Unit.Id}";
         public int Echelon => 1;
 
-        public UnitHandler(FormationRole role, Unit unit)
+        public UnitHandler(FormationRole role, MatchUnit unit)
         {
             Unit = unit;
             Role = role;

@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Matches.Orders
 {
-    public record class MoveOrder(Unit Unit, Pathing.Path? Path) : IOrder
+    public record class MoveOrder(MatchUnit Unit, Pathing.Path? Path) : IOrder
     {
         public bool Validate(Match match)
         {

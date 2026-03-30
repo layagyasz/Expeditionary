@@ -7,13 +7,13 @@ namespace Expeditionary.Model.Matches.Ai.Actions
     public static class UnitActionEvaluations
     {
         public static IEnumerable<float> EvaluateDefault(
-            IEnumerable<IUnitAction> actions, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
+            IEnumerable<IUnitAction> actions, MatchUnit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
             return actions.Select(x => EvaluateDefault(x, unit, match, tileEvaluator));
         }
 
         public static float EvaluateDefault(
-            IUnitAction action, Unit unit, Match match, UnitTileEvaluator tileEvaluator)
+            IUnitAction action, MatchUnit unit, Match match, UnitTileEvaluator tileEvaluator)
         {
             if (action is DirectAttackAction directAttack)
             {
