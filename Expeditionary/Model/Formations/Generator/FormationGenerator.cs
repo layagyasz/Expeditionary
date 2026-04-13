@@ -15,7 +15,7 @@ namespace Expeditionary.Model.Formations.Generator
             Formations = formations;
         }
 
-        public FormationTemplate Generate(Faction faction, Random random)
+        public TemplateFormation Generate(Faction faction, Random random)
         {
             var formationConfig = FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
             var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];

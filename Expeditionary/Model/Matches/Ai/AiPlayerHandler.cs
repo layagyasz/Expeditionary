@@ -1,6 +1,7 @@
 ﻿using Cardamom;
 using Cardamom.Logging;
 using Expeditionary.Model.Matches.Ai.Assignments;
+using Expeditionary.Model.Matches.Assets;
 
 namespace Expeditionary.Model.Matches.Ai
 {
@@ -22,7 +23,7 @@ namespace Expeditionary.Model.Matches.Ai
                 new RootHandler(player, match.GetFormations(Player).Select(FormationHandler.Create));
         }
 
-        public void AddFormation(Formation formation, Formation? parent)
+        public void AddFormation(MatchFormation formation, MatchFormation? parent)
         {
             Precondition.Check(formation.Player == Player);
             var handler = FormationHandler.Create(formation);

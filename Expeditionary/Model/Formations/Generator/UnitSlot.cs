@@ -1,5 +1,4 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Model.Matches;
 using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Formations.Generator

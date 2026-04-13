@@ -1,4 +1,5 @@
 ﻿using Cardamom.Logging;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Matches.Ai.Actions;
 using Expeditionary.Model.Matches.Ai.Assignments;
 using Expeditionary.Model.Matches.Assets;

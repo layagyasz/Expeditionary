@@ -1,5 +1,6 @@
-﻿using Expeditionary.Model.Mapping;
-using Expeditionary.Model.Matches;
+﻿using Expeditionary.Model.Formations;
+using Expeditionary.Model.Mapping;
+using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Evaluation.Caches;
 using Expeditionary.Model.Matches.Evaluation.Considerations;
 using Expeditionary.Model.Units;
@@ -18,7 +19,7 @@ namespace Expeditionary.Model.Matches.Evaluation.TileEvaluators
             _random = random;
         }
 
-        public TileConsideration GetConsiderationFor(Formation formation, MapDirection facing)
+        public TileConsideration GetConsiderationFor(MatchFormation formation, MapDirection facing)
         {
             return DefaultConsideration(
                 DefaultDispositionMapper.Map(formation.Role),

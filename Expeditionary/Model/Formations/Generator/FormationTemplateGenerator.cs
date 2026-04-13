@@ -1,7 +1,6 @@
 ﻿using Cardamom;
 using Cardamom.Collections;
 using Cardamom.Json;
-using Expeditionary.Model.Matches;
 using Expeditionary.Model.Units;
 using System.Text.Json.Serialization;
 
@@ -18,7 +17,7 @@ namespace Expeditionary.Model.Formations.Generator
             [JsonConverter(typeof(ReferenceJsonConverter))]
             public FormationTemplateGenerator? Formation { get; set; }
 
-            public FormationTemplate Generate(FormationGeneratorContext context)
+            public TemplateFormation Generate(FormationGeneratorContext context)
             {
                 return Formation!.Generate(context.WithTags(RequiredTags, ExcludedTags));
             }
@@ -29,9 +28,9 @@ namespace Expeditionary.Model.Formations.Generator
         public FormationRole Role { get; set; }
         public int Echelon { get; set; }
         public List<ParameterizedFormationGenerator> ComponentFormations { get; set; } = new();
-        public List<DiadTemplate> Diads { get; set; } = new();
+        public List<DiadParameters> Diads { get; set; } = new();
 
-        public FormationTemplate Generate(FormationGeneratorContext context)
+        public TemplateFormation Generate(FormationGeneratorContext context)
         {
             return new(
                 Name,
@@ -41,7 +40,7 @@ namespace Expeditionary.Model.Formations.Generator
                 Diads.SelectMany(x => Enumerable.Repeat(Select(x, context), x.Number)).ToList());
         }
 
-        private static FormationTemplate.Diad Select(DiadTemplate diad, FormationGeneratorContext context)
+        private static TemplateDiad Select(DiadParameters diad, FormationGeneratorContext context)
         {
             return new(
                 diad.Unit.Role,

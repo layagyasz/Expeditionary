@@ -40,7 +40,7 @@ namespace Expeditionary.Model.Matches
         private readonly Dictionary<Player, IObjective> _playerObjectives = new();
         private readonly Dictionary<Player, PlayerStatistics> _playerReports = new();
         private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
-        private readonly List<Formation> _formations = new();
+        private readonly List<MatchFormation> _formations = new();
         private readonly List<IMatchAsset> _assets = new();
         private readonly MultiMap<Vector3i, IMatchAsset> _positions = new();
         private readonly List<IEvent> _events = new();
@@ -75,10 +75,10 @@ namespace Expeditionary.Model.Matches
             s_Logger.Log($"{player} added");
         }
 
-        public Formation Add(Player player, FormationTemplate template, Formation? parent = null)
+        public MatchFormation Add(Player player, TemplateFormation template, MatchFormation? parent = null)
         {
             Precondition.Check(parent == null || parent.Player == player);
-            var formation = template.Materialize(player, _idGenerator);
+            var formation = MatchFormation.From(template, player, _idGenerator);
             if (parent == null)
             {
                 _formations.Add(formation);
@@ -191,7 +191,7 @@ namespace Expeditionary.Model.Matches
                 _random);
         }
 
-        public IEnumerable<Formation> GetFormations(Player player)
+        public IEnumerable<MatchFormation> GetFormations(Player player)
         {
             return _formations.Where(x => x.Player.Id == player.Id);
         }

@@ -1,4 +1,5 @@
 ﻿using Cardamom.Trackers;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Matches.Ai.Actions;

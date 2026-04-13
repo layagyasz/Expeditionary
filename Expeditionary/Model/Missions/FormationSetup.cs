@@ -4,7 +4,7 @@ using Expeditionary.Model.Matches.Ai.Assignments;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class FormationSetup(FormationTemplate Formation, IAssignment Assignment)
+    public record class FormationSetup(TemplateFormation Formation, IAssignment Assignment)
     {
         public void Setup(Player player, Match match, SetupContext context)
         {

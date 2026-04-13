@@ -1,5 +1,5 @@
 ﻿using Cardamom.Collections;
-using Expeditionary.Model.Matches;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Evaluation

@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Matches
+﻿using Expeditionary.Model.Matches.Assets;
+
+namespace Expeditionary.Model.Matches
 {
-    public record class FormationAddedEventArgs(Formation Formation, Formation? Parent);
+    public record class FormationAddedEventArgs(MatchFormation Formation, MatchFormation? Parent);
 }

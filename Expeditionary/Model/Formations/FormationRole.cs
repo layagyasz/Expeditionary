@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Matches
+namespace Expeditionary.Model.Formations
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum FormationRole
