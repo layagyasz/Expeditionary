@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Mapping;
+﻿using Expeditionary.Model.Instances;
+using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Matches.Ai.Assignments;
@@ -16,6 +17,7 @@ namespace Expeditionary.Model.Missions.Generator
         {
             int playerId = 0;
             var players = new List<PlayerSetup>();
+            var noInstanceIdGenerator = new StaticIdGenerator(Constants.NoInstanceId);
             foreach (var attacker in node.Attackers)
             {
                 var player = new Player(playerId++, Team: 0, attacker);
@@ -27,7 +29,9 @@ namespace Expeditionary.Model.Missions.Generator
                         Formations: new()
                         {
                             new(
-                                resources.FormationGenerator.Generate(attacker, resources.Random), 
+                                InstanceFormation.From(
+                                    resources.FormationGenerator.Generate(attacker, resources.Random), 
+                                    noInstanceIdGenerator), 
                                 new DefaultOffensiveAssignment(
                                     MapDirection.North,  new() { new TagMapRegion(MapTag.Control1)}))
                         });
@@ -44,7 +48,9 @@ namespace Expeditionary.Model.Missions.Generator
                         Formations: new()
                         {
                             new(
-                                resources.FormationGenerator.Generate(defender, resources.Random),
+                                InstanceFormation.From(
+                                    resources.FormationGenerator.Generate(defender, resources.Random),
+                                    noInstanceIdGenerator),
                                 new DefaultDefensiveAssignment(
                                     MapDirection.South, new() { new TagMapRegion(MapTag.Control1)}))
                         });

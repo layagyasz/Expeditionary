@@ -2,7 +2,7 @@
 using Cardamom.Collections;
 using Cardamom.Logging;
 using Expeditionary.Events;
-using Expeditionary.Model.Formations;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Evaluation;
@@ -75,25 +75,9 @@ namespace Expeditionary.Model.Matches
             s_Logger.Log($"{player} added");
         }
 
-        public MatchFormation Add(Player player, TemplateFormation template, MatchFormation? parent = null)
+        public MatchFormation Add(Player player, InstanceFormation instance, MatchFormation? parent = null)
         {
-            Precondition.Check(parent == null || parent.Player == player);
-            var formation = MatchFormation.From(template, player, _idGenerator);
-            if (parent == null)
-            {
-                _formations.Add(formation);
-            }
-            else
-            {
-                parent.AddComponent(formation);
-            }
-            foreach (var unit in formation.GetUnits())
-            {
-                _assets.Add(unit);
-            }
-            s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
-            _eventBuffer.Queue(FormationAdded, this, new(formation, parent));
-            return formation;
+            return Add(player, MatchFormation.From(instance, player, _idGenerator), parent);
         }
 
         public void Add(IEvent @event)
@@ -353,6 +337,26 @@ namespace Expeditionary.Model.Matches
                 }
             }
             unit.Passenger = null;
+        }
+
+        private MatchFormation Add(Player player, MatchFormation formation, MatchFormation? parent)
+        {
+            Precondition.Check(parent == null || parent.Player == player);
+            if (parent == null)
+            {
+                _formations.Add(formation);
+            }
+            else
+            {
+                parent.AddComponent(formation);
+            }
+            foreach (var unit in formation.GetUnits())
+            {
+                _assets.Add(unit);
+            }
+            s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
+            _eventBuffer.Queue(FormationAdded, this, new(formation, parent));
+            return formation;
         }
 
         private void DoEvents(TurnInfo turn)

@@ -23,9 +23,10 @@ namespace Expeditionary.Model.Matches.Assets
         public IMatchAsset? Passenger { get; set; }
         public AssetValue Value => new(1, Type.Points);
 
-        public MatchUnit(int id, Player player, UnitType type)
+        public MatchUnit(int id, int instanceId, Player player, UnitType type)
         {
             Id = id;
+            InstanceId = instanceId;
             Player = player;
             Type = type;
             Number = (int)type.Intrinsics.Number.GetValue();

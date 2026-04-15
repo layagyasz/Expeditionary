@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Model.Formations;
+using Expeditionary.Model.Instances;
 
 namespace Expeditionary.Model.Matches.Assets
 {
@@ -10,6 +11,7 @@ namespace Expeditionary.Model.Matches.Assets
 
         private MatchFormation(
             int id,
+            int instanceId,
             Player player,
             string name,
             FormationRole role,
@@ -19,13 +21,28 @@ namespace Expeditionary.Model.Matches.Assets
             : base(name, role, echelon, componentFormations, diads)
         {
             Id = id;
+            InstanceId = instanceId;
             Player = player;
+        }
+
+        public static MatchFormation From(InstanceFormation instance, Player player, IIdGenerator idGenerator)
+        {
+            return new MatchFormation(
+                idGenerator.Next(),
+                instance.Id,
+                player,
+                instance.Name,
+                instance.Role,
+                instance.Echelon,
+                instance.ComponentFormations.Select(componentInstance => From(componentInstance, player, idGenerator)),
+                instance.Diads.Select(diadInstance => MatchDiad.From(diadInstance, player, idGenerator)));
         }
 
         public static MatchFormation From(TemplateFormation template, Player player, IIdGenerator idGenerator)
         {
             return new MatchFormation(
                 idGenerator.Next(),
+                Constants.NoInstanceId,
                 player,
                 template.Name, 
                 template.Role,

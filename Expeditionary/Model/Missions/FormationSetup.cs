@@ -1,10 +1,10 @@
-﻿using Expeditionary.Model.Formations;
+﻿using Expeditionary.Model.Instances;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai.Assignments;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class FormationSetup(TemplateFormation Formation, IAssignment Assignment)
+    public record class FormationSetup(InstanceFormation Formation, IAssignment Assignment)
     {
         public void Setup(Player player, Match match, SetupContext context)
         {

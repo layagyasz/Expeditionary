@@ -18,8 +18,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
             var random = new Random(seed);
             var status = new LoaderStatus(logLength: 1);
             return (status,
-                Setup(status, mission, Create(status, mission, player, random, isTest), player, random));
-                    
+                Setup(status, mission, Create(status, mission, player, random, isTest), player, random));  
         }
 
         private static LoaderTaskNode<(Match, MapAppearance)> Create(
