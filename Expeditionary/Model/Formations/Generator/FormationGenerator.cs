@@ -15,11 +15,17 @@ namespace Expeditionary.Model.Formations.Generator
             Formations = formations;
         }
 
-        public TemplateFormation Generate(Faction faction, Random random)
+        public TemplateFormation Generate(FormationParameters parameters)
         {
-            var formationConfig = FactionFormations.Where(x => x.Value.Faction == faction.Key).First().Value;
-            var formationGenerator = formationConfig.Formations[random.Next(formationConfig.Formations.Count)];
-            return formationGenerator.Generate(new(random, new(), new(), formationConfig.Units));
+            var formationConfig = 
+                FactionFormations.Values.Where(config => config.Faction == parameters.Faction.Key).First();
+            var availableGenerators =
+                formationConfig.Formations
+                    .Where(generator => parameters.AllowedRoles.Contains(generator.Role))
+                    .ToList();
+            var formationGenerator = availableGenerators[parameters.Random.Next(availableGenerators.Count)];
+            return formationGenerator.Generate(
+                new(parameters.Random, parameters.RequiredTags, parameters.ExcludedTags, formationConfig.Units));
         }
     }
 }

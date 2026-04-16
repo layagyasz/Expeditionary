@@ -1,18 +1,16 @@
-﻿using Expeditionary.Model.Formations.Generator;
-using Expeditionary.Model.Galaxies;
+﻿using Expeditionary.Model.Galaxies;
 using Expeditionary.Model.Mapping.Environments.Generator;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.Model.Missions.Generator
 {
-    public record class MissionGenerator(
-        Galaxy Galaxy, MapEnvironmentGenerator Environments, FormationGenerator Formations)
+    public record class MissionGenerator(Galaxy Galaxy, MapEnvironmentGenerator Environments)
     {
         public Mission Generate(MissionNode node, long time, int seed)
         {
-            var resources = new MissionGenerationResources(Galaxy, Environments, Formations, new(seed));
+            var resources = new MissionGenerationResources(Galaxy, Environments, new(seed));
             var content = node.Content.Generate(node, resources);
-            var sector = resources.Galaxy.Sectors[content.Map.Environment.Location.Sector];
+            var sector = Galaxy.Sectors[content.Map.Environment.Location.Sector];
             var random = new Random(content.Map.Environment.Location.SystemSeed());
             return new(
                 time,

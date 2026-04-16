@@ -45,7 +45,12 @@ namespace Expeditionary.Runners.GameStates
         private void HandleLaunch(object? sender, Mission e)
         {
             (var status, var task) =
-                NewMatchLoader.Create(e, e.Content.Players.First().Player, _config.IsDebug, seed: 0);
+                NewMatchLoader.Create(
+                    e, 
+                    e.Content.Players.First().Player,
+                    new(_module.FactionFormations, _module.Formations), 
+                    _config.IsDebug, 
+                    seed: 0);
             GameStateChanged?.Invoke(
                 this,
                 new IGameStateContext.LoadContext(

@@ -23,11 +23,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
         private static MissionManager Create(LoaderStatus status, GameModule module, int seed)
         {
             var random = new Random(seed);
-            var missionGenerator =
-                new MissionGenerator(
-                    module.Galaxy,
-                    module.MapEnvironmentGenerator,
-                    new(module.FactionFormations, module.Formations));
+            var missionGenerator = new MissionGenerator(module.Galaxy, module.MapEnvironmentGenerator);
             var missionNode =
                 new MissionNode()
                 {

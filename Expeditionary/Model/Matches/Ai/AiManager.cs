@@ -9,12 +9,18 @@ namespace Expeditionary.Model.Matches.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiManager));
 
         private readonly Match _match;
-        private readonly Dictionary<Player, AiPlayerHandler> _handlers;
+        private readonly Dictionary<Player, AiPlayerHandler> _handlers = new();
 
-        public AiManager(Match match, IEnumerable<Player> players)
+        public AiManager(Match match)
         {
             _match = match;
-            _handlers = players.ToDictionary(x => x, CreateHandler);
+        }
+
+        public AiPlayerHandler Add(Player player)
+        {
+            var handler = CreateHandler(player);
+            _handlers.Add(player, handler);
+            return handler;
         }
 
         public AiPlayerHandler CreateHandler(Player player)

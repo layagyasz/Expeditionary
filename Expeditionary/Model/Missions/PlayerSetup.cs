@@ -6,8 +6,7 @@ using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class PlayerSetup(
-        Player Player, IObjective Objective, List<IEvent> Events, List<FormationSetup> Formations)
+    public record class PlayerSetup(Player Player, IObjective Objective, List<IEvent> Events, FormationSetup Formation)
     {
         public void Create(Match match, CreationContext context)
         {
@@ -16,14 +15,16 @@ namespace Expeditionary.Model.Missions
 
         public void Setup(Match match, SetupContext context) 
         {
+            var playerContext = context.GetPlayerContext(Player);
+            if (!playerContext.IsHuman)
+            {
+                context.AiManager.Add(Player);
+            }
             foreach (var @event in Events)
             {
                 match.Add(@event);
             }
-            foreach (var formation in Formations)
-            {
-                formation.Setup(Player, match, context);
-            }
+            Formation.Setup(Player, match, context);
         }
 
         private IPlayerKnowledge CreatePlayerKnowledge(Player player, Map map, CreationContext context)

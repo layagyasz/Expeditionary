@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Instances;
+﻿using Cardamom.Collections;
+using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
@@ -17,7 +18,6 @@ namespace Expeditionary.Model.Missions.Generator
         {
             int playerId = 0;
             var players = new List<PlayerSetup>();
-            var noInstanceIdGenerator = new StaticIdGenerator(Constants.NoInstanceId);
             foreach (var attacker in node.Attackers)
             {
                 var player = new Player(playerId++, Team: 0, attacker);
@@ -26,15 +26,12 @@ namespace Expeditionary.Model.Missions.Generator
                         player,
                         Objective: GetOffenseObjective(),
                         Events: new(),
-                        Formations: new()
-                        {
+                        Formation: 
                             new(
-                                InstanceFormation.From(
-                                    resources.FormationGenerator.Generate(attacker, resources.Random), 
-                                    noInstanceIdGenerator), 
+                                new FormationParameters(
+                                    attacker, EnumSet<FormationRole>.All(), new(), new(), resources.Random), 
                                 new DefaultOffensiveAssignment(
-                                    MapDirection.North,  new() { new TagMapRegion(MapTag.Control1)}))
-                        });
+                                    MapDirection.North,  new() { new TagMapRegion(MapTag.Control1)})));
                 players.Add(setup);
             }
             foreach (var defender in node.Defenders)
@@ -45,15 +42,12 @@ namespace Expeditionary.Model.Missions.Generator
                         player,
                         Objective: GetDefenseObjective(),
                         Events: new(),
-                        Formations: new()
-                        {
+                        Formation: 
                             new(
-                                InstanceFormation.From(
-                                    resources.FormationGenerator.Generate(defender, resources.Random),
-                                    noInstanceIdGenerator),
+                                new FormationParameters(
+                                    defender, EnumSet<FormationRole>.All(), new(), new(), resources.Random),
                                 new DefaultDefensiveAssignment(
-                                    MapDirection.South, new() { new TagMapRegion(MapTag.Control1)}))
-                        });
+                                    MapDirection.South, new() { new TagMapRegion(MapTag.Control1)})));
                 players.Add(setup);
             }
             var zoneChoice = ZoneOptions[resources.Random.Next(ZoneOptions.Count)];

@@ -1,6 +1,13 @@
 ﻿using Expeditionary.Model.Matches.Ai;
+using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Missions
 {
-    public record SetupContext(Random Random, IIdGenerator IdGenerator, AiManager AiManager);
+    public record SetupContext(AiManager AiManager, ImmutableList<PlayerSetupContext> PlayerContexts)
+    {
+        public PlayerSetupContext GetPlayerContext(Player player)
+        {
+            return PlayerContexts.Find(context => context.Player == player)!;
+        }
+    }
 }
