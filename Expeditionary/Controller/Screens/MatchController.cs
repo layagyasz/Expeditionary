@@ -8,7 +8,6 @@ using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Controller.Scenes.Matches.Overlays;
 using Expeditionary.Events;
 using Expeditionary.Hexagons;
-using Expeditionary.Model;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Combat;
@@ -29,7 +28,7 @@ namespace Expeditionary.Controller.Screens
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(MatchController));
 
         private readonly Match _match;
-        private readonly Player _player;
+        private readonly MatchPlayer _player;
 
         private readonly IEventBuffer _events = new DelayEventBuffer(3000);
 
@@ -44,7 +43,7 @@ namespace Expeditionary.Controller.Screens
         private IOrderPrototype? _selectedOrder;
         private IEnumerator<MatchUnit>? _selectedUnitEnumerator;
 
-        public MatchController(Match match, Player player)
+        public MatchController(Match match, MatchPlayer player)
         {
             _match = match;
             _player = player;

@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Missions
+﻿using Expeditionary.Model.Matches;
+
+namespace Expeditionary.Model.Missions
 {
-    public record class CreationContext(Player Player, Random Random, bool IsTest);
+    public record class CreationContext(MatchPlayer Player, Random Random, bool IsTest);
 }

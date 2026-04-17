@@ -16,7 +16,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new RandomMissionRunner(Config).Run();
+            new DefaultRunner(Config).Run();
         }
     }
 }

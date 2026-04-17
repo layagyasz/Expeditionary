@@ -10,7 +10,7 @@ namespace Expeditionary.Model.Missions.Objectives
             Or
         }
 
-        public ObjectiveCompletion Evaluate(Player player, Match match)
+        public ObjectiveCompletion Evaluate(MatchPlayer player, Match match)
         {
             var completions = Objectives.Select(x => x.Evaluate(player, match)).ToList();
             var disposition = IObjective.Combine(completions.Select(completion => completion.Disposition));
@@ -36,7 +36,7 @@ namespace Expeditionary.Model.Missions.Objectives
             }
         }
 
-        public ObjectiveProgress GetProgress(Player player, Match match)
+        public ObjectiveProgress GetProgress(MatchPlayer player, Match match)
         {
             return new(
                 Objectives.Count(x => x.Evaluate(player, match).Status == ObjectiveStatus.DecisiveVictory),

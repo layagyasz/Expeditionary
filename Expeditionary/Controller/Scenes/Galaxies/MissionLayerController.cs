@@ -2,6 +2,7 @@
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Missions;
 using Expeditionary.View.Scenes.Galaxies;
 

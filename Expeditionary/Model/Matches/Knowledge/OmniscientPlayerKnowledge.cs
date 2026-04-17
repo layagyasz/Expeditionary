@@ -9,9 +9,9 @@ namespace Expeditionary.Model.Matches.Knowledge
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
-        private readonly Player _player;
+        private readonly MatchPlayer _player;
 
-        public OmniscientPlayerKnowledge(Player player)
+        public OmniscientPlayerKnowledge(MatchPlayer player)
         {
             _player = player;
         }

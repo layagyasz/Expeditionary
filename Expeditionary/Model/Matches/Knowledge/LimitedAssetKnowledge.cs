@@ -6,10 +6,10 @@ namespace Expeditionary.Model.Matches.Knowledge
 {
     public class LimitedAssetKnowledge
     {
-        private readonly Player _player;
+        private readonly MatchPlayer _player;
         private readonly Dictionary<IMatchAsset, SingleAssetKnowledge> _assets = new();
 
-        public LimitedAssetKnowledge(Player player)
+        public LimitedAssetKnowledge(MatchPlayer player)
         {
             _player = player;
         }

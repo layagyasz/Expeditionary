@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Matches.Reporting
 {
-    public record class MatchReport(ImmutableDictionary<Player, PlayerReport> Players)
+    public record class MatchReport(ImmutableDictionary<MatchPlayer, PlayerReport> Players)
     {
         public static MatchReport Generate(Match match)
         {

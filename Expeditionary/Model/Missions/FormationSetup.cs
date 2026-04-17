@@ -6,7 +6,7 @@ namespace Expeditionary.Model.Missions
 {
     public record class FormationSetup(FormationParameters FormationParameters, IAssignment Assignment)
     {
-        public void Setup(Player player, Match match, SetupContext context)
+        public void Setup(MatchPlayer player, Match match, SetupContext context)
         {
             var playerContext = context.GetPlayerContext(player);
             var formation = match.Add(player, playerContext.FormationProvider.Get(FormationParameters));

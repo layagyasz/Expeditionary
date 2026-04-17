@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Matches.Assets
         private MatchDiad(FormationRole role, MatchUnit unit, MatchUnit? transport)
         : base(role, unit, transport) { }
 
-        public static MatchDiad From(InstanceDiad instance, Player player, IIdGenerator idGenerator)
+        public static MatchDiad From(InstanceDiad instance, MatchPlayer player, IIdGenerator idGenerator)
         {
             return new(
                 instance.Role,
@@ -18,7 +18,7 @@ namespace Expeditionary.Model.Matches.Assets
                     : new(idGenerator.Next(), instance.Transport.Id, player, instance.Transport.Type));
         }
 
-        public static MatchDiad From(TemplateDiad template, Player player, IIdGenerator idGenerator)
+        public static MatchDiad From(TemplateDiad template, MatchPlayer player, IIdGenerator idGenerator)
         {
             return new(
                 template.Role,

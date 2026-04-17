@@ -1,6 +1,8 @@
-﻿using Expeditionary.Model.Missions.Generator;
+﻿using Expeditionary.Model.Factions;
+using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.Generator;
 
-namespace Expeditionary.Model.Missions
+namespace Expeditionary.Model.Instances
 {
     public class MissionManager
     {
@@ -9,6 +11,7 @@ namespace Expeditionary.Model.Missions
 
         public IEnumerable<Mission> Missions => _missions;
 
+        private readonly HashSet<Faction> _factions;
         private readonly MissionGenerator _missionGenerator;
         private readonly List<MissionNode> _nodes;
         private readonly Random _random;
@@ -16,8 +19,13 @@ namespace Expeditionary.Model.Missions
         private long _time;
         private List<Mission> _missions;
 
-        public MissionManager(MissionGenerator missionGenerator, IEnumerable<MissionNode> nodes, Random random)
+        public MissionManager(
+            IEnumerable<Faction> factions, 
+            MissionGenerator missionGenerator,
+            IEnumerable<MissionNode> nodes,
+            Random random)
         {
+            _factions = factions.ToHashSet();
             _missionGenerator = missionGenerator;
             _nodes = nodes.ToList();
             _random = random;
@@ -41,9 +49,9 @@ namespace Expeditionary.Model.Missions
                     removedMissions.Add(mission);
                 }
             }
-            foreach (var node in _nodes)
+            foreach (var node in _nodes.Where(node => _factions.Intersect(node.Factions).Any()))
             {
-                for (int i=0; i<RollMissions(node.Frequency, node.Cap, _random); ++i)
+                for (int i = 0; i < RollMissions(node.Frequency, node.Cap, _random); ++i)
                 {
                     var mission = _missionGenerator.Generate(node, _time, _random.Next());
                     newMissions.Add(mission);

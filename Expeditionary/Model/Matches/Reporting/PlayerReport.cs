@@ -5,7 +5,7 @@ namespace Expeditionary.Model.Matches.Reporting
 {
     public record class PlayerReport(PlayerStatistics Statistics, ImmutableList<UnitReport> Units)
     {
-        public static PlayerReport Generate(Player player, Match match)
+        public static PlayerReport Generate(MatchPlayer player, Match match)
         {
             return new(
                 match.GetStatistics(player),

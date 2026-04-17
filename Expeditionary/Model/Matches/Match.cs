@@ -36,10 +36,10 @@ namespace Expeditionary.Model.Matches
         private readonly EvaluationCache _evaluationCache;
         private readonly TileEvaluator _tileEvaluator;
 
-        private readonly List<Player> _players = new();
-        private readonly Dictionary<Player, IObjective> _playerObjectives = new();
-        private readonly Dictionary<Player, PlayerStatistics> _playerReports = new();
-        private readonly Dictionary<Player, IPlayerKnowledge> _playerKnowledge = new();
+        private readonly List<MatchPlayer> _players = new();
+        private readonly Dictionary<MatchPlayer, IObjective> _playerObjectives = new();
+        private readonly Dictionary<MatchPlayer, PlayerStatistics> _playerReports = new();
+        private readonly Dictionary<MatchPlayer, IPlayerKnowledge> _playerKnowledge = new();
         private readonly List<MatchFormation> _formations = new();
         private readonly List<IMatchAsset> _assets = new();
         private readonly MultiMap<Vector3i, IMatchAsset> _positions = new();
@@ -59,7 +59,7 @@ namespace Expeditionary.Model.Matches
             _tileEvaluator = new TileEvaluator(_evaluationCache, random);
         }
 
-        public void Add(Player player, IObjective objective, IPlayerKnowledge knowledge)
+        public void Add(MatchPlayer player, IObjective objective, IPlayerKnowledge knowledge)
         {
             _players.Add(player);
             _playerObjectives.Add(player, objective);
@@ -75,7 +75,7 @@ namespace Expeditionary.Model.Matches
             s_Logger.Log($"{player} added");
         }
 
-        public MatchFormation Add(Player player, InstanceFormation instance, MatchFormation? parent = null)
+        public MatchFormation Add(MatchPlayer player, InstanceFormation instance, MatchFormation? parent = null)
         {
             return Add(player, MatchFormation.From(instance, player, _idGenerator), parent);
         }
@@ -175,12 +175,12 @@ namespace Expeditionary.Model.Matches
                 _random);
         }
 
-        public IEnumerable<MatchFormation> GetFormations(Player player)
+        public IEnumerable<MatchFormation> GetFormations(MatchPlayer player)
         {
             return _formations.Where(x => x.Player.Id == player.Id);
         }
 
-        public IPlayerKnowledge GetKnowledge(Player player)
+        public IPlayerKnowledge GetKnowledge(MatchPlayer player)
         {
             return _playerKnowledge[player];
         }
@@ -190,22 +190,22 @@ namespace Expeditionary.Model.Matches
             return _map;
         }
 
-        public IObjective GetObjective(Player player)
+        public IObjective GetObjective(MatchPlayer player)
         {
             return _playerObjectives[player];
         }
 
-        public ObjectiveStatus GetObjectiveStatus(Player player)
+        public ObjectiveStatus GetObjectiveStatus(MatchPlayer player)
         {
             return GetObjective(player).Evaluate(player, this).Status;
         }
 
-        public IEnumerable<(Player, IObjective)> GetObjectives(int team)
+        public IEnumerable<(MatchPlayer, IObjective)> GetObjectives(int team)
         {
             return _playerObjectives.Where(x => x.Key.Team == team).Select(kvp => (kvp.Key, kvp.Value));
         }
 
-        public IEnumerable<Player> GetPlayers()
+        public IEnumerable<MatchPlayer> GetPlayers()
         {
             return _players;
         }
@@ -215,7 +215,7 @@ namespace Expeditionary.Model.Matches
             return _random;
         }
 
-        public PlayerStatistics GetStatistics(Player player)
+        public PlayerStatistics GetStatistics(MatchPlayer player)
         {
             return _playerReports[player];
         }
@@ -339,7 +339,7 @@ namespace Expeditionary.Model.Matches
             unit.Passenger = null;
         }
 
-        private MatchFormation Add(Player player, MatchFormation formation, MatchFormation? parent)
+        private MatchFormation Add(MatchPlayer player, MatchFormation formation, MatchFormation? parent)
         {
             Precondition.Check(parent == null || parent.Player == player);
             if (parent == null)
@@ -375,7 +375,7 @@ namespace Expeditionary.Model.Matches
             }
         }
 
-        private Player? GetPlayer(int playerId)
+        private MatchPlayer? GetPlayer(int playerId)
         {
             return playerId >= 0 ? _players[playerId] : null;
         }
@@ -394,7 +394,7 @@ namespace Expeditionary.Model.Matches
             }
         }
 
-        private bool ValidatePlayer(Player player)
+        private bool ValidatePlayer(MatchPlayer player)
         {
             return player.Id == _activePlayer;
         }

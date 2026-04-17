@@ -4,7 +4,7 @@ using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Events
 {
-    public record class EvacuateEvent(IEventSchedule Schedule, IMapRegion Region, Player Player, UnitTag Tag) : IEvent
+    public record class EvacuateEvent(IEventSchedule Schedule, IMapRegion Region, MatchPlayer Player, UnitTag Tag) : IEvent
     {
         public EventStatus Fire(Match match, TurnInfo turn)
         {

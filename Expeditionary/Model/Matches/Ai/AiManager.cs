@@ -9,21 +9,21 @@ namespace Expeditionary.Model.Matches.Ai
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiManager));
 
         private readonly Match _match;
-        private readonly Dictionary<Player, AiPlayerHandler> _handlers = new();
+        private readonly Dictionary<MatchPlayer, AiPlayerHandler> _handlers = new();
 
         public AiManager(Match match)
         {
             _match = match;
         }
 
-        public AiPlayerHandler Add(Player player)
+        public AiPlayerHandler Add(MatchPlayer player)
         {
             var handler = CreateHandler(player);
             _handlers.Add(player, handler);
             return handler;
         }
 
-        public AiPlayerHandler CreateHandler(Player player)
+        public AiPlayerHandler CreateHandler(MatchPlayer player)
         {
             return new(player, _match);
         }
@@ -51,7 +51,7 @@ namespace Expeditionary.Model.Matches.Ai
             Logger.Log("Initialized");
         }
 
-        public AiPlayerHandler? GetHandler(Player player)
+        public AiPlayerHandler? GetHandler(MatchPlayer player)
         {
             if (_handlers.TryGetValue(player, out var handler))
             {

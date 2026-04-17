@@ -15,5 +15,7 @@ namespace Expeditionary.Model.Missions.Generator
         public required int Cap { get; set; }
         public required ISampler Duration { get; set; }
         public required IMissionContentGenerator Content { get; set; }
+
+        public IEnumerable<Faction> Factions => Enumerable.Concat(Attackers, Defenders);
     }
 }

@@ -7,8 +7,8 @@ using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches;
 using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Model.Galaxies;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Matches;
-using Expeditionary.Model.Missions;
 using Expeditionary.View.Mapping;
 using Expeditionary.View.Scenes.Galaxies;
 using Expeditionary.View.Scenes.Matches;
@@ -50,7 +50,7 @@ namespace Expeditionary.View.Scenes
             _highlightLayerFactory = highlightLayerFactory;
         }
 
-        public GalaxyScene Create(Galaxy galaxy, MissionManager manager)
+        public GalaxyScene Create(Galaxy galaxy, GameInstance instance)
         {
             var camera = new SubjectiveCamera3d(100);
             camera.SetPitch(-MathF.PI / 2);
@@ -71,7 +71,7 @@ namespace Expeditionary.View.Scenes
                     }),
                     camera,
                     galaxyView,
-                    _missionLayerFactory.Create(manager, camera));
+                    _missionLayerFactory.Create(instance.Missions, camera));
 
             galaxyView.Parent = scene;
 

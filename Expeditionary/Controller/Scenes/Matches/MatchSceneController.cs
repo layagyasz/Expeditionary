@@ -2,7 +2,6 @@
 using Expeditionary.Controller.Mapping;
 using Expeditionary.Controller.Scenes.Matches.Layers;
 using Expeditionary.Hexagons;
-using Expeditionary.Model;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Knowledge;
 using Expeditionary.View.Scenes.Matches;
@@ -22,7 +21,7 @@ namespace Expeditionary.Controller.Scenes.Matches
         private FogOfWarLayerController? _fogOfWarLayerController;
         private AssetLayerController? _assetLayerController;
 
-        private Player? _player;
+        private MatchPlayer? _player;
         private MatchScene? _scene;
 
         public MatchSceneController(
@@ -74,7 +73,7 @@ namespace Expeditionary.Controller.Scenes.Matches
             ((SubjectiveCamera3d)_camera!).SetFocus(new Vector3(p.X, 0, p.Y));
         }
 
-        public void SetPlayer(Player player)
+        public void SetPlayer(MatchPlayer player)
         {
             _player = player;
             _assetLayerController!.SetKnowledge(_match.GetKnowledge(player));

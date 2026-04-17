@@ -8,7 +8,7 @@ namespace Expeditionary.Model.Matches.Assets
         public int Id { get; }
         public int InstanceId { get; }
         public string Name => $"{Type.Name}(#{Id})";
-        public Player Player { get; }
+        public MatchPlayer Player { get; }
         public UnitType Type { get; }
         public string TypeKey => Type.Key;
         public Vector3i Position { get; set; }
@@ -23,7 +23,7 @@ namespace Expeditionary.Model.Matches.Assets
         public IMatchAsset? Passenger { get; set; }
         public AssetValue Value => new(1, Type.Points);
 
-        public MatchUnit(int id, int instanceId, Player player, UnitType type)
+        public MatchUnit(int id, int instanceId, MatchPlayer player, UnitType type)
         {
             Id = id;
             InstanceId = instanceId;

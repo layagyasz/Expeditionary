@@ -27,7 +27,7 @@ namespace Expeditionary.Runners.GameStates
         public IScreen Enter(object? context, ScreenFactory screenFactory)
         {
             _context = (IGameStateContext.GalaxyContext)context!;
-            _screen = screenFactory.CreateGalaxy(_module, _context.MissionManager);
+            _screen = screenFactory.CreateGalaxy(_module, _context.Instance);
             _controller = (GalaxyScreenController)_screen.Controller;
             _controller.Launched += HandleLaunch;
             return _screen;
@@ -44,11 +44,13 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleLaunch(object? sender, Mission e)
         {
+            var instancePlayer = _context!.Instance.Player;
             (var status, var task) =
                 NewMatchLoader.Create(
                     e, 
-                    e.Content.Players.First().Player,
-                    new(_module.FactionFormations, _module.Formations), 
+                    e.Content.Players.Find(player => player.Player.Faction == instancePlayer.Faction)!.Player,
+                    new IFormationProvider.PersistentFormationProvider(instancePlayer.Formations.First()),
+                    new IFormationProvider.RandomFormationProvider(new(_module.FactionFormations, _module.Formations)),
                     _config.IsDebug, 
                     seed: 0);
             GameStateChanged?.Invoke(

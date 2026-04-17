@@ -10,12 +10,12 @@ namespace Expeditionary.Model.Matches.Ai
         private static readonly ILogger s_Logger =
             new Logger(new ConsoleBackend(), LogLevel.Info).ForType(typeof(AiPlayerHandler));
 
-        public Player Player { get; }
+        public MatchPlayer Player { get; }
 
         private readonly Match _match;
         private readonly RootHandler _rootFormationHandler;
 
-        public AiPlayerHandler(Player player, Match match)
+        public AiPlayerHandler(MatchPlayer player, Match match)
         {
             Player = player;
             _match = match;

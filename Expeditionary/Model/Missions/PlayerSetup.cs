@@ -6,7 +6,7 @@ using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class PlayerSetup(Player Player, IObjective Objective, List<IEvent> Events, FormationSetup Formation)
+    public record class PlayerSetup(MatchPlayer Player, IObjective Objective, List<IEvent> Events, FormationSetup Formation)
     {
         public void Create(Match match, CreationContext context)
         {
@@ -27,7 +27,7 @@ namespace Expeditionary.Model.Missions
             Formation.Setup(Player, match, context);
         }
 
-        private IPlayerKnowledge CreatePlayerKnowledge(Player player, Map map, CreationContext context)
+        private IPlayerKnowledge CreatePlayerKnowledge(MatchPlayer player, Map map, CreationContext context)
         {
             if (context.Player == player && context.IsTest)
             {

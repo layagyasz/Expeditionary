@@ -12,13 +12,13 @@ namespace Expeditionary.Model.Matches.Knowledge
         public EventHandler<AssetKnowledgeChangedEventArgs>? AssetKnowledgeChanged { get; set; }
         public EventHandler<MapKnowledgeChangedEventArgs>? MapKnowledgeChanged { get; set; }
 
-        private readonly Player _player;
+        private readonly MatchPlayer _player;
         private readonly Map _map;
         private readonly LimitedAssetKnowledge _assetKnowledge;
         private readonly LimitedMapKnowledge _mapKnowledge;
 
         public LimitedPlayerKnowledge(
-            Player player, Map map, LimitedAssetKnowledge assetKnowledge, LimitedMapKnowledge mapKnowledge)
+            MatchPlayer player, Map map, LimitedAssetKnowledge assetKnowledge, LimitedMapKnowledge mapKnowledge)
         {
             _player = player;
             _map = map;

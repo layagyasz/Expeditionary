@@ -14,7 +14,7 @@ namespace Expeditionary.Runners
             ProgramData data, UiWindow window, ThreadedLoader loader, ScreenFactory screenFactory)
         {
             var module = data.Module;
-            (var _, var task) = NewGalaxyLoader.Load(module, seed: 0);
+            (var _, var task) = NewGameInstanceLoader.Load(module, seed: 0);
             window.SetRoot(screenFactory.CreateGalaxy(module, task.GetNow()));
         }
     }

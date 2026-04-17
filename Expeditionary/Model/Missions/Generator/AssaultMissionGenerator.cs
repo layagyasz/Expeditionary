@@ -3,6 +3,7 @@ using Expeditionary.Model.Formations;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
+using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai.Assignments;
 using Expeditionary.Model.Missions.Objectives;
 
@@ -20,7 +21,7 @@ namespace Expeditionary.Model.Missions.Generator
             var players = new List<PlayerSetup>();
             foreach (var attacker in node.Attackers)
             {
-                var player = new Player(playerId++, Team: 0, attacker);
+                var player = new MatchPlayer(playerId++, Team: 0, attacker);
                 var setup = 
                     new PlayerSetup(
                         player,
@@ -36,7 +37,7 @@ namespace Expeditionary.Model.Missions.Generator
             }
             foreach (var defender in node.Defenders)
             {
-                var player = new Player(playerId++, Team: 1, defender);
+                var player = new MatchPlayer(playerId++, Team: 1, defender);
                 var setup =
                     new PlayerSetup(
                         player,

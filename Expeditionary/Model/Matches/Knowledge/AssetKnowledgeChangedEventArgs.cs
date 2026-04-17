@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Matches.Knowledge
 {
-    public record class AssetKnowledgeChangedEventArgs(Player Player, List<IMatchAsset> Delta)
+    public record class AssetKnowledgeChangedEventArgs(MatchPlayer Player, List<IMatchAsset> Delta)
     {
         public override string ToString()
         {

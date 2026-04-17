@@ -6,7 +6,7 @@ namespace Expeditionary.Model.Missions.Objectives
     {
         private static readonly ObjectiveDisposition s_Disposition = ObjectiveDisposition.Optimistic;
 
-        public ObjectiveCompletion Evaluate(Player player, Match match)
+        public ObjectiveCompletion Evaluate(MatchPlayer player, Match match)
         {
             var p = GetProgress(player, match).GetPercentDone();
             if (p >= 1)
@@ -28,7 +28,7 @@ namespace Expeditionary.Model.Missions.Objectives
             return IObjective.WrapDefault(s_Disposition, ObjectiveStatus.DecisiveDefeat);
         }
 
-        public ObjectiveProgress GetProgress(Player player, Match match)
+        public ObjectiveProgress GetProgress(MatchPlayer player, Match match)
         {
             return new(
                 ToScalar(

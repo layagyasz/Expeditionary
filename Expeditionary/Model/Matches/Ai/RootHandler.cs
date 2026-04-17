@@ -4,10 +4,10 @@
     {
         public override string Id => Player.Id.ToString();
         public override int Echelon => Components.Max(x => x.Echelon) + 1;
-        public Player Player { get; }
+        public MatchPlayer Player { get; }
         public override IEnumerable<DiadHandler> Diads => Enumerable.Empty<DiadHandler>();
 
-        public RootHandler(Player player, IEnumerable<FormationHandler> children)
+        public RootHandler(MatchPlayer player, IEnumerable<FormationHandler> children)
             : base(children)
         {
             Player = player;

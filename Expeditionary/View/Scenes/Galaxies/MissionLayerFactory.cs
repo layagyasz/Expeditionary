@@ -1,7 +1,7 @@
 ﻿using Cardamom.Graphics.Camera;
 using Cardamom.Ui;
 using Expeditionary.Controller.Scenes.Galaxies;
-using Expeditionary.Model.Missions;
+using Expeditionary.Model.Instances;
 
 namespace Expeditionary.View.Scenes.Galaxies
 {

@@ -2,9 +2,9 @@
 using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Matches;
-using Expeditionary.Model.Missions;
 using Expeditionary.Spectra;
 using Expeditionary.View.Common.Components;
 using Expeditionary.View.Scenes;
@@ -32,11 +32,11 @@ namespace Expeditionary.View.Screens
             _spectrumSensitivity = spectrumSensitivity;
         }
 
-        public GalaxyScreen CreateGalaxy(GameModule module, MissionManager missionManager)
+        public GalaxyScreen CreateGalaxy(GameModule module, GameInstance instance)
         {
             return new GalaxyScreen(
                 new GalaxyScreenController(module.SectorNamings.First().Value),
-                _sceneFactory.Create(module.Galaxy, missionManager),
+                _sceneFactory.Create(module.Galaxy, instance),
                 MissionPane.Create(_uiElementFactory));
         }
 
@@ -50,7 +50,7 @@ namespace Expeditionary.View.Screens
             return MainMenuScreen.Create(_uiElementFactory, _localization);
         }
 
-        public MatchScreen CreateMatch(Match match, MapAppearance appearance, Player player)
+        public MatchScreen CreateMatch(Match match, MapAppearance appearance, MatchPlayer player)
         {
             return new MatchScreen(
                 new MatchController(match, player),

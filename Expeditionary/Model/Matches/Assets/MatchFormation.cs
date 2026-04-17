@@ -7,12 +7,12 @@ namespace Expeditionary.Model.Matches.Assets
     {
         public int Id { get; }
         public int InstanceId { get; }
-        public Player Player { get; }
+        public MatchPlayer Player { get; }
 
         private MatchFormation(
             int id,
             int instanceId,
-            Player player,
+            MatchPlayer player,
             string name,
             FormationRole role,
             int echelon,
@@ -25,7 +25,7 @@ namespace Expeditionary.Model.Matches.Assets
             Player = player;
         }
 
-        public static MatchFormation From(InstanceFormation instance, Player player, IIdGenerator idGenerator)
+        public static MatchFormation From(InstanceFormation instance, MatchPlayer player, IIdGenerator idGenerator)
         {
             return new MatchFormation(
                 idGenerator.Next(),
@@ -38,7 +38,7 @@ namespace Expeditionary.Model.Matches.Assets
                 instance.Diads.Select(diadInstance => MatchDiad.From(diadInstance, player, idGenerator)));
         }
 
-        public static MatchFormation From(TemplateFormation template, Player player, IIdGenerator idGenerator)
+        public static MatchFormation From(TemplateFormation template, MatchPlayer player, IIdGenerator idGenerator)
         {
             return new MatchFormation(
                 idGenerator.Next(),

@@ -4,7 +4,7 @@
     {
         bool IsDue(TurnInfo turn);
 
-        public record class RecurringEventSchedule(Player? Player, TurnSegment Segment, int Cycle, int Offset) 
+        public record class RecurringEventSchedule(MatchPlayer? Player, TurnSegment Segment, int Cycle, int Offset) 
             : IEventSchedule
         {
             public bool IsDue(TurnInfo turn)

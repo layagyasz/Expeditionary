@@ -6,7 +6,7 @@ namespace Expeditionary.Model.Missions.Objectives
 {
     public record class OccupyObjective(MapTag Area, AssetValue OccupationQuantity, bool IsDefender) : IObjective
     {
-        public ObjectiveCompletion Evaluate(Player player, Match match)
+        public ObjectiveCompletion Evaluate(MatchPlayer player, Match match)
         {
             var units = match.GetAssetsIn(Area).Where(x => x is MatchUnit).Cast<MatchUnit>();
             var enemy = 
@@ -35,7 +35,7 @@ namespace Expeditionary.Model.Missions.Objectives
             return IObjective.WrapDefault(disposition, ObjectiveStatus.DecisiveDefeat);
         }
 
-        public ObjectiveProgress GetProgress(Player player, Match match)
+        public ObjectiveProgress GetProgress(MatchPlayer player, Match match)
         {
             return new(Evaluate(player, match).Status == ObjectiveStatus.DecisiveVictory ? 1 : 0, 1);
         }

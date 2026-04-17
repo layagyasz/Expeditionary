@@ -4,7 +4,7 @@ namespace Expeditionary.Model.Missions.Objectives
 {
     public record class PreventTeamObjective(int Team) : IObjective
     {
-        public ObjectiveCompletion Evaluate(Player player, Match match)
+        public ObjectiveCompletion Evaluate(MatchPlayer player, Match match)
         {
             var completions = match.GetObjectives(Team).Select(kvp => kvp.Item2.Evaluate(kvp.Item1, match)).ToList();
             return new ObjectiveCompletion(
@@ -15,7 +15,7 @@ namespace Expeditionary.Model.Missions.Objectives
                     completion => completion.Disposition == ObjectiveDisposition.Optimistic && completion.IsTerminal));
         }
 
-        public ObjectiveProgress GetProgress(Player player, Match match)
+        public ObjectiveProgress GetProgress(MatchPlayer player, Match match)
         {
             var objectives = match.GetObjectives(Team).ToList();
             return new(

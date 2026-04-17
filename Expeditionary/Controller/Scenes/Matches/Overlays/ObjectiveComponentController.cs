@@ -1,6 +1,5 @@
 ﻿using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
-using Expeditionary.Model;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.View.Scenes.Matches.Overlays;
@@ -10,13 +9,13 @@ namespace Expeditionary.Controller.Scenes.Matches.Overlays
     public class ObjectiveComponentController : IController
     {
         private readonly Match _match;
-        private readonly Player _player;
+        private readonly MatchPlayer _player;
         private readonly IObjective _objective;
 
         private ObjectiveOverlay.ObjectiveComponent? _component;
         private OptionElementController<object>? _checkController;
 
-        public ObjectiveComponentController(Match match, Player player, IObjective objective)
+        public ObjectiveComponentController(Match match, MatchPlayer player, IObjective objective)
         {
             _match = match;
             _player = player;

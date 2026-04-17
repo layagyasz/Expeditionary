@@ -3,7 +3,6 @@ using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller.Scenes.Matches.Overlays;
-using Expeditionary.Model;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.View.Common.Components.Dynamics;
@@ -33,7 +32,7 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
             }
 
             public static ObjectiveComponent Create(
-                UiElementFactory uiElementFactory, Match match, Player player, IObjective objective)
+                UiElementFactory uiElementFactory, Match match, MatchPlayer player, IObjective objective)
             {
                 var container = 
                     new DynamicUiSerialContainer(
@@ -74,7 +73,7 @@ namespace Expeditionary.View.Scenes.Matches.Overlays
         }
 
         public static ObjectiveOverlay Create(
-            UiElementFactory uiElementFactory, Localization localization, Match match, Player player)
+            UiElementFactory uiElementFactory, Localization localization, Match match, MatchPlayer player)
         {
             return new(
                 new NoOpController(), 

@@ -1,4 +1,6 @@
-﻿namespace Expeditionary.Model.Missions
+﻿using Expeditionary.Model.Matches;
+
+namespace Expeditionary.Model.Missions
 {
-    public record class PlayerSetupContext(Player Player, bool IsHuman, IFormationProvider FormationProvider);
+    public record class PlayerSetupContext(MatchPlayer Player, bool IsHuman, IFormationProvider FormationProvider);
 }

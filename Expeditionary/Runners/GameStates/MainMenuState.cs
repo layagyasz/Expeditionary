@@ -41,7 +41,7 @@ namespace Expeditionary.Runners.GameStates
         {
             if (e == MainMenuScreen.NewGame)
             {
-                (var status, var task) = NewGalaxyLoader.Load(_module, seed: 0);
+                (var status, var task) = NewGameInstanceLoader.Load(_module, seed: 0);
                 GameStateChanged?.Invoke(
                     this,
                     new IGameStateContext.LoadContext(
