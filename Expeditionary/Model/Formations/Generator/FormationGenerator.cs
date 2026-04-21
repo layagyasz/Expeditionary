@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Factions;
+using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Formations.Generator
 {
@@ -21,11 +22,11 @@ namespace Expeditionary.Model.Formations.Generator
                 FactionFormations.Values.Where(config => config.Faction == parameters.Faction.Key).First();
             var availableGenerators =
                 formationConfig.Formations
+                    .Where(generator => generator.Echelon == parameters.Echelon)
                     .Where(generator => parameters.AllowedRoles.Contains(generator.Role))
                     .ToList();
             var formationGenerator = availableGenerators[parameters.Random.Next(availableGenerators.Count)];
-            return formationGenerator.Generate(
-                new(parameters.Random, parameters.RequiredTags, parameters.ExcludedTags, formationConfig.Units));
+            return formationGenerator.Generate(new(parameters, formationConfig.Units.ToImmutableList()));
         }
     }
 }

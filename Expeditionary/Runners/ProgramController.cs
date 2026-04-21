@@ -1,5 +1,4 @@
-﻿using Cardamom.Collections;
-using Cardamom.Graphics;
+﻿using Cardamom.Graphics;
 using Cardamom.Ui;
 using Expeditionary.Loader;
 using Expeditionary.Model;
@@ -57,11 +56,6 @@ namespace Expeditionary.Runners
             _window.SetRoot(AddInterceptors(newState.Enter(context, _screenFactory)));
             _state?.Exit();
             _state = newState;
-        }
-
-        public GameModule GetModule()
-        {
-            return _module;
         }
 
         public void Initialize()

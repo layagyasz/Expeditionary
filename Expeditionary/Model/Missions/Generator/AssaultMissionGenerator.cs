@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Formations;
+using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
@@ -8,6 +9,7 @@ using Expeditionary.Model.Matches.Ai.Assignments;
 using Expeditionary.Model.Missions.Objectives;
 
 using OpenTK.Mathematics;
+using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Missions.Generator
 {
@@ -30,7 +32,11 @@ namespace Expeditionary.Model.Missions.Generator
                         Formation: 
                             new(
                                 new FormationParameters(
-                                    attacker, EnumSet<FormationRole>.All(), new(), new(), resources.Random), 
+                                    Echelon: 5,
+                                    attacker, 
+                                    EnumSet<FormationRole>.All(), 
+                                    ImmutableList.Create<UnitConstraint>(),
+                                    resources.Random), 
                                 new DefaultOffensiveAssignment(
                                     MapDirection.North,  new() { new TagMapRegion(MapTag.Control1)})));
                 players.Add(setup);
@@ -46,7 +52,11 @@ namespace Expeditionary.Model.Missions.Generator
                         Formation: 
                             new(
                                 new FormationParameters(
-                                    defender, EnumSet<FormationRole>.All(), new(), new(), resources.Random),
+                                    Echelon: 5,
+                                    defender,
+                                    EnumSet<FormationRole>.All(),
+                                    ImmutableList.Create<UnitConstraint>(),
+                                    resources.Random),
                                 new DefaultDefensiveAssignment(
                                     MapDirection.South, new() { new TagMapRegion(MapTag.Control1)})));
                 players.Add(setup);

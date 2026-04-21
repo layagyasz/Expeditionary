@@ -1,14 +1,14 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Factions;
-using Expeditionary.Model.Units;
+using System.Collections.Immutable;
 
-namespace Expeditionary.Model.Formations
+namespace Expeditionary.Model.Formations.Generator
 {
     // TODO: Implement point limits
     public record class FormationParameters(
+        int Echelon,
         Faction Faction,
         EnumSet<FormationRole> AllowedRoles,
-        EnumSet<UnitTag> RequiredTags,
-        EnumSet<UnitTag> ExcludedTags,
+        ImmutableList<UnitConstraint> Constraints,
         Random Random);
 }

@@ -82,7 +82,13 @@ namespace Expeditionary.Runners.Loaders.Runtime
                     new SerialIdGenerator(), new InstancePlayer(id: 0, faction), module.Galaxy, missionManager);
             var formationGenerator = new FormationGenerator(module.FactionFormations, module.Formations);
             instance.AddFormation(
-                formationGenerator.Generate(new(faction, EnumSet<FormationRole>.All(), new(), new(), random)));
+                formationGenerator.Generate(
+                    new(
+                        Echelon: 5, 
+                        faction, 
+                        EnumSet<FormationRole>.All(),
+                        ImmutableList.Create<UnitConstraint>(), 
+                        random)));
             return instance;
         }
     }

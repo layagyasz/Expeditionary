@@ -1,5 +1,4 @@
-﻿using Expeditionary.Model.Formations;
-using Expeditionary.Model.Formations.Generator;
+﻿using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Instances;
 
 namespace Expeditionary.Model.Missions

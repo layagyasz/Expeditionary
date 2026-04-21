@@ -1,7 +1,7 @@
 ﻿using Cardamom;
-using Cardamom.Collections;
 using Cardamom.Json;
 using Expeditionary.Model.Units;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Expeditionary.Model.Formations.Generator
@@ -11,15 +11,22 @@ namespace Expeditionary.Model.Formations.Generator
         public record class ParameterizedFormationGenerator
         {
             public int Number { get; set; }
-            public EnumSet<UnitTag> RequiredTags { get; set; } = new();
-            public EnumSet<UnitTag> ExcludedTags { get; set; } = new();
+            public ImmutableList<UnitConstraint> Constraints { get; set; } = ImmutableList.Create<UnitConstraint>();
 
             [JsonConverter(typeof(ReferenceJsonConverter))]
             public FormationTemplateGenerator? Formation { get; set; }
 
             public TemplateFormation Generate(FormationGeneratorContext context)
             {
-                return Formation!.Generate(context.WithTags(RequiredTags, ExcludedTags));
+                return Formation!.Generate(
+                    context with 
+                    { 
+                        Parameters = context.Parameters with 
+                        { 
+                            Constraints = ImmutableList.CreateRange(
+                                Enumerable.Concat(context.Parameters.Constraints, Constraints))
+                        } 
+                    });
             }
         }
 
@@ -44,8 +51,26 @@ namespace Expeditionary.Model.Formations.Generator
         {
             return new(
                 diad.Unit.Role,
-                context.Select(diad.Unit)!, 
-                diad.Transport == null ? null : context.Select(diad.Transport));
+                Select(context, diad.Unit),
+                diad.Transport == null ? null : Select(context, diad.Transport));
+        }
+
+        private static UnitType Select(FormationGeneratorContext context, UnitSlot slot)
+        {
+            var matchingUnits = 
+                context.AvailableUnits
+                    .Where(slot.Matches)
+                    .Where(
+                        unit => 
+                            context.Parameters.Constraints.All(
+                                constraint => constraint.Satisfies(slot, unit.Type!.Tags)))
+                    .ToList();
+            if (!matchingUnits.Any())
+            {
+                throw new ArgumentException(
+                    $"No matching units for {slot} with constraints {context.Parameters.Constraints}");
+            }
+            return matchingUnits[context.Parameters.Random.Next(matchingUnits.Count)].Type!;
         }
     }
 }

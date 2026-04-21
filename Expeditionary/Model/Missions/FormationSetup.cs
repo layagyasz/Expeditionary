@@ -1,4 +1,4 @@
-﻿using Expeditionary.Model.Formations;
+﻿using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai.Assignments;
 
