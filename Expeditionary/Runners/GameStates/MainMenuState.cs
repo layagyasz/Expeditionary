@@ -1,5 +1,4 @@
 ﻿using Expeditionary.Controller.Screens;
-using Expeditionary.Loader;
 using Expeditionary.Model;
 using Expeditionary.Runners.Loaders.Runtime;
 using Expeditionary.View.Screens;
@@ -41,12 +40,7 @@ namespace Expeditionary.Runners.GameStates
         {
             if (e == MainMenuScreen.NewGame)
             {
-                (var status, var task) = NewGameInstanceLoader.Load(_module, seed: 0);
-                GameStateChanged?.Invoke(
-                    this,
-                    new IGameStateContext.LoadContext(
-                        status, 
-                        task.Map(result => (IGameStateContext)new IGameStateContext.GalaxyContext(result))));
+                GameStateChanged?.Invoke(this, new IGameStateContext.InstanceSetupContext());
             }
         }
     }

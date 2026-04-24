@@ -1,67 +1,36 @@
-﻿using Cardamom;
-using Cardamom.Graphics;
-using Cardamom.Ui;
+﻿using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.View.Common.Components;
-using Expeditionary.View.Common.Components.Dynamics;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class LoadScreen : ManagedResource, IDynamic, IScreen
+    public class LoadScreen : BaseScreen
     {
-        public event EventHandler<EventArgs>? Refreshed;
-
-        public IController Controller { get; }
         public TextureBackground Background { get; }
         public LoadBar LoadBar { get; }
 
         private LoadScreen(IController controller, TextureBackground background, LoadBar loadBar)
+            : base(controller)
         {
-            Controller = controller;
             Background = background;
+            Register(Background);
+
             LoadBar = loadBar;
+            Register(LoadBar);
         }
 
-        public void Draw(IRenderTarget target, IUiContext context)
-        {
-            Background.Draw(target, context);
-            LoadBar.Draw(target, context);
-        }
-
-        public void Initialize()
-        {
-            Controller.Bind(this);
-            Background.Initialize();
-            LoadBar.Initialize();
-        }
-
-        public void Refresh()
+        public override void Refresh()
         {
             LoadBar.Refresh();
-            Refreshed?.Invoke(this, EventArgs.Empty);
         }
 
-        public void ResizeContext(Vector3 bounds)
+        public override void ResizeContext(Vector3 bounds)
         {
-
-            Background.ResizeContext(bounds);
-            LoadBar.Position = 0.5f * (bounds - LoadBar.Size);
-            LoadBar.ResizeContext(bounds);
-        }
-
-        public void Update(long delta)
-        {
-            LoadBar.Update(delta);
-            Background.Update(delta);
-        }
-
-        protected override void DisposeImpl()
-        {
-            Controller.Unbind();
-            LoadBar.Dispose();
+            base.ResizeContext(bounds);
+            LoadBar!.Position = 0.5f * (bounds - LoadBar!.Size);
         }
 
         public static LoadScreen Create(

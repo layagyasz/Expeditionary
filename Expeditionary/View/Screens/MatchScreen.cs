@@ -38,6 +38,5 @@ namespace Expeditionary.View.Screens
             UnitSelect = unitSelect;
             Register(UnitSelect);
         }
-
     }
 }

@@ -2,6 +2,7 @@
   {
     "$id": "faction-hyacinth",
     "Name": "Hyacinth Protectorate",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#66ccccff",
       "Foreground": "#333333ff"

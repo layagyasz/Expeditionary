@@ -40,6 +40,11 @@ namespace Expeditionary.View.Screens
                 MissionPane.Create(_uiElementFactory));
         }
 
+        public InstanceSetupScreen CreateInstanceSetup(GameModule module)
+        {
+            return InstanceSetupScreen.Create(_uiElementFactory, _localization, module);
+        }
+
         public LoadScreen CreateLoad(ILoaderTask task, LoaderStatus status)
         {
             return LoadScreen.Create(_uiElementFactory, task, status);

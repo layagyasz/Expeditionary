@@ -10,6 +10,8 @@ namespace Expeditionary.Runners.GameStates
     {
         public record class GalaxyContext(GameInstance Instance) : IGameStateContext;
 
+        public record class InstanceSetupContext() : IGameStateContext;
+
         public record class LoadContext(
             LoaderStatus Status, LoaderTaskNode<IGameStateContext> Task) : IGameStateContext;
 

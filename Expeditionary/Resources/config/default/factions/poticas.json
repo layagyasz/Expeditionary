@@ -2,6 +2,7 @@
   {
     "$id": "faction-poticas",
     "Name": "Piece of the Imperial Choir and Sound",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#333333ff",
       "Foreground": "#ccccccff"

@@ -2,6 +2,7 @@
   {
     "$id": "faction-isc",
     "Name": "Intersystem Security Coalition",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#cc9966ff",
       "Foreground": "#ccccccff"

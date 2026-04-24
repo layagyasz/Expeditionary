@@ -2,6 +2,7 @@
   {
     "$id": "faction-whitestar",
     "Name": "Whitestar Republic",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#ccccccff",
       "Foreground": "#333333ff"

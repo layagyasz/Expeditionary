@@ -15,6 +15,8 @@ namespace Expeditionary.View.Screens
 
         private readonly List<IRenderable> _elements = new();
 
+        protected Vector3 _bounds;
+
         protected BaseScreen(IController controller)
         {
             Controller = controller;
@@ -60,6 +62,8 @@ namespace Expeditionary.View.Screens
 
         public virtual void ResizeContext(Vector3 bounds)
         {
+            _bounds = bounds;
+            Console.WriteLine(bounds);
             foreach (var element in _elements)
             {
                 element.ResizeContext(bounds);

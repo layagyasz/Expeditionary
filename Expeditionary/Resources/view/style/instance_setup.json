@@ -1,0 +1,31 @@
+[
+  {
+    "$id": "instance-setup-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 512, "DynamicContents" ],
+      "Margin": [ 0 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "instance-setup-title",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
+  },
+  {
+    "$id": "instance-setup-option",
+    "Parent": "base-button",
+    "Default": {
+      "Size": [ 504, 48 ],
+      "Margin": [ 2 ],
+      "Padding": [ 16 ],
+      "FontSize": 16
+    }
+  }
+]

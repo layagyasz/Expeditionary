@@ -44,6 +44,7 @@ namespace Expeditionary.Runners
                 new()
                 {
                     { typeof(IGameStateContext.GalaxyContext), new GalaxyState(_config, _module) },
+                    { typeof(IGameStateContext.InstanceSetupContext), new InstanceSetupState(_module) },
                     { typeof(IGameStateContext.LoadContext), new LoadState(_loader) },
                     { typeof(IGameStateContext.MainMenuContext), new MainMenuState(_module) },
                     { typeof(IGameStateContext.MatchContext), new MatchState(_module) }

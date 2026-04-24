@@ -2,6 +2,7 @@
   {
     "$id": "faction-orion",
     "Name": "Orion Confederation",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#406080ff",
       "Foreground": "#cccc66ff"

@@ -364,6 +364,9 @@
     <None Update="Resources\view\fonts\SyneMono-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\view\localization\en\instance_setup.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\view\localization\en\main_menu.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -401,6 +404,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\style\load.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\style\instance_setup.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\style\main_menu.json">
@@ -1133,7 +1139,6 @@
     <Folder Include="Resources\config\default\languages\sectors\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\localization\en\" />
-    <Folder Include="Resources\view\style\" />
   </ItemGroup>
 
 </Project>

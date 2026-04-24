@@ -1,5 +1,4 @@
-﻿using Cardamom;
-using Cardamom.Graphics;
+﻿using Cardamom.Graphics;
 using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Screens;
@@ -8,7 +7,7 @@ using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Screens
 {
-    public class MainMenuScreen : ManagedResource, IScreen
+    public class MainMenuScreen : BaseScreen
     {
         public static readonly object NewGame = new();
         public static readonly object LoadGame = new();
@@ -25,17 +24,17 @@ namespace Expeditionary.View.Screens
         private static readonly string s_OptionsKey = "localize-main-menu-options";
         private static readonly string s_CreditsKey = "localize-main-menu-credits";
 
-        public IController Controller { get; }
         public TextureBackground? Background { get; private set; }
         public ButtonMenu? Menu { get; private set; }
 
-        private Vector3 _bounds;
-
         public MainMenuScreen(IController controller, TextureBackground background, ButtonMenu menu)
+            : base(controller)
         {
-            Controller = controller;
             Background = background;
+            Register(Background);
+
             Menu = menu;
+            Register(Menu);
         }
 
         public static MainMenuScreen Create(UiElementFactory uiElementFactory, Localization localization)
@@ -54,40 +53,10 @@ namespace Expeditionary.View.Screens
                     .Build(uiElementFactory));
         }
 
-        public void Draw(IRenderTarget target, IUiContext context)
+        public override void Draw(IRenderTarget target, IUiContext context)
         {
-            Background!.Draw(target, context);
-
             Menu!.Position = 0.5f * (_bounds - Menu!.Size);
-            Menu!.Draw(target, context);
-        }
-
-        public void Initialize()
-        {
-            Menu!.Initialize();
-            Background!.Initialize();
-            Controller.Bind(this);
-        }
-
-        public void ResizeContext(Vector3 bounds)
-        {
-            _bounds = bounds;
-            Menu!.ResizeContext(bounds);
-            Background!.ResizeContext(bounds);
-        }
-
-        public void Update(long delta)
-        {
-            Menu!.Update(delta);
-            Background!.Update(delta);
-        }
-
-        protected override void DisposeImpl()
-        {
-            Controller.Unbind();
-            Menu!.Dispose();
-            Menu = null;
-            Background = null;
+            base.Draw(target, context);
         }
     }
 }

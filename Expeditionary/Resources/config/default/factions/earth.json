@@ -2,6 +2,7 @@
   {
     "$id": "faction-earth",
     "Name": "New Earth Empire",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#333333ff",
       "Foreground": "#cccc66ff"

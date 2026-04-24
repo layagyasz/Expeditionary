@@ -6,6 +6,7 @@ namespace Expeditionary.Model.Factions
     {
         public string Key { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public bool IsPlayable { get; set; }
         public ColorScheme ColorScheme { get; set; } = new();
     }
 }

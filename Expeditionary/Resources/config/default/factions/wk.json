@@ -2,6 +2,7 @@
   {
     "$id": "faction-wk",
     "Name": "Windhelm Kreslov PMC",
+    "IsPlayable": true,
     "ColorScheme": {
       "Background": "#404080ff",
       "Foreground": "#ccccccff"
