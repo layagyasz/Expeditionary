@@ -84,6 +84,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
             instance.AddFormation(
                 formationGenerator.Generate(
                     new(
+                        Points: 20000,
                         Echelon: 5, 
                         faction, 
                         EnumSet<FormationRole>.All(),

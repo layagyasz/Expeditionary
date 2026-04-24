@@ -6,6 +6,7 @@ namespace Expeditionary.Model.Formations.Generator
 {
     // TODO: Implement point limits
     public record class FormationParameters(
+        float Points,
         int Echelon,
         Faction Faction,
         EnumSet<FormationRole> AllowedRoles,

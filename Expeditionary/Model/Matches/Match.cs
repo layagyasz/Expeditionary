@@ -354,7 +354,7 @@ namespace Expeditionary.Model.Matches
             {
                 _assets.Add(unit);
             }
-            s_Logger.Log($"{formation} added for {player} with strength {formation.GetAliveUnitQuantity()}");
+            s_Logger.Log($"{formation} added for {player} with strength {formation.GetUnitValue(unit => true)}");
             _eventBuffer.Queue(FormationAdded, this, new(formation, parent));
             return formation;
         }

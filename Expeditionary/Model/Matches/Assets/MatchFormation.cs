@@ -56,11 +56,9 @@ namespace Expeditionary.Model.Matches.Assets
             _componentFormations.Add(formation);
         }
 
-        public AssetValue GetAliveUnitQuantity()
+        public AssetValue GetUnitValue(Func<MatchUnit, bool> predicate)
         {
-            return _componentFormations.Select(x => x.GetAliveUnitQuantity()).Concat(
-                _diads.Select(x => x.Unit.Value))
-                .Aggregate(AssetValue.None, (x, y) => x + y);
+            return GetUnits().Where(predicate).Select(unit => unit.Value).Aggregate(AssetValue.None, (x, y) => x + y);
         }
     }
 }

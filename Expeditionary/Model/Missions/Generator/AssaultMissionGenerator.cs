@@ -32,6 +32,7 @@ namespace Expeditionary.Model.Missions.Generator
                         Formation: 
                             new(
                                 new FormationParameters(
+                                    Points: 20000,
                                     Echelon: 5,
                                     attacker, 
                                     EnumSet<FormationRole>.All(), 
@@ -52,6 +53,7 @@ namespace Expeditionary.Model.Missions.Generator
                         Formation: 
                             new(
                                 new FormationParameters(
+                                    Points: 20000,
                                     Echelon: 5,
                                     defender,
                                     EnumSet<FormationRole>.All(),

@@ -31,7 +31,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
         {
             return Math.Min(1f, realization.ChildFormationAssignments
                 .Where(x => MapRegions.Intersects(x.Value.Region, Region, match.GetMap()))
-                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points)
+                .Sum(x => x.Key.Formation.GetUnitValue(unit => unit.IsActive).Points)
                 / AssignmentHelper.GetRequiredCoverage(Region.Range(match.GetMap()).Count()));
         }
 

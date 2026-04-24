@@ -42,9 +42,10 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             var eligibleOccupiers =
                 new LinkedList<Quantity<FormationHandler>>(
                     formation.Components
-                        .Where(x => x.Formation.Role == FormationRole.Infantry)
-                        .Select(x =>
-                            Quantity<FormationHandler>.Create(x, x.Formation.GetAliveUnitQuantity().Points))
+                        .Where(component => component.Formation.Role == FormationRole.Infantry)
+                        .Select(component =>
+                            Quantity<FormationHandler>.Create(
+                                component, component.Formation.GetUnitValue(unit => unit.IsActive).Points))
                         .OrderBy(x => x.Value));
             var regions =
                 DefenseRegions.Select(
@@ -101,7 +102,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
         {
             return Math.Min(1f, assignment.ChildFormationAssignments
                 .Where(x => MapRegions.Intersects(x.Value.Region, region, match.GetMap()))
-                .Sum(x => x.Key.Formation.GetAliveUnitQuantity().Points)
+                .Sum(x => x.Key.Formation.GetUnitValue(unit => unit.IsActive).Points)
                 / AssignmentHelper.GetRequiredCoverage(region.Range(match.GetMap()).Count()));
         }
 
