@@ -1,9 +1,7 @@
 ﻿using Cardamom.Ui;
-using Cardamom.Utils.Generators.Samplers;
 using Cardamom.Utils.Suppliers.Promises;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
-using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Missions;
@@ -25,40 +23,10 @@ namespace Expeditionary.Runners
             var module = data.Module;
             var random = new Random();
             var missionGenerator = new MissionGenerator(data.Module.Galaxy, module.MapEnvironmentGenerator);
-            var missionNode =
-                new MissionNode()
-                {
-                    Environment = 
-                    new StaticEnvironmentProvider() { Environment = module.Environments["environment-meridian"] },
-                    Difficulty = new() { MissionDifficulty.Medium },
-                    Scale = new() { MissionScale.Medium },
-                    Attackers = new() { module.Factions["faction-sm"] },
-                    Defenders = new() { module.Factions["faction-earth"] },
-                    Frequency = 1f,
-                    Cap = 1,
-                    Duration = new NormalSampler(1, 0),
-                    Content = 
-                        new TestMissionGenerator()
-                        {
-                            ZoneOptions =
-                                new()
-                                {
-                                    new()
-                                    {
-                                        CoreCount = 1,
-                                        CandidateDensity = .005f,
-                                        Type = StructureType.Mining,
-                                        Level = 2,
-                                        TopLayer = TerrainLayer.Soil,
-                                        Size = new NormalSampler(10, 3),
-                                        RiverPenalty = new(),
-                                        CoastPenalty = new(),
-                                        SlopePenalty = new(0, -1, 1),
-                                        ElevationPenalty = new(0, -1, 1),
-                                    }
-                                }
-                        }
-                };
+            var missionNodes =
+                module.Campaigns.Values
+                    .SelectMany(campaign => campaign.Nodes).SelectMany(node => node.MissionNodes).ToList();
+            var missionNode = missionNodes[random.Next(missionNodes.Count)];
             var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
             foreach (var trait in mission.Map.Environment.Traits)

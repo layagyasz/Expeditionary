@@ -76,6 +76,9 @@
     <None Update="Resources\audio\tracks\the-backrooms-music-vol-8.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\config\default\campaigns\test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\config\default\factionformations\hyacinth.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1137,6 +1140,7 @@
     <Folder Include="Resources\config\default\generation\environments\orion\" />
     <Folder Include="Resources\config\default\factionformations\" />
     <Folder Include="Resources\config\default\languages\sectors\" />
+    <Folder Include="Resources\config\default\campaigns\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
     <Folder Include="Resources\view\localization\en\" />
   </ItemGroup>

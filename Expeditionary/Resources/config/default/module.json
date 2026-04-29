@@ -9,5 +9,6 @@
   "FactionFormations": [ "resources/config/default/factionformations::*.json" ],
   "Galaxy": "resources/config/default/galaxy.json",
   "SectorNamings": [ "resources/config/default/languages/sectors::*.json" ],
-  "MapEnvironmentGenerator": "resources/config/default/generation/map_environment_generator.json"
+  "MapEnvironmentGenerator": "resources/config/default/generation/map_environment_generator.json",
+  "Campaigns": [ "resources/config/default/campaigns::*json" ]
 }

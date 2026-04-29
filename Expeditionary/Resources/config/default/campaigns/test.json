@@ -1,0 +1,60 @@
+[
+  {
+    "Key": "campaign-test",
+    "Name": "Test",
+    "Factions": [ "faction-sm" ],
+    "InitialNodeId": 0,
+    "Nodes": [
+      {
+        "Id": 0,
+        "MissionNodes": [
+          {
+            "Environment": {
+              "$type": "Random",
+              "Sectors": [ 1, 2, 3, 4, 5 ]
+            },
+            "Difficulty": [ "Medium" ],
+            "Scale": [ "Medium" ],
+            "Attackers": [ "faction-sm" ],
+            "Defenders": [ "faction-earth" ],
+            "Frequency": 1.0,
+            "Cap": 2,
+            "Duration": {
+              "$type": "Normal",
+              "Mean": 10.0,
+              "StandardDeviation": 3.0
+            },
+            "Content": {
+              "$type": "Assault",
+              "ZoneOptions": [
+                {
+                  "CoreCount": 1,
+                  "CandidateDensity": 0.005,
+                  "Type": "Mining",
+                  "Level": 2,
+                  "Size": {
+                    "$type": "Normal",
+                    "Mean": 2.0,
+                    "StandardDeviation": 1.0
+                  },
+                  "RiverPenalty": {},
+                  "CoastPenalty": {},
+                  "SlopePenalty": {
+                    "A": 0,
+                    "B": -1,
+                    "C": 1
+                  },
+                  "ElevationPenalty": {
+                    "A": 0,
+                    "B": -1,
+                    "C": 1
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
