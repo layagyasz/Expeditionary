@@ -6,6 +6,7 @@ using Expeditionary.Model.Factions;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Instances;
+using Expeditionary.Model.Instances.Campaigns;
 using Expeditionary.Model.Missions.Generator;
 using System.Collections.Immutable;
 
@@ -13,14 +14,14 @@ namespace Expeditionary.Runners.Loaders.Runtime
 {
     public static class NewGameInstanceLoader
     {
-        private static readonly int i_Rounds = 10;
-        private static readonly object o_Segment = new();
+        private static readonly int Rounds = 10;
+        private static readonly object Segment = new();
 
         public static (LoaderStatus, LoaderTaskNode<GameInstance>) Load(
             GameModule module, GameInstanceParameters parameters)
         {
             var status = new LoaderStatus(logLength: 1);
-            status.AddSegment(o_Segment);
+            status.AddSegment(Segment);
             return new(
                 status, new SourceLoaderTask<GameInstance>(() => Create(status, module, parameters), isGL: false));
         }
@@ -34,12 +35,13 @@ namespace Expeditionary.Runners.Loaders.Runtime
                     new List<Faction>() { parameters.Faction },
                     missionGenerator, 
                     module.Campaigns.Values,
+                    CampaignState.Empty(),
                     random);
-            status.AddWork(o_Segment, i_Rounds);
-            for (int i = 0; i < i_Rounds; ++i)
+            status.AddWork(Segment, Rounds);
+            for (int i = 0; i < Rounds; ++i)
             {
-                missionManager.Step();
-                status.DoWork(o_Segment);
+                missionManager.StepMissions();
+                status.DoWork(Segment);
             }
             var instance =
                 new GameInstance(

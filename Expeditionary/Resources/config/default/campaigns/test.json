@@ -3,10 +3,11 @@
     "Key": "campaign-test",
     "Name": "Test",
     "Factions": [ "faction-sm" ],
-    "InitialNodeId": 0,
-    "Nodes": [
+    "InitialStageId": 0,
+    "Stages": [
       {
         "Id": 0,
+        "Transitions": [],
         "MissionNodes": [
           {
             "Environment": {

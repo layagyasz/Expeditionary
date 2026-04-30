@@ -25,7 +25,7 @@ namespace Expeditionary.Runners
             var missionGenerator = new MissionGenerator(data.Module.Galaxy, module.MapEnvironmentGenerator);
             var missionNodes =
                 module.Campaigns.Values
-                    .SelectMany(campaign => campaign.Nodes).SelectMany(node => node.MissionNodes).ToList();
+                    .SelectMany(campaign => campaign.Stages).SelectMany(node => node.MissionNodes).ToList();
             var missionNode = missionNodes[random.Next(missionNodes.Count)];
             var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");

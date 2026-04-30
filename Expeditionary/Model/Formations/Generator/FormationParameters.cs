@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Formations.Generator
 {
-    // TODO: Implement point limits
     public record class FormationParameters(
         float Points,
         int Echelon,

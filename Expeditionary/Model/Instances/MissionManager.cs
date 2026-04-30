@@ -1,5 +1,5 @@
-﻿using Expeditionary.Model.Campaigns;
-using Expeditionary.Model.Factions;
+﻿using Expeditionary.Model.Factions;
+using Expeditionary.Model.Instances.Campaigns;
 using Expeditionary.Model.Missions;
 using Expeditionary.Model.Missions.Generator;
 
@@ -19,21 +19,32 @@ namespace Expeditionary.Model.Instances
 
         private long _time;
         private List<Mission> _missions;
+        private readonly CampaignState _campaignState;
 
         public MissionManager(
             IEnumerable<Faction> factions, 
             MissionGenerator missionGenerator,
             IEnumerable<Campaign> campaigns,
+            CampaignState campaignState,
             Random random)
         {
             _factions = factions.ToHashSet();
             _missionGenerator = missionGenerator;
             _campaigns = campaigns.ToList();
+            _campaignState = campaignState;
             _random = random;
             _missions = new();
         }
 
-        public void Step()
+        public void StepCampaigns(GameInstance instance)
+        {
+            foreach (var campaign in _campaigns.Where(campaign => _factions.Intersect(campaign.Factions).Any()))
+            {
+                campaign.Step(_campaignState, instance);
+            }
+        }
+
+        public void StepMissions()
         {
             _time++;
             var newMissions = new List<Mission>();
@@ -52,8 +63,7 @@ namespace Expeditionary.Model.Instances
             }
             foreach (var campaign in _campaigns.Where(campaign => _factions.Intersect(campaign.Factions).Any()))
             {
-                // TODO: Take campaign state into account
-                foreach (var node in campaign.Nodes.Find(node => node.Id == campaign.InitialNodeId)!.MissionNodes)
+                foreach (var node in campaign.Get(_campaignState).MissionNodes)
                 {
                     for (int i = 0; i < RollMissions(node.Frequency, node.Cap, _random); ++i)
                     {

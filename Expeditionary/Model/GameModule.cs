@@ -2,10 +2,10 @@
 using Cardamom.Json;
 using Cardamom.Json.Collections;
 using Expeditionary.Json;
-using Expeditionary.Model.Campaigns;
 using Expeditionary.Model.Factions;
 using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Galaxies;
+using Expeditionary.Model.Instances.Campaigns;
 using Expeditionary.Model.Mapping.Environments;
 using Expeditionary.Model.Mapping.Environments.Generator;
 using Expeditionary.Model.Units;
