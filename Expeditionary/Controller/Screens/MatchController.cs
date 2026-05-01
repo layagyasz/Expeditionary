@@ -12,6 +12,7 @@ using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Combat;
 using Expeditionary.Model.Matches.Evaluation.Considerations;
+using Expeditionary.Model.Matches.Evaluation.TileEvaluators;
 using Expeditionary.Model.Matches.Orders;
 using Expeditionary.View.Scenes.Matches.Layers;
 using Expeditionary.View.Screens;

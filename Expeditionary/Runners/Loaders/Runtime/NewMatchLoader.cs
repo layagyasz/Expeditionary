@@ -1,5 +1,6 @@
 ﻿using Cardamom.Utils.Suppliers.Promises;
 using Expeditionary.Loader;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai;
@@ -13,7 +14,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
         public record class Result(MatchPlayer Player, Match Match, MapAppearance Appearance, AiManager AiManager);
 
         public static (LoaderStatus, LoaderTaskNode<Result>) Create(
-            Mission mission,
+            InstanceMission mission,
             MatchPlayer player,
             IFormationProvider playerFormation,
             IFormationProvider defaultFormation,
@@ -33,24 +34,24 @@ namespace Expeditionary.Runners.Loaders.Runtime
         }
 
         private static LoaderTaskNode<(Match, MapAppearance)> Create(
-            LoaderStatus status, Mission mission, MatchPlayer player, Random random, bool isTest)
+            LoaderStatus status, InstanceMission mission, MatchPlayer player, Random random, bool isTest)
         {
             var creationContext = new CreationContext(player, random, isTest);
-            return mission.Content.Create(status, creationContext);
+            return mission.Mission.Create(status, creationContext);
         }
 
         private static LoaderTaskNode<Result> Setup(
             LoaderStatus status, 
-            Mission mission,
+            InstanceMission mission,
             LoaderTaskNode<(Match, MapAppearance)> matchTask,
             MatchPlayer player,
             IFormationProvider playerFormation,
             IFormationProvider defaultFormation)
         {
-            var content = mission.Content;
+            var content = mission.Mission;
             var match = matchTask.GetPromise().Map(x => x.Item1);
             var setupContext = 
-                match.Map(match => CreateContext(match, mission.Content, player, playerFormation, defaultFormation));
+                match.Map(match => CreateContext(match, content, player, playerFormation, defaultFormation));
             var setupTask = content.Setup(status, match, setupContext);
             return matchTask.Map(x => setupTask.GetNow())
                 .Map(match => 
@@ -60,7 +61,7 @@ namespace Expeditionary.Runners.Loaders.Runtime
 
         private static SetupContext CreateContext(
             Match match,
-            MissionContent mission,
+            Mission mission,
             MatchPlayer player, 
             IFormationProvider playerFormation,
             IFormationProvider defaultFormation)

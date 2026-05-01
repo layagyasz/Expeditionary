@@ -1,6 +1,7 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Formations;
 using Expeditionary.Model.Formations.Generator;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Mapping;
 using Expeditionary.Model.Mapping.Generator;
 using Expeditionary.Model.Mapping.Regions;
@@ -17,7 +18,7 @@ namespace Expeditionary.Model.Missions.Generator
     {
         public List<CityGenerator.LayerParameters> ZoneOptions { get; set; } = new();
 
-        public MissionContent Generate(MissionNode node, MissionGenerationResources resources)
+        public Mission Generate(MissionNode node, MissionGenerationResources resources)
         {
             int playerId = 0;
             var players = new List<PlayerSetup>();
@@ -66,7 +67,7 @@ namespace Expeditionary.Model.Missions.Generator
             var zoneChoice = ZoneOptions[resources.Random.Next(ZoneOptions.Count)];
             var environment = node.Environment!.Get(resources);
             return
-                new MissionContent(
+                new Mission(
                     new MapSetup(
                         environment,
                         new Vector2i(100, 100),

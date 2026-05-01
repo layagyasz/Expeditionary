@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Model\Instances\MissionManager.cs~RFce9b2d9a.TMP" />
     <None Remove="Resources\config\default\units\traits\weapons\modifiers.json~RF6736b541.TMP" />
   </ItemGroup>
 

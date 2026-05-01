@@ -3,11 +3,9 @@
     "Key": "campaign-test",
     "Name": "Test",
     "Factions": [ "faction-sm" ],
-    "InitialStageId": 0,
     "Stages": [
       {
         "Id": 0,
-        "Transitions": [],
         "MissionNodes": [
           {
             "Environment": {
@@ -35,8 +33,8 @@
                   "Level": 2,
                   "Size": {
                     "$type": "Normal",
-                    "Mean": 2.0,
-                    "StandardDeviation": 1.0
+                    "Mean": 20.0,
+                    "StandardDeviation": 5.0
                   },
                   "RiverPenalty": {},
                   "CoastPenalty": {},

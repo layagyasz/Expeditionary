@@ -2,10 +2,10 @@
 using Cardamom.Utils.Suppliers.Promises;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Missions;
-using Expeditionary.Model.Missions.Generator;
 using Expeditionary.View.Common.Interceptors;
 using Expeditionary.View.Screens;
 using System.Collections.Immutable;
@@ -27,7 +27,8 @@ namespace Expeditionary.Runners
                 module.Campaigns.Values
                     .SelectMany(campaign => campaign.Stages).SelectMany(node => node.MissionNodes).ToList();
             var missionNode = missionNodes[random.Next(missionNodes.Count)];
-            var mission = missionGenerator.Generate(missionNode, 0, random.Next()).Content;
+            var mission = missionNode.Content.Generate(
+                missionNode, new(module.Galaxy, module.MapEnvironmentGenerator, random));
             Console.WriteLine($"{mission.Map.Environment.Key} {mission.Map.Environment.Name}");
             foreach (var trait in mission.Map.Environment.Traits)
             {

@@ -7,21 +7,22 @@ using Expeditionary.Model.Formations;
 using Expeditionary.Model.Formations.Generator;
 using Expeditionary.Model.Instances;
 using Expeditionary.Model.Instances.Campaigns;
-using Expeditionary.Model.Missions.Generator;
 using System.Collections.Immutable;
 
 namespace Expeditionary.Runners.Loaders.Runtime
 {
     public static class NewGameInstanceLoader
     {
+        private static readonly object FormationSegment = new();
+        private static readonly object MissionSegment = new();
         private static readonly int Rounds = 10;
-        private static readonly object Segment = new();
 
         public static (LoaderStatus, LoaderTaskNode<GameInstance>) Load(
             GameModule module, GameInstanceParameters parameters)
         {
             var status = new LoaderStatus(logLength: 1);
-            status.AddSegment(Segment);
+            status.AddSegment(FormationSegment);
+            status.AddSegment(MissionSegment);
             return new(
                 status, new SourceLoaderTask<GameInstance>(() => Create(status, module, parameters), isGL: false));
         }
@@ -37,16 +38,12 @@ namespace Expeditionary.Runners.Loaders.Runtime
                     module.Campaigns.Values,
                     CampaignState.Empty(),
                     random);
-            status.AddWork(Segment, Rounds);
-            for (int i = 0; i < Rounds; ++i)
-            {
-                missionManager.StepMissions();
-                status.DoWork(Segment);
-            }
             var instance =
                 new GameInstance(
                     new SerialIdGenerator(), 
                     new InstancePlayer(id: 0, parameters.Faction), module.Galaxy, missionManager);
+
+            status.AddWork(FormationSegment, 1);
             var formationGenerator = new FormationGenerator(module.FactionFormations, module.Formations);
             instance.AddFormation(
                 formationGenerator.Generate(
@@ -57,6 +54,16 @@ namespace Expeditionary.Runners.Loaders.Runtime
                         EnumSet<FormationRole>.All(),
                         ImmutableList.Create<UnitConstraint>(), 
                         random)));
+            status.DoWork(FormationSegment);
+
+            status.AddWork(MissionSegment, Rounds);
+            for (int i = 0; i < Rounds; ++i)
+            {
+                instance.Missions.StepCampaigns(instance);
+                instance.Missions.StepMissions();
+                status.DoWork(MissionSegment);
+            }
+
             return instance;
         }
     }

@@ -1,24 +1,23 @@
 ﻿using Expeditionary.Model.Factions;
 using Expeditionary.Model.Instances.Campaigns;
-using Expeditionary.Model.Missions;
-using Expeditionary.Model.Missions.Generator;
 
 namespace Expeditionary.Model.Instances
 {
     public class MissionManager
     {
-        public EventHandler<Mission>? MissionAdded { get; set; }
-        public EventHandler<Mission>? MissionRemoved { get; set; }
+        public EventHandler<InstanceMission>? MissionAdded { get; set; }
+        public EventHandler<InstanceMission>? MissionRemoved { get; set; }
 
-        public IEnumerable<Mission> Missions => _missions;
+        public IEnumerable<InstanceMission> Missions => _missions;
 
         private readonly HashSet<Faction> _factions;
         private readonly MissionGenerator _missionGenerator;
-        private readonly List<Campaign> _campaigns;
+        private readonly Dictionary<string, Campaign> _relevantCampaigns;
+        private readonly Dictionary<CampaignStageKey, CampaignStage> _relevantStages;
         private readonly Random _random;
 
         private long _time;
-        private List<Mission> _missions;
+        private List<InstanceMission> _missions;
         private readonly CampaignState _campaignState;
 
         public MissionManager(
@@ -30,7 +29,16 @@ namespace Expeditionary.Model.Instances
         {
             _factions = factions.ToHashSet();
             _missionGenerator = missionGenerator;
-            _campaigns = campaigns.ToList();
+            _relevantCampaigns = 
+                campaigns
+                    .Where(campaign => campaign.Factions.Intersect(_factions).Any())
+                    .ToDictionary(campaign => campaign.Key, campaign => campaign);
+            _relevantStages = 
+                new Dictionary<CampaignStageKey, CampaignStage>(
+                    _relevantCampaigns.SelectMany(
+                        campaign => campaign.Value.Stages.Select(
+                            stage => new KeyValuePair<CampaignStageKey, CampaignStage>(
+                                new(campaign.Key, stage.Id), stage))));
             _campaignState = campaignState;
             _random = random;
             _missions = new();
@@ -38,21 +46,35 @@ namespace Expeditionary.Model.Instances
 
         public void StepCampaigns(GameInstance instance)
         {
-            foreach (var campaign in _campaigns.Where(campaign => _factions.Intersect(campaign.Factions).Any()))
+            foreach ((var stageKey, var stage) in _relevantStages)
             {
-                campaign.Step(_campaignState, instance);
+                var state = _campaignState.Get(stageKey);
+                if (state == CampaignStageState.Dormant)
+                {
+                    if (stage.OpenTrigger.Trigger(stageKey, instance))
+                    {
+                        _campaignState.Put(stageKey, CampaignStageState.Open);
+                    }
+                } 
+                else if (state == CampaignStageState.Open)
+                {
+                    if (stage.CloseTrigger.Trigger(stageKey, instance))
+                    {
+                        _campaignState.Put(stageKey, CampaignStageState.Closed);
+                    }
+                }
             }
         }
 
         public void StepMissions()
         {
             _time++;
-            var newMissions = new List<Mission>();
-            var removedMissions = new List<Mission>();
-            var addedMissions = new List<Mission>();
+            var newMissions = new List<InstanceMission>();
+            var removedMissions = new List<InstanceMission>();
+            var addedMissions = new List<InstanceMission>();
             foreach (var mission in _missions)
             {
-                if (_time < mission.StartTime + mission.Duration)
+                if (_time < mission.EndTime)
                 {
                     newMissions.Add(mission);
                 }
@@ -61,13 +83,13 @@ namespace Expeditionary.Model.Instances
                     removedMissions.Add(mission);
                 }
             }
-            foreach (var campaign in _campaigns.Where(campaign => _factions.Intersect(campaign.Factions).Any()))
+            foreach (var stageKey in _campaignState.GetActive())
             {
-                foreach (var node in campaign.Get(_campaignState).MissionNodes)
+                foreach (var node in _relevantStages[stageKey].MissionNodes)
                 {
                     for (int i = 0; i < RollMissions(node.Frequency, node.Cap, _random); ++i)
                     {
-                        var mission = _missionGenerator.Generate(node, _time, _random.Next());
+                        var mission = _missionGenerator.Generate(stageKey, node, _time, _random.Next());
                         newMissions.Add(mission);
                         addedMissions.Add(mission);
                     }

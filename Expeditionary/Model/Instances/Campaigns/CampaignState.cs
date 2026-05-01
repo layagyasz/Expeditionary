@@ -1,24 +1,48 @@
 ﻿namespace Expeditionary.Model.Instances.Campaigns
 {
-    public record class CampaignState(IDictionary<string, int> Stages)
+    public class CampaignState
     {
+        private readonly Dictionary<CampaignStageKey, CampaignStageState> _stages;
+
+        private CampaignState(Dictionary<CampaignStageKey, CampaignStageState> stages)
+        {
+            _stages = stages;
+        }
+
         public static CampaignState Empty()
         {
-            return new(new Dictionary<string, int>());
+            return new(new());
         }
 
-        public int Get(string key, int initialStageId)
+        public IEnumerable<CampaignStageKey> GetActive()
         {
-            if (Stages.TryGetValue(key, out int stageId))
+            return _stages.Where(kvp => kvp.Value == CampaignStageState.Open).Select(kvp => kvp.Key);
+        }
+
+        public IEnumerable<CampaignStageKey> GetDormant()
+        {
+            return _stages.Where(kvp => kvp.Value == CampaignStageState.Dormant).Select(kvp => kvp.Key);
+        }
+
+        public CampaignStageState Get(CampaignStageKey stageKey)
+        {
+            if (_stages.TryGetValue(stageKey, out CampaignStageState state))
             {
-                return stageId;
+                return state;
             }
-            return initialStageId;
+            return CampaignStageState.Dormant;
         }
 
-        public void Put(string key, int stageId)
+        public void Put(CampaignStageKey stageKey, CampaignStageState state)
         {
-            Stages[key] = stageId;
+            if (state == CampaignStageState.Dormant)
+            {
+                _stages.Remove(stageKey);
+            }
+            else
+            {
+                _stages[stageKey] = state;
+            }
         }
     }
 }

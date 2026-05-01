@@ -58,7 +58,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             {
                 var consideration =
                     TileConsiderations.Combine(
-                        TileConsiderations.Essential(tileEvaluator.IsReachable(formation.GetMaxHindrance(), origin)),
+                        tileEvaluator.IsReachable(formation.GetMaxHindrance(), origin),
                         tileEvaluator.GetConsiderationFor(formation.Formation, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));
@@ -85,7 +85,7 @@ namespace Expeditionary.Model.Matches.Ai.Assignments
             {
                 var consideration =
                     TileConsiderations.Combine(
-                        TileConsiderations.Essential(tileEvaluator.IsReachable(diad.GetMaxHindrance(), origin)),
+                        tileEvaluator.IsReachable(diad.GetMaxHindrance(), origin),
                         tileEvaluator.GetConsiderationFor(diad.Role, diad.Unit.Unit.Type, facing),
                         extraConsideration,
                         TileConsiderations.Exterior(sdf, 0));

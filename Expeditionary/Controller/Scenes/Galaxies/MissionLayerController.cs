@@ -3,14 +3,13 @@ using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Expeditionary.Model.Instances;
-using Expeditionary.Model.Missions;
 using Expeditionary.View.Scenes.Galaxies;
 
 namespace Expeditionary.Controller.Scenes.Galaxies
 {
     public class MissionLayerController : IController
     {
-        public EventHandler<GalaxyClickedEventArgs<Mission>>? MissionSelected { get; set; }
+        public EventHandler<GalaxyClickedEventArgs<InstanceMission>>? MissionSelected { get; set; }
 
         private readonly MissionManager _manager;
         private readonly ICamera _camera;
@@ -57,12 +56,12 @@ namespace Expeditionary.Controller.Scenes.Galaxies
             _layer!.Dirty();
         }
 
-        private void HandleMissionAdded(object? sender, Mission e)
+        private void HandleMissionAdded(object? sender, InstanceMission e)
         {
             _layer!.Add(e);
         }
 
-        private void HandleMissionRemoved(object? sender, Mission e)
+        private void HandleMissionRemoved(object? sender, InstanceMission e)
         {
             _layer!.Remove(e);
         }
@@ -81,7 +80,7 @@ namespace Expeditionary.Controller.Scenes.Galaxies
 
         private void HandleClick(object? sender, MouseButtonClickEventArgs e)
         {
-            var controller = (OptionElementController<Mission>)sender!;
+            var controller = (OptionElementController<InstanceMission>)sender!;
             MissionSelected?.Invoke(this, new(controller.Key, e));
         }
     }

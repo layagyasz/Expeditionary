@@ -5,7 +5,7 @@ using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class MissionContent(MapSetup Map, List<PlayerSetup> Players)
+    public record class Mission(MapSetup Map, List<PlayerSetup> Players)
     {
         private static readonly object o_Create = new();
         private static readonly object o_Setup = new();

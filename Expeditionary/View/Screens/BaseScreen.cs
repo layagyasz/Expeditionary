@@ -63,7 +63,6 @@ namespace Expeditionary.View.Screens
         public virtual void ResizeContext(Vector3 bounds)
         {
             _bounds = bounds;
-            Console.WriteLine(bounds);
             foreach (var element in _elements)
             {
                 element.ResizeContext(bounds);

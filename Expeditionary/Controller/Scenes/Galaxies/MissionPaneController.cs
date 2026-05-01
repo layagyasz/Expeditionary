@@ -2,7 +2,7 @@
 using Cardamom.Ui.Controller.Element;
 using Expeditionary.Controller.Common;
 using Expeditionary.Model.Galaxies;
-using Expeditionary.Model.Missions;
+using Expeditionary.Model.Instances;
 using Expeditionary.View.Scenes.Galaxies;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -10,11 +10,11 @@ namespace Expeditionary.Controller.Scenes.Galaxies
 {
     public class MissionPaneController : SimplePaneController
     {
-        public EventHandler<Mission>? Launched { get; set; }
+        public EventHandler<InstanceMission>? Launched { get; set; }
 
         private MissionPane? _pane;
         private IElementController? _launch;
-        private Mission? _mission;
+        private InstanceMission? _mission;
 
         public override void Bind(object @object)
         {
@@ -32,10 +32,10 @@ namespace Expeditionary.Controller.Scenes.Galaxies
             _launch = null;
         }
 
-        public void Open(Mission mission, SectorNaming naming)
+        public void Open(InstanceMission mission, SectorNaming naming)
         {
             _mission = mission;
-            _pane!.SetTitle(naming.Name(mission.Content.Map.Environment));
+            _pane!.SetTitle(naming.Name(mission.Mission.Map.Environment));
             _pane.Visible = true;
         }
 

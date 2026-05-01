@@ -1,7 +1,7 @@
 ﻿using Cardamom.Ui.Controller;
 using Expeditionary.Controller.Scenes.Galaxies;
 using Expeditionary.Model.Galaxies;
-using Expeditionary.Model.Missions;
+using Expeditionary.Model.Instances;
 using Expeditionary.View.Screens;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -10,7 +10,7 @@ namespace Expeditionary.Controller.Screens
 {
     public class GalaxyScreenController : IController
     {
-        public EventHandler<Mission>? Launched { get; set; }
+        public EventHandler<InstanceMission>? Launched { get; set; }
 
         private readonly SectorNaming _naming;
 
@@ -41,7 +41,7 @@ namespace Expeditionary.Controller.Screens
             _screen = null;
         }
 
-        private void HandleMissionSelected(object? sender, GalaxyClickedEventArgs<Mission> e)
+        private void HandleMissionSelected(object? sender, GalaxyClickedEventArgs<InstanceMission> e)
         {
             if (e.Args.Button == MouseButton.Button1)
             {
@@ -50,7 +50,7 @@ namespace Expeditionary.Controller.Screens
             }
         }
 
-        private void HandleLaunch(object? sender, Mission e)
+        private void HandleLaunch(object? sender, InstanceMission e)
         {
             Launched?.Invoke(this, e);
         }

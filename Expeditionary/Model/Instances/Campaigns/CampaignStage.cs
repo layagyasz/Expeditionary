@@ -1,15 +1,12 @@
-﻿using Expeditionary.Model.Missions.Generator;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Instances.Campaigns
 {
-    public record class CampaignStage(
-        int Id, ImmutableList<CampaignTransition> Transitions, ImmutableList<MissionNode> MissionNodes)
+    public record class CampaignStage
     {
-        public int? TryTransition(Campaign campaign, GameInstance instance)
-        {
-            return Transitions.First(
-                transition => transition.Trigger.Trigger(campaign, this, instance))?.TargetStageId;
-        }
+        public required int Id { get; init; }
+        public ICampaignTrigger OpenTrigger { get; init; } = new ICampaignTrigger.AlwaysTrigger();
+        public ICampaignTrigger CloseTrigger { get; init; } = new ICampaignTrigger.NeverTrigger();
+        public required ImmutableList<MissionNode> MissionNodes { get; init; }
     }
 }

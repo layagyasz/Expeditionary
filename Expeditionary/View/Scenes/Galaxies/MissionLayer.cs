@@ -3,7 +3,7 @@ using Cardamom.Ui;
 using Cardamom.Ui.Controller;
 using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
-using Expeditionary.Model.Missions;
+using Expeditionary.Model.Instances;
 using OpenTK.Mathematics;
 
 namespace Expeditionary.View.Scenes.Galaxies
@@ -34,12 +34,12 @@ namespace Expeditionary.View.Scenes.Galaxies
             _uiElementFactory = uiElementFactory;
         }
 
-        public void Add(Mission mission)
+        public void Add(InstanceMission mission)
         {
             Add(
                 new MissionButton(
                     _uiElementFactory.GetClass(s_ButtonClass),
-                    new OptionElementController<Mission>(_uiElementFactory.GetAudioPlayer(), mission),
+                    new OptionElementController<InstanceMission>(_uiElementFactory.GetAudioPlayer(), mission),
                     new(mission.Position.X, 0, mission.Position.Y)));
         }
 
@@ -48,9 +48,9 @@ namespace Expeditionary.View.Scenes.Galaxies
             _dirty = true;
         }
 
-        public void Remove(Mission mission)
+        public void Remove(InstanceMission mission)
         {
-            Remove(_elements.First(x => ((OptionElementController<Mission>)x.Controller).Key == mission));
+            Remove(_elements.First(x => ((OptionElementController<InstanceMission>)x.Controller).Key == mission));
         }
 
         public override void ResizeContext(Vector3 bounds)

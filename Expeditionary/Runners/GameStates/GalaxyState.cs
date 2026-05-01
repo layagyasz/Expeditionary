@@ -1,6 +1,7 @@
 ﻿using Expeditionary.Controller.Screens;
 using Expeditionary.Loader;
 using Expeditionary.Model;
+using Expeditionary.Model.Instances;
 using Expeditionary.Model.Missions;
 using Expeditionary.Runners.Loaders.Runtime;
 using Expeditionary.View.Screens;
@@ -42,13 +43,13 @@ namespace Expeditionary.Runners.GameStates
             _context = null;
         }
 
-        private void HandleLaunch(object? sender, Mission e)
+        private void HandleLaunch(object? sender, InstanceMission e)
         {
             var instancePlayer = _context!.Instance.Player;
             (var status, var task) =
                 NewMatchLoader.Create(
-                    e, 
-                    e.Content.Players.Find(player => player.Player.Faction == instancePlayer.Faction)!.Player,
+                    e,
+                    e.Mission.Players.Find(player => player.Player.Faction == instancePlayer.Faction)!.Player,
                     new IFormationProvider.PersistentFormationProvider(instancePlayer.Formations.First()),
                     new IFormationProvider.RandomFormationProvider(new(_module.FactionFormations, _module.Formations)),
                     _config.IsDebug, 

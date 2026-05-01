@@ -2,9 +2,11 @@
 using Cardamom.Json.Collections;
 using Cardamom.Utils.Generators.Samplers;
 using Expeditionary.Model.Factions;
+using Expeditionary.Model.Missions;
+using Expeditionary.Model.Missions.Generator;
 using System.Text.Json.Serialization;
 
-namespace Expeditionary.Model.Missions.Generator
+namespace Expeditionary.Model.Instances
 {
     public record class MissionNode
     {
@@ -23,6 +25,6 @@ namespace Expeditionary.Model.Missions.Generator
         public required ISampler Duration { get; set; }
         public required IMissionContentGenerator Content { get; set; }
 
-        public IEnumerable<Faction> Factions => Enumerable.Concat(Attackers, Defenders);
+        public IEnumerable<Faction> Factions => Attackers.Concat(Defenders);
     }
 }

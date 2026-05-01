@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Expeditionary.Model.Instances;
 
 namespace Expeditionary.Model.Missions.Generator
 {
@@ -6,6 +7,6 @@ namespace Expeditionary.Model.Missions.Generator
     [JsonDerivedType(typeof(AssaultMissionGenerator), "Assault")]
     public interface IMissionContentGenerator
     {
-        MissionContent Generate(MissionNode node, MissionGenerationResources resources);
+        Mission Generate(MissionNode node, MissionGenerationResources resources);
     }
 }
