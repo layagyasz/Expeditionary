@@ -6,29 +6,18 @@ namespace Expeditionary.Model.Matches.Evaluation.Caches
 {
     public class PartitionCache
     {
-        private enum Dimension
-        {
-            Restriction,
-            Roughness,
-            Slope,
-            Softness,
-            WaterDepth
-        }
-
         private class PartitionCacheLayer
         {
             private readonly Map _map;
-            private readonly Dimension _dimension;
-            private readonly int _limit;
+            private readonly Movement.Hindrance _maxHindrance;
             private readonly DenseHexGrid<byte> _partition;
 
             private byte _partitionId = 0;
 
-            internal PartitionCacheLayer(Map map, Dimension dimension, int limit)
+            internal PartitionCacheLayer(Map map, Movement.Hindrance maxHindrance)
             {
                 _map = map;
-                _dimension = dimension;
-                _limit = limit;
+                _maxHindrance = maxHindrance;
                 _partition = new(map.Size);
             }
 
@@ -36,17 +25,6 @@ namespace Expeditionary.Model.Matches.Evaluation.Caches
             {
                 FindPartition(hex, ++_partitionId);
                 return _partitionId;
-            }
-
-            public byte GetOrComputeParition(Vector3i hex)
-            {
-                var partition = GetPartition(hex);
-                if (partition == 0)
-                {
-                    FindPartition(hex, ++_partitionId);
-                    return _partitionId;
-                }
-                return partition;
             }
 
             public byte GetPartition(Vector3i hex)
@@ -79,11 +57,10 @@ namespace Expeditionary.Model.Matches.Evaluation.Caches
                         {
                             continue;
                         }
-                        int value = GetDimension(
-                            _dimension,
+                        var hindrance = 
                             Movement.GetHindrance(
-                                tile, neighborTile, _map.GetEdge(Geometry.GetEdge(current, neighbor))!));
-                        if (value <= _limit)
+                                tile, neighborTile, _map.GetEdge(Geometry.GetEdge(current, neighbor))!);
+                        if (!Movement.IsOver(hindrance, _maxHindrance))
                         {
                             open.Enqueue(neighbor);
                         }
@@ -94,11 +71,7 @@ namespace Expeditionary.Model.Matches.Evaluation.Caches
 
         private readonly Map _map;
 
-        private readonly PartitionCacheLayer?[] _restriction = new PartitionCacheLayer?[5];
-        private readonly PartitionCacheLayer?[] _roughness = new PartitionCacheLayer?[5];
-        private readonly PartitionCacheLayer?[] _slope = new PartitionCacheLayer?[5];
-        private readonly PartitionCacheLayer?[] _softness = new PartitionCacheLayer?[5];
-        private readonly PartitionCacheLayer?[] _waterDepth = new PartitionCacheLayer?[5];
+        private readonly Dictionary<Movement.Hindrance, PartitionCacheLayer> _layers = new();
 
         public PartitionCache(Map map)
         {
@@ -107,56 +80,26 @@ namespace Expeditionary.Model.Matches.Evaluation.Caches
 
         public bool IsReachable(Vector3i left, Vector3i right, Movement.Hindrance maxHindrance)
         {
-            return Enum.GetValues<Dimension>().All(x => IsReachable(left, right, maxHindrance, x));
-        }
-
-        private bool IsReachable(Vector3i left, Vector3i right, Movement.Hindrance maxHindrance, Dimension dimension)
-        {
-            var limit = GetDimension(dimension, maxHindrance);
-            if (limit >= 5)
-            {
-                return true;
-            }
-            var layer = GetLayer(dimension);
-            if (layer[limit] == null)
-            {
-                layer[limit] = new(_map, dimension, limit);
-            }
-            var layerLimit = layer[limit]!;
-            var leftPartition = layerLimit.GetPartition(left);
-            var rightPartition = layerLimit.GetPartition(right);
+            var layer = GetLayer(maxHindrance);
+            var leftPartition = layer.GetPartition(left);
+            var rightPartition = layer.GetPartition(right);
             if (leftPartition == 0 && rightPartition == 0)
             {
-                leftPartition = layerLimit.ComputePartition(left);
-                rightPartition = layerLimit.GetPartition(right);
+                leftPartition = layer.ComputePartition(left);
+                rightPartition = layer.GetPartition(right);
             }
             return leftPartition == rightPartition;
         }
 
-        private PartitionCacheLayer?[] GetLayer(Dimension dimension)
+        private PartitionCacheLayer GetLayer(Movement.Hindrance key)
         {
-            return dimension switch
+            if (_layers.TryGetValue(key, out var layer))
             {
-                Dimension.Restriction => _restriction,
-                Dimension.Roughness => _roughness,
-                Dimension.Slope => _slope,
-                Dimension.Softness => _softness,
-                Dimension.WaterDepth => _waterDepth,
-                _ => throw new ArgumentException($"Unsupported dimension {dimension}"),
-            };
-        }
-
-        private static int GetDimension(Dimension dimension, Movement.Hindrance hindrance)
-        {
-            return dimension switch
-            {
-                Dimension.Restriction => hindrance.Restriction,
-                Dimension.Roughness => hindrance.Roughness,
-                Dimension.Slope => hindrance.Slope,
-                Dimension.Softness => hindrance.Softness,
-                Dimension.WaterDepth => hindrance.WaterDepth,
-                _ => throw new ArgumentException($"Unsupported dimension {dimension}"),
-            };
+                return layer;
+            }
+            layer = new(_map, key);
+            _layers.Add(key, layer);
+            return layer;
         }
     }
 }

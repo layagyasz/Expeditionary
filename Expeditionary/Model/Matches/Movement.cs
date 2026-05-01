@@ -89,6 +89,15 @@ namespace Expeditionary.Model.Matches
             return h;
         }
 
+        public static bool IsOver(Hindrance left, Hindrance right)
+        {
+            return left.Restriction > right.Restriction
+                || left.Roughness > right.Roughness
+                || left.Slope > right.Slope
+                || left.Softness > right.Softness
+                || left.WaterDepth > right.WaterDepth;
+        }
+
         public static Hindrance Min(Hindrance left, Hindrance right)
         {
             return new(

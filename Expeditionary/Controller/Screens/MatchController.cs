@@ -12,7 +12,6 @@ using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Combat;
 using Expeditionary.Model.Matches.Evaluation.Considerations;
-using Expeditionary.Model.Matches.Evaluation.TileEvaluators;
 using Expeditionary.Model.Matches.Orders;
 using Expeditionary.View.Scenes.Matches.Layers;
 using Expeditionary.View.Screens;
@@ -115,7 +114,8 @@ namespace Expeditionary.Controller.Screens
             if (e.Button.Button == MouseButton.Left)
             {
                 SetSelectedUnit(
-                    e.Assets.Where(x => x is MatchUnit).Cast<MatchUnit>().Where(x => x.Player == _player).FirstOrDefault());
+                    e.Assets.Where(x => x is MatchUnit).Cast<MatchUnit>().Where(x => x.Player == _player)
+                        .FirstOrDefault());
             }
             else if (e.Button.Button == MouseButton.Right)
             {
