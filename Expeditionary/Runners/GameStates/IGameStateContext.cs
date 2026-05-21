@@ -3,6 +3,7 @@ using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Instances;
+using Expeditionary.Model.Instances.Campaigns;
 
 namespace Expeditionary.Runners.GameStates
 {
@@ -18,6 +19,11 @@ namespace Expeditionary.Runners.GameStates
         public record class MainMenuContext(): IGameStateContext;
 
         public record class MatchContext(
-            MatchPlayer Player, Match Match, MapAppearance Appearance, AiManager AiManager) : IGameStateContext;
+            GameInstance? Instance, 
+            CampaignStageKey? StageKey,
+            MatchPlayer Player,
+            Match Match,
+            MapAppearance Appearance,
+            AiManager AiManager) : IGameStateContext;
     }
 }

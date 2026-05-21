@@ -28,5 +28,10 @@ namespace Expeditionary.Model.Instances
                 template.ComponentFormations.Select(componentTemplate => From(componentTemplate, idGenerator)),
                 template.Diads.Select(diadTemplate => InstanceDiad.From(diadTemplate, idGenerator)));
         }
+
+        public InstanceUnit? GetUnit(int id)
+        {
+            return GetUnits().First(unit => unit.Id == id);
+        }
     }
 }

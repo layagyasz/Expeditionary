@@ -2,5 +2,7 @@
 {
     public enum InstanceUnitStatus
     {
+        Active,
+        Destroyed
     }
 }

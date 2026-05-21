@@ -1,5 +1,6 @@
 ﻿using Expeditionary.Model.Formations;
 using Expeditionary.Model.Galaxies;
+using Expeditionary.Model.Instances.Events;
 
 namespace Expeditionary.Model.Instances
 {
@@ -21,9 +22,14 @@ namespace Expeditionary.Model.Instances
             Missions = missions;
         }
 
-        public void AddFormation(TemplateFormation template)
+        public bool Apply(IInstanceEvent @event)
         {
-            Player.AddFormation(InstanceFormation.From(template, IdGenerator));
+            return @event.Apply(this);
+        }
+
+        internal void AddReport(InstanceMatchReport report)
+        {
+            _matchHistory.Add(report);
         }
     }
 }

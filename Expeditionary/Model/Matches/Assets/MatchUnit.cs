@@ -23,16 +23,19 @@ namespace Expeditionary.Model.Matches.Assets
         public IMatchAsset? Passenger { get; set; }
         public AssetValue Value => new(1, Type.Points);
 
-        public MatchUnit(int id, int instanceId, MatchPlayer player, UnitType type)
+        public MatchUnit(int id, int instanceId, MatchPlayer player, UnitType type, int number)
         {
             Id = id;
             InstanceId = instanceId;
             Player = player;
             Type = type;
-            Number = (int)type.Intrinsics.Number.GetValue();
+            Number = number;
 
             Reset();
         }
+
+        public MatchUnit(int id, int instanceId, MatchPlayer player, UnitType type) 
+            : this(id, instanceId, player, type, (int)type.Intrinsics.Number.GetValue()) { }
 
         public void ConsumeAction()
         {

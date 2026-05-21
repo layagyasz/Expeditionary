@@ -38,23 +38,27 @@ namespace Expeditionary.Runners.Loaders.Runtime
                     module.Campaigns.Values,
                     CampaignState.Empty(),
                     random);
-            var instance =
-                new GameInstance(
-                    new SerialIdGenerator(), 
-                    new InstancePlayer(id: 0, parameters.Faction), module.Galaxy, missionManager);
 
             status.AddWork(FormationSegment, 1);
             var formationGenerator = new FormationGenerator(module.FactionFormations, module.Formations);
-            instance.AddFormation(
+            var formation =
                 formationGenerator.Generate(
                     new(
                         Points: 20000,
-                        Echelon: 5, 
-                        parameters.Faction, 
+                        Echelon: 5,
+                        parameters.Faction,
                         EnumSet<FormationRole>.All(),
-                        ImmutableList.Create<UnitConstraint>(), 
-                        random)));
+                        ImmutableList.Create<UnitConstraint>(),
+                        random));
             status.DoWork(FormationSegment);
+
+            var idGenerator = new SerialIdGenerator();
+            var instance =
+                new GameInstance(
+                    idGenerator,
+                    new InstancePlayer(id: 0, parameters.Faction, InstanceFormation.From(formation, idGenerator)),
+                    module.Galaxy,
+                    missionManager);
 
             status.AddWork(MissionSegment, Rounds);
             for (int i = 0; i < Rounds; ++i)

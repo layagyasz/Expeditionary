@@ -6,7 +6,8 @@ namespace Expeditionary.Model.Instances
     {
         public int Id { get; }
         public UnitType Type { get; }
-        public InstanceUnitStatus Status { get; set; }
+        public InstanceUnitStatus Status { get; internal set; }
+        public int Number { get; internal set; }
 
         public InstanceUnit(int id, UnitType type)
         {

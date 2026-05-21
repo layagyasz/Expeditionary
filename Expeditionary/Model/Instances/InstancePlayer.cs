@@ -6,19 +6,13 @@ namespace Expeditionary.Model.Instances
     {
         public int Id { get; }
         public Faction Faction { get; }
-        public IEnumerable<InstanceFormation> Formations => _formations;
+        public InstanceFormation Formation { get; }
 
-        private readonly List<InstanceFormation> _formations = new();
-
-        public InstancePlayer(int id, Faction faction)
+        public InstancePlayer(int id, Faction faction, InstanceFormation formation)
         {
             Id = id;
             Faction = faction;
-        }
-
-        public void AddFormation(InstanceFormation formation)
-        {
-            _formations.Add(formation);
+            Formation = formation;
         }
     }
 }

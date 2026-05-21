@@ -12,10 +12,8 @@ namespace Expeditionary.Model.Matches.Assets
         {
             return new(
                 instance.Role,
-                new(idGenerator.Next(), instance.Unit.Id, player, instance.Unit.Type),
-                instance.Transport == null
-                    ? null
-                    : new(idGenerator.Next(), instance.Transport.Id, player, instance.Transport.Type));
+                ToMatchUnit(instance.Unit, idGenerator, player),
+                instance.Transport == null ? null : ToMatchUnit(instance.Transport, idGenerator, player));
         }
 
         public static MatchDiad From(TemplateDiad template, MatchPlayer player, IIdGenerator idGenerator)
@@ -26,6 +24,11 @@ namespace Expeditionary.Model.Matches.Assets
                 template.Transport == null 
                     ? null 
                     : new(idGenerator.Next(), Constants.NoInstanceId, player, template.Transport));
+        }
+
+        private static MatchUnit ToMatchUnit(InstanceUnit unit, IIdGenerator idGenerator, MatchPlayer player)
+        {
+            return new(idGenerator.Next(), unit.Id, player, unit.Type, unit.Number);
         }
     }
 }

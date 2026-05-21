@@ -50,7 +50,7 @@ namespace Expeditionary.Runners.GameStates
                 NewMatchLoader.Create(
                     e,
                     e.Mission.Players.Find(player => player.Player.Faction == instancePlayer.Faction)!.Player,
-                    new IFormationProvider.PersistentFormationProvider(instancePlayer.Formations.First()),
+                    new IFormationProvider.PersistentFormationProvider(instancePlayer.Formation),
                     new IFormationProvider.RandomFormationProvider(new(_module.FactionFormations, _module.Formations)),
                     _config.IsDebug, 
                     seed: 0);
@@ -60,7 +60,12 @@ namespace Expeditionary.Runners.GameStates
                     status, 
                     task.Map(
                         result => (IGameStateContext)new IGameStateContext.MatchContext(
-                            result.Player, result.Match, result.Appearance, result.AiManager))));
+                            _context.Instance,
+                            e.CampaignStageKey, 
+                            result.Player,
+                            result.Match,
+                            result.Appearance,
+                            result.AiManager))));
         }
     }
 }
