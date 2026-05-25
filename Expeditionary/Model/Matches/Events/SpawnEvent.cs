@@ -1,4 +1,5 @@
-﻿using Expeditionary.Model.Mapping.Regions;
+﻿using Expeditionary.Model.Formations;
+using Expeditionary.Model.Mapping.Regions;
 using Expeditionary.Model.Matches.Assets;
 
 namespace Expeditionary.Model.Matches.Events
@@ -6,7 +7,7 @@ namespace Expeditionary.Model.Matches.Events
     public record class SpawnEvent(IEventSchedule Schedule, IMapRegion Region, MatchFormation Formation, int Count)
         : IEvent
     {
-        private readonly IEnumerator<MatchDiad> _enumerator = Formation.GetDiads().GetEnumerator();
+        private readonly IEnumerator<FormationDiad<MatchUnit>> _enumerator = Formation.GetDiads().GetEnumerator();
 
         public EventStatus Fire(Match match, TurnInfo turn)
         {

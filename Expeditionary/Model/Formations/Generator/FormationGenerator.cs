@@ -1,5 +1,6 @@
 ﻿using Cardamom.Collections;
 using Expeditionary.Model.Factions;
+using Expeditionary.Model.Units;
 using System.Collections.Immutable;
 
 namespace Expeditionary.Model.Formations.Generator
@@ -29,7 +30,7 @@ namespace Expeditionary.Model.Formations.Generator
                     parameters.AllowedRoles.First(),
                     parameters.Echelon, 
                     Enumerable.Empty<TemplateFormation>(),
-                    Enumerable.Empty<TemplateDiad>());
+                    Enumerable.Empty<FormationDiad<UnitType>>());
             var points = parameters.Points - (root == null ? 0 : root.Value.Points);
             if (points > 0)
             {
@@ -51,7 +52,7 @@ namespace Expeditionary.Model.Formations.Generator
                         root.Role, 
                         root.Echelon,
                         Enumerable.Concat(root.ComponentFormations, children),
-                        Enumerable.Empty<TemplateDiad>());
+                        Enumerable.Empty<FormationDiad<UnitType>>());
             }
             return Prune(root!, parameters.Points);
         }
@@ -160,19 +161,19 @@ namespace Expeditionary.Model.Formations.Generator
                 }
             }
 
-            var coreDiads = new Heap<TemplateDiad, float>();
-            var extraDiads = new Heap<TemplateDiad, float>();
+            var coreDiads = new Heap<FormationDiad<UnitType>, float>();
+            var extraDiads = new Heap<FormationDiad<UnitType>, float>();
             foreach (var diad in template.Diads)
             {
                 if (filledRoles.Contains(diad.Role))
                 {
-                    extraDiads.Push(diad, -diad.Value.Points);
+                    extraDiads.Push(diad, -GetPoints(diad));
                 }
                 else
                 {
-                    coreDiads.Push(diad, -diad.Value.Points);
+                    coreDiads.Push(diad, -GetPoints(diad));
                     filledRoles.Add(diad.Role);
-                    usedPoints += diad.Value.Points;
+                    usedPoints += GetPoints(diad);
                 }
                 if (usedPoints > points)
                 {
@@ -191,8 +192,8 @@ namespace Expeditionary.Model.Formations.Generator
                 else if (extraDiads.Any())
                 {
                     var diad = extraDiads.Pop();
-                    coreDiads.Push(diad, -diad.Value.Points);
-                    usedPoints += diad.Value.Points;
+                    coreDiads.Push(diad, -GetPoints(diad));
+                    usedPoints += GetPoints(diad);
                 }
                 else
                 {
@@ -205,7 +206,7 @@ namespace Expeditionary.Model.Formations.Generator
                 if (coreDiads.Any())
                 {
                     var diad = coreDiads.Pop();
-                    usedPoints -= diad.Value.Points;
+                    usedPoints -= GetPoints(diad);
                 }
                 else if (coreComponents.Any())
                 {
@@ -223,6 +224,11 @@ namespace Expeditionary.Model.Formations.Generator
                 template.Echelon,
                 coreComponents.Select(kvp => kvp.Key), 
                 coreDiads.Select(kvp => kvp.Key));
+        }
+
+        private static int GetPoints(FormationDiad<UnitType> diad)
+        {
+            return diad.Unit.Points + (diad.Transport?.Points ?? 0);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Expeditionary.Model.Formations.Generator
                 Diads.SelectMany(x => Enumerable.Repeat(Select(x, context), x.Number)).ToList());
         }
 
-        private static TemplateDiad Select(DiadParameters diad, FormationGeneratorContext context)
+        private static FormationDiad<UnitType> Select(DiadParameters diad, FormationGeneratorContext context)
         {
             return new(
                 diad.Unit.Role,

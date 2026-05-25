@@ -1,6 +1,6 @@
 ﻿namespace Expeditionary.Model.Formations
 {
-    public abstract record class BaseDiad<T>(FormationRole Role, T Unit, T? Transport)
+    public record class FormationDiad<T>(FormationRole Role, T Unit, T? Transport)
     {
         public IEnumerable<T> GetUnits()
         {

@@ -1,17 +1,15 @@
 ﻿namespace Expeditionary.Model.Formations
 {
-    public abstract class BaseFormation<TFormation, TDiad, TUnit> 
-        where TFormation : BaseFormation<TFormation, TDiad, TUnit>
-        where TDiad : BaseDiad<TUnit>
+    public abstract class BaseFormation<TFormation, TUnit> where TFormation : BaseFormation<TFormation, TUnit>
     {
         public string Name { get; }
         public FormationRole Role { get; }
         public int Echelon { get; }
 
-        public IEnumerable<TDiad> Diads => _diads;
+        public IEnumerable<FormationDiad<TUnit>> Diads => _diads;
         public IEnumerable<TFormation> ComponentFormations => _componentFormations;
 
-        protected readonly List<TDiad> _diads;
+        protected readonly List<FormationDiad<TUnit>> _diads;
         protected readonly List<TFormation> _componentFormations;
 
         protected BaseFormation(
@@ -19,7 +17,7 @@
             FormationRole role,
             int echelon,
             IEnumerable<TFormation> componentFormations,
-            IEnumerable<TDiad> diads)
+            IEnumerable<FormationDiad<TUnit>> diads)
         {
             Name = name;
             Role = role;
@@ -28,7 +26,7 @@
             _diads = diads.ToList();
         }
 
-        public IEnumerable<TDiad> GetDiads()
+        public IEnumerable<FormationDiad<TUnit>> GetDiads()
         {
             return Enumerable.Concat(Diads, ComponentFormations.SelectMany(x => x.GetDiads()));
         }

@@ -1,9 +1,10 @@
 ﻿using Expeditionary.Model.Formations;
 using Expeditionary.Model.Instances;
+using Expeditionary.Model.Units;
 
 namespace Expeditionary.Model.Matches.Assets
 {
-    public class MatchFormation : BaseFormation<MatchFormation, MatchDiad, MatchUnit>
+    public class MatchFormation : BaseFormation<MatchFormation, MatchUnit>
     {
         public int Id { get; }
         public int InstanceId { get; }
@@ -17,7 +18,7 @@ namespace Expeditionary.Model.Matches.Assets
             FormationRole role,
             int echelon,
             IEnumerable<MatchFormation> componentFormations,
-            IEnumerable<MatchDiad> diads)
+            IEnumerable<FormationDiad<MatchUnit>> diads)
             : base(name, role, echelon, componentFormations, diads)
         {
             Id = id;
@@ -35,7 +36,7 @@ namespace Expeditionary.Model.Matches.Assets
                 instance.Role,
                 instance.Echelon,
                 instance.ComponentFormations.Select(componentInstance => From(componentInstance, player, idGenerator)),
-                instance.Diads.Select(diadInstance => MatchDiad.From(diadInstance, player, idGenerator)));
+                instance.Diads.Select(diadInstance => From(diadInstance, player, idGenerator)));
         }
 
         public static MatchFormation From(TemplateFormation template, MatchPlayer player, IIdGenerator idGenerator)
@@ -48,7 +49,7 @@ namespace Expeditionary.Model.Matches.Assets
                 template.Role,
                 template.Echelon,
                 template.ComponentFormations.Select(componentTemplate => From(componentTemplate, player, idGenerator)), 
-                template.Diads.Select(diadTemplate => MatchDiad.From(diadTemplate, player, idGenerator)));
+                template.Diads.Select(diadTemplate => From(diadTemplate, player, idGenerator)));
         }
 
         public void AddComponent(MatchFormation formation)
@@ -59,6 +60,32 @@ namespace Expeditionary.Model.Matches.Assets
         public AssetValue GetUnitValue(Func<MatchUnit, bool> predicate)
         {
             return GetUnits().Where(predicate).Select(unit => unit.Value).Aggregate(AssetValue.None, (x, y) => x + y);
+        }
+
+
+        private static FormationDiad<MatchUnit> From(
+            FormationDiad<InstanceUnit> instance, MatchPlayer player, IIdGenerator idGenerator)
+        {
+            return new(
+                instance.Role,
+                ToMatchUnit(instance.Unit, idGenerator, player),
+                instance.Transport == null ? null : ToMatchUnit(instance.Transport, idGenerator, player));
+        }
+
+        private static FormationDiad<MatchUnit> From(
+            FormationDiad<UnitType> template, MatchPlayer player, IIdGenerator idGenerator)
+        {
+            return new(
+                template.Role,
+                new(idGenerator.Next(), Constants.NoInstanceId, player, template.Unit),
+                template.Transport == null
+                    ? null
+                    : new(idGenerator.Next(), Constants.NoInstanceId, player, template.Transport));
+        }
+
+        private static MatchUnit ToMatchUnit(InstanceUnit unit, IIdGenerator idGenerator, MatchPlayer player)
+        {
+            return new(idGenerator.Next(), unit.Id, player, unit.Type, unit.Number);
         }
     }
 }

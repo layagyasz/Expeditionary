@@ -2,7 +2,7 @@
 
 namespace Expeditionary.Model.Formations
 {
-    public class TemplateFormation : BaseFormation<TemplateFormation, TemplateDiad, UnitType> 
+    public class TemplateFormation : BaseFormation<TemplateFormation, UnitType> 
     {
         public AssetValue Value { get; }
 
@@ -11,7 +11,7 @@ namespace Expeditionary.Model.Formations
             FormationRole role,
             int echelon,
             IEnumerable<TemplateFormation> componentFormations,
-            IEnumerable<TemplateDiad> diads) 
+            IEnumerable<FormationDiad<UnitType>> diads) 
             : base(name, role, echelon, componentFormations, diads) 
         {
             Value = 
