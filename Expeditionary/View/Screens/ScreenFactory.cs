@@ -5,6 +5,7 @@ using Expeditionary.Model;
 using Expeditionary.Model.Instances;
 using Expeditionary.Model.Mapping.Appearance;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Reporting;
 using Expeditionary.Spectra;
 using Expeditionary.View.Common.Components;
 using Expeditionary.View.Scenes;
@@ -64,6 +65,11 @@ namespace Expeditionary.View.Screens
                 ObjectiveOverlay.Create(_uiElementFactory, _localization, match, player),
                 new UnitOverlay(_uiElementFactory),
                 RightClickMenu.Create(_uiElementFactory));
+        }
+
+        public MatchSummaryScreen CreateMatchSummary(MatchPlayer player, MatchReport report)
+        {
+            return MatchSummaryScreen.Create(_uiElementFactory, _localization, player, report);
         }
     }
 }

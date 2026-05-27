@@ -4,6 +4,7 @@ using Expeditionary.Model.Matches;
 using Expeditionary.Model.Matches.Ai;
 using Expeditionary.Model.Instances;
 using Expeditionary.Model.Instances.Campaigns;
+using Expeditionary.Model.Matches.Reporting;
 
 namespace Expeditionary.Runners.GameStates
 {
@@ -25,5 +26,9 @@ namespace Expeditionary.Runners.GameStates
             Match Match,
             MapAppearance Appearance,
             AiManager AiManager) : IGameStateContext;
+
+        public record class MatchSummaryContext(
+            GameInstance? Instance, CampaignStageKey? StageKey, MatchPlayer Player, MatchReport Report) 
+            : IGameStateContext;
     }
 }

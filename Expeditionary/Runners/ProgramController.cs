@@ -47,7 +47,8 @@ namespace Expeditionary.Runners
                     { typeof(IGameStateContext.InstanceSetupContext), new InstanceSetupState(_module) },
                     { typeof(IGameStateContext.LoadContext), new LoadState(_loader) },
                     { typeof(IGameStateContext.MainMenuContext), new MainMenuState(_module) },
-                    { typeof(IGameStateContext.MatchContext), new MatchState(_module) }
+                    { typeof(IGameStateContext.MatchContext), new MatchState(_module) },
+                    { typeof(IGameStateContext.MatchSummaryContext), new MatchSummaryState(_module) }
                 };
         }
 
@@ -65,7 +66,6 @@ namespace Expeditionary.Runners
             {
                 state.GameStateChanged += HandleStateChange;
             }
-            Enter(new IGameStateContext.MainMenuContext());
         }
 
         private void HandleStateChange(object? sender, IGameStateContext e)

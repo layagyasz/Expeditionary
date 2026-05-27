@@ -46,24 +46,20 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleFinished(object? sender, EventArgs e) 
         {
-            ApplyResults(_context!);
-            GameStateChanged?.Invoke(this, GetNextContext(_context!));
+            var report = MatchReport.Generate(_context!.Match);
+            ApplyResults(_context!, report);
+            GameStateChanged?.Invoke(
+                this, 
+                new IGameStateContext.MatchSummaryContext(
+                    _context.Instance, _context.StageKey, _context.Player, report));
         }
 
-        private static IGameStateContext GetNextContext(IGameStateContext.MatchContext currentContext)
-        {
-            return currentContext.Instance == null 
-                ? new IGameStateContext.MainMenuContext() 
-                : new IGameStateContext.GalaxyContext(currentContext.Instance);
-        }
-
-        private static void ApplyResults(IGameStateContext.MatchContext context)
+        private static void ApplyResults(IGameStateContext.MatchContext context, MatchReport report)
         {
             if (context.Instance == null || context.StageKey == null)
             {
                 return;
             }
-            var report = MatchReport.Generate(context.Match);
             var instanceReport = new InstanceMatchReport(context.StageKey!.Value, context.Player, report);
             context.Instance.Apply(new AddMatchReportEvent(instanceReport));
             foreach (var @event in instanceReport.GetEvents())

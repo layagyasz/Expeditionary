@@ -1,0 +1,40 @@
+[
+  {
+    "$id": "match-summary-container",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 1032, 520 ],
+      "Margin": [ 0 ],
+      "Padding": [ 0 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-container",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 512, 512 ],
+      "Margin": [ 4 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-title",
+    "Parent": "base-block",
+    "Default": {
+      "Size": [ 508, 24 ],
+      "Margin": [ 0 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
+  },
+  {
+    "$id": "match-summary-continue",
+    "Parent": "base-button",
+    "Default": {
+      "Size": [ 256, 48 ],
+      "Margin": [ 2 ],
+      "Padding": [ 12 ],
+      "FontSize": 24
+    }
+  }
+]
