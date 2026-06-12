@@ -52,11 +52,6 @@ namespace Expeditionary.Model.Matches.Assets
                 template.Diads.Select(diadTemplate => From(diadTemplate, player, idGenerator)));
         }
 
-        public void AddComponent(MatchFormation formation)
-        {
-            _componentFormations.Add(formation);
-        }
-
         public AssetValue GetUnitValue(Func<MatchUnit, bool> predicate)
         {
             return GetUnits().Where(predicate).Select(unit => unit.Value).Aggregate(AssetValue.None, (x, y) => x + y);

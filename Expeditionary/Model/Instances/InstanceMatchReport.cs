@@ -15,7 +15,7 @@ namespace Expeditionary.Model.Instances
 
         public IEnumerable<IInstanceEvent> GetEvents()
         {
-            foreach (var unit in Report.Players.Values.SelectMany(player => player.Units))
+            foreach (var unit in Report.Players.Values.SelectMany(player => player.Formation.GetUnits()))
             {
                 if (unit.InstanceId < 0)
                 {

@@ -1,22 +1,17 @@
-﻿using Expeditionary.Model.Matches.Assets;
-using Expeditionary.Model.Missions.Objectives;
-using System.Collections.Immutable;
+﻿using Expeditionary.Model.Missions.Objectives;
 
 namespace Expeditionary.Model.Matches.Reporting
 {
     public record class PlayerReport(
-        ObjectiveStatus ObjectiveStatus, PlayerStatistics Statistics, ImmutableList<UnitReport> Units)
+        ObjectiveStatus ObjectiveStatus, PlayerStatistics Statistics, FormationReport Formation)
     {
         public static PlayerReport Generate(MatchPlayer player, Match match)
         {
             return new(
                 match.GetObjectiveStatus(player),
                 match.GetStatistics(player),
-                match.GetAssets()
-                    .Where(asset => asset is MatchUnit)
-                    .Cast<MatchUnit>()
-                    .Select(UnitReport.Generate)
-                    .ToImmutableList());
+                // TODO: Each MatchPlayer should get only a single formation
+                FormationReport.Generate(match.GetFormations(player).First()));
         }
     }
 }

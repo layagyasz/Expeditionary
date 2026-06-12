@@ -1,8 +1,4 @@
-﻿using Expeditionary.Model.Matches;
-using Expeditionary.Model.Matches.Reporting;
-using Expeditionary.Runners;
-using Expeditionary.Runners.GameStates;
-using System.Collections.Immutable;
+﻿using Expeditionary.Runners;
 
 namespace Expeditionary
 {
@@ -20,14 +16,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new DefaultRunner(
-                Config, 
-                module => new IGameStateContext.MatchSummaryContext(
-                    null, 
-                    null,
-                    new MatchPlayer(0, 0, module.Factions.Values.First()), 
-                    new MatchReport(ImmutableDictionary.Create<MatchPlayer, PlayerReport>())))
-                .Run();
+            new DefaultRunner(Config, TestGameStateContexts.GenerateMatchSummaryContext).Run();
         }
     }
 }

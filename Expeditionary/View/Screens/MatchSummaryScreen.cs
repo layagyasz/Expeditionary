@@ -12,9 +12,19 @@ namespace Expeditionary.View.Screens
 {
     public class MatchSummaryScreen : BaseScreen
     {
+        private static readonly int GroupEchelon = 3;
+
         private static readonly string ContainerClass = "match-summary-container";
+
         private static readonly string TeamContainerClass = "match-summary-team-container";
         private static readonly string TeamTitleClass = "match-summary-team-title";
+        private static readonly string TeamTableClass = "match-summary-team-table";
+
+        private static readonly string FormationContainerClass = "match-summary-team-formation-container";
+        private static readonly string FormationTitleClass = "match-summary-team-formation-title";
+        private static readonly string FormationTableClass = "match-summary-team-formation-table";
+        private static readonly string FormationRowClass = "match-summary-team-formation-row";
+
         private static readonly string ContinueClass = "match-summary-continue";
 
         private static readonly string AlliesKey = "localization-match-summary-allies";
@@ -94,12 +104,68 @@ namespace Expeditionary.View.Screens
                     uiElementFactory.GetClass(TeamContainerClass),
                     new TableController(uiElementFactory.GetAudioPlayer(), 1f),
                     UiSerialContainer.Orientation.Vertical);
+
             var title =
                 new TextUiElement(
                     uiElementFactory.GetClass(TeamTitleClass),
                     new InlayController(uiElementFactory.GetAudioPlayer()),
                     localization.Localize(titleKey));
             container.Add(title);
+
+            var table =
+                new UiSerialContainer(
+                    uiElementFactory.GetClass(TeamTableClass),
+                    new TableController(uiElementFactory.GetAudioPlayer(), 10f),
+                    UiSerialContainer.Orientation.Vertical);
+            container.Add(table);
+
+            foreach (var report in reports)
+            {
+                foreach (var formationSummary in CreatePlayerSummary(uiElementFactory, report))
+                {
+                    table.Add(formationSummary);
+                }
+            }
+
+            return container;
+        }
+
+        private static IEnumerable<IUiContainer> CreatePlayerSummary(
+            UiElementFactory uiElementFactory, PlayerReport report)
+        {
+            return report.Formation.GetComponentFormationsBelow(GroupEchelon)
+                .Select(formation => CreateFormationSummary(uiElementFactory, formation));
+        }
+
+        private static IUiContainer CreateFormationSummary(UiElementFactory uiElementFactory, FormationReport report)
+        {
+            var container =
+                new UiSerialContainer(
+                    uiElementFactory.GetClass(FormationContainerClass),
+                    new TableController(uiElementFactory.GetAudioPlayer(), 1f),
+                    UiSerialContainer.Orientation.Vertical);
+
+            var title =
+                new TextUiElement(
+                    uiElementFactory.GetClass(FormationTitleClass),
+                    new InlayController(uiElementFactory.GetAudioPlayer()),
+                    report.Name);
+            container.Add(title);
+
+            var table =
+                new UiSerialContainer(
+                    uiElementFactory.GetClass(FormationTableClass),
+                    new TableController(uiElementFactory.GetAudioPlayer(), 1f),
+                    UiSerialContainer.Orientation.Vertical);
+            container.Add(table);
+
+            foreach (var unit in report.GetUnits()
+                .Where(unit => unit.Number < unit.Type.Intrinsics.Number.GetValue())
+                .OrderByDescending(unit => unit.Type.Points))
+            {
+                table.Add(uiElementFactory.CreateTextButton(FormationRowClass, unit.Name).Item1);
+            }
+
             return container;
         }
     }

@@ -348,7 +348,7 @@ namespace Expeditionary.Model.Matches
             }
             else
             {
-                parent.AddComponent(formation);
+                parent.Add(formation);
             }
             foreach (var unit in formation.GetUnits())
             {

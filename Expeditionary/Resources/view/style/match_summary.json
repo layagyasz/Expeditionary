@@ -5,16 +5,18 @@
     "Default": {
       "Size": [ 1032, 520 ],
       "Margin": [ 0 ],
-      "Padding": [ 0 ]
+      "Padding": [ 0 ],
+      "DisableScissor": true
     }
   },
   {
     "$id": "match-summary-team-container",
-    "Parent": "base-container",
+    "Parent": "base-span",
     "Default": {
       "Size": [ 512, 512 ],
       "Margin": [ 4 ],
-      "Padding": [ 2 ]
+      "Padding": [ 2 ],
+      "DisableScissor": true
     }
   },
   {
@@ -22,9 +24,51 @@
     "Parent": "base-block",
     "Default": {
       "Size": [ 508, 24 ],
+      "BorderWidth": [ 2, 2, 2, 0 ],
       "Margin": [ 0 ],
       "Padding": [ 5 ],
       "FontSize": 12
+    }
+  },
+  {
+    "$id": "match-summary-team-table",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 508, 484 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-container",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 508, "DynamicContents" ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-title",
+    "Parent": "match-summary-team-title",
+    "Default": {
+      "Size": [ 500, 24 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-table",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 500, "DynamicContents" ],
+      "Padding": [ 4 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 500, 24 ],
+      "Padding": [ 5 ],
+      "FontSize": 12,
+      "Align": "Left"
     }
   },
   {
