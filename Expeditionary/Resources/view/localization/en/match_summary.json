@@ -1,5 +1,8 @@
 {
   "localization-match-summary-allies": "Allies",
   "localization-match-summary-enemies": "Enemies",
+  "localization-match-summary-formation-none": "No Casualties",
+  "localization-match-summary-formation-damaged": "Damaged ({0}/{1})",
+  "localization-match-summary-formation-destroyed": "Destroyed",
   "localization-match-summary-continue": "Continue"
 }

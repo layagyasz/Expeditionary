@@ -4,6 +4,7 @@ using Cardamom.Ui.Controller.Element;
 using Cardamom.Ui.Elements;
 using Expeditionary.Controller.Screens;
 using Expeditionary.Model.Matches;
+using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Reporting;
 using Expeditionary.View.Common.Components;
 using OpenTK.Mathematics;
@@ -24,11 +25,19 @@ namespace Expeditionary.View.Screens
         private static readonly string FormationTitleClass = "match-summary-team-formation-title";
         private static readonly string FormationTableClass = "match-summary-team-formation-table";
         private static readonly string FormationRowClass = "match-summary-team-formation-row";
+        private static readonly string FormationNoneClass = "match-summary-team-formation-row-none";
+        private static readonly string FormationNameClass = "match-summary-team-formation-row-name";
+        private static readonly string FormationDamagedClass = "match-summary-team-formation-row-info-damaged";
+        private static readonly string FormationDestroyedClass = "match-summary-team-formation-row-info-destroyed";
+
 
         private static readonly string ContinueClass = "match-summary-continue";
 
         private static readonly string AlliesKey = "localization-match-summary-allies";
         private static readonly string EnemiesKey = "localization-match-summary-enemies";
+        private static readonly string NoneKey = "localization-match-summary-formation-none";
+        private static readonly string DamagedKey = "localization-match-summary-formation-damaged";
+        private static readonly string DestroyedKey = "localization-match-summary-formation-destroyed";
         private static readonly string ContinueKey = "localization-match-summary-continue";
 
         private static readonly Vector3 ContinueOffset = new(-16f, -16f, 0);
@@ -121,7 +130,7 @@ namespace Expeditionary.View.Screens
 
             foreach (var report in reports)
             {
-                foreach (var formationSummary in CreatePlayerSummary(uiElementFactory, report))
+                foreach (var formationSummary in CreatePlayerSummary(uiElementFactory, localization, report))
                 {
                     table.Add(formationSummary);
                 }
@@ -131,18 +140,19 @@ namespace Expeditionary.View.Screens
         }
 
         private static IEnumerable<IUiContainer> CreatePlayerSummary(
-            UiElementFactory uiElementFactory, PlayerReport report)
+            UiElementFactory uiElementFactory, Localization localization, PlayerReport report)
         {
             return report.Formation.GetComponentFormationsBelow(GroupEchelon)
-                .Select(formation => CreateFormationSummary(uiElementFactory, formation));
+                .Select(formation => CreateFormationSummary(uiElementFactory, localization, formation));
         }
 
-        private static IUiContainer CreateFormationSummary(UiElementFactory uiElementFactory, FormationReport report)
+        private static IUiContainer CreateFormationSummary(
+            UiElementFactory uiElementFactory, Localization localization, FormationReport report)
         {
             var container =
                 new UiSerialContainer(
                     uiElementFactory.GetClass(FormationContainerClass),
-                    new TableController(uiElementFactory.GetAudioPlayer(), 1f),
+                    new NoOpElementController(),
                     UiSerialContainer.Orientation.Vertical);
 
             var title =
@@ -155,18 +165,63 @@ namespace Expeditionary.View.Screens
             var table =
                 new UiSerialContainer(
                     uiElementFactory.GetClass(FormationTableClass),
-                    new TableController(uiElementFactory.GetAudioPlayer(), 1f),
+                    new NoOpElementController(),
                     UiSerialContainer.Orientation.Vertical);
             container.Add(table);
 
-            foreach (var unit in report.GetUnits()
-                .Where(unit => unit.Number < unit.Type.Intrinsics.Number.GetValue())
-                .OrderByDescending(unit => unit.Type.Points))
+            var units =
+                report.GetUnits()
+                    .Where(unit => unit.Number < unit.Type.Intrinsics.Number.GetValue())
+                    .OrderByDescending(unit => unit.Type.Points);
+            if (units.Any())
             {
-                table.Add(uiElementFactory.CreateTextButton(FormationRowClass, unit.Name).Item1);
+                foreach (var unit in units)
+                {
+                    table.Add(
+                        new UiSerialContainer(
+                            uiElementFactory.GetClass(FormationRowClass),
+                            new NoOpElementController(),
+                            UiSerialContainer.Orientation.Horizontal)
+                        {
+                            new TextUiElement(
+                                uiElementFactory.GetClass(FormationNameClass),
+                                new InlayController(uiElementFactory.GetAudioPlayer()),
+                                unit.Name),
+                            CreateInfo(uiElementFactory, localization, unit)
+                        });
+                }
+            }
+            else 
+            {
+                table.Add(
+                    new TextUiElement(
+                        uiElementFactory.GetClass(FormationNoneClass), 
+                        new InlayController(uiElementFactory.GetAudioPlayer()), 
+                        localization.Localize(NoneKey)));
             }
 
             return container;
+        }
+
+        private static IUiElement CreateInfo(
+            UiElementFactory uiElementFactory, Localization localization, UnitReport unitReport)
+        {
+            if (unitReport.Status == MatchAssetStatus.Destroyed)
+            {
+                return new TextUiElement(
+                    uiElementFactory.GetClass(FormationDestroyedClass),
+                    new InlayController(uiElementFactory.GetAudioPlayer()),
+                    localization.Localize(DestroyedKey));
+            }
+            else if (unitReport.Number < unitReport.Type.Intrinsics.Number.GetValue())
+            {
+                return new TextUiElement(
+                    uiElementFactory.GetClass(FormationDamagedClass),
+                    new InlayController(uiElementFactory.GetAudioPlayer()),
+                    localization.Localize(
+                        DamagedKey, unitReport.Number, (int)unitReport.Type.Intrinsics.Number.GetValue()));
+            }
+            throw new ArgumentException($"Unsupported {unitReport}");
         }
     }
 }

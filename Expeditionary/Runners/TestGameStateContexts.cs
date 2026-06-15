@@ -34,15 +34,15 @@ namespace Expeditionary.Runners
             foreach (var unit in formation.GetUnits())
             {
                 var result = random.NextSingle();
-                if (result < 0.2f)
+                if (result < 0.05f)
                 {
                     unit.Status = MatchAssetStatus.Destroyed;
                     unit.Damage(unit.Number);
                 }
-                else if (result < 0.4f)
+                else if (result < 0.1f)
                 {
                     unit.Status = MatchAssetStatus.Active;
-                    unit.Damage((int)(5 * (result - 0.2f) * unit.Number));
+                    unit.Damage((int)(20 * (result - 0.05f) * unit.Number));
                 }
                 else
                 {

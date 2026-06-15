@@ -58,17 +58,57 @@
     "Parent": "base-container",
     "Default": {
       "Size": [ 500, "DynamicContents" ],
-      "Padding": [ 4 ]
+      "Padding": [ 0 ]
     }
   },
   {
     "$id": "match-summary-team-formation-row",
     "Parent": "base-span",
     "Default": {
+      "Size": [ 500, 24 ]
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row-none",
+    "Parent": "match-summary-team-formation-row",
+    "Default": {
       "Size": [ 500, 24 ],
+      "Padding": [ 5 ],
+      "FontSize": 12
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row-name",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 375, 24 ],
       "Padding": [ 5 ],
       "FontSize": 12,
       "Align": "Left"
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row-info",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 125, 24 ],
+      "Padding": [ 5 ],
+      "FontSize": 12,
+      "Align": "Right"
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row-info-damaged",
+    "Parent": "match-summary-team-formation-row-info",
+    "Default": {
+      "Color": "#5e7d00a0"
+    }
+  },
+  {
+    "$id": "match-summary-team-formation-row-info-destroyed",
+    "Parent": "match-summary-team-formation-row-info",
+    "Default": {
+      "Color": "#5e0000a0"
     }
   },
   {
