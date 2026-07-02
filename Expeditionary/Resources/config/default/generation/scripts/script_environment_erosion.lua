@@ -4,7 +4,6 @@ MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments
 
 None = MapEnvironmentTrait()
 None.Key = "environment-trait-erosion-none"
-None.Name = "No Erosion"
 function None:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.1
@@ -13,7 +12,6 @@ end
 
 Young = MapEnvironmentTrait()
 Young.Key = "environment-trait-erosion-young"
-Young.Name = "Young"
 function Young:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.5
@@ -22,7 +20,6 @@ end
 
 Old = MapEnvironmentTrait()
 Old.Key = "environment-trait-erosion-old"
-Old.Name = "Old"
 function Old:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 0.9
@@ -32,7 +29,6 @@ end
 
 Ancient = MapEnvironmentTrait()
 Ancient.Key = "environment-trait-erosion-ancient"
-Ancient.Name = "Ancient"
 function Ancient:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.SoilCover = 1

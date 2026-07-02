@@ -45,6 +45,7 @@ namespace Expeditionary.Runners.GameStates
 
         private void HandleLaunch(object? sender, InstanceMission e)
         {
+            var instance = _context!.Instance;
             var instancePlayer = _context!.Instance.Player;
             (var status, var task) =
                 NewMatchLoader.Create(
@@ -60,7 +61,7 @@ namespace Expeditionary.Runners.GameStates
                     status, 
                     task.Map(
                         result => (IGameStateContext)new IGameStateContext.MatchContext(
-                            _context.Instance,
+                            instance,
                             e.CampaignStageKey, 
                             result.Player,
                             result.Match,

@@ -7,12 +7,19 @@ using Expeditionary.Model.Matches.Assets;
 using Expeditionary.Model.Matches.Reporting;
 using Expeditionary.Model.Missions.Objectives;
 using Expeditionary.Runners.GameStates;
+using Expeditionary.Runners.Loaders.Runtime;
 using System.Collections.Immutable;
 
 namespace Expeditionary.Runners
 {
     public static class TestGameStateContexts
     {
+        public static IGameStateContext.GalaxyContext GenerateGalaxyContext(GameModule module)
+        {
+            return new IGameStateContext.GalaxyContext(
+                NewGameInstanceLoader.Load(module, new(module.Factions.Values.First(), Seed: 0)).Item2.GetNow());
+        }
+
         public static IGameStateContext.MatchSummaryContext GenerateMatchSummaryContext(GameModule module)
         {
             var random = new Random();

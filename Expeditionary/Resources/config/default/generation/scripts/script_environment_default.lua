@@ -7,7 +7,6 @@ Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
 Default = MapEnvironmentTrait()
 Default.Key = "environment-trait-default"
-Default.Name = "Default"
 function Default:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain

@@ -30,7 +30,7 @@ namespace Expeditionary.Controller.Screens
 
         private void HandleMenuClicked(object? sender, object item)
         {
-            Submitted?.Invoke(this, new((Faction)item, Seed: 0));
+            Submitted?.Invoke(this, new((Faction)item, Seed: new Random().Next()));
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Expeditionary.View.Screens
             return new GalaxyScreen(
                 new GalaxyScreenController(module.SectorNamings.First().Value),
                 _sceneFactory.Create(module.Galaxy, instance),
-                MissionPane.Create(_uiElementFactory));
+                MissionPane.Create(_uiElementFactory, _localization));
         }
 
         public InstanceSetupScreen CreateInstanceSetup(GameModule module)

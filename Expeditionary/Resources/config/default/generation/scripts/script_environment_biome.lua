@@ -4,13 +4,11 @@ MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments
 
 Forest = MapEnvironmentTrait()
 Forest.Key = "environment-trait-biome-forest"
-Forest.Name = "Forest"
 function Forest:Apply(environment)
 end
 
 Lush = MapEnvironmentTrait()
 Lush.Key = "environment-trait-biome-lush"
-Lush.Name = "Lush"
 function Lush:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 1
@@ -23,7 +21,6 @@ end
 
 Field = MapEnvironmentTrait()
 Field.Key = "environment-trait-biome-field"
-Field.Name = "Field"
 function Field:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.FoliageCover = terrain.FoliageCover * 0.5

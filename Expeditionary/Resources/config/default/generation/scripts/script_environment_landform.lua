@@ -9,7 +9,6 @@ Treatment=luanet.import_type('Cardamom.ImageProcessing.Filters.LatticeNoise+Trea
 
 CrystallineA = MapEnvironmentTrait()
 CrystallineA.Key = "environment-trait-landform-crystalline-a"
-CrystallineA.Name = "Crystalline A"
 function CrystallineA:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -27,7 +26,6 @@ end
 
 CrystallineB = MapEnvironmentTrait()
 CrystallineB.Key = "environment-trait-landform-crystalline-b"
-CrystallineB.Name = "Crystalline B"
 function CrystallineB:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -45,7 +43,6 @@ end
 
 CrystallineC = MapEnvironmentTrait()
 CrystallineC.Key = "environment-trait-landform-crystalline-c"
-CrystallineC.Name = "Crystalline C"
 function CrystallineC:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -63,7 +60,6 @@ end
 
 CrystallineD = MapEnvironmentTrait()
 CrystallineD.Key = "environment-trait-landform-crystalline-d"
-CrystallineD.Name = "Crystalline D"
 function CrystallineD:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -81,7 +77,6 @@ end
 
 LithicA = MapEnvironmentTrait()
 LithicA.Key = "environment-trait-landform-lithic-a"
-LithicA.Name = "Lithic A"
 function LithicA:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -99,7 +94,6 @@ end
 
 LithicB = MapEnvironmentTrait()
 LithicB.Key = "environment-trait-landform-lithic-b"
-LithicB.Name = "Lithic B"
 function LithicB:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -117,7 +111,6 @@ end
 
 LithicC = MapEnvironmentTrait()
 LithicC.Key = "environment-trait-landform-lithic-c"
-LithicC.Name = "Lithic C"
 function LithicC:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain
@@ -135,7 +128,6 @@ end
 
 LithicD = MapEnvironmentTrait()
 LithicD.Key = "environment-trait-landform-lithic-d"
-LithicD.Name = "Lithic D"
 function LithicD:Apply(environment)
 	local parameters = environment.Parameters
 	local terrain = parameters.Terrain

@@ -41,7 +41,7 @@ namespace Expeditionary.View
         {
             string dir = _path + "/" + language;
             var result = new Dictionary<string, string>();
-            foreach (var file in Directory.GetFiles(dir))
+            foreach (var file in Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories))
             {
                 using FileStream stream = new(file, FileMode.Open);
                 var contents = JsonSerializer.Deserialize<Dictionary<string, string>>(stream)!;

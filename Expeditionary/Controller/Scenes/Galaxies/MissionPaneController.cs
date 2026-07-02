@@ -35,7 +35,7 @@ namespace Expeditionary.Controller.Scenes.Galaxies
         public void Open(InstanceMission mission, SectorNaming naming)
         {
             _mission = mission;
-            _pane!.SetTitle(naming.Name(mission.Mission.Map.Environment));
+            _pane!.SetMission(mission, naming);
             _pane.Visible = true;
         }
 

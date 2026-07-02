@@ -72,7 +72,6 @@
     "$id": "match-summary-team-formation-row-none",
     "Parent": "match-summary-team-formation-row",
     "Default": {
-      "Size": [ 500, 24 ],
       "Padding": [ 5 ],
       "FontSize": 12
     }

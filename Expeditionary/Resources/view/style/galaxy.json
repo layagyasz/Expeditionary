@@ -9,7 +9,7 @@
   },
   {
     "$id": "galaxy-mission-pane",
-    "Parent": "base-container",
+    "Parent": "base-span",
     "Default": {
       "Size": [ 512, "DynamicContents" ],
       "Margin": [ 0 ],
@@ -21,6 +21,7 @@
     "Parent": "base-block",
     "Default": {
       "Size": [ 508, 24 ],
+      "BorderWidth": [ 2, 2, 2, 0 ],
       "Margin": [ 0 ],
       "Padding": [ 5 ],
       "FontSize": 12,
@@ -28,10 +29,53 @@
     }
   },
   {
+    "$id": "galaxy-mission-pane-contents",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 508, "DynamicContents" ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-section",
+    "Parent": "base-span",
+    "Default": {
+      "Size": [ 500, "DynamicContents" ],
+      "Margin": [ 2 ],
+      "Padding": [ 2 ]
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-section-title",
+    "Parent": "galaxy-mission-pane-title",
+    "Default": {
+      "Size": [ 496, 24 ]
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-section-contents",
+    "Parent": "base-container",
+    "Default": {
+      "Size": [ 496, "DynamicContents" ],
+      "Padding": [ 0 ]
+    }
+  },
+  {
+    "$id": "galaxy-mission-pane-section-p",
+    "Parent": "base-span",
+    "Default": {
+      "Align": "Left",
+      "Size": [ 496, 18 ],
+      "Padding": [ 4 ],
+      "FontSize": 10
+    }
+  },
+  {
     "$id": "galaxy-mission-pane-close",
     "Parent": "base-button-internal",
     "Default": {
-      "Size": [ 20, 20 ],
+      "Size": [ 20, 24 ],
+      "Padding": [ 5 ],
       "Texture": "button_close"
     }
   },
@@ -39,8 +83,8 @@
     "$id": "galaxy-mission-pane-launch",
     "Parent": "base-button",
     "Default": {
-      "Size": [ 504, 24 ],
-      "Margin": [ 2 ],
+      "Size": [ 496, 24 ],
+      "Margin": [ 4 ],
       "Padding": [ 5 ],
       "FontSize": 12
     }

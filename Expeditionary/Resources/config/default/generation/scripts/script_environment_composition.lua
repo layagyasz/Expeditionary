@@ -8,7 +8,6 @@ Vector3=luanet.import_type('OpenTK.Mathematics.Vector3')
 
 Carbide = MapEnvironmentTrait()
 Carbide.Key = "environment-trait-composition-carbide"
-Carbide.Name = "Carbide"
 function Carbide:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -25,7 +24,6 @@ end
 
 Cupric = MapEnvironmentTrait()
 Cupric.Key = "environment-trait-composition-cupric"
-Cupric.Name = "Cupric"
 function Cupric:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -42,7 +40,6 @@ end
 
 Ferrous = MapEnvironmentTrait()
 Ferrous.Key = "environment-trait-composition-ferrous"
-Ferrous.Name = "Ferrous"
 function Ferrous:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -61,7 +58,6 @@ end
 
 SilicousFerrous = MapEnvironmentTrait()
 SilicousFerrous.Key = "environment-trait-composition-silicous-ferrous"
-SilicousFerrous.Name = "Silicous Ferrous"
 function SilicousFerrous:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -78,7 +74,6 @@ end
 
 SilicousMixed = MapEnvironmentTrait()
 SilicousMixed.Key = "environment-trait-composition-silicous-mixed"
-SilicousMixed.Name = "Silicous Mixed"
 function SilicousMixed:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -96,7 +91,6 @@ end
 
 SilicousTelluric = MapEnvironmentTrait()
 SilicousTelluric.Key = "environment-trait-composition-silicous-telluric"
-SilicousTelluric.Name = "Silicous Telluric"
 function SilicousTelluric:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -113,7 +107,6 @@ end
 
 SilicousTerran = MapEnvironmentTrait()
 SilicousTerran.Key = "environment-trait-composition-silicous-terran"
-SilicousTerran.Name = "Silicous Terran"
 function SilicousTerran:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters
@@ -132,7 +125,6 @@ end
 
 Sulfurous = MapEnvironmentTrait()
 Sulfurous.Key = "environment-trait-composition-sulfurous"
-Sulfurous.Name = "Sulfurous"
 function Sulfurous:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters

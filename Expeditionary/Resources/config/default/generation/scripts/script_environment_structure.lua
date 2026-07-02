@@ -14,13 +14,11 @@ TransportGenerator_StructurePredicate=luanet.import_type('Expeditionary.Model.Ma
 
 Habitation0 = MapEnvironmentTrait()
 Habitation0.Key = "environment-trait-structure-habitation-0"
-Habitation0.Name = "Uninhabited"
 function Habitation0:Apply(environment)
 end
 
 Habitation1 = MapEnvironmentTrait()
 Habitation1.Key = "environment-trait-structure-habitation-1"
-Habitation1.Name = "Villages"
 function Habitation1:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -53,7 +51,6 @@ end
 
 Habitation2 = MapEnvironmentTrait()
 Habitation2.Key = "environment-trait-structure-habitation-2"
-Habitation2.Name = "Small Towns"
 function Habitation2:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -86,7 +83,6 @@ end
 
 Habitation3 = MapEnvironmentTrait()
 Habitation3.Key = "environment-trait-structure-habitation-3"
-Habitation3.Name = "Big Towns"
 function Habitation3:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -119,7 +115,6 @@ end
 
 Habitation4 = MapEnvironmentTrait()
 Habitation4.Key = "environment-trait-structure-habitation-4"
-Habitation4.Name = "City"
 function Habitation4:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -152,7 +147,6 @@ end
 
 Habitation5 = MapEnvironmentTrait()
 Habitation5.Key = "environment-trait-structure-habitation-5"
-Habitation5.Name = "Metro"
 function Habitation5:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -185,13 +179,11 @@ end
 
 Farm0 = MapEnvironmentTrait()
 Farm0.Key = "environment-trait-structure-farm-0"
-Farm0.Name = "Unfarmed"
 function Farm0:Apply(environment)
 end
 
 Farm1 = MapEnvironmentTrait()
 Farm1.Key = "environment-trait-structure-farm-1"
-Farm1.Name = "Sparsely Farmed"
 function Farm1:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -211,7 +203,6 @@ end
 
 Farm2 = MapEnvironmentTrait()
 Farm2.Key = "environment-trait-structure-farm-2"
-Farm2.Name = "Moderately Farmed"
 function Farm2:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -231,7 +222,6 @@ end
 
 Farm3 = MapEnvironmentTrait()
 Farm3.Key = "environment-trait-structure-farm-3"
-Farm3.Name = "Densely Farmed"
 function Farm3:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -251,13 +241,11 @@ end
 
 Mine0 = MapEnvironmentTrait()
 Mine0.Key = "environment-trait-structure-mine-0"
-Mine0.Name = "Unmined"
 function Mine0:Apply(environment)
 end
 
 Mine1 = MapEnvironmentTrait()
 Mine1.Key = "environment-trait-structure-mine-1"
-Mine1.Name = "Sparsely Mined"
 function Mine1:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -277,7 +265,6 @@ end
 
 Mine2 = MapEnvironmentTrait()
 Mine2.Key = "environment-trait-structure-mine-2"
-Mine2.Name = "Moderately Mined"
 function Mine2:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -297,7 +284,6 @@ end
 
 Mine3 = MapEnvironmentTrait()
 Mine3.Key = "environment-trait-structure-mine-3"
-Mine3.Name = "Densely Mined"
 function Mine3:Apply(environment)
 	local parameters = environment.Parameters
 
@@ -317,7 +303,6 @@ end
 
 Infrastructure1 = MapEnvironmentTrait()
 Infrastructure1.Key = "environment-trait-structure-infrastructure-1"
-Infrastructure1.Name = "Basic Infrastructure"
 function Infrastructure1:Apply(environment)
 	local parameters = environment.Parameters
 

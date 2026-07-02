@@ -16,6 +16,8 @@ namespace Expeditionary.Model.Missions.Generator
 {
     public record class AssaultMissionGenerator : IMissionContentGenerator
     {
+        private static readonly string NameKey = "localize-mission-assault";
+
         public List<CityGenerator.LayerParameters> ZoneOptions { get; set; } = new();
 
         public Mission Generate(MissionNode node, MissionGenerationResources resources)
@@ -68,6 +70,7 @@ namespace Expeditionary.Model.Missions.Generator
             var environment = node.Environment!.Get(resources);
             return
                 new Mission(
+                    NameKey,
                     new MapSetup(
                         environment,
                         new Vector2i(100, 100),

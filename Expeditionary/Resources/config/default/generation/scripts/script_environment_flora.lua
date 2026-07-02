@@ -8,7 +8,6 @@ StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColor
 
 Native = MapEnvironmentTrait()
 Native.Key = "environment-trait-flora-native"
-Native.Name = "Native"
 function Native:Apply(environment)
 	local appearance = environment.Appearance;
 
@@ -25,7 +24,6 @@ end
 
 Terran = MapEnvironmentTrait()
 Terran.Key = "environment-trait-flora-terran"
-Terran.Name = "Terran"
 function Terran:Apply(environment)
 	local appearance = environment.Appearance;
 
@@ -42,7 +40,6 @@ end
 
 Exotic = MapEnvironmentTrait()
 Exotic.Key = "environment-trait-flora-exotic"
-Exotic.Name = "Exotic"
 function Exotic:Apply(environment)
 	local appearance = environment.Appearance;
 
@@ -59,7 +56,6 @@ end
 
 Fungal = MapEnvironmentTrait()
 Fungal.Key = "environment-trait-flora-fungal"
-Fungal.Name = "Fungal"
 function Fungal:Apply(environment)
 	local appearance = environment.Appearance;
 
@@ -76,7 +72,6 @@ end
 
 Crystalline = MapEnvironmentTrait()
 Crystalline.Key = "environment-trait-flora-crystalline"
-Crystalline.Name = "Crystalline"
 function Crystalline:Apply(environment)
 	local appearance = environment.Appearance;
 	local parameters = environment.Parameters

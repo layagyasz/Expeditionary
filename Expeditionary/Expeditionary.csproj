@@ -368,16 +368,25 @@
     <None Update="Resources\view\fonts\SyneMono-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\localization\en\instance_setup.json">
+    <None Update="Resources\view\localization\en\environment_traits.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\localization\en\main_menu.json">
+    <None Update="Resources\view\localization\en\missions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\localization\en\match_summary.json">
+    <None Update="Resources\view\localization\en\screens\galaxy.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\view\localization\en\objective_overlay.json">
+    <None Update="Resources\view\localization\en\screens\instance_setup.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\localization\en\screens\main_menu.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\localization\en\screens\match_summary.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\view\localization\en\screens\objective_overlay.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\view\shaders.json">
@@ -1149,7 +1158,6 @@
     <Folder Include="Resources\config\default\languages\sectors\" />
     <Folder Include="Resources\config\default\campaigns\" />
     <Folder Include="Resources\config\default\units\traits\artillery\" />
-    <Folder Include="Resources\view\localization\en\" />
   </ItemGroup>
 
 </Project>

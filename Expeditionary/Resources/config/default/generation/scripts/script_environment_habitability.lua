@@ -4,7 +4,6 @@ MapEnvironmentTrait=luanet.import_type('Expeditionary.Model.Mapping.Environments
 
 Dead = MapEnvironmentTrait()
 Dead.Key = "environment-trait-habitability-dead"
-Dead.Name = "Dead"
 function Dead:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0
@@ -17,7 +16,6 @@ end
 
 Nominal = MapEnvironmentTrait()
 Nominal.Key = "environment-trait-habitability-nominal"
-Nominal.Name = "Nominal"
 function Nominal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0.2
@@ -30,7 +28,6 @@ end
 
 Marginal = MapEnvironmentTrait()
 Marginal.Key = "environment-trait-habitability-marginal"
-Marginal.Name = "Marginal"
 function Marginal:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0.1
@@ -43,7 +40,6 @@ end
 
 Habitable = MapEnvironmentTrait()
 Habitable.Key = "environment-trait-habitability-habitable"
-Habitable.Name = "Habitable"
 function Habitable:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0.9
@@ -56,7 +52,6 @@ end
 
 Fertile = MapEnvironmentTrait()
 Fertile.Key = "environment-trait-habitability-fertile"
-Fertile.Name = "Fertile"
 function Fertile:Apply(environment)
 	local terrain = environment.Parameters.Terrain
 	terrain.BrushCover = 0.9

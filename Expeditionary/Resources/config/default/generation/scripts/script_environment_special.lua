@@ -7,13 +7,11 @@ StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColor
 
 NoOp = MapEnvironmentTrait()
 NoOp.Key = "environment-trait-special-noop"
-NoOp.Name = "NA"
 function NoOp:Apply(environment)
 end
 
 Volcanic = MapEnvironmentTrait()
 Volcanic.Key = "environment-trait-special-volcanic"
-Volcanic.Name = "Volcanic"
 function Volcanic:Apply(environment)
 	local appearance = environment.Appearance
 	local parameters = environment.Parameters

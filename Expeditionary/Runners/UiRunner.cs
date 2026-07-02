@@ -70,6 +70,11 @@ namespace Expeditionary.Runners
             SoundtrackPlayer soundtrack = 
                 new(uiElementFactory.GetAudioPlayer(), data.Playlist, SoundtrackPlayer.PlayMode.Shuffle);
 
+            foreach (var trait in data.Module.MapEnvironmentTraits.Select(trait => trait.Key))
+            {
+                Console.WriteLine("localize-" + trait);
+            }
+
             soundtrack.Initialize();
             loader.Start();
             Handle(data, ui, loader, screenFactory);

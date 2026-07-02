@@ -5,14 +5,14 @@ using Expeditionary.Model.Matches;
 
 namespace Expeditionary.Model.Missions
 {
-    public record class Mission(MapSetup Map, List<PlayerSetup> Players)
+    public record class Mission(string NameKey, MapSetup Map, List<PlayerSetup> Players)
     {
-        private static readonly object o_Create = new();
-        private static readonly object o_Setup = new();
+        private static readonly object CreateSegment = new();
+        private static readonly object SetupSegment = new();
 
         public LoaderTaskNode<(Match, MapAppearance)> Create(LoaderStatus status, CreationContext context)
         {
-            status.AddSegment(o_Create);
+            status.AddSegment(CreateSegment);
             return Map.GenerateMap(status, context.Random)
                 .Map(x =>
                     {
@@ -25,28 +25,28 @@ namespace Expeditionary.Model.Missions
 
         public LoaderTaskNode<Match> Setup(LoaderStatus status, IPromise<Match> match, IPromise<SetupContext> context)
         {
-            status.AddSegments(o_Setup);
+            status.AddSegments(SetupSegment);
             return new SourceLoaderTask<Match>(
                 () => { SetupAux(status, match.Get(), context.Get()); return match.Get(); }, isGL: false);
         }
 
         private void CreateAux(LoaderStatus status, Match match, CreationContext context)
         {
-            status.AddWork(o_Create, Players.Count);
+            status.AddWork(CreateSegment, Players.Count);
             foreach (var player in Players)
             {
                 player.Create(match, context);
-                status.DoWork(o_Create);
+                status.DoWork(CreateSegment);
             }
         }
 
         private void SetupAux(LoaderStatus status, Match match, SetupContext context)
         {
-            status.AddWork(o_Setup, Players.Count);
+            status.AddWork(SetupSegment, Players.Count);
             foreach (var player in Players)
             {
                 player.Setup(match, context);
-                status.DoWork(o_Setup);
+                status.DoWork(SetupSegment);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Expeditionary.Runners;
+using Expeditionary.Runners.GameStates;
 
 namespace Expeditionary
 {
@@ -16,7 +17,7 @@ namespace Expeditionary
 
         public static void Main()
         {
-            new DefaultRunner(Config, TestGameStateContexts.GenerateMatchSummaryContext).Run();
+            new DefaultRunner(Config, _ => new IGameStateContext.MainMenuContext()).Run();
         }
     }
 }

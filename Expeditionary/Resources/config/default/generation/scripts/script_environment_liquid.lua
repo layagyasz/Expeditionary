@@ -8,7 +8,6 @@ StaticColoring=luanet.import_type('Expeditionary.Model.Mapping.Appearance.IColor
 
 Carbide = MapEnvironmentTrait()
 Carbide.Key = "environment-trait-liquid-carbide"
-Carbide.Name = "Carbide"
 function Carbide:Apply(environment)
 	environment.Parameters.Cities.LiquidAffinity = 0
 	environment.Parameters.Terrain.LiquidMoistureBonus = 0
@@ -20,7 +19,6 @@ end
 
 Ferrous = MapEnvironmentTrait()
 Ferrous.Key = "environment-trait-liquid-ferrous"
-Ferrous.Name = "Ferrous"
 function Ferrous:Apply(environment)
 	environment.Parameters.Cities.LiquidAffinity = 0
 	environment.Parameters.Terrain.LiquidMoistureBonus = 0
@@ -32,7 +30,6 @@ end
 
 Lava = MapEnvironmentTrait()
 Lava.Key = "environment-trait-liquid-lava"
-Lava.Name = "Lava"
 function Lava:Apply(environment)
 	environment.Parameters.Cities.LiquidAffinity = -1
 	environment.Parameters.Terrain.LiquidMoistureBonus = -1
@@ -44,7 +41,6 @@ end
 
 Sulfurous = MapEnvironmentTrait()
 Sulfurous.Key = "environment-trait-liquid-sulfurous"
-Sulfurous.Name = "Sulfurous"
 function Sulfurous:Apply(environment)
 	environment.Parameters.Cities.LiquidAffinity = 0
 	environment.Parameters.Terrain.LiquidMoistureBonus = 0
@@ -56,7 +52,6 @@ end
 
 Water = MapEnvironmentTrait()
 Water.Key = "environment-trait-liquid-water"
-Water.Name = "Water"
 function Water:Apply(environment)
 	environment.Parameters.Cities.LiquidAffinity = 1
 	environment.Parameters.Terrain.LiquidMoistureBonus = 0.2
